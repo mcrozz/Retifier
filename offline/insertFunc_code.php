@@ -216,7 +216,7 @@ setInterval(function(){
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:block')
 	} else if (JSONstatus3.ShowWaves == 'false') {
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:none')
-	} if (JSON.parse(localStorage['Status']).checked == JSON.parse(localStorage['Following']).Following) {
+	} if (JSON.parse(localStorage['Status']).update == '4') {
 		progressBar('Disable')
 	}
 },100);
