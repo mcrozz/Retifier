@@ -1,0 +1,133 @@
+<meta charset='utf-8'> 
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="animate.css" type="text/css" />
+<script src="jquery-1.10.2.min.js"></script>
+<script src="functions.js"></script>
+<script src="firstStart.js"></script>
+<script src="insertFunc.js" async="true"></script>
+<script src="popup.js"></script>
+
+
+<body id="body">
+
+<div id="FollowedChannelsList" class="FollowedChannelsList" style="display:none">
+
+	<div class="close">
+		<button type="button" id="ClsFlwdChnlsLst" name="Close List of Followed channels" class="button"><a>Close</a></button>
+	</div>
+	
+	<div class="closeBelow2"></div>
+	<div class="closeBelow">
+		<p class="pCloseBelow3">P.S.</p>
+		<p class="pCloseBelow1">Green who's online</p>
+		<p class="pCloseBelow2">Black who's offline</p>
+		<p class="pCloseBelow4">Click on name to go on profile</p>
+	</div>
+	
+	<div id="InsertFollowedChannelsHere1" style="position:absolute;width:180;height:500;left:0"> </div>
+	<div id="InsertFollowedChannelsHere2" style="position:absolute;width:180;height:500;left:185"> </div>
+	<div id="InsertFollowedChannelsHere3" style="position:absolute;width:180;height:500;left:370"> </div>
+	<div id="InsertFollowedChannelsHere4" style="position:absolute;width:180;height:500;left:0;top:505"> </div>
+	<div id="InsertFollowedChannelsHere5" style="position:absolute;width:180;height:500;left:185;top:505"> </div>
+	<div id="InsertFollowedChannelsHere6" style="position:absolute;width:180;height:500;left:370;top:505"> </div>
+
+</div>
+
+
+<div id="firstScane" style="display:block;overflow:hidden">
+
+<div id="FoundAbugText" style="display:none" class="foundAbug" class="pFoundAbug">
+	<a class="aFoundAbug" href="https://docs.google.com/forms/d/1H5by45KrGHJZ-d1AWwCw83pPmYDpfReZybl8buuQO0w/viewform" target="_blank">Click here to open report form</a>
+</div>
+<button type="button" id="fndAbug" name="Found a bug?" style="display:none" class="INfoundAbug"><a class="aFoundAbug2">Found a bug?</a></button>
+
+
+<div id="userChangePopup2" class="userChangeBGofBackground"> </div>
+<div id="userChangePopup" class="userChangePopup" style="display:none;margin-left:190">
+
+<p class="pGreetings">Hello dear user!</p>
+
+<p class="pUserName"><input type="text" name="userName" id="ChgUsrNam" class="inUserName"></p>
+<p class="pUserName2">User name</p>
+
+<p class="pCheckInt"><input type="text" name="refInt" id="ChgUsrInt" class="inCheckInt"></p>
+<p class="pCheckInt2">(min) Check interval</p>
+
+
+<p class="pNotify"><input type="checkbox" name="Notify" id="Notify"></p>
+<p class="pNotify2">Enable all notifications</p>
+
+<p class="pNotifyStreamer"><input type="radio" name="NotifyStreamer" id="NotifyStreamer"></p>
+<p class="pNotifyStreamer2">When streamer goes online</p>
+
+<p class="pNotifyUpdate"><input type="radio" name="NotifyUpdate" id="NotifyUpdate"></p>
+<p class="pNotifyUpdate2">Only update status</p>
+
+<p class="pSound"><input type="checkbox" name="Sound" id="SoundCheck"></p>
+<p class="pSound2">Enable sound in notifications</p>
+
+<p class="pSoundChoose">
+<select id="SoundSelect" style="width:90">
+	<option value="DinDon">Din-Don</option>
+	<option value="DinDon">More comin' soon</option>
+	<option value="DinDon">[:D</option>
+</select>
+</p>
+<p class="pSoundChoose2">Choose sound</p>
+
+<p class="pStreamDuration"><input type="checkbox" name="StreamDuration" id="StreamDurationCheck"></p>
+<p class="pStreamDuration2">Enable duration of stream</p>
+
+<button type="button" id="ChgUsrSnd" class="OptionsSave">Save / Close</button>
+
+</div>
+
+<div class="header">
+<div class="controls">
+	<div class="DashboardButton">
+		<button type="button" id="Dashboard" class="left">Dashboard</button>
+	</div>
+	<div class="ProbablyNothing">
+		<button type="button" id="Direct" class="left2">Direct</button>
+	</div>
+
+	<div>
+		<a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
+	</div>
+
+	<div class="LoginORoutButton">
+		<button type="button" id="ChgUsr" class="right">Options</button>
+	</div>
+	<div class="ListOfFollowed">
+		<button type="button" id="LstFlwdChnls" class="right2">Following List</button>
+	</div>
+</div>
+
+<div id="nowONline" class="online">
+	<p class="pNowOnline" id="FollowedChannelsOnline"></p>
+</div>
+
+</div>
+
+<div class="News" id="News"></div>
+<div class="NoOneOnline" id="NoOneOnline" style="display:block"></div>
+<progress class="CheckingProgress" style="display:none" id="CheckingProgress" max="100" value=""></progress>
+
+<div class="content3">
+	<div class="content2" id="insertContentHere"></div>
+</div>
+
+<div class="AppInfoBack" id="AppInfoBack"></div>
+<div class="AppVersion" id="AppVersion"><a id="AppVersionClick" class="aAppVer"></a></div>
+<div class="AppChanges" id="AppChanges" style="display:none">
+	<div class="AppInfoNav">
+		<button type="button" id="AppFirst" name="Changes" class="AppInfo"><a>Changes</a></button>
+		<button type="button" id="AppSecond" name="In future" class="AppInfo"><a>In future</a></button>
+		<button type="button" id="AppThird" name="About" class="AppInfo"><a>About</a></button>
+		<button type="button" id="AppInfoClose" name="Close" class="AppInfo"><a>Close</a></button>
+	</div>
+	<div class="AppVersionContent2"><div class="AppVersionContent3"><div class="AppVersionContent" id="AppVersionContent"></div></div></div>
+</div>
+
+</div>
+</body>
