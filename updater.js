@@ -175,7 +175,7 @@ if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringif
 
 console.log('[UPDATER]: Start up');
 
-acceptedVersions = {"background": "39", "popup": "45", "insertFunc": "31"};
+acceptedVersions = {"background": "40", "popup": "46", "insertFunc": "32"};
 
 function CheckForUpdates() {
 	JSONparse = JSON.parse(localStorage['Code']);

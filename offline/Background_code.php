@@ -115,8 +115,6 @@ function checkStatus(url,key) {
             localStorage['Status'] = JSON.stringify(JSONstatus2)
         }
     });
-    JSONstatus.InsertOnlineList = '1';
-    localStorage['Status'] = JSON.stringify(JSONstatus)
 }
 
 function afterUpdate() {

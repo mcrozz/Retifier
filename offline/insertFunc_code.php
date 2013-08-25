@@ -7,12 +7,6 @@ JSONconfig = JSON.parse(localStorage['Config']);
 
 FirstLoadInsertFunc = 1;
 
-function insertOnlineListFunc(content,idToInsert) {
-	InsertText = document.getElementById(idToInsert).innerHTML;
-	InsertText += content;
-	document.getElementById(idToInsert).innerHTML = InsertText;
-}
-
 function InsertOnlineList() {
 	TimersetToUpdate = [];
 	var CountOfChannels = [];
@@ -34,8 +28,8 @@ function InsertOnlineList() {
 		StreamerName = localStorage['Stream_Name_'+CountOfRetryEach];
 		StreamGame = localStorage['Stream_Game_'+CountOfRetryEach];
 	
-		if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {	
-			StreamListUnit = '<div class="content">';
+		if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
+			StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
 			StreamListUnit += '<div class="tumblr">';
 			StreamListUnit += '<img target="_blank" id="stream_img_';
 			StreamListUnit += CountOfRetryEach;
@@ -57,9 +51,7 @@ function InsertOnlineList() {
 			StreamListUnit += '</div>';
 			StreamListUnit += '<div class="streamer">';
 			StreamListUnit += '<p class="pStreamer">Streamer</p>';
-			StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/';
-			StreamListUnit += StreamerName;
-			StreamListUnit += '">';
+			StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">';
 			StreamListUnit += StreamerName;
 			StreamListUnit += '</a>';
 			StreamListUnit += '</div>';
@@ -71,9 +63,7 @@ function InsertOnlineList() {
 			StreamListUnit += '</div>';
 			StreamListUnit += '<div class="gamename">';
 			StreamListUnit += '<p class="pGamename">Game</p>';
-			StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'
-			StreamListUnit += CountOfRetryEach;
-			StreamListUnit += '">';
+			StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+CountOfRetryEach+'">';
 			if (StreamGame.length >= 29) {
 				CountToCut = StreamGame.length - 29;
 				StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut);
@@ -86,33 +76,23 @@ function InsertOnlineList() {
 			StreamListUnit += '<div class="StreamOnChannelPage">';
 			StreamListUnit += '<div style="width:150;height:40;display:inline">';
 			StreamListUnit += '<button type="button" name="Go to a stream page" class="button">';
-			StreamListUnit += '<a href="http://www.twitch.tv/'
-			StreamListUnit += StreamerName;
-			StreamListUnit += '"class="aStreamOnChannelPage" target="_blank">';
+			StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'"class="aStreamOnChannelPage" target="_blank">';
 			StreamListUnit += 'Channel page';
 			StreamListUnit += '</a>';
 			StreamListUnit += '</button></div>';
 			StreamListUnit += '<div style="width:170;height:40;display:inline;text-align:right;margin-left:18">';
-			StreamListUnit += '<a id="Stream_Duration_';
-			StreamListUnit += CountOfRetryEach;
-			StreamListUnit += '" class="StreamDuration">';
+			StreamListUnit += '<a id="Stream_Duration_'+CountOfRetryEach+'" class="StreamDuration">';
 			StreamListUnit += '</a>';
 			StreamListUnit += '</div>';
 			StreamListUnit += '</div>';
 			StreamListUnit += '</div>';
 			StreamListUnit += '</div>';
-
-			if (JSON.parse(localStorage['Status']).online == '0') {
-				JSONstatus.ShowWaves = 'true';
-				localStorage['Status'] = JSON.stringify(JSONstatus);
-			} else { 
-				JSONstatus.ShowWaves = 'false';
-				localStorage['Status'] = JSON.stringify(JSONstatus);
-			}
-
-			TimersetToUpdate.push(CountOfRetryEach);
 			
-			insertOnlineListFunc(StreamListUnit,'insertContentHere');
+			document.getElementById('insertContentHere').innerHTML += StreamListUnit;
+			if (TimersetToUpdate.indexOf(CountOfRetryEach) == -1) {
+				$('#'+CountOfRetryEach).addClass('animated FadeIn')
+			}
+			TimersetToUpdate.push(CountOfRetryEach);
 			
 			ElementIdIs = 'stream_img_';
 			ElementIdIs += CountOfRetryEach;
@@ -129,22 +109,28 @@ function InsertOnlineList() {
 			ElementIdIs2 = 'stream_game_';
 			ElementIdIs2 += CountOfRetryEach;
 			document.getElementById(ElementIdIs2).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-		} if (CountOfRetryEach == Math.floor(JSONstatus.checked)) {
-			console.log('Insert Online List finished!')
+		} if (CountOfRetryEach == Math.floor(localStorage['Following'])) {
+			$('#insertContentHere').removeClass('animated FadeIn');
+			$('#insertContentHere').addClass('animated FadeIn')
+		} if (JSON.parse(localStorage['Status']).online == '0') {
+			JSONstatus.ShowWaves = 'true';
+			localStorage['Status'] = JSON.stringify(JSONstatus)
+		} else { 
+			JSONstatus.ShowWaves = 'false';
+			localStorage['Status'] = JSON.stringify(JSONstatus)
 		}
 		CountOfRetryEach += 1;
 	},1);
 	} );
 }
 
-InsertOnlineList();
-
 setInterval(function(){
 	JSONstatus = JSON.parse(localStorage['Status']);
 	if (FirstLoadInsertFunc == 1) {
 		JSONstatus.InsertOnlineList = '0';
 		localStorage['Status'] = JSON.stringify(JSONstatus);
-		FirstLoadInsertFunc = 0
+		FirstLoadInsertFunc = 0;
+		InsertOnlineList()
 	} else if (FirstLoadInsertFunc == 0) {
 		if (JSONstatus.InsertOnlineList == '1') {
 			InsertOnlineList();

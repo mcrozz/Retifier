@@ -325,7 +325,8 @@ function CloseAppVersionChanges() {
 
 function changeAppContent(App) {
 	if (App == 'AppFirst') {
-		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.6 Added 'Watch now!' to notifications</a></div>";
+		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.7 Bug fixes</a></div>";
+		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.6 Added 'Watch now!' to notifications</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.5 Added Animation, thanks for Animate.css (http://daneden.me/animate)</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.4 Reedited 'Live Update' script</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.3 Bug fixes (3), eyep</a></div>";
