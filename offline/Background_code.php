@@ -1,66 +1,46 @@
-//
-// @author Ivan 'MacRozz' Zarudny
-//
-// https://api.twitch.tv/kraken/users/ NAME OF PROFILE /follows/channels?limit=116&offset=0
-// Limit is 116, you have more than that? email me hostingmcrozz@hotmail.com about it :D
-// Offset must be 0 (ZERO)
-//
-// Object.follows[number, from 0 to follows count].channel.name
-//
-//
-// StatusUpdate
-//
-// 0 - Not updating, finished
-// 1 - Timer ended, start update
-// 2 - Update list of followed channels
-// 3 - List of followed channels updated
-// 4 - Checking online channel or not
-// 5 - Error
-// 6 - Name doesn't set up!
-//
-
 /*
- JustAvariableRandom = 0;
- delete localStorage['Status'].checked;
- while (JustAvariableRandom <= Math.floor(JSONfollowing.Following)) {
- delete JSONfollowing.Stream[JustAvariableRandom].Status;
- delete JSONfollowing.Stream[JustAvariableRandom].Title;
- delete JSONfollowing.Stream[JustAvariableRandom].Game;
- delete JSONfollowing.Stream[JustAvariableRandom].Time;
- delete JSONfollowing.Stream[JustAvariableRandom].Tumb;
- localStorage['Following'] = JSON.stringify(JSONfollowing);
- JustAvariableRandom += 1
- }
- */
- 
- setInterval(function(){
-    if (localStorage['Insert'] == 'true') {
-        getCheckInsert();
-        delete localStorage['Insert']
-    }
- }, 100)
+    @author Ivan 'MacRozz' Zarudny
+
+    https://api.twitch.tv/kraken/users/ NAME OF PROFILE /follows/channels?limit=116&offset=0
+    Limit is 116, you have more than that? email me hostingmcrozz@hotmail.com about it :D
+    Offset must be 0 (ZERO)
+
+    Object.follows[number, from 0 to follows count].channel.name
+
+
+    StatusUpdate
+
+    0 - Not updating, finished
+    1 - Timer ended, start update
+    2 - Update list of followed channels
+    3 - List of followed channels updated
+    4 - Checking online channel or not
+    5 - Error
+    6 - Name doesn't set up!
+    7 - First start
+*/
 
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     KeyForDelete = 0;
     DeleteCount = [];
-    DeleteCount.length = JSON.parse(localStorage['Following']).Following;
+    DeleteCount.length = localStorage['Following'];
     $.each(DeleteCount, function(){
         delete localStorage['Stream_Title_'+KeyForDelete];
         delete localStorage['Stream_Time_'+KeyForDelete];
         delete localStorage['Stream_Tumb_'+KeyForDelete];
         delete localStorage['Stream_Viewers_'+KeyForDelete];
         delete localStorage['Stream_Game_'+KeyForDelete];
+        localStorage['Stream_Status_'+KeyForDelete] = 'Offline';
         KeyForDelete += 1
     });
 }
 
-var JSONfollowing = JSON.parse(localStorage['Following']),
-	JSONstatus = JSON.parse(localStorage['Status']),
-	JSONconfig = JSON.parse(localStorage['Config']);
+var JSONstatus = JSON.parse(localStorage['Status']),
+    JSONconfig = JSON.parse(localStorage['Config']);
 
 function checkStatus(url,key) {
-    var getJSONfile = $.getJSON(url, function(data){ statusOfStream = data })
+    var checkStatus = $.getJSON(url)
         .fail(function(){
             notifyUser("Update follows list", "Error, can't update","Update");
             JSONstatus.update = '6';
@@ -68,15 +48,14 @@ function checkStatus(url,key) {
             BadgeOnlineCount('...')
         } );
 
-    getJSONfile.complete(function() {
+    checkStatus.complete(function() {
         NumberOfChecked = Math.floor(JSON.parse(localStorage['Status']).checked);
-        NumberOfChecked += 1;
-        JSONstatus.checked = NumberOfChecked;
+        JSONstatus.checked = NumberOfChecked+1;
         localStorage['Status'] = JSON.stringify(JSONstatus);
         CheckBar2 += '|';
-        console.log('[ '+CheckBar2+CheckBar.substring(0, JSONfollowing.Following - JSONstatus.checked)+' ]');
+        console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+' ]');
 
-        if (statusOfStream.stream) {
+        if (checkStatus.responseJSON.stream) {
             NowOnline = Math.floor(JSON.parse(localStorage['Status']).online);
             NowOnline += 1;
             JSONstatus.online = NowOnline;
@@ -84,10 +63,10 @@ function checkStatus(url,key) {
             TitleToStorage = 'Stream_Title_'+key;
             TimeToStorage = 'Stream_Time_'+key;
 
-            Game = statusOfStream.stream.game;
-            Status = statusOfStream.stream.channel.status;
+            Game = checkStatus.responseJSON.stream.game;
+            Status = checkStatus.responseJSON.stream.channel.status;
             Name = localStorage['Stream_Name_'+key];
-            Time = statusOfStream.stream.channel.updated_at;
+            Time = checkStatus.responseJSON.stream.channel.updated_at;
 
             if (Status == null) {Status = 'Untitled stream'}
             if (Game == null) {Game = 'Not playing'}
@@ -105,10 +84,10 @@ function checkStatus(url,key) {
             }
 
             localStorage['Stream_Title_'+key] = Status;
-            localStorage['Stream_Viewers_'+key] = statusOfStream.stream.viewers;
+            localStorage['Stream_Viewers_'+key] = checkStatus.responseJSON.stream.viewers;
             localStorage['Stream_Game_'+key] = Game;
-            if (statusOfStream.stream.preview.medium != undefined) {
-                localStorage['Stream_Tumb_'+key] = statusOfStream.stream.preview.medium
+            if (checkStatus.responseJSON.stream.preview.medium != undefined) {
+                localStorage['Stream_Tumb_'+key] = checkStatus.responseJSON.stream.preview.medium
             } else {
                 localStorage['Stream_Tumb_'+key] = null
             }
@@ -122,12 +101,12 @@ function checkStatus(url,key) {
             delete localStorage['Stream_Tumb_'+key];
             delete localStorage['Stream_Title_'+key]
             delete localStorage['Stream_Time_'+key]
-        } if (JSON.parse(localStorage['Status']).checked == JSON.parse(localStorage['Following']).Following) {
+        } if (JSON.parse(localStorage['Status']).checked == localStorage['Following']) {
             BadgeOnlineCount(JSON.parse(localStorage['Status']).online);
             createCookie('First_Notify','1',365);
             CheckBar2 += '|';
-            console.log('[ '+CheckBar2+CheckBar.substring(0, JSONfollowing.Following - JSONstatus.checked)+' ]');
-            if (JSON.parse(localStorage['Status']).checked != '0') {console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+JSON.parse(localStorage['Following']).Following)}
+            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+' ]');
+            if (JSON.parse(localStorage['Status']).checked != '0') {console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following'])}
             console.log('Every channel checked');
             JSONstatus2 = JSON.parse(localStorage['Status']);
             JSONstatus2.update = '0';
@@ -148,7 +127,7 @@ function afterUpdate() {
     CheckBar = '--------------------------------------------------------------------------------------------------------------------';
     CheckBar2 = '';
     var FollowingChannelList = [];
-    FollowingChannelList.length = JSON.parse(localStorage['Following']).Following;
+    FollowingChannelList.length = localStorage['Following'];
     localStorage['Status'] = JSON.stringify(JSONstatus);
 
     $.each(FollowingChannelList, function() {
@@ -162,7 +141,6 @@ var FirstStart = '1',
 
 function getCheckInsert() {
     var twitch = 'Not loaded yet!',
-        statusOfStream = 'Not loaded yet!!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+JSON.parse(localStorage['Config']).User_Name+'/follows/channels?limit=116&offset=0';
     JSONstatus.update = '1';
     localStorage['Status'] = JSON.stringify(JSONstatus);
@@ -193,13 +171,12 @@ function getCheckInsert() {
         });
 
         updateFollowingListAndCheck.complete(function(){
-            if (JSONfollowing.Following != twitch._total) {
+            if (localStorage['Following'] != twitch._total) {
                 console.log('Update list of following channels');
                 NumberOfRetryForKey = 0;
-                JSONfollowing.Following = twitch._total;
-                localStorage['Following'] = JSON.stringify(JSONfollowing);
+                localStorage['Following'] = twitch._total;
 
-                while (NumberOfRetryForKey <= Math.floor(JSONfollowing.Following)-1) {
+                while (NumberOfRetryForKey <= Math.floor(localStorage['Following'])-1) {
                     if (updateFollowingListAndCheck.responseJSON.follows[NumberOfRetryForKey]) {
                         localStorage['Stream_Name_'+NumberOfRetryForKey] = updateFollowingListAndCheck.responseJSON.follows[NumberOfRetryForKey].channel.name;
                         NumberOfRetryForKey += 1
@@ -216,8 +193,8 @@ function getCheckInsert() {
 }
 
 if (FirstStart == '1'){setTimeout(function(){ getCheckInsert() }, 10)}
-
 setInterval(function(){getCheckInsert()}, 1000 * 60 * Math.floor(JSON.parse(localStorage['Config']).Interval_of_Checking));
+
 
 setInterval(function(){
     if (readCookie('InstatntCheck') == '1') {
@@ -235,7 +212,9 @@ setInterval(function(){
         createCookie('First_Notify','0',365)
     } if (JSON.parse(localStorage['Config']).User_Name == 'Guest') {
         JustAvariableRandom = 0;
-        delete JSONfollowing;
-        localStorage['Following'] = JSON.stringify(JSONfollowing)
+        delete localStorage['Following']
+    } if (localStorage['Insert'] == 'true') {
+        getCheckInsert();
+        delete localStorage['Insert']
     }
 },1000)

@@ -1,8 +1,7 @@
-//
-// @author Ivan 'MacRozz' Zarudny
-//
+/*
+	@author Ivan 'MacRozz' Zarudny
+*/
 
-JSONfollowing = JSON.parse(localStorage['Following']);
 JSONstatus = JSON.parse(localStorage['Status']);
 JSONconfig = JSON.parse(localStorage['Config']);
 
@@ -53,7 +52,6 @@ function clickChangeUserCls() {
 		document.getElementById("userChangePopup").style.display = 'none';
 		document.getElementById("userChangePopup2").setAttribute("style","display:none");
 		document.getElementById("FoundAbugText").setAttribute('style', 'display:none');
-		createCookie('userChangePopup','closed',1);
 		openCloseReportVar = 1
 	},800);
 }
@@ -249,7 +247,7 @@ function openFollowedList() {
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 
 	var CountOfChannels = [];
-	CountOfChannels.length = JSON.parse(localStorage['Following']).Following;
+	CountOfChannels.length = localStorage['Following'].Following;
 	CountOfRetryEach = 0;
 	
 	$.each(CountOfChannels, function() {
@@ -380,13 +378,8 @@ function changeSoundFile(type) {
 function progressBar(type) {
 	if (type == 'Enable') {
 		document.getElementById('CheckingProgress').setAttribute('style', 'display:block');
-		$('#CheckingProgress').removeClass('animated FadeOut');
-		$('#CheckingProgress').addClass('animated FadeIn');
-		CheckedPercent = 100 / JSONfollowing.Following * JSONstatus.checked;
-		document.getElementById('CheckingProgress').value = CheckedPercent
+		document.getElementById('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * JSONstatus.checked)
 	} else if (type == 'Disable') {
-		$('#CheckingProgress').removeClass('animated FadeIn');
-		$('#CheckingProgress').addClass('animated FadeOut');
 		setTimeout(function(){
 			document.getElementById('CheckingProgress').setAttribute('style', 'display:none')
 		},800);

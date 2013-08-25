@@ -1,25 +1,24 @@
-//
-// @author Ivan 'MacRozz' Zarudny
-//
+/*
+	@author Ivan 'MacRozz' Zarudny
+*/
+
+if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
 setInterval(function(){
 
 	if (localStorage['SecondReload'] == 'True') {
 		setTimeout(location.reload, 3000);
-		delete localStorage['SecondReload']
-	} if (Math.floor(localStorage['Reload']) <= 1) {
-		localStorage['Reload'] = Math.floor(localStorage['Reload']) + 1;
-		setTimeout(window.location.reload.bind(window.location), 200);
-		localStorage['Insert'] = 'true'
-	} else {delete localStorage['Reload']
-	} if (localStorage['JustReload'] == '1') {
+		delete localStorage['SecondReload']}
+	if (localStorage['JustReload'] == '1') {
 		delete localStorage['JustReload'];
+		setTimeout(window.location.reload.bind(window.location), 200)}
+	if (localStorage['Reload'] != 'false') {
 		setTimeout(window.location.reload.bind(window.location), 200)
+		localStorage['Reload'] = 'false'
 	}
 
 },1000);
-if (localStorage['Following'] != null && localStorage['Status'] != null && localStorage['Config'] != null) {
 
-$.getJSON('/manifest.json', function(data){ localStorage['App_Version']=data.version });
+if (localStorage['Status'] != undefined && localStorage['Config'] != undefined) {
 
 function createCookie(name,value,days) {
 	if (days) {
@@ -97,7 +96,7 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 			message:msg,
 			iconUrl:"goesOnlineUpdStatus.png",
 		};
-		chrome.notifications.create(scriptUpd,NotifyOpt,function(){});
+		chrome.notifications.create(scriptUpd+Math.floor(Math.random()*10),NotifyOpt,function(){});
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';

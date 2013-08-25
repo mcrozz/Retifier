@@ -1,8 +1,7 @@
-//
-// @author Ivan 'MacRozz' Zarudny
-//
+/*
+	@author Ivan 'MacRozz' Zarudny
+*/
 
-JSONfollowing = JSON.parse(localStorage['Following']);
 JSONstatus = JSON.parse(localStorage['Status']);
 JSONconfig = JSON.parse(localStorage['Config']);
 
@@ -19,7 +18,7 @@ function InsertOnlineList() {
 	var CountOfChannels = [];
 	CountOfRetryEach = 0;
 	if (JSONstatus.checked) {
-		CountOfChannels.length = JSONfollowing.Following
+		CountOfChannels.length = localStorage['Following']
 	} else {
 		CountOfChannels.length = null
 	}
@@ -27,7 +26,6 @@ function InsertOnlineList() {
 		document.getElementById('insertContentHere').innerHTML = null
 	}
 	
-	JSONstatus.ShowWaves = 'true';
 	localStorage['Status'] = JSON.stringify(JSONstatus);
 	
 	$.each(CountOfChannels, function() {
@@ -102,13 +100,16 @@ function InsertOnlineList() {
 			StreamListUnit += '</div>';
 			StreamListUnit += '</div>';
 			StreamListUnit += '</div>';
-
 			StreamListUnit += '</div>';
-			if (JSONfollowing.online == '0') {
-				JSONstatus.ShowWaves = 'true'
-			} else { JSONstatus.ShowWaves = 'false' }
-			localStorage['Status'] = JSON.stringify(JSONstatus);
-			
+
+			if (JSON.parse(localStorage['Status']).online == '0') {
+				JSONstatus.ShowWaves = 'true';
+				localStorage['Status'] = JSON.stringify(JSONstatus);
+			} else { 
+				JSONstatus.ShowWaves = 'false';
+				localStorage['Status'] = JSON.stringify(JSONstatus);
+			}
+
 			TimersetToUpdate.push(CountOfRetryEach);
 			
 			insertOnlineListFunc(StreamListUnit,'insertContentHere');
@@ -116,10 +117,12 @@ function InsertOnlineList() {
 			ElementIdIs = 'stream_img_';
 			ElementIdIs += CountOfRetryEach;
 			if (localStorage['Stream_Tumb_'+CountOfRetryEach] != 'null') {
-				tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach]
-			} else {tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png'}
-			document.getElementById(ElementIdIs).setAttribute('style','background:url('+tumbURL+')');
-			
+				tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach];
+				document.getElementById(ElementIdIs).setAttribute('style','background:url('+tumbURL+')')
+			} else {
+				tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png';
+				document.getElementById(ElementIdIs).setAttribute('style','background:url('+tumbURL+')')
+			}			
 			
 			document.getElementById(ElementIdIs).href = 'http://www.twitch.tv/'+StreamerName;
 			
@@ -162,21 +165,24 @@ setInterval(function(){
 	-4 - Checking online channel or not
 	-5 - Error
 	-6 - Name doesn't set up!
+	-7 - First start
 
 	*/
 	JSONstatus2 = JSON.parse(localStorage['Status']);
-	JSONfollowing2 = JSON.parse(localStorage['Following']);
 	if (JSONstatus2.update == '0') {
-		insertText('Now online '+JSONstatus2.online+' from '+JSONfollowing2.Following,'FollowedChannelsOnline');
+		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
 		progressBar('Disable')
 	} else if (JSONstatus2.update == '1') {
-		insertText('Behold! Update!','FollowedChannelsOnline')
+		insertText('Behold! Update!','FollowedChannelsOnline');
+		progressBar('Enable')
 	} else if (JSONstatus2.update == '2') { 
-		insertText('Updating list of followed channels...','FollowedChannelsOnline')
+		insertText('Updating list of followed channels...','FollowedChannelsOnline');
+		progressBar('Enable')
 	} else if (JSONstatus2.update == '3') { 
-		insertText('List of followed channels updated.','FollowedChannelsOnline')
+		insertText('List of followed channels updated.','FollowedChannelsOnline');
+		progressBar('Enable')
 	} else if (JSONstatus2.update == '4') { 
-		insertText('Now online '+JSONstatus2.online+' from '+JSONfollowing2.Following,'FollowedChannelsOnline');
+		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
 		progressBar('Enable')
 	} else if (JSONstatus2.update == '5') { 
 		insertText('App had a problem with update','FollowedChannelsOnline')
@@ -216,7 +222,5 @@ setInterval(function(){
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:block')
 	} else if (JSONstatus3.ShowWaves == 'false') {
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:none')
-	} if (JSON.parse(localStorage['Status']).update == '4') {
-		progressBar('Disable')
 	}
 },100);

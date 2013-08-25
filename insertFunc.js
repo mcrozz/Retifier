@@ -1,2 +1,3 @@
-JSONparse = JSON.parse(localStorage['Code']);
-eval(JSONparse.insertFunc.code);
+if (localStorage['Code'] != undefined) {
+	eval(JSON.parse(localStorage['Code']).insertFunc.code)
+}

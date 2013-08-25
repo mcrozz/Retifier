@@ -8,27 +8,59 @@
 //
 
 /*
-	    Structure of
+	=====Structure of======
 	localStorage['Code']
+	{
+		"Background": {
+			"code": "code",
+			"date": "Date",
+			"hex": "hex",
+			"version": "version",
+			"version_geted": "version_geted"
+		},
+		"Popup": {
+			"code": "code",	
+			"date": "date",	
+			"hex": "hex",
+			"version": "version",
+			"version_geted": "version_geted"},
+			"insertFunc": {
+				"code": "code",
+				"date": "date",
+				"hex": "hex",
+				"version": "version",
+				"version_geted": "version_geted"
+			}
+		}
+	}
 
-	{"Background": {"code": "code","date": "Date","hex": "hex","version": "version","version_geted": "version_geted"},"Popup": {"code": "code",	"date": "date",	"hex": "hex","version": "version","version_geted": "version_geted"},"insertFunc": {"code": "code","date": "date","hex": "hex","version": "version","version_geted": "version_geted"}}
-
-	     Structure of
+	=====Structure of======
 	localStorage['Config']
-	
-	{"User_Name": "Guest","Notifications": {"status": "Enable","online": "Enable","update": "Enable","sound_status": "Enable","sound": "DinDon"},"Duration_of_stream": "Enable","Interval_of_Checking": "3"}
+	{
+		"User_Name": "Guest",
+		"Notifications": {
+			"status": "Enable",
+			"online": "Enable",
+			"update": "Enable",
+			"sound_status": "Enable",
+			"sound": "DinDon"
+		},
+		"Duration_of_stream": "Enable",
+		"Interval_of_Checking": "3"
+	}
 
-	     Structure of
+    =====Structure of======
 	localStorage['Status']
-
-	{"update": "0","online": "2","checked": "37","ShowWaves": "true","InsertOnlineList": "1"}
-
-	     Structure of
-	localStorage['Following']
-
-	{"Following": "count","Stream": {"Name": "name of streamer","Status": "status of stream","Title": "if online","Game": "if online","Time": "if online","Tumb": "if online"}}
-
+	{
+		"update": "0",
+		"online": "2",
+		"checked": "37",
+		"ShowWaves": "true",
+		"InsertOnlineList": "1"
+	}
 */
+
+$.getJSON('/manifest.json', function(data){localStorage['App_Version']=data.version});
 
 // Export old formated setting
 
@@ -122,37 +154,28 @@ if (!localStorage['OldSetting']) {
 Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": "0","version_geted": "0"},"Popup": {"code": "//code","date": "date",	"hex": "hex","version": "0","version_geted": "0"},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": "0","version_geted": "0"}};
 Config = {"User_Name": "Guest","Notifications": {"status": "Enable","online": "Enable","update": "Enable","sound_status": "Enable","sound": "DinDon"},"Duration_of_stream": "Enable","Interval_of_Checking": "3"};
 Status = {"update": "0","online": "0","checked": "0","ShowWaves": "true","InsertOnlineList": "0"};
-Following = {"Following": "0","Stream": {"Name": "","Status": "","Title": "","Game": "","Time": "","Tumb": ""}};
-if (!localStorage['Code']) {localStorage['Code'] = JSON.stringify(Code)}
-if (!localStorage['Config']) {localStorage['Config'] = JSON.stringify(Config)}
-if (!localStorage['Status']) {localStorage['Status'] = JSON.stringify(Status)}
-if (!localStorage['Following']) {localStorage['Following'] = JSON.stringify(Following)}
+if (localStorage['Code'] == undefined) {localStorage['Code'] = JSON.stringify(Code)}
+if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringify(Config)}
+if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)}
 
 // Validate codes from localStorage
-if (!localStorage['Code']) {
-	ValVar = JSON.parse(localStorage['Code']);
-	ValVar.Background.version = '0'; 
-	ValVar.Popup.version = '0'; 
-	ValVar.insertFunc.version = '0'; 
-	localStorage['Code'] = JSON.stringify(ValVar);
-	location.reload()
-} if (!JSON.parse(localStorage['Code']).Background.version) {
+/*if (JSON.parse(localStorage['Code']).Background.version == undefined) {
 	ValVar = JSON.parse(localStorage['Code']);
 	ValVar.Background.version = '0'; 
 	localStorage['Code'] = JSON.stringify(ValVar);
-} if (!JSON.parse(localStorage['Code']).Popup.version) {
+} if (JSON.parse(localStorage['Code']).Popup.version == undefined) {
 	ValVar = JSON.parse(localStorage['Code']);
 	ValVar.Popup.version = '0'; 
 	localStorage['Code'] = JSON.stringify(ValVar);
-} if (!JSON.parse(localStorage['Code']).insertFunc.version) {
+} if (JSON.parse(localStorage['Code']).insertFunc.version == undefined) {
 	ValVar = JSON.parse(localStorage['Code']);
 	ValVar.insertFunc.version = '0'; 
 	localStorage['Code'] = JSON.stringify(ValVar);
-}
+}*/
 
 console.log('[UPDATER]: Start up');
 
-acceptedVersions = {"background": "31", "popup": "42", "insertFunc": "22"};
+acceptedVersions = {"background": "39", "popup": "45", "insertFunc": "31"};
 
 function CheckForUpdates() {
 	JSONparse = JSON.parse(localStorage['Code']);
@@ -202,9 +225,9 @@ function CheckForUpdates() {
 						if (Hours == 0) {Hours = ''} else { if (Hours < 10) {Hours = '0'+Hours+'h:'} else if (Hours >= 10) {Hours = Hours+'h:'} };
 						if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m'} else if (Minutes >= 10) {Minutes = Minutes+'m'} };
 						LastEdit = Days+''+Hours+''+Minutes;
-						notifyUser('Success update Background.js','Ver. '+JSONparse.Background.version+' (edited '+LastEdit+')','ScriptUpdate');
+						notifyUser('Success update Background.js','Ver. '+JSON.parse(localStorage['Code']).Background.version+' (edited '+LastEdit+' ago)','ScriptUpdate');
 						// Check Background.js sums
-						if (hex_md5(JSONparse.Background.code) != JSONparse.Background.hex) {
+						if (hex_md5(JSON.parse(localStorage['Code']).Background.code) != JSON.parse(localStorage['Code']).Background.hex) {
 							JSONparse.Background.version = '0';
 							localStorage['Code'] = JSON.stringify(JSONparse);
 							console.error('[UPDATER]: Background.js is broken, redownload...');
@@ -248,9 +271,9 @@ function CheckForUpdates() {
 						if (Hours == 0) {Hours = ''} else { if (Hours < 10) {Hours = '0'+Hours+'h:'} else if (Hours >= 10) {Hours = Hours+'h:'} };
 						if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m'} else if (Minutes >= 10) {Minutes = Minutes+'m'} };
 						LastEdit = Days+''+Hours+''+Minutes;
-						notifyUser('Success update Popup.js','Ver. '+JSONparse.Popup.version+' (edited '+LastEdit+')','ScriptUpdate');
+						notifyUser('Success update Popup.js','Ver. '+JSON.parse(localStorage['Code']).Popup.version+' (edited '+LastEdit+' ago)','ScriptUpdate');
 						// Check Popup.js sums
-						if (hex_md5(JSONparse.Popup.code) != JSONparse.Popup.hex) {
+						if (hex_md5(JSON.parse(localStorage['Code']).Popup.code) != JSON.parse(localStorage['Code']).Popup.hex) {
 							JSONparse.Popup.version = '0';
 							localStorage['Code'] = JSON.stringify(JSONparse);
 							console.error('[UPDATER]: Popup.js is broken, redownload...');
@@ -295,9 +318,9 @@ function CheckForUpdates() {
 						if (Hours == 0) {Hours = ''} else { if (Hours < 10) {Hours = '0'+Hours+'h:'} else if (Hours >= 10) {Hours = Hours+'h:'} };
 						if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m'} else if (Minutes >= 10) {Minutes = Minutes+'m'} };
 						LastEdit = Days+''+Hours+''+Minutes;
-						notifyUser('Success update insertFunc.js','Ver. '+JSONparse.insertFunc.version_geted+' (edited '+LastEdit+')','ScriptUpdate');
+						notifyUser('Success update insertFunc.js','Ver. '+JSON.parse(localStorage['Code']).insertFunc.version+' (edited '+LastEdit+' ago)','ScriptUpdate');
 						// Check insertFunc.js sums
-						if (hex_md5(JSONparse.insertFunc.code) != JSONparse.insertFunc.hex) {
+						if (hex_md5(JSON.parse(localStorage['Code']).insertFunc.code) != JSON.parse(localStorage['Code']).insertFunc.hex) {
 							JSONparse.insertFunc.version = '0';
 							localStorage['Code'] = JSON.stringify(JSONparse);
 							console.error('[UPDATER]: insertFunc.js is broken, redownload...');

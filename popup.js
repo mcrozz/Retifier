@@ -1,5 +1,4 @@
-if (localStorage['Following'] != null && localStorage['Status'] != null && localStorage['Config'] != null) {
-_gaq.push(['_trackPageview']);
-JSONparse = JSON.parse(localStorage['Code']);
-eval(JSONparse.Popup.code)
+if (localStorage['Status'] != undefined && localStorage['Config'] != undefined) {
+	_gaq.push(['_trackPageview']);
+	eval(JSON.parse(localStorage['Code']).Popup.code)
 }
