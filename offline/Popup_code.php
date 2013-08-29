@@ -247,7 +247,7 @@ function openFollowedList() {
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 
 	var CountOfChannels = [];
-	CountOfChannels.length = localStorage['Following'].Following;
+	CountOfChannels.length = localStorage['Following'];
 	CountOfRetryEach = 0;
 	
 	$.each(CountOfChannels, function() {
