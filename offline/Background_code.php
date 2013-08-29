@@ -20,6 +20,15 @@
     7 - First start
 */
 
+try {
+    if (JSON.parse(localStorage['Following']).Following) {
+        Following = JSON.parse(localStorage['Following']).Following;
+        localStorage['Following'] = Following
+    }
+} catch(err) {
+    console.error(err)
+}
+
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     KeyForDelete = 0;
@@ -138,6 +147,7 @@ var FirstStart = '1',
     FirstStart2 = '1';
 
 function getCheckInsert() {
+    if (localStorage['Following'] == undefined) {localStorage['Following'] = 0}
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+JSON.parse(localStorage['Config']).User_Name+'/follows/channels?limit=116&offset=0';
     JSONstatus.update = '1';
