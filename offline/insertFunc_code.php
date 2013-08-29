@@ -114,7 +114,9 @@ function InsertOnlineList() {
 			$('#insertContentHere').addClass('animated FadeIn')
 		} if (JSON.parse(localStorage['Status']).online == '0') {
 			JSONstatus.ShowWaves = 'true';
-			localStorage['Status'] = JSON.stringify(JSONstatus)
+			localStorage['Status'] = JSON.stringify(JSONstatus);
+			document.getElementById('News').setAttribute('style','text-align:center;margin:7');
+			document.getElementById('News').innerHTML='<a style="color:black">No one online right now :(</a>'
 		} else { 
 			JSONstatus.ShowWaves = 'false';
 			localStorage['Status'] = JSON.stringify(JSONstatus)
