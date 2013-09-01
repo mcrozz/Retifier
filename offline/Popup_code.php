@@ -1,5 +1,17 @@
 /*
-	@author Ivan 'MacRozz' Zarudny
+	Copyright 2013 Ivan 'MacRozz' Zarudny
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 */
 
 var NumberOfidOfListOfFollowedChannels = 1,
@@ -205,12 +217,12 @@ function changeScriptStarter() {
 
 function FollowedChannelsList(content,status) {
 	if (content != undefined) {
-		if (LinesInListOfFollowedChannels == '19') {
+		if (LinesInListOfFollowedChannels == 19) {
 			NumberOfidOfListOfFollowedChannels += 1;		
 		} else {
-			if (NumberOfidOfListOfFollowedChannels == '6') {
+			if (NumberOfidOfListOfFollowedChannels == 6) {
 				LinesInListOfFollowedChannels = 0
-			} if (NumberOfidOfListOfFollowedChannels == '4') {
+			} if (NumberOfidOfListOfFollowedChannels == 4) {
 				document.getElementById('FollowedChannelsList').style.overflow = 'auto'}
 			idOfListOfFollowedChannels = '';		
 			idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
@@ -230,16 +242,12 @@ function FollowedChannelsList(content,status) {
 }
 
 function openFollowedList() {
-	$('#firstScane').removeClass('animated fadeOut');
-	$('#firstScane').addClass('animated fadeOut');
-	setTimeout(function(){
-		document.getElementById("firstScane").setAttribute("style","display:none");
-		document.getElementById("FollowedChannelsList").style.display = 'block';
-		document.getElementById("FollowedChannelsList").style.overflow = 'hidden';
-		document.getElementById("FollowedChannelsList").style.height = '584px';
-		$('#FollowedChannelsList').removeClass('animated fadeOut');
-		$('#FollowedChannelsList').addClass('animated fadeIn')
-	},800);
+	document.getElementById("firstScane").setAttribute("style","display:none");
+	document.getElementById("FollowedChannelsList").style.display = 'block';
+	document.getElementById("FollowedChannelsList").style.overflow = 'hidden';
+	document.getElementById("FollowedChannelsList").style.height = '584px';
+	$('#FollowedChannelsList').removeClass('animated fadeOut');
+	$('#FollowedChannelsList').addClass('animated fadeIn');
 
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 
@@ -322,7 +330,8 @@ function CloseAppVersionChanges() {
 
 function changeAppContent(App) {
 	if (App == 'AppFirst') {
-		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.7 Bug fixes</a></div>";
+		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.8 Bug fixes, improvements</a></div>";
+		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.7 Bug fixes</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.6 Added 'Watch now!' to notifications</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.5 Added Animation, thanks for Animate.css (http://daneden.me/animate)</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.4 Reedited 'Live Update' script</a></div>";
@@ -377,7 +386,7 @@ function changeSoundFile(type) {
 function progressBar(type) {
 	if (type == 'Enable') {
 		document.getElementById('CheckingProgress').setAttribute('style', 'display:block');
-		document.getElementById('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * JSONstatus.checked)
+		document.getElementById('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * localJSON('Status','checked'))
 	} else if (type == 'Disable') {
 		setTimeout(function(){
 			document.getElementById('CheckingProgress').setAttribute('style', 'display:none')
@@ -386,6 +395,22 @@ function progressBar(type) {
 }
 
 document.addEventListener( "DOMContentLoaded" , function () {
+	/*
+	 Will activate soon...
+	if (localJSON('Config','Stream_List') == false) {
+		StrmLst = localJSON('Config');
+		StrmLst.Stream_List = 'Full';
+		localStorage['Config'] = JSON.stringify(StrmLst)
+	} if (localJSON('Config','Stream_List') == 'Full') {
+		var StyleUnit;
+		StyleUnit = ".test:{background:black}";
+		document.getElementById('StreamList').innerHTML = StyleUnit
+	} else if (localJSON('Config','Stream_List') == 'Light') {
+		var StyleUnit;
+		StyleUnit = ".test:{background:white}";
+		document.getElementById('StreamList').innerHTML = StyleUnit
+	}	
+	*/
 	AppVersion('Version');
 	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);
 	document.getElementById("ChgUsrSnd").addEventListener( "click" , changeScriptStarter);

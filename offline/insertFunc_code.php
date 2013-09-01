@@ -1,113 +1,123 @@
 /*
-	@author Ivan 'MacRozz' Zarudny
+	Copyright 2013 Ivan 'MacRozz' Zarudny
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 */
 
 FirstLoadInsertFunc = 1;
+TimersetToUpdate = [];
 
 function InsertOnlineList() {
-	TimersetToUpdate = [];
 	var CountOfChannels = [];
 	CountOfRetryEach = 0;
 	if (localJSON('Status','checked')) {
 		CountOfChannels.length = localStorage['Following']
 	} else {
-		CountOfChannels.length = null
-	}
-	if (document.getElementById('insertContentHere')) {
-		document.getElementById('insertContentHere').innerHTML = null
+		CountOfChannels.length = 0
 	}
 	
 	$.each(CountOfChannels, function() {
-	setTimeout(function(){
 		StreamTitle = localStorage['Stream_Title_'+CountOfRetryEach];
 		StreamerName = localStorage['Stream_Name_'+CountOfRetryEach];
 		StreamGame = localStorage['Stream_Game_'+CountOfRetryEach];
-	
-		if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
-			StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
-			StreamListUnit += '<div class="tumblr">';
-			StreamListUnit += '<img target="_blank" id="stream_img_';
-			StreamListUnit += CountOfRetryEach;
-			StreamListUnit += '" height="200px" width="320px" scr=""';
-			StreamListUnit += '</img>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '<div class="information">';
-			StreamListUnit += '<div class="title">';
-			StreamListUnit += '<p class="pTitle">Title</p>';
-			StreamListUnit += '<div class="informationTextTitle">';
+		
+		if (TimersetToUpdate.indexOf(CountOfRetryEach) < 0) {
+			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
+				StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
+				StreamListUnit += '<div class="tumblr">';
+				StreamListUnit += '<img target="_blank" id="stream_img_';
+				StreamListUnit += CountOfRetryEach;
+				StreamListUnit += '" height="200px" width="320px" scr=""';
+				StreamListUnit += '</img>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="information">';
+				StreamListUnit += '<div class="title">';
+				StreamListUnit += '<p class="pTitle">Title</p>';
+				StreamListUnit += '<div class="informationTextTitle" id="Title_'+CountOfRetryEach+'"">';
+				if (StreamTitle.length >= 29) {
+					CountToCut = StreamTitle.length - 29;
+					StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut);
+					StreamListUnit += '...'
+				} else {
+					StreamListUnit += StreamTitle}
+				StreamListUnit += '</div>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="streamer">';
+				StreamListUnit += '<p class="pStreamer">Streamer</p>';
+				StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">';
+				StreamListUnit += StreamerName;
+				StreamListUnit += '</a>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="viewers">';
+				StreamListUnit += '<p class="pViewers">Viewers</p>';
+				StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+CountOfRetryEach+'">';
+				StreamListUnit += localStorage['Stream_Viewers_'+CountOfRetryEach];
+				StreamListUnit += '</div>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="gamename">';
+				StreamListUnit += '<p class="pGamename">Game</p>';
+				StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+CountOfRetryEach+'">';
+				if (StreamGame.length >= 29) {
+					CountToCut = StreamGame.length - 29;
+					StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut);
+					StreamListUnit += '...'
+				} else {
+					StreamListUnit += StreamGame}
+				StreamListUnit += '</a>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="StreamOnChannelPage">';
+				StreamListUnit += '<div style="width:150;height:40;display:inline">';
+				StreamListUnit += '<button type="button" name="Go to a stream page" class="button">';
+				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'"class="aStreamOnChannelPage" target="_blank">';
+				StreamListUnit += 'Channel page';
+				StreamListUnit += '</a>';
+				StreamListUnit += '</button></div>';
+				StreamListUnit += '<div style="width:170;height:40;display:inline;text-align:right;margin-left:18">';
+				StreamListUnit += '<a id="Stream_Duration_'+CountOfRetryEach+'" class="StreamDuration">';
+				StreamListUnit += '</a>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '</div>';
+				StreamListUnit += '</div>';
+				
+				document.getElementById('insertContentHere').innerHTML += StreamListUnit;
+				if (FirstLoadInsertFunc != 1) {$('#'+CountOfRetryEach).addClass('animated fadeIn')}				
+				TimersetToUpdate.push(CountOfRetryEach);
+
+				InsrtImg = 'stream_img_'+CountOfRetryEach;
+				if (localStorage['Stream_Tumb_'+CountOfRetryEach] != 'null') {
+					tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach];
+					document.getElementById(InsrtImg).setAttribute('style','background:url('+tumbURL+')');
+					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName
+				} else {
+					tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png';
+					document.getElementById(InsrtImg).setAttribute('style','background:url('+tumbURL+')');
+					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName}			
+				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame
+			}
+		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
+			StreamTitle = localStorage['Stream_Title_'+CountOfRetryEach];
 			if (StreamTitle.length >= 29) {
 				CountToCut = StreamTitle.length - 29;
-				StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut);
-				StreamListUnit += '...';
+				document.getElementById('Title_'+CountOfRetryEach).innerHTML = StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
 			} else {
-				StreamListUnit += StreamTitle;
+				document.getElementById('Title_'+CountOfRetryEach).innerHTML = StreamTitle
 			}
-			StreamListUnit += '</div>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '<div class="streamer">';
-			StreamListUnit += '<p class="pStreamer">Streamer</p>';
-			StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">';
-			StreamListUnit += StreamerName;
-			StreamListUnit += '</a>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '<div class="viewers">';
-			StreamListUnit += '<p class="pViewers">Viewers</p>';
-			StreamListUnit += '<div class="informationTextViewers">';
-			StreamListUnit += localStorage['Stream_Viewers_'+CountOfRetryEach];
-			StreamListUnit += '</div>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '<div class="gamename">';
-			StreamListUnit += '<p class="pGamename">Game</p>';
-			StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+CountOfRetryEach+'">';
-			if (StreamGame.length >= 29) {
-				CountToCut = StreamGame.length - 29;
-				StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut);
-				StreamListUnit += '...';
-			} else {
-				StreamListUnit += StreamGame;
-			}
-			StreamListUnit += '</a>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '<div class="StreamOnChannelPage">';
-			StreamListUnit += '<div style="width:150;height:40;display:inline">';
-			StreamListUnit += '<button type="button" name="Go to a stream page" class="button">';
-			StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'"class="aStreamOnChannelPage" target="_blank">';
-			StreamListUnit += 'Channel page';
-			StreamListUnit += '</a>';
-			StreamListUnit += '</button></div>';
-			StreamListUnit += '<div style="width:170;height:40;display:inline;text-align:right;margin-left:18">';
-			StreamListUnit += '<a id="Stream_Duration_'+CountOfRetryEach+'" class="StreamDuration">';
-			StreamListUnit += '</a>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '</div>';
-			StreamListUnit += '</div>';
-			
-			document.getElementById('insertContentHere').innerHTML += StreamListUnit;
-			if (TimersetToUpdate.indexOf(CountOfRetryEach) == -1) {
-				$('#'+CountOfRetryEach).addClass('animated FadeIn')
-			}
-			TimersetToUpdate.push(CountOfRetryEach);
-			
-			ElementIdIs = 'stream_img_';
-			ElementIdIs += CountOfRetryEach;
-			if (localStorage['Stream_Tumb_'+CountOfRetryEach] != 'null') {
-				tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach];
-				document.getElementById(ElementIdIs).setAttribute('style','background:url('+tumbURL+')')
-			} else {
-				tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png';
-				document.getElementById(ElementIdIs).setAttribute('style','background:url('+tumbURL+')')
-			}			
-			
-			document.getElementById(ElementIdIs).href = 'http://www.twitch.tv/'+StreamerName;
-			
-			ElementIdIs2 = 'stream_game_';
-			ElementIdIs2 += CountOfRetryEach;
-			document.getElementById(ElementIdIs2).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-		} if (CountOfRetryEach == Math.floor(localStorage['Following'])) {
-			$('#insertContentHere').removeClass('animated FadeIn');
-			$('#insertContentHere').addClass('animated FadeIn')
-		} if (localJSON('Status','online') == '0') {
+			document.getElementById('Viewers_'+CountOfRetryEach).innerHTML=localStorage['Stream_Viewers_'+CountOfRetryEach];
+			document.getElementById('stream_img_'+CountOfRetryEach).innerHTML=localStorage['Stream_Tumb_'+CountOfRetryEach]
+		}
+
+		if (localJSON('Status','online') == '0') {
 			ShwWvs = localJSON('Status');
 			ShwWvs.ShowWaves = 'true';
 			localStorage['Status'] = JSON.stringify(ShwWvs);
@@ -118,21 +128,20 @@ function InsertOnlineList() {
 			ShwWvs.ShowWaves = 'false';
 			localStorage['Status'] = JSON.stringify(ShwWvs);
 			document.getElementById('News').setAttribute('style','display:none');
-			document.getElementById('News').innerHTML=null
-		}
-		CountOfRetryEach += 1;
-	},1);
-	} );
+			document.getElementById('News').innerHTML=null}
+		CountOfRetryEach += 1
+	} )
 }
 
 setInterval(function(){
 	FrstInsrt = localJSON('Status');
-	if (FirstLoadInsertFunc == 1) {
+	if (!sessionStorage['FirstStartPopup']) {
 		FrstInsrt.InsertOnlineList = '0';
 		localStorage['Status'] = JSON.stringify(FrstInsrt);
-		FirstLoadInsertFunc = 0;
+		sessionStorage['FirstStartPopup'] = true;
+		document.getElementById('insertContentHere').innerHTML = null;
 		InsertOnlineList()
-	} else if (FirstLoadInsertFunc == 0) {
+	} else if (sessionStorage['FirstStartPopup'] == 'true') {
 		if (FrstInsrt.InsertOnlineList == '1') {
 			InsertOnlineList();
 			FrstInsrt.InsertOnlineList = '0';

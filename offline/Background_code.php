@@ -1,5 +1,18 @@
 /*
-    @author Ivan 'MacRozz' Zarudny
+    Copyright 2013 Ivan 'MacRozz' Zarudny
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
 
     https://api.twitch.tv/kraken/users/ NAME OF PROFILE /follows/channels?limit=116&offset=0
     Limit is 116, you have more than that? email me hostingmcrozz@hotmail.com about it :D
@@ -23,11 +36,8 @@
 try {
     if (JSON.parse(localStorage['Following']).Following) {
         Following = JSON.parse(localStorage['Following']).Following;
-        localStorage['Following'] = Following
-    }
-} catch(err) {
-    console.error(err)
-}
+        localStorage['Following'] = Following}
+} catch(err) {console.error(err)}
 
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
@@ -68,6 +78,7 @@ function checkStatus(url,key) {
             NowOnline = Math.floor(JSON.parse(localStorage['Status']).online);
             NowOnline += 1;
             JSONstatus.online = NowOnline;
+            JSONstatus.InsertOnlineList = '1';
             localStorage['Status'] = JSON.stringify(JSONstatus);
             TitleToStorage = 'Stream_Title_'+key;
             TimeToStorage = 'Stream_Time_'+key;
@@ -114,7 +125,7 @@ function checkStatus(url,key) {
             BadgeOnlineCount(JSON.parse(localStorage['Status']).online);
             createCookie('First_Notify','1',365);
             CheckBar2 += '|';
-            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+' ]');
+            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+']');
             if (JSON.parse(localStorage['Status']).checked != '0') {console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following'])}
             console.log('Every channel checked');
             JSONstatus2 = JSON.parse(localStorage['Status']);

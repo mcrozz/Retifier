@@ -1,13 +1,19 @@
-//
-// Update script for chrome extension Twitch.tv Notifier
-// Developed by Ivan 'MacRozz' Zarudny
-//
-// Live update with live fixes :D
-//
-// @author Ivan 'MacRozz' Zarudny
-//
-
 /*
+	Copyright 2013 Ivan 'MacRozz' Zarudny
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+
+	
 	=====Structure of======
 	localStorage['Code']
 	{
@@ -158,24 +164,9 @@ if (localStorage['Code'] == undefined) {localStorage['Code'] = JSON.stringify(Co
 if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringify(Config)}
 if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)}
 
-// Validate codes from localStorage
-/*if (JSON.parse(localStorage['Code']).Background.version == undefined) {
-	ValVar = JSON.parse(localStorage['Code']);
-	ValVar.Background.version = '0'; 
-	localStorage['Code'] = JSON.stringify(ValVar);
-} if (JSON.parse(localStorage['Code']).Popup.version == undefined) {
-	ValVar = JSON.parse(localStorage['Code']);
-	ValVar.Popup.version = '0'; 
-	localStorage['Code'] = JSON.stringify(ValVar);
-} if (JSON.parse(localStorage['Code']).insertFunc.version == undefined) {
-	ValVar = JSON.parse(localStorage['Code']);
-	ValVar.insertFunc.version = '0'; 
-	localStorage['Code'] = JSON.stringify(ValVar);
-}*/
-
 console.log('[UPDATER]: Start up');
 
-acceptedVersions = {"background": "40", "popup": "46", "insertFunc": "32"};
+acceptedVersions = {"background": "45", "popup": "55", "insertFunc": "49"};
 
 function CheckForUpdates() {
 	JSONparse = JSON.parse(localStorage['Code']);
