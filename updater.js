@@ -363,41 +363,6 @@ function CheckForUpdates() {
 	});
 }
 
-function ManualUpdate(name) {
-	if (name == 'Back') {
-		var getBackgroundCode = $.ajax({url:'https://app.mcrozz.net/Twitch.tv_Notifier/Background_code.php'});
-		getBackgroundCode.done(function() { 
-			JSONparse.Background.code = getBackgroundCode.responseText;
-			localStorage['Code'] = JSON.stringify(JSONparse);
-			console.error('Success')
-		});
-		getBackgroundCode.error(function() { console.error('Failed') } )
-	} else if (name == 'Pop') {
-		var getPopupCode = $.ajax({url:'https://app.mcrozz.net/Twitch.tv_Notifier/Popup_code.php'});
-		getPopupCode.done(function() { 
-			JSONparse.Popup.code = getPopupCode.responseText;
-			localStorage['Code'] = JSON.stringify(JSONparse);
-			console.error('Success')
-		});
-		getPopupCode.error(function() { console.error('Failed') } )
-	} else if (name == 'Insert') {
-		var getInsertFuncCode = $.ajax({url:'https://app.mcrozz.net/Twitch.tv_Notifier/insertFunc_code.php'});
-		getInsertFuncCode.done(function() { 
-			JSONparse.insertFunc.code = getInsertFuncCode.responseText;
-			localStorage['Code'] = JSON.stringify(JSONparse);
-			console.error('Success')
-		});
-		getInsertFuncCode.error(function() { console.error('Failed') } )
-	} else if (name != 'Back' && name != 'Pop' && name != 'Insert') {
-		console.error('Failed')
-	}
-}
-
-function ConvertTime() {
-	window.prompt ("...", new Date(new Date()).toISOString());
-	return true
-}
-
 CheckForUpdates();
 setInterval(CheckForUpdates,1000*60*10)
 }
