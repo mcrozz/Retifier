@@ -20,6 +20,26 @@ setInterval(function(){
 
 if (localStorage['Status'] != undefined && localStorage['Config'] != undefined) {
 
+function localJSON(name,vars,values) {
+	if (values == undefined && vars != undefined) {
+		returnVal = JSON.parse(localStorage[name]);
+		if (returnVal[vars] != undefined) {
+			return returnVal[vars];
+		} else {
+			return false;
+		}
+	} else if (values != undefined && vars != undefined) {
+		returnVal = JSON.parse(localStorage[name]);
+		returnVal[vars] = values;
+		localStorage[name] = JSON.stringify(returnVal);
+		return true;
+	} else if (vars == undefined && values == undefined) {
+		return JSON.parse(localStorage[name]);
+	} else {
+		return false;
+	}
+}
+
 function createCookie(name,value,days) {
 	if (days) {
 		var date = new Date();

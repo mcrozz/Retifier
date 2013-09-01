@@ -2,16 +2,13 @@
 	@author Ivan 'MacRozz' Zarudny
 */
 
-JSONstatus = JSON.parse(localStorage['Status']);
-JSONconfig = JSON.parse(localStorage['Config']);
-
 FirstLoadInsertFunc = 1;
 
 function InsertOnlineList() {
 	TimersetToUpdate = [];
 	var CountOfChannels = [];
 	CountOfRetryEach = 0;
-	if (JSONstatus.checked) {
+	if (localJSON('Status','checked')) {
 		CountOfChannels.length = localStorage['Following']
 	} else {
 		CountOfChannels.length = null
@@ -19,8 +16,6 @@ function InsertOnlineList() {
 	if (document.getElementById('insertContentHere')) {
 		document.getElementById('insertContentHere').innerHTML = null
 	}
-	
-	localStorage['Status'] = JSON.stringify(JSONstatus);
 	
 	$.each(CountOfChannels, function() {
 	setTimeout(function(){
@@ -112,14 +107,18 @@ function InsertOnlineList() {
 		} if (CountOfRetryEach == Math.floor(localStorage['Following'])) {
 			$('#insertContentHere').removeClass('animated FadeIn');
 			$('#insertContentHere').addClass('animated FadeIn')
-		} if (JSON.parse(localStorage['Status']).online == '0') {
-			JSONstatus.ShowWaves = 'true';
-			localStorage['Status'] = JSON.stringify(JSONstatus);
+		} if (localJSON('Status','online') == '0') {
+			ShwWvs = localJSON('Status');
+			ShwWvs.ShowWaves = 'true';
+			localStorage['Status'] = JSON.stringify(ShwWvs);
 			document.getElementById('News').setAttribute('style','text-align:center;margin:7');
 			document.getElementById('News').innerHTML='<a style="color:black">No one online right now :(</a>'
 		} else { 
-			JSONstatus.ShowWaves = 'false';
-			localStorage['Status'] = JSON.stringify(JSONstatus)
+			ShwWvs = localJSON('Status');
+			ShwWvs.ShowWaves = 'false';
+			localStorage['Status'] = JSON.stringify(ShwWvs);
+			document.getElementById('News').setAttribute('style','display:none');
+			document.getElementById('News').innerHTML=null
 		}
 		CountOfRetryEach += 1;
 	},1);
@@ -127,17 +126,17 @@ function InsertOnlineList() {
 }
 
 setInterval(function(){
-	JSONstatus = JSON.parse(localStorage['Status']);
+	FrstInsrt = localJSON('Status');
 	if (FirstLoadInsertFunc == 1) {
-		JSONstatus.InsertOnlineList = '0';
-		localStorage['Status'] = JSON.stringify(JSONstatus);
+		FrstInsrt.InsertOnlineList = '0';
+		localStorage['Status'] = JSON.stringify(FrstInsrt);
 		FirstLoadInsertFunc = 0;
 		InsertOnlineList()
 	} else if (FirstLoadInsertFunc == 0) {
-		if (JSONstatus.InsertOnlineList == '1') {
+		if (FrstInsrt.InsertOnlineList == '1') {
 			InsertOnlineList();
-			JSONstatus.InsertOnlineList = '0';
-			localStorage['Status'] = JSON.stringify(JSONstatus)
+			FrstInsrt.InsertOnlineList = '0';
+			localStorage['Status'] = JSON.stringify(FrstInsrt)
 		}
 	}
 }, 1000);
@@ -156,31 +155,30 @@ setInterval(function(){
 	-7 - First start
 
 	*/
-	JSONstatus2 = JSON.parse(localStorage['Status']);
-	if (JSONstatus2.update == '0') {
+	if (localJSON('Status','update') == '0') {
 		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
 		progressBar('Disable')
-	} else if (JSONstatus2.update == '1') {
+	} else if (localJSON('Status','update') == '1') {
 		insertText('Behold! Update!','FollowedChannelsOnline');
 		progressBar('Enable')
-	} else if (JSONstatus2.update == '2') { 
+	} else if (localJSON('Status','update') == '2') { 
 		insertText('Updating list of followed channels...','FollowedChannelsOnline');
 		progressBar('Enable')
-	} else if (JSONstatus2.update == '3') { 
+	} else if (localJSON('Status','update') == '3') { 
 		insertText('List of followed channels updated.','FollowedChannelsOnline');
 		progressBar('Enable')
-	} else if (JSONstatus2.update == '4') { 
+	} else if (localJSON('Status','update') == '4') { 
 		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
 		progressBar('Enable')
-	} else if (JSONstatus2.update == '5') { 
+	} else if (localJSON('Status','update') == '5') { 
 		insertText('App had a problem with update','FollowedChannelsOnline')
-	} else if (JSONstatus2.update == '6') { 
+	} else if (localJSON('Status','update') == '6') { 
 		insertText("Name doesn't set up yet!",'FollowedChannelsOnline')
 	}
 }, 100);
 
 setInterval(function(){
-	if (JSONconfig.Duration_of_stream == 'Enable') {
+	if (localJSON('Config','Duration_of_stream') == 'Enable') {
 		number = 0;
 		$.each(TimersetToUpdate, function() {
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[number];
@@ -205,10 +203,9 @@ setInterval(function(){
 },1000);
 
 setInterval(function(){
-	JSONstatus3 = JSON.parse(localStorage['Status']);
-	if (JSONstatus3.ShowWaves == 'true') {
+	if (localJSON('Status','ShowWaves') == 'true') {
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:block')
-	} else if (JSONstatus3.ShowWaves == 'false') {
+	} else if (localJSON('Status','ShowWaves') == 'false') {
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:none')
 	}
 },100);

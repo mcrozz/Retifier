@@ -45,8 +45,8 @@ if (!sessionStorage['FirstLoad']) {
     });
 }
 
-var JSONstatus = JSON.parse(localStorage['Status']),
-    JSONconfig = JSON.parse(localStorage['Config']);
+JSONstatus = localJSON('Status');
+JSONconfig = localJSON('Config');
 
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)

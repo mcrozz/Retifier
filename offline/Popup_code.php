@@ -2,9 +2,6 @@
 	@author Ivan 'MacRozz' Zarudny
 */
 
-JSONstatus = JSON.parse(localStorage['Status']);
-JSONconfig = JSON.parse(localStorage['Config']);
-
 var NumberOfidOfListOfFollowedChannels = 1,
 	LinesInListOfFollowedChannels = 0;
 TimersetToUpdate = [];
@@ -32,8 +29,8 @@ function clickChangeUser() {
 	$('#userChangePopup2').addClass('animated FadeIn');
 	$('#userChangePopup').removeClass('animated bounceOut');
 	$('#userChangePopup').addClass('animated bounceIn');
-	document.getElementById("ChgUsrNam").value=JSONconfig.User_Name;
-	document.getElementById("ChgUsrInt").value=JSONconfig.Interval_of_Checking;
+	document.getElementById("ChgUsrNam").value=localJSON('Config','User_Name');
+	document.getElementById("ChgUsrInt").value=localJSON('Config','Interval_of_Checking');
 	document.getElementById('fndAbug').setAttribute("style","display:block;top:190;right:-68");
 	createCookie('userChangePopup','open',1);
 	changeNotify('Checking');
@@ -57,56 +54,54 @@ function clickChangeUserCls() {
 }
 
 function changeUserName() {
-	if (document.getElementById("ChgUsrNam").value != JSONconfig.User_Name) {
+	if (document.getElementById("ChgUsrNam").value != localJSON('Config','User_Name')) {
 		createCookie('InstatntCheck','1',365);
-		JSONconfig.User_Name = document.getElementById("ChgUsrNam").value;
-		localStorage['Config'] = JSON.stringify(JSONconfig)
+		localJSON('Config','User_Name',document.getElementById("ChgUsrNam").value);
 	} else if (document.getElementById("ChgUsrNam").value == '') {
-		JSONconfig.User_Name = 'Guest';
-		localStorage['Config'] = JSON.stringify(JSONconfig)
+		localJSON('Config','User_Name','Guest')
 	}
 }
 
 function changeReftInt() {
 	if (!isNaN(document.getElementById("ChgUsrInt").value)) {
-		JSONconfig.Interval_of_Checking = document.getElementById("ChgUsrInt").value;
-		localStorage['Config'] = JSON.stringify(JSONconfig)
+		localJSON('Config','Interval_of_Checking',document.getElementById("ChgUsrInt").value)		
 	}
 }
 
 function changeNotify(type) {
 	if (type == 'Change') {
+		NotifyChange = localJSON('Config');
 		if (document.getElementById('Notify').checked) {
-			JSONconfig.Notifications.status = 'Enable';
-			JSONconfig.Notifications.online = 'Enable';
-			JSONconfig.Notifications.update = 'Enable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			NotifyChange.Notifications.status = 'Enable';
+			NotifyChange.Notifications.online = 'Enable';
+			NotifyChange.Notifications.update = 'Enable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
 		} if (document.getElementById('Notify').checked == false) {
-			JSONconfig.Notifications.status = 'Disable';
-			JSONconfig.Notifications.online = 'Disable';
-			JSONconfig.Notifications.update = 'Disable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			NotifyChange.Notifications.status = 'Disable';
+			NotifyChange.Notifications.online = 'Disable';
+			NotifyChange.Notifications.update = 'Disable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
 		} if (document.getElementById('NotifyStreamer').checked) {
-			JSONconfig.Notifications.status = 'Enable';
-			JSONconfig.Notifications.online = 'Enable';
-			JSONconfig.Notifications.update = 'Disable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			NotifyChange.Notifications.status = 'Enable';
+			NotifyChange.Notifications.online = 'Enable';
+			NotifyChange.Notifications.update = 'Disable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
 		} if (document.getElementById('NotifyUpdate').checked) {
-			JSONconfig.Notifications.status = 'Enable';
-			JSONconfig.Notifications.online = 'Disable';
-			JSONconfig.Notifications.update = 'Enable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			NotifyChange.Notifications.status = 'Enable';
+			NotifyChange.Notifications.online = 'Disable';
+			NotifyChange.Notifications.update = 'Enable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
 		}
 	} else if (type == 'Checking') {
-		if (JSON.parse(localStorage['Config']).Notifications.status == 'Enable') {
+		if (localJSON('Config').Notifications.status == 'Enable') {
 			document.getElementById('Notify').checked = true;
 			document.getElementById('NotifyStreamer').checked = false;
 			document.getElementById('NotifyUpdate').checked = false
-		} if (JSON.parse(localStorage['Config']).Notifications.update == 'Enable') {
+		} if (localJSON('Config').Notifications.update == 'Enable') {
 			document.getElementById('Notify').checked = false;
 			document.getElementById('NotifyStreamer').checked = false;
 			document.getElementById('NotifyUpdate').checked = true
-		} if (JSON.parse(localStorage['Config']).Notifications.online == 'Enable') {
+		} if (localJSON('Config').Notifications.online == 'Enable') {
 			document.getElementById('Notify').checked = false;
 			document.getElementById('NotifyStreamer').checked = true;
 			document.getElementById('NotifyUpdate').checked = false
@@ -160,18 +155,19 @@ function openCloseReportAbug() {
 
 function checkSoundEnable(type) {
 	if (type == 'Change') {
+		SoundEnbl = localJSON('Config');
 		if (document.getElementById('SoundCheck').checked == true) {
-			JSONconfig.Notifications.sound_status = 'Enable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			SoundEnbl.Notifications.sound_status = 'Enable';
+			localStorage['Config'] = JSON.stringify(SoundEnbl)
 		} else if (document.getElementById('SoundCheck').checked == false) {
-			JSONconfig.Notifications.sound_status = 'Disable';
-			localStorage['Config'] = JSON.stringify(JSONconfig);
+			SoundEnbl.Notifications.sound_status = 'Disable';
+			localStorage['Config'] = JSON.stringify(SoundEnbl);
 		}
 	} else if (type == 'Checking') {
-		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
+		if (localJSON('Config').Notifications.sound_status == 'Enable') {
 			document.getElementById('SoundCheck').checked = true;
 			document.getElementById('SoundSelect').disabled = false
-		} else if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Disable') {
+		} else if (localJSON('Config').Notifications.sound_status == 'Disable') {
 			document.getElementById('SoundCheck').checked = false;
 			document.getElementById('SoundSelect').disabled = true
 		}
@@ -180,17 +176,18 @@ function checkSoundEnable(type) {
 
 function checkStreamDuration(type) {
 	if (type == 'Change') {
+		StrmDur = localJSON('Config');
 		if (document.getElementById('StreamDurationCheck').checked == true) {
-			JSONconfig.Duration_of_stream = 'Enable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			StrmDur.Duration_of_stream = 'Enable';
+			localStorage['Config'] = JSON.stringify(StrmDur)
 		} else if (document.getElementById('StreamDurationCheck').checked == false) {
-			JSONconfig.Duration_of_stream = 'Disable';
-			localStorage['Config'] = JSON.stringify(JSONconfig)
+			StrmDur.Duration_of_stream = 'Disable';
+			localStorage['Config'] = JSON.stringify(StrmDur)
 		}
 	} else if (type == 'Checking') {
-		if (JSON.parse(localStorage['Config']).Duration_of_stream == 'Enable') {
+		if (localJSON('Config').Duration_of_stream == 'Enable') {
 			document.getElementById('StreamDurationCheck').checked = true
-		} else if (JSON.parse(localStorage['Config']).Duration_of_stream == 'Disable') {
+		} else if (localJSON('Config').Duration_of_stream == 'Disable') {
 			document.getElementById('StreamDurationCheck').checked = false
 		}
 	}
@@ -371,8 +368,9 @@ function changeSoundFile(type) {
 		Audio.setAttribute('autoplay', 'autoplay');
 		Audio.play()
 	} else if (type == 'Change'){
-		JSONconfig.Notifications.sound = document.getElementById("SoundSelect").value;
-		localStorage['Config'] = JSON.stringify(JSONconfig)
+		SndFile = localJSON('Config')
+		SndFile.Notifications.sound = document.getElementById("SoundSelect").value;
+		localStorage['Config'] = JSON.stringify(SndFile)
 	}
 }
 
