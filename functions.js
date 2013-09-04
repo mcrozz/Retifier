@@ -13,6 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
+var NotificationsToClose = [];
 
 if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
 setInterval(function(){
@@ -73,9 +74,7 @@ function readCookie(name) {
 	return null;
 }
 
-function delCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
+function delCookie(name) {document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
 
 function BadgeOnlineCount(count) {
 	if (count == '0') {
@@ -89,14 +88,15 @@ var NotificationVar = [];
 function sendNotify(Title, msg, streamer, scriptUpd) {
 	if (!scriptUpd) {
 		console.error(new Date+' : '+Title+' -  '+msg);
-		NotifyOpt = {
-			type:"basic",
-			title:Title,
-			message:msg,
-			iconUrl:"goesOnline.png",
-			buttons: [{title:"Watch now!"}]
-		};
-		chrome.notifications.create(streamer,NotifyOpt,function(){});
+		chrome.notifications.create(streamer,
+			{
+				type:"basic",
+				title:Title,
+				message:msg,
+				iconUrl:"goesOnline.png",
+				buttons: [{title:"Watch now!"}]
+			},
+		function(){})
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
@@ -106,13 +106,15 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 		}
 	} else if (scriptUpd == 'Update') {
 		console.error(new Date+' : '+Title+' -  '+msg);
-		NotifyOpt = {
-			type:"basic",
-			title:Title,
-			message:msg,
-			iconUrl:"goesOnlineUpd.png",
-		};
-		chrome.notifications.create(scriptUpd,NotifyOpt,function(){});
+		chrome.notifications.create(scriptUpd,
+			{
+				type:"basic",
+				title:Title,
+				message:msg,
+				iconUrl:"goesOnlineUpd.png"
+			},
+		function(){sessionStorage['NtfcnTemp'] = scriptUpd});
+		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp'], function(){})},10*1000)
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
@@ -122,13 +124,14 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 		}
 	} else if (scriptUpd == 'UpdateStat') {
 		console.error(new Date+' : '+Title+' -  '+msg);
-		NotifyOpt = {
-			type:"basic",
-			title:Title,
-			message:msg,
-			iconUrl:"goesOnlineUpdStatus.png",
-		};
-		chrome.notifications.create(scriptUpd+Math.floor(Math.random()*10),NotifyOpt,function(){});
+		chrome.notifications.create(scriptUpd+Math.floor(Math.random()*10),
+			{
+				type:"basic",
+				title:Title,
+				message:msg,
+				iconUrl:"goesOnlineUpdStatus.png"
+			},
+		function(){})
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
