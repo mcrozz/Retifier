@@ -411,6 +411,16 @@ document.addEventListener( "DOMContentLoaded" , function () {
 		document.getElementById('StreamList').innerHTML = StyleUnit
 	}	
 	*/
+
+	var css='.informationTextTitle:hover::after{content:attr(data-title);position:absolute;left:20%;top:30%;z-index:1;background:rgba(255,255,255,0.9);font-size:11px;padding:5px 10px;border:1px solid #333}';
+		style=document.createElement('style');
+	if (style.styleSheet) {
+		style.styleSheet.cssText=css;
+	} else {
+		style.appendChild(document.createTextNode(css));
+		document.getElementsByTagName('head')[0].appendChild(style)
+	}
+
 	AppVersion('Version');
 	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);
 	document.getElementById("ChgUsrSnd").addEventListener( "click" , changeScriptStarter);

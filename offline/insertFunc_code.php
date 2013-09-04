@@ -22,9 +22,7 @@ function InsertOnlineList() {
 	CountOfRetryEach = 0;
 	if (localJSON('Status','checked')) {
 		CountOfChannels.length = localStorage['Following']
-	} else {
-		CountOfChannels.length = 0
-	}
+	} else { CountOfChannels.length = 0 }
 	
 	$.each(CountOfChannels, function() {
 		StreamTitle = localStorage['Stream_Title_'+CountOfRetryEach];
@@ -35,21 +33,17 @@ function InsertOnlineList() {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
 				StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
 				StreamListUnit += '<div class="tumblr">';
-				StreamListUnit += '<img target="_blank" id="stream_img_';
-				StreamListUnit += CountOfRetryEach;
-				StreamListUnit += '" height="200px" width="320px" scr=""';
-				StreamListUnit += '</img>';
+				StreamListUnit += '<img target="_blank" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<img target="_blank" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
 				StreamListUnit += '<div class="title">';
 				StreamListUnit += '<p class="pTitle">Title</p>';
-				StreamListUnit += '<div class="informationTextTitle" id="Title_'+CountOfRetryEach+'"">';
+				StreamListUnit += '<div class="informationTextTitle" data-title="'+StreamTitle+'" id="Title_'+CountOfRetryEach+'"">';
 				if (StreamTitle.length >= 29) {
 					CountToCut = StreamTitle.length - 29;
-					StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut);
-					StreamListUnit += '...'
-				} else {
-					StreamListUnit += StreamTitle}
+					StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
+				} else { StreamListUnit += StreamTitle }
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="streamer">';
@@ -69,10 +63,8 @@ function InsertOnlineList() {
 				StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+CountOfRetryEach+'">';
 				if (StreamGame.length >= 29) {
 					CountToCut = StreamGame.length - 29;
-					StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut);
-					StreamListUnit += '...'
-				} else {
-					StreamListUnit += StreamGame}
+					StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut)+'...'
+				} else { StreamListUnit += StreamGame }
 				StreamListUnit += '</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="StreamOnChannelPage">';
@@ -94,6 +86,9 @@ function InsertOnlineList() {
 				if (FirstLoadInsertFunc != 1) {$('#'+CountOfRetryEach).addClass('animated fadeIn')}				
 				TimersetToUpdate.push(CountOfRetryEach);
 
+				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
+				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42');
+				
 				InsrtImg = 'stream_img_'+CountOfRetryEach;
 				if (localStorage['Stream_Tumb_'+CountOfRetryEach] != 'null') {
 					tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach];
@@ -102,10 +97,14 @@ function InsertOnlineList() {
 				} else {
 					tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png';
 					document.getElementById(InsrtImg).setAttribute('style','background:url('+tumbURL+')');
-					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName}			
-				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame
+					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName}	
+				
 			}
 		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
+			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Offline') {
+				document.getElementById(CountOfRetryEach).remove()
+			}
+
 			StreamTitle = localStorage['Stream_Title_'+CountOfRetryEach];
 			if (StreamTitle.length >= 29) {
 				CountToCut = StreamTitle.length - 29;
@@ -117,20 +116,12 @@ function InsertOnlineList() {
 			document.getElementById('stream_img_'+CountOfRetryEach).innerHTML=localStorage['Stream_Tumb_'+CountOfRetryEach]
 		}
 
-		if (localJSON('Status','online') == '0') {
-			ShwWvs = localJSON('Status');
-			ShwWvs.ShowWaves = 'true';
-			localStorage['Status'] = JSON.stringify(ShwWvs);
-			document.getElementById('News').setAttribute('style','text-align:center;margin:7');
-			document.getElementById('News').innerHTML='<a style="color:black">No one online right now :(</a>'
-		} else { 
-			ShwWvs = localJSON('Status');
-			ShwWvs.ShowWaves = 'false';
-			localStorage['Status'] = JSON.stringify(ShwWvs);
-			document.getElementById('News').setAttribute('style','display:none');
-			document.getElementById('News').innerHTML=null}
+		if (localJSON('Status','online') == '0' && localJSON('Status','update') == '0') {
+			localJSON('Status','ShowWaves','true');
+			document.getElementById('insertContentHere').innerHTML='<a style="color:black">No one online right now :(</a>'
+		} else { localJSON('Status','ShowWaves','false') }
 		CountOfRetryEach += 1
-	} )
+	})
 }
 
 setInterval(function(){
@@ -158,14 +149,14 @@ setInterval(function(){
 	-1 - Timer ended, start update
 	-2 - Update list of followed channels
 	-3 - List of followed channels updated
-	-4 - Checking online channel or not
+	-4 - Checking online channel
 	-5 - Error
 	-6 - Name doesn't set up!
 	-7 - First start
 
 	*/
 	if (localJSON('Status','update') == '0') {
-		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
+		insertText('Now online '+localJSON('Status','online')+' from '+localJSON('Following'),'FollowedChannelsOnline');
 		progressBar('Disable')
 	} else if (localJSON('Status','update') == '1') {
 		insertText('Behold! Update!','FollowedChannelsOnline');
@@ -177,7 +168,7 @@ setInterval(function(){
 		insertText('List of followed channels updated.','FollowedChannelsOnline');
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '4') { 
-		insertText('Now online '+JSON.parse(localStorage['Status']).online+' from '+localStorage['Following'],'FollowedChannelsOnline');
+		insertText('Checking, online '+localJSON('Status','online')+' from '+localJSON('Following'),'FollowedChannelsOnline');
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '5') { 
 		insertText('App had a problem with update','FollowedChannelsOnline')
@@ -208,7 +199,50 @@ setInterval(function(){
 			number += 1
 			if (number-1 == TimersetToUpdate.length) {number = 0}
 		})
-	}
+	} 
+
+	if (localJSON('Config','Timeout')) {
+		if (Math.abs(new Date(localJSON('Config','Timeout'))) - Math.abs(new Date()) < 0) {
+			localJSON('Config','Closed',false);
+			donationUnit = "<a style='color:black;margin-left:45'>Don't forget support me by a donate ;)</a>";
+			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
+			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
+			donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
+			donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
+			donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
+			donationUnit += '</form></div>';
+			donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
+			document.getElementById('News').innerHTML=donationUnit;
+			document.getElementById('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
+			document.getElementById('CloseNews').addEventListener('click',function(){
+				document.getElementById('News').setAttribute('style','display:none');
+				localJSON('Config','Timeout',Math.abs(new Date())+5*24*60*60*1000);
+				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
+				localJSON('Config','Closed',true)
+			});
+			document.getElementById('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
+		} else if (!localJSON('Config','Closed')) {
+			donationUnit = "<a style='color:black;margin-left:45'>Don't forget support me by a donate ;)</a>";
+			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
+			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
+			donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
+			donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
+			donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
+			donationUnit += '</form></div>';
+			donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
+			document.getElementById('News').innerHTML=donationUnit;
+			document.getElementById('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
+			document.getElementById('CloseNews').addEventListener('click',function(){
+				document.getElementById('News').setAttribute('style','display:none');
+				localJSON('Config','Timeout',Math.abs(new Date())+5*24*60*60*1000);
+				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
+				localJSON('Config','Closed',true)
+			});
+			document.getElementById('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
+		}
+	} else { localJSON('Config','Timeout',new Date()) }
 },1000);
 
 setInterval(function(){

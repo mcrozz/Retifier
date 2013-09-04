@@ -58,6 +58,18 @@ if (!sessionStorage['FirstLoad']) {
 JSONstatus = localJSON('Status');
 JSONconfig = localJSON('Config');
 
+function checkDonations() {
+    var GetDonationsList = $.ajax({url:"https://app.mcrozz.net/Twitch.tv_Notifier/DonationsList.php"});
+    GetDonationsList.complete(function(){
+        ParsedResponse = JSON.parse(GetDonationsList.responseText);
+        if (ParsedResponse.indexOf(hex_md5(localJSON('Config','User_Name'))) != -1 ) {
+            date = new Date();
+            localJSON('Config','Timeout',date.setDate(date.getDate()+30));
+            localJSON('Config','Ceneled',true)
+        }
+    });
+}
+
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
         .fail(function(){
@@ -158,6 +170,7 @@ var FirstStart = '1',
     FirstStart2 = '1';
 
 function getCheckInsert() {
+    checkDonations();
     if (localStorage['Following'] == undefined) {localStorage['Following'] = 0}
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+JSON.parse(localStorage['Config']).User_Name+'/follows/channels?limit=116&offset=0';
@@ -221,15 +234,16 @@ setInterval(function(){
         createCookie('InstatntCheck','0',365)
     } if (readCookie('First_Notify') == '1') {
         if (Math.floor(JSON.parse(localStorage['Status']).online) > 1) {
-            textANDchannel = 'Now online '+JSON.parse(localStorage['Status']).online+' channels'
+            textANDchannel = 'Now online '+localJSON('Status','online')+' channels';
+            notifyUser('Update finished!',textANDchannel,'Update')
         } else if (JSON.parse(localStorage['Status']).online == '1'){
-            textANDchannel = 'Now online one channel'
+            textANDchannel = 'Now online one channel';
+            notifyUser('Update finished!',textANDchannel,'Update')
         } else if (JSON.parse(localStorage['Status']).online == '0'){
-            textANDchannel = 'No one online right now :('
-        } else {textANDchannel = ''}                    
-        notifyUser('Update finished!',textANDchannel,'Update');
+            textANDchannel = 'No one online right now :(';
+            notifyUser('Update finished!',textANDchannel,'Update')}
         createCookie('First_Notify','0',365)
-    } if (JSON.parse(localStorage['Config']).User_Name == 'Guest') {
+    } if (localJSON('Config','User_Name') == 'Guest') {
         JustAvariableRandom = 0;
         delete localStorage['Following']
     } if (localStorage['Insert'] == 'true') {
