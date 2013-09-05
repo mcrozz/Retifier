@@ -90,15 +90,8 @@ function InsertOnlineList() {
 				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42');
 				
 				InsrtImg = 'stream_img_'+CountOfRetryEach;
-				if (localStorage['Stream_Tumb_'+CountOfRetryEach] != 'null') {
-					tumbURL = localStorage['Stream_Tumb_'+CountOfRetryEach];
-					document.getElementById(InsrtImg).setAttribute('style','background:url('+tumbURL+')');
-					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName
-				} else {
-					tumbURL = 'https://app.mcrozz.net/Twitch.tv_Notifier/none.png';
-					document.getElementById(InsrtImg).setAttribute('style','background:url('+tumbURL+')');
-					document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName}	
-				
+				document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)');
+				document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName
 			}
 		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Offline') {

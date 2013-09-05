@@ -131,7 +131,8 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 				message:msg,
 				iconUrl:"goesOnlineUpdStatus.png"
 			},
-		function(){})
+		function(){sessionStorage['NtfcnTemp2'] = scriptUpd});
+		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp2'], function(){})},10*1000)
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
@@ -142,7 +143,9 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 	}
 }
 
-chrome.notifications.onButtonClicked.addListener(function(notificationId){window.open('http://www.twitch.tv/'+notificationId)})
+chrome.notifications.onButtonClicked.addListener(function(notificationId){window.open('http://www.twitch.tv/'+notificationId)});
+chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId, function(){}) });
+chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId, function(){}) });
 
 function notifyUser(streamerName, titleOfStream, type, streamer) {
 	if (JSON.parse(localStorage['Config']).Notifications.status == 'Enable') {

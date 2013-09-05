@@ -118,11 +118,13 @@ function checkStatus(url,key) {
             localStorage['Stream_Title_'+key] = Status;
             localStorage['Stream_Viewers_'+key] = checkStatus.responseJSON.stream.viewers;
             localStorage['Stream_Game_'+key] = Game;
+            /*
             if (checkStatus.responseJSON.stream.preview.medium != undefined) {
                 localStorage['Stream_Tumb_'+key] = checkStatus.responseJSON.stream.preview.medium
             } else {
                 localStorage['Stream_Tumb_'+key] = null
             }
+            */
             localStorage['Stream_Status_'+key] = "Online";
         } else {
             localStorage['Stream_Status_'+key] = "Offline";
@@ -130,7 +132,6 @@ function checkStatus(url,key) {
             delete localStorage['Stream_Title_'+key];
             delete localStorage['Stream_Viewers_'+key];
             delete localStorage['Stream_Game_'+key];
-            delete localStorage['Stream_Tumb_'+key];
             delete localStorage['Stream_Title_'+key]
             delete localStorage['Stream_Time_'+key]
         } if (JSON.parse(localStorage['Status']).checked == localStorage['Following']) {
