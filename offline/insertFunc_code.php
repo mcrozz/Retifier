@@ -33,8 +33,9 @@ function InsertOnlineList() {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
 				StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
 				StreamListUnit += '<div class="tumblr">';
-				StreamListUnit += '<img target="_blank" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
-				StreamListUnit += '<img target="_blank" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<img target="_blank" href="" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<img target="_blank" href="" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
+				//StreamListUnit += '<img target="_blank" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
 				StreamListUnit += '<div class="title">';
@@ -86,19 +87,25 @@ function InsertOnlineList() {
 				if (FirstLoadInsertFunc != 1) {$('#'+CountOfRetryEach).addClass('animated fadeIn')}				
 				TimersetToUpdate.push(CountOfRetryEach);
 
-				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42');
-				
 				InsrtImg = 'stream_img_'+CountOfRetryEach;
-				document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)');
-				document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName
+				document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName;
+				document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
+
+				if (StreamGame != 'Not playing') {
+					document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
+					document.getElementById('stream_game_img_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
+					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
+				} else {
+					document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default');
+					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','display:none')
+				}
+
 			}
 		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Offline') {
 				document.getElementById(CountOfRetryEach).remove()
 			}
 
-			StreamTitle = localStorage['Stream_Title_'+CountOfRetryEach];
 			if (StreamTitle.length >= 29) {
 				CountToCut = StreamTitle.length - 29;
 				document.getElementById('Title_'+CountOfRetryEach).innerHTML = StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
@@ -106,7 +113,15 @@ function InsertOnlineList() {
 				document.getElementById('Title_'+CountOfRetryEach).innerHTML = StreamTitle
 			}
 			document.getElementById('Viewers_'+CountOfRetryEach).innerHTML=localStorage['Stream_Viewers_'+CountOfRetryEach];
-			document.getElementById('stream_img_'+CountOfRetryEach).innerHTML=localStorage['Stream_Tumb_'+CountOfRetryEach]
+			document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
+			if (StreamGame != 'Not playing') {
+				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
+				document.getElementById('stream_game_img_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
+				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
+			} else {
+				document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default');
+				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','display:none')
+			}
 		}
 
 		if (localJSON('Status','online') == '0' && localJSON('Status','update') == '0') {
