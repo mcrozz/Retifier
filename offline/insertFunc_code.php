@@ -103,7 +103,9 @@ function InsertOnlineList() {
 			}
 		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Offline') {
-				document.getElementById(CountOfRetryEach).remove()
+				if (document.getElementById(CountOfRetryEach) != null) {
+					document.getElementById(CountOfRetryEach).remove()
+				}
 			}
 
 			if (StreamTitle.length >= 29) {
@@ -258,5 +260,15 @@ setInterval(function(){
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:block')
 	} else if (localJSON('Status','ShowWaves') == 'false') {
 		document.getElementById('NoOneOnline').setAttribute('style', 'display:none')
+	}
+
+	if (localJSON('Status','update') == '0') {
+		if (localJSON('Status','online') < 2) {
+			document.getElementById('body').setAttribute('style','height:320px')
+		} else if (localJSON('Status','online') == 1) {
+			document.getElementById('body').setAttribute('style','height:505px')
+		} else if (localJSON('Status','online') > 2) {
+			document.getElementById('body').setAttribute('style','height:584px')
+		}
 	}
 },100);

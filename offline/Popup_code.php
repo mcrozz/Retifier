@@ -216,32 +216,30 @@ function changeScriptStarter() {
 }
 
 function FollowedChannelsList(content,status) {
-	if (content != undefined) {
-		if (LinesInListOfFollowedChannels == 19) {
-			NumberOfidOfListOfFollowedChannels += 1;		
-		} else {
-			if (NumberOfidOfListOfFollowedChannels == 6) {
-				LinesInListOfFollowedChannels = 0
-			} if (NumberOfidOfListOfFollowedChannels == 4) {
-				document.getElementById('FollowedChannelsList').style.overflow = 'auto'}
-			idOfListOfFollowedChannels = '';		
-			idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
-		} if (status == 'Online') {
-			statusColor = 'rgb(0, 194, 40)'
-		} else {
-			statusColor = 'black'}
-		
-		TempVariable = document.getElementById(idOfListOfFollowedChannels).innerHTML;
-		TempVariable += '<div><a href="http://www.twitch.tv/'+content+'/profile" style="color:'+statusColor+';border-bottom:1px black dotted" target="_blank">'+content+'</a><br></div>';
-		document.getElementById(idOfListOfFollowedChannels).innerHTML = TempVariable;
-	
-		LinesInListOfFollowedChannels += 1;
-	}
+	if (LinesInListOfFollowedChannels == 22) {
+		NumberOfidOfListOfFollowedChannels += 1;
+		LinesInListOfFollowedChannels = 0		
+	} else {if(NumberOfidOfListOfFollowedChannels==4){document.getElementById('FollowedChannelsList').style.overflow='auto'}} 
+	if (status == 'Online') {statusColor = 'rgb(0, 194, 40)'} else {statusColor = 'black'}
+
+	idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
+	TempVariable = document.getElementById(idOfListOfFollowedChannels).innerHTML;
+	TempVariable += '<div><a href="http://www.twitch.tv/'+content+'/profile" style="color:'+statusColor+';border-bottom:1px black dotted" target="_blank">'+content+'</a><br></div>';
+	document.getElementById(idOfListOfFollowedChannels).innerHTML = TempVariable;
+
+	LinesInListOfFollowedChannels += 1
 	// If 19 lines then go to next sector
 	// InsertFollowedChannelsHere + Number (From 1 to 4)
 }
 
 function openFollowedList() {
+	document.getElementById('InsertFollowedChannelsHere1').style.height='590px';
+	document.getElementById('InsertFollowedChannelsHere2').style.height='590px';
+	document.getElementById('InsertFollowedChannelsHere3').style.height='590px';
+	document.getElementById('InsertFollowedChannelsHere4').style.height='590px';
+	document.getElementById('InsertFollowedChannelsHere5').style.height='590px';
+	document.getElementById('InsertFollowedChannelsHere6').style.height='590px';
+
 	document.getElementById("firstScane").setAttribute("style","display:none");
 	document.getElementById("FollowedChannelsList").style.display = 'block';
 	document.getElementById("FollowedChannelsList").style.overflow = 'hidden';
@@ -412,7 +410,7 @@ document.addEventListener( "DOMContentLoaded" , function () {
 	}	
 	*/
 
-	var css='.informationTextTitle:hover::after{content:attr(data-title);position:absolute;left:20%;top:30%;z-index:1;background:rgba(255,255,255,0.9);font-size:11px;padding:5px 10px;border:1px solid #333}';
+	var css='.informationTextTitle:hover::after{content:attr(data-title);position:absolute;left:5%;top:45%;width:215px;z-index:1;background:rgba(255,255,255,0.9);font-size:11px;padding:5px 10px;border:1px solid rgba(51, 51, 51, 0.34)}';
 		style=document.createElement('style');
 	if (style.styleSheet) {
 		style.styleSheet.cssText=css;

@@ -32,6 +32,8 @@
     6 - Name doesn't set up!
     7 - First start
 */
+if (localStorage['Following'] == undefined) {localStorage['Following'] = 0}
+if (localStorage['Following'] == 'undefined') {localStorage['Following'] = 0}
 
 try {
     if (JSON.parse(localStorage['Following']).Following) {
@@ -43,7 +45,7 @@ if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     KeyForDelete = 0;
     DeleteCount = [];
-    DeleteCount.length = localStorage['Following'];
+    DeleteCount.length = localJSON('Following');
     $.each(DeleteCount, function(){
         delete localStorage['Stream_Title_'+KeyForDelete];
         delete localStorage['Stream_Time_'+KeyForDelete];
@@ -118,13 +120,6 @@ function checkStatus(url,key) {
             localStorage['Stream_Title_'+key] = Status;
             localStorage['Stream_Viewers_'+key] = checkStatus.responseJSON.stream.viewers;
             localStorage['Stream_Game_'+key] = Game;
-            /*
-            if (checkStatus.responseJSON.stream.preview.medium != undefined) {
-                localStorage['Stream_Tumb_'+key] = checkStatus.responseJSON.stream.preview.medium
-            } else {
-                localStorage['Stream_Tumb_'+key] = null
-            }
-            */
             localStorage['Stream_Status_'+key] = "Online";
         } else {
             localStorage['Stream_Status_'+key] = "Offline";
