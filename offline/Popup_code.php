@@ -349,21 +349,59 @@ function changeAppContent(App) {
 		AppFirst += '<div class="AppInfo"><a class="aAppInfo">-1.0.2 Resolved a problem which freezes app</a></div>';
 		AppFirst += '<div class="AppInfo"><a class="aAppInfo">-1.0.1 Bug fixes</a></div>';
 		AppFirst += '<div class="AppInfo"><a class="aAppInfo">-1.0.0 First publish in Google Web Store</a></div>';
-		document.getElementById('AppVersionContent').innerHTML = AppFirst
+
+		$('#AppVersionContent').removeClass('animated bounceOutDown');
+		$('#AppVersionContent').addClass('animated bounceOutDown');
+		setTimeout(function(){
+			document.getElementById('AppVersionContent').innerHTML = AppFirst;
+
+			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+
+			$('#AppVersionContent').removeClass('animated bounceOutDown');
+			$('#AppVersionContent').removeClass('animated fadeIn');
+			$('#AppVersionContent').addClass('animated fadeIn')
+		},400)
 	} else if (App == 'AppSecond') {
-	
-		AppSecond = '<div class="AppInfoFuture"><a class="aAppInfoFuture">-For now, nothing...</a></div>';
-		
-		document.getElementById('AppVersionContent').innerHTML = AppSecond
+		AppSecond = '<div class="AppInfoFuture"><a class="aAppInfoFuture"> For now, nothing...</a></div>';
+
+		$('#AppVersionContent').removeClass('animated bounceOutDown');
+		$('#AppVersionContent').addClass('animated bounceOutDown');
+		setTimeout(function(){
+			document.getElementById('AppVersionContent').innerHTML = AppSecond;
+
+			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+
+			$('#AppVersionContent').removeClass('animated bounceOutDown');
+			$('#AppVersionContent').removeClass('animated fadeIn');
+			$('#AppVersionContent').addClass('animated fadeIn')
+		},400)
 	} else if (App == 'AppThird') {
-	
 		AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
 		AppThird += "<div class='AppInfoAbout2'><a class='aAppInfoAbout2'>Ivan 'MacRozz' Zarudny</a></div>";
 		AppThird += "<div class='AppInfoAbout3'><a class='aAppInfoAbout3' href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
 		AppThird += "<div class='AppInfoAbout4'><a class='aAppInfoAbout4' href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
 		AppThird += "<div class='AppInfoAbout5'><a class='aAppInfoAbout5' href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
 		
-		document.getElementById('AppVersionContent').innerHTML = AppThird
+		$('#AppVersionContent').removeClass('animated bounceOutDown');
+		$('#AppVersionContent').addClass('animated bounceOutDown');
+		setTimeout(function(){
+			document.getElementById('AppVersionContent').innerHTML = AppThird;
+
+			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid white');
+			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+
+			$('#AppVersionContent').removeClass('animated bounceOutDown');
+			$('#AppVersionContent').removeClass('animated fadeIn');
+			$('#AppVersionContent').addClass('animated fadeIn')
+		},400)
 	}
 }
 
