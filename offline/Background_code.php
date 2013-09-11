@@ -32,8 +32,8 @@
     6 - Name doesn't set up!
     7 - First start
 */
-if (localStorage['Following'] == undefined) {localStorage['Following'] = 0}
-if (localStorage['Following'] == 'undefined') {localStorage['Following'] = 0}
+if (localStorage['Following'] == undefined) localStorage['Following']=0;
+if (localStorage['Following'] == 'undefined') localStorage['Following']=0;
 
 try {
     if (JSON.parse(localStorage['Following']).Following) {
@@ -57,9 +57,6 @@ if (!sessionStorage['FirstLoad']) {
     });
 }
 
-JSONstatus = localJSON('Status');
-JSONconfig = localJSON('Config');
-
 function checkDonations() {
     var GetDonationsList = $.ajax({url:"https://app.mcrozz.net/Twitch.tv_Notifier/DonationsList.php"});
     GetDonationsList.complete(function(){
@@ -76,24 +73,18 @@ function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
         .fail(function(){
             notifyUser("Update follows list", "Error, can't update","Update");
-            JSONstatus.update = '6';
-            localStorage['Status'] = JSON.stringify(JSONstatus);
+            localJSON('Status','update','8');
             BadgeOnlineCount('...')
         } );
 
     checkStatus.complete(function() {
-        NumberOfChecked = Math.floor(JSON.parse(localStorage['Status']).checked);
-        JSONstatus.checked = NumberOfChecked+1;
-        localStorage['Status'] = JSON.stringify(JSONstatus);
-        CheckBar2 += '|';
-        console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+' ]');
+        localJSON('Status','checked',Math.floor(localJSON('Status','checked'))+1);
+        CheckBar2+='|';
+        console.log('[ '+CheckBar2+CheckBar.substring(0,localStorage['Following']-localJSON('Status','checked'))+' ]');
 
         if (checkStatus.responseJSON.stream) {
-            NowOnline = Math.floor(JSON.parse(localStorage['Status']).online);
-            NowOnline += 1;
-            JSONstatus.online = NowOnline;
-            JSONstatus.InsertOnlineList = '1';
-            localStorage['Status'] = JSON.stringify(JSONstatus);
+            localJSON('Status','online',Math.floor(localJSON('Status','online'))+1);
+            localJSON('Status','InsertOnlineList','1');
             TitleToStorage = 'Stream_Title_'+key;
             TimeToStorage = 'Stream_Time_'+key;
 
@@ -102,16 +93,15 @@ function checkStatus(url,key) {
             Name = localStorage['Stream_Name_'+key];
             Time = checkStatus.responseJSON.stream.channel.updated_at;
 
-            if (Status == null) {Status = 'Untitled stream'}
-            if (Game == null) {Game = 'Not playing'}
+            if (Status == null) Status = 'Untitled stream';
+            if (Game == null) Game = 'Not playing';
 
-            if (localStorage[TitleToStorage] == undefined) {
-                notifyUser(Name+' just went live!',Status,'Online',Name)
-            } if (localStorage[TitleToStorage] != Status) {
+            if (localStorage[TitleToStorage] == undefined) notifyUser(Name+' just went live!',Status,'Online',Name);
+            if (localStorage[TitleToStorage] != Status) {
                 if (localStorage[TitleToStorage] != undefined) {
                     notifyUser(Name+' changed stream title on',Status,'Online',Name)
                 }
-            } if ( Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(localStorage[TimeToStorage])) ) {
+            } if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(localStorage[TimeToStorage]))) {
                 localStorage[TimeToStorage] = Time
             } else if (!localStorage[TimeToStorage]){
                 localStorage[TimeToStorage] = Time
@@ -123,43 +113,35 @@ function checkStatus(url,key) {
             localStorage['Stream_Status_'+key] = "Online";
         } else {
             localStorage['Stream_Status_'+key] = "Offline";
-
             delete localStorage['Stream_Title_'+key];
             delete localStorage['Stream_Viewers_'+key];
             delete localStorage['Stream_Game_'+key];
             delete localStorage['Stream_Title_'+key]
             delete localStorage['Stream_Time_'+key]
-        } if (JSON.parse(localStorage['Status']).checked == localStorage['Following']) {
-            BadgeOnlineCount(JSON.parse(localStorage['Status']).online);
+        } if (localJSON('Status','checked') == localStorage['Following']) {
+            BadgeOnlineCount(localJSON('Status','online'));
             createCookie('First_Notify','1',365);
             CheckBar2 += '|';
-            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following'] - JSONstatus.checked)+']');
-            if (JSON.parse(localStorage['Status']).checked != '0') {console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following'])}
+            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following']-localJSON('Status','checked'))+']');
+            if (JSON.parse(localStorage['Status']).checked != '0') 
+                console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following']);
             console.log('Every channel checked');
-            JSONstatus2 = JSON.parse(localStorage['Status']);
-            JSONstatus2.update = '0';
-            JSONstatus2.InsertOnlineList = '1';
-            JSONstatus2.ShowWaves = 'false';
-            localStorage['Status'] = JSON.stringify(JSONstatus2)
+            localJSON('Status','update','0');
+            localJSON('Status','InsertOnlineList','1');
+            localJSON('Status','ShowWaves','false')
         }
     });
 }
 
 function afterUpdate() {
-    JSONstatus.checked = '0';
-    JSONstatus.online = '0';
-    JSONstatus.update = '4';
-    NumberOfRetry = 0;
+    localJSON('Status','checked','0');
+    localJSON('Status','online','0');
+    localJSON('Status','update','4');
     CheckBar = '--------------------------------------------------------------------------------------------------------------------';
     CheckBar2 = '';
-    var FollowingChannelList = [];
-    FollowingChannelList.length = localStorage['Following'];
-    localStorage['Status'] = JSON.stringify(JSONstatus);
 
-    $.each(FollowingChannelList, function() {
-        checkStatus('https://api.twitch.tv/kraken/streams/'+localStorage['Stream_Name_'+NumberOfRetry], NumberOfRetry);
-        NumberOfRetry += 1
-    } );
+    for (var i=0;i<=Math.floor(localStorage['Following']);i++) 
+        checkStatus('https://api.twitch.tv/kraken/streams/'+localStorage['Stream_Name_'+i], i)
 }
 
 var FirstStart = '1',
@@ -167,68 +149,57 @@ var FirstStart = '1',
 
 function getCheckInsert() {
     checkDonations();
-    if (localStorage['Following'] == undefined) {localStorage['Following'] = 0}
+    if (localStorage['Following'] == undefined) localStorage['Following'] = 0;
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+JSON.parse(localStorage['Config']).User_Name+'/follows/channels?limit=116&offset=0';
-    JSONstatus.update = '1';
-    localStorage['Status'] = JSON.stringify(JSONstatus);
+    localJSON('Status','update','1');
 
     if (JSON.parse(localStorage['Config']).User_Name == 'Guest') {
-        JSONstatus.update = '6';
-        localStorage['Status'] = JSON.stringify(JSONstatus);
+        localJSON('Status','update','6');
         console.error('Change user name!')
     } else {
         console.log("Behold! Update is comin'");
         notifyUser('Behold! Update!','Starting update...','Update');
-        JSONstatus.update = '2';
-        localStorage['Status'] = JSON.stringify(JSONstatus);
+        localJSON('Status','update','2');
 
         var updateFollowingListAndCheck = $.getJSON(urlToJSON, function(data, status) {
             twitch = data;
             if ([200,304].indexOf(updateFollowingListAndCheck.status) == -1) {
                 console.error(updateFollowingListAndCheck.status);
-                JSONstatus.update = '5';
+                localJSON('Status','update','5');
                 notifyUser("Update follows list","Error, can't update","Update");
-                localStorage['Status'] = JSON.stringify(JSONstatus);
                 BadgeOnlineCount('0')
             } else {
-                JSONstatus.update = '3';
-                localStorage['Status'] = JSON.stringify(JSONstatus);
+                localJSON('Status','update','3');
                 console.log('Following channels list updated, checking status')
             }
         });
 
         updateFollowingListAndCheck.complete(function(){
-            if (localStorage['Following'] != twitch._total) {
+            if (Math.floor(localStorage['Following']) != twitch._total) {
                 console.log('Update list of following channels');
-                NumberOfRetryForKey = 0;
                 localStorage['Following'] = twitch._total;
 
-                while (NumberOfRetryForKey <= Math.floor(localStorage['Following'])-1) {
-                    if (updateFollowingListAndCheck.responseJSON.follows[NumberOfRetryForKey]) {
-                        localStorage['Stream_Name_'+NumberOfRetryForKey] = updateFollowingListAndCheck.responseJSON.follows[NumberOfRetryForKey].channel.name;
-                        NumberOfRetryForKey += 1
+                for (var i=0; i<= Math.floor(localStorage['Following']); i++) {
+                    if (updateFollowingListAndCheck.responseJSON.follows[i]) {
+                        localStorage['Stream_Name_'+i] = updateFollowingListAndCheck.responseJSON.follows[i].channel.name;
                     } else {
-                        console.error('Get name of '+NumberOfRetryForKey+' ended with error');
-                        NumberOfRetryForKey += 1
+                        console.error('Get name of '+i+' ended with error');
                     }
                 }
-
             }
             afterUpdate()
         } );
     }
 }
 
-if (FirstStart == '1'){setTimeout(function(){ getCheckInsert() }, 10)}
+if (FirstStart == '1') setTimeout(function(){ getCheckInsert() }, 10);
 setInterval(function(){getCheckInsert()}, 1000 * 60 * Math.floor(JSON.parse(localStorage['Config']).Interval_of_Checking));
 
 
 setInterval(function(){
-    if (readCookie('InstatntCheck') == '1') {
-        getCheckInsert();
-        createCookie('InstatntCheck','0',365)
-    } if (readCookie('First_Notify') == '1') {
+    if (readCookie('InstatntCheck') == '1') getCheckInsert(); createCookie('InstatntCheck','0',365);
+    if (readCookie('First_Notify') == '1') {
         if (Math.floor(JSON.parse(localStorage['Status']).online) > 1) {
             textANDchannel = 'Now online '+localJSON('Status','online')+' channels';
             notifyUser('Update finished!',textANDchannel,'Update')
@@ -239,11 +210,7 @@ setInterval(function(){
             textANDchannel = 'No one online right now :(';
             notifyUser('Update finished!',textANDchannel,'Update')}
         createCookie('First_Notify','0',365)
-    } if (localJSON('Config','User_Name') == 'Guest') {
-        JustAvariableRandom = 0;
-        delete localStorage['Following']
-    } if (localStorage['Insert'] == 'true') {
-        getCheckInsert();
-        delete localStorage['Insert']
-    }
+    } 
+    if (localJSON('Config','User_Name') == 'Guest') {JustAvariableRandom = 0; delete localStorage['Following']}
+    if (localStorage['Insert'] == 'true') getCheckInsert(); delete localStorage['Insert']
 },1000)

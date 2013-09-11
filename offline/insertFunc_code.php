@@ -33,8 +33,8 @@ function InsertOnlineList() {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
 				StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
 				StreamListUnit += '<div class="tumblr">';
-				StreamListUnit += '<img target="_blank" href="" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
-				StreamListUnit += '<img target="_blank" href="" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<img target="_blank" href="http://www.twitch.tv/'+StreamerName+'" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<img target="_blank" href="http://www.twitch.tv/directory/game/'+StreamGame+'" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
 				//StreamListUnit += '<img target="_blank" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
@@ -88,12 +88,10 @@ function InsertOnlineList() {
 				TimersetToUpdate.push(CountOfRetryEach);
 
 				InsrtImg = 'stream_img_'+CountOfRetryEach;
-				document.getElementById(InsrtImg).href = 'http://www.twitch.tv/'+StreamerName;
 				document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
 
 				if (StreamGame != 'Not playing') {
 					document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-					document.getElementById('stream_game_img_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
 					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
 				} else {
 					document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default');
@@ -117,7 +115,6 @@ function InsertOnlineList() {
 			document.getElementById('Viewers_'+CountOfRetryEach).innerHTML=localStorage['Stream_Viewers_'+CountOfRetryEach];
 			document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
 			if (StreamGame != 'Not playing') {
-				document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
 				document.getElementById('stream_game_img_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
 				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
 			} else {
@@ -263,11 +260,11 @@ setInterval(function(){
 	}
 
 	if (localJSON('Status','update') == '0') {
-		if (localJSON('Status','online') < 2) {
+		if (localJSON('Status','online') < '2') {
 			document.getElementById('body').setAttribute('style','height:320px')
-		} else if (localJSON('Status','online') == 1) {
+		} else if (localJSON('Status','online') == '1') {
 			document.getElementById('body').setAttribute('style','height:505px')
-		} else if (localJSON('Status','online') > 2) {
+		} else if (localJSON('Status','online') > '2') {
 			document.getElementById('body').setAttribute('style','height:584px')
 		}
 	}
