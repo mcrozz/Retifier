@@ -16,7 +16,51 @@
 
 FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
+/*
+--New cut engine in work :P--
+alphabet=['abcdefghijklmnopqrstuvwxyz','абвгдеёжзийклмнопрстуфхцчшщъыьэюя','!@#$%^&*(){}[]\|/-+.,',' '];
 
+UpperCaseCount = 0;
+LowerCaseCount = 0;
+SymbolsCount = 0;
+SpacesCount = 0;
+for (var i=0;i<=localStorage['Stream_Title_4'].length;i++) {
+	if (alphabet[0].indexOf(localStorage['Stream_Title_4'][i]) != -1) LowerCaseCount++;
+	if (alphabet[0].toUpperCase().indexOf(localStorage['Stream_Title_4'][i]) != -1) UpperCaseCount++;
+	if (alphabet[1].indexOf(localStorage['Stream_Title_4'][i]) != -1) LowerCaseCount++;
+	if (alphabet[1].toUpperCase().indexOf(localStorage['Stream_Title_4'][i]) != -1) UpperCaseCount++;
+	if (alphabet[2].indexOf(localStorage['Stream_Title_4'][i]) != -1) SymbolsCount++;
+	if (alphabet[3].indexOf(localStorage['Stream_Title_4'][i]) != -1) SpacesCount++;
+}
+
+PerCent = 100/(UpperCaseCount+LowerCaseCount+SymbolsCount+SpacesCount);
+UpperPercent = Math.floor(UpperCaseCount*PerCent);
+LowerPercent = Math.floor(LowerCaseCount*PerCent);
+SymbolsPercent = Math.floor(SymbolsCount*PerCent);
+SpacesPercent = Math.floor(SpacesCount*PerCent);
+
+
+"EPiCCRAFT Road to Sky Islands/!\ Build! [Private Server] DayZ Later!"
+26//53//6//13
+Length 65
+Need cut to 29
+
+"Earning Million in Spelunky with To/!\rNis [ENG/RUS]"
+22//59//6//12
+Length 49
+Need cut to 35
+
+"[RU] Рисовач для FSX..."
+26//39//21//13
+Length 23
+Need cut to none
+
+"[Day 284/365] Golden voice one year challenge!"
+5//70//10//15
+Length 46
+Need cut to 33
+
+*/
 function InsertOnlineList() {
 	var CountOfChannels = [];
 	CountOfRetryEach = 0;
@@ -33,9 +77,9 @@ function InsertOnlineList() {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Online') {
 				StreamListUnit = '<div class="content" id="'+CountOfRetryEach+'">';
 				StreamListUnit += '<div class="tumblr">';
-				StreamListUnit += '<img target="_blank" href="http://www.twitch.tv/'+StreamerName+'" width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'"></img>';
-				StreamListUnit += '<img target="_blank" href="http://www.twitch.tv/directory/game/'+StreamGame+'" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
-				//StreamListUnit += '<img target="_blank" width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'"></img>';
+				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img width="320px" height="200px" id="stream_img_'+CountOfRetryEach+'" /></a>';
+				StreamListUnit += '<a href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"><img width="40px" height="56px" id="stream_game_img_'+CountOfRetryEach+'" /></a>';
+				StreamListUnit += '<img width="40px" height="56px" id="stream_game_2_img_'+CountOfRetryEach+'" />';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
 				StreamListUnit += '<div class="title">';
@@ -84,26 +128,22 @@ function InsertOnlineList() {
 				StreamListUnit += '</div>';
 				
 				document.getElementById('insertContentHere').innerHTML += StreamListUnit;
-				if (FirstLoadInsertFunc != 1) {$('#'+CountOfRetryEach).addClass('animated fadeIn')}				
+				if (FirstLoadInsertFunc != 1) $('#'+CountOfRetryEach).addClass('animated fadeIn');
 				TimersetToUpdate.push(CountOfRetryEach);
 
-				InsrtImg = 'stream_img_'+CountOfRetryEach;
-				document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
-
+				document.getElementById('stream_img_'+CountOfRetryEach).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
 				if (StreamGame != 'Not playing') {
-					document.getElementById('stream_game_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
+					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:2;position:absolute;margin:142 0 0 -42')
+					document.getElementById('stream_game_2_img_'+CountOfRetryEach).setAttribute('style','background:url("https://app.mcrozz.net/Twitch.tv_Notifier/playing.png");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
 				} else {
-					document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default');
+					document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default')
 					document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','display:none')
+					document.getElementById('stream_game_2_img_'+CountOfRetryEach).setAttribute('style','display:none')
 				}
-
 			}
 		} else if (TimersetToUpdate.indexOf(CountOfRetryEach) >= 0) {
 			if (localStorage['Stream_Status_'+CountOfRetryEach] == 'Offline') {
-				if (document.getElementById(CountOfRetryEach) != null) {
-					document.getElementById(CountOfRetryEach).remove()
-				}
+				if (document.getElementById(CountOfRetryEach) != null) document.getElementById(CountOfRetryEach).remove();
 			}
 
 			if (StreamTitle.length >= 29) {
@@ -113,13 +153,14 @@ function InsertOnlineList() {
 				document.getElementById('Title_'+CountOfRetryEach).innerHTML = StreamTitle
 			}
 			document.getElementById('Viewers_'+CountOfRetryEach).innerHTML=localStorage['Stream_Viewers_'+CountOfRetryEach];
-			document.getElementById(InsrtImg).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
+			document.getElementById('stream_img_'+CountOfRetryEach).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer;z-index:0')
 			if (StreamGame != 'Not playing') {
-				document.getElementById('stream_game_img_'+CountOfRetryEach).href = 'http://www.twitch.tv/directory/game/'+StreamGame;
-				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
+				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:2;position:absolute;margin:142 0 0 -42')
+				document.getElementById('stream_game_2_img_'+CountOfRetryEach).setAttribute('style','background:url("https://app.mcrozz.net/Twitch.tv_Notifier/playing.png");background-size:40;z-index:1;position:absolute;margin:142 0 0 -42')
 			} else {
-				document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default');
+				document.getElementById('stream_game_'+CountOfRetryEach).setAttribute('style','cursor:default')
 				document.getElementById('stream_game_img_'+CountOfRetryEach).setAttribute('style','display:none')
+				document.getElementById('stream_game_2_img_'+CountOfRetryEach).setAttribute('style','display:none')
 			}
 		}
 
@@ -140,11 +181,10 @@ setInterval(function(){
 		document.getElementById('insertContentHere').innerHTML = null;
 		InsertOnlineList()
 	} else if (sessionStorage['FirstStartPopup'] == 'true') {
-		if (FrstInsrt.InsertOnlineList == '1') {
+		if (FrstInsrt.InsertOnlineList == '1')
 			InsertOnlineList();
 			FrstInsrt.InsertOnlineList = '0';
-			localStorage['Status'] = JSON.stringify(FrstInsrt)
-		}
+			localStorage['Status'] = JSON.stringify(FrstInsrt);
 	}
 }, 1000);
 
@@ -190,7 +230,6 @@ setInterval(function(){
 		$.each(TimersetToUpdate, function() {
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[number];
 			StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[number];
-			// POWER OF MATH
 			SubtractTimes = Math.abs(new Date() - new Date(localStorage[StreamDurationTime])) / 1000;
 			SubtractTimes = Math.floor(SubtractTimes);
 			Days = Math.floor((SubtractTimes % 31536000) / 86400);
@@ -202,9 +241,9 @@ setInterval(function(){
 			if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m:'} else if (Minutes >= 10) {Minutes = Minutes+'m:'} };
 			if (Seconds == 0) {Seconds = '00s'} else { if (Seconds < 10) {Seconds = '0'+Seconds+'s'} else if (Seconds >= 10) {Seconds = Seconds+'s'} };
 			Time = Days+''+Hours+''+Minutes+''+Seconds;
-			if (document.getElementById(InsertTimeHere)) {document.getElementById(InsertTimeHere).innerHTML = Time};
+			if (document.getElementById(InsertTimeHere)) document.getElementById(InsertTimeHere).innerHTML=Time;
 			number += 1
-			if (number-1 == TimersetToUpdate.length) {number = 0}
+			if (number-1 == TimersetToUpdate.length) number=0;
 		})
 	} 
 
