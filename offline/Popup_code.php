@@ -328,7 +328,8 @@ function CloseAppVersionChanges() {
 
 function changeAppContent(App) {
 	if (App == 'AppFirst') {
-		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.8 Bug fixes, improvements</a></div>";
+		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.9 A little redesign, added DejaVu font</a></div>";
+		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.8 Bug fixes, improvements</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.7 Bug fixes</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.6 Added 'Watch now!' to notifications</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.5 Added Animation, thanks for Animate.css (http://daneden.me/animate)</a></div>";
@@ -448,14 +449,14 @@ document.addEventListener( "DOMContentLoaded" , function () {
 	}	
 	*/
 
-	var css='.informationTextTitle:hover::after{content:attr(data-title);position:absolute;left:5%;top:45%;width:215px;z-index:1;background:rgba(255,255,255,0.9);font-size:11px;padding:5px 10px;border:1px solid rgba(51, 51, 51, 0.34)}';
+	/*var css='';
 		style=document.createElement('style');
 	if (style.styleSheet) {
 		style.styleSheet.cssText=css;
 	} else {
 		style.appendChild(document.createTextNode(css));
 		document.getElementsByTagName('head')[0].appendChild(style)
-	}
+	}*/
 
 	AppVersion('Version');
 	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);

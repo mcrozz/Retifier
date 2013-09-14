@@ -127,8 +127,7 @@ function checkStatus(url,key) {
                 console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following']);
             console.log('Every channel checked');
             localJSON('Status','update','0');
-            localJSON('Status','InsertOnlineList','1');
-            localJSON('Status','ShowWaves','false')
+            localJSON('Status','InsertOnlineList','1')
         }
     });
 }
