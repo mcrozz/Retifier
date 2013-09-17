@@ -117,12 +117,9 @@ function InsertOnlineList() {
 				StreamListUnit += '</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="StreamOnChannelPage">';
-				StreamListUnit += '<div style="width:150;height:40;position:absolute;left:0">';
-				StreamListUnit += '<button type="button" name="Go to a stream page" class="button">';
-				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'"class="aStreamOnChannelPage" target="_blank">';
-				StreamListUnit += 'Channel page';
-				StreamListUnit += '</a>';
-				StreamListUnit += '</button></div>';
+				StreamListUnit += '<div style="width:150;height:40;position:absolute;left:0"><a href="http://www.twitch.tv/'+StreamerName+'" target="_blank">';
+				StreamListUnit += '<button type="button" name="Go to a stream page" class="button">Channel page';
+				StreamListUnit += '</button></a></div>';
 				StreamListUnit += '<div style="width:170;height:40;position:absolute;right:15;top:164">';
 				StreamListUnit += '<a id="Stream_Duration_'+CountOfRetryEach+'" class="StreamDuration">';
 				StreamListUnit += '</a>';
