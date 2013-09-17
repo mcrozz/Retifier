@@ -14,11 +14,11 @@ b {border: 2px dotted #d6d4d4}
 .close {position:absolute;left:535;top:0}
 
 .closeBelow {position:absolute;left:544;top:60}
-.closeBelow2 {position:absolute;left:530;top:47;height:102;width:152;border:1px black dotted}
-.pCloseBelow1 {border:none;color:rgb(0, 194, 40);position:absolute;width:131;top:-3}
-.pCloseBelow2 {border:none;color:black;position:absolute;width:127;left:9;top:16}
+.closeBelow2 {position:absolute;left:530;top:47;height:102;width:165;border:1px black dotted}
+.pCloseBelow1 {border:none;color:rgb(0,194,40);position:absolute;width:150;top:-3}
+.pCloseBelow2 {border:none;color:black;position:absolute;width:165;left:4;top:16}
 .pCloseBelow3 {border:none;color:black;position:absolute;width:47;left:-11;top:-40;font-size:26}
-.pCloseBelow4 {border:none;color:black;position:absolute;width:122;left:15;top:35}
+.pCloseBelow4 {border:none;color:black;position:absolute;width:140;left:10;top:35}
 
 .content {background:url('./img.png');background-position:-2px -1262px;height:200px;width:685px;padding:2;position:relative}
 .content2 {max-height:100%;overflow:auto}

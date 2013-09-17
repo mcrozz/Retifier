@@ -457,6 +457,10 @@ document.addEventListener( "DOMContentLoaded" , function () {
 		style.appendChild(document.createTextNode(css));
 		document.getElementsByTagName('head')[0].appendChild(style)
 	}*/
+	document.getElementsByClassName('pCloseBelow1')[0].setAttribute('style','border:none;color:rgb(0,194,40);position:absolute;width:150;top:-3')
+	document.getElementsByClassName('closeBelow2')[0].setAttribute('style','position:absolute;left:530;top:47;height:102;width:165;border:1px black dotted')
+	document.getElementsByClassName('pCloseBelow2')[0].setAttribute('style','border:none;color:black;position:absolute;width:165;left:4;top:16')
+	document.getElementsByClassName('pCloseBelow4')[0].setAttribute('style','border:none;color:black;position:absolute;width:140;left:10;top:35')
 
 	AppVersion('Version');
 	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);
