@@ -43,18 +43,14 @@ try {
 
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
-    KeyForDelete = 0;
-    DeleteCount = [];
-    DeleteCount.length = localJSON('Following');
-    $.each(DeleteCount, function(){
-        delete localStorage['Stream_Title_'+KeyForDelete];
-        delete localStorage['Stream_Time_'+KeyForDelete];
-        delete localStorage['Stream_Tumb_'+KeyForDelete];
-        delete localStorage['Stream_Viewers_'+KeyForDelete];
-        delete localStorage['Stream_Game_'+KeyForDelete];
-        localStorage['Stream_Status_'+KeyForDelete] = 'Offline';
-        KeyForDelete += 1
-    });
+    for (var i=0;i<Math.floor(localJSON('Following'));i++) {
+        delete localStorage['Stream_Title_'+i];
+        delete localStorage['Stream_Time_'+i];
+        delete localStorage['Stream_Tumb_'+i];
+        delete localStorage['Stream_Viewers_'+i];
+        delete localStorage['Stream_Game_'+i];
+        localStorage['Stream_Status_'+i] = 'Offline';
+    }
 }
 
 function checkDonations() {
@@ -73,9 +69,8 @@ function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
         .fail(function(){
             notifyUser("Update follows list", "Error, can't update","Update");
-            localJSON('Status','update','8');
-            BadgeOnlineCount('...')
-        } );
+            localJSON('Status','update','8')
+        });
 
     checkStatus.complete(function() {
         localJSON('Status','checked',Math.floor(localJSON('Status','checked'))+1);
@@ -179,7 +174,7 @@ function getCheckInsert() {
                 console.log('Update list of following channels');
                 localStorage['Following'] = twitch._total;
 
-                for (var i=0; i<= Math.floor(localStorage['Following']); i++) {
+                for (var i=0;i<Math.floor(localStorage['Following']);i++) {
                     if (updateFollowingListAndCheck.responseJSON.follows[i]) {
                         localStorage['Stream_Name_'+i] = updateFollowingListAndCheck.responseJSON.follows[i].channel.name;
                     } else {
