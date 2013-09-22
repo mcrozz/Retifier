@@ -21,18 +21,6 @@ FirstLoadVar = 1;
 openCloseVersionVar = 1;
 openCloseReportVar = 1;
 
-function insertText(content,stream_id) {
-	if (stream_id == 'stream_streamer') {
-		document.getElementById(stream_id).href='http://www.twitch.tv/'+content
-	} else if (stream_id == 'stream_game') {
-		document.getElementById(stream_id).href='http://www.twitch.tv/directory/game/'+content
-	} else if (stream_id == 'stream_img') {
-		document.getElementById(stream_id).setAttribute('style','background:url('+content+')')
-	} else {
-		document.getElementById(stream_id).innerHTML=content
-	}
-}
-
 function clickChangeUser() {
 	document.getElementById("userChangePopup").style.display = 'block';
 	document.getElementById("userChangePopup2").setAttribute("style","display:block");
@@ -82,61 +70,52 @@ function changeReftInt() {
 
 function changeNotify(type) {
 	if (type == 'Change') {
-		NotifyChange = localJSON('Config');
-		if (document.getElementById('Notify').checked) {
+		NotifyChange=localJSON('Config');
+		if (document.getElementById('EnNotify').checked) {
 			NotifyChange.Notifications.status = 'Enable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
+		} if (document.getElementById('DisNotify').checked) {
+			NotifyChange.Notifications.status = 'Disable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
+		}
+		if (document.getElementById('NotifyStreamer').checked) {
 			NotifyChange.Notifications.online = 'Enable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
+		} else {
+			NotifyChange.Notifications.online = 'Disable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
+		} if (document.getElementById('NotifyStreamerChanged').checked) {
 			NotifyChange.Notifications.update = 'Enable';
 			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} if (document.getElementById('Notify').checked == false) {
-			NotifyChange.Notifications.status = 'Disable';
-			NotifyChange.Notifications.online = 'Disable';
-			NotifyChange.Notifications.update = 'Disable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} if (document.getElementById('NotifyStreamer').checked) {
-			NotifyChange.Notifications.status = 'Enable';
-			NotifyChange.Notifications.online = 'Enable';
+		} else {
 			NotifyChange.Notifications.update = 'Disable';
 			localStorage['Config'] = JSON.stringify(NotifyChange)
 		} if (document.getElementById('NotifyUpdate').checked) {
-			NotifyChange.Notifications.status = 'Enable';
-			NotifyChange.Notifications.online = 'Disable';
-			NotifyChange.Notifications.update = 'Enable';
+			NotifyChange.Notifications.follow = 'Enable';
+			localStorage['Config'] = JSON.stringify(NotifyChange)
+		} else {
+			NotifyChange.Notifications.follow = 'Disable';
 			localStorage['Config'] = JSON.stringify(NotifyChange)
 		}
 	} else if (type == 'Checking') {
-		if (localJSON('Config').Notifications.status == 'Enable') {
-			document.getElementById('Notify').checked = true;
-			document.getElementById('NotifyStreamer').checked = false;
-			document.getElementById('NotifyUpdate').checked = false
+		if (localJSON('Config').Notifications.status == 'Disable') {
+			document.getElementById('EnNotify').checked = false;
+			document.getElementById('NotifyStreamerChanged').disabled = true;
+			document.getElementById('NotifyStreamer').disabled = true;
+			document.getElementById('NotifyUpdate').disabled = true;
+		} else if (localJSON('Config').Notifications.status == 'Enable') {
+			document.getElementById('EnNotify').checked = true;
+			document.getElementById('NotifyStreamerChanged').disabled = false;
+			document.getElementById('NotifyStreamer').disabled = false;
+			document.getElementById('NotifyUpdate').disabled = false
 		} if (localJSON('Config').Notifications.update == 'Enable') {
-			document.getElementById('Notify').checked = false;
-			document.getElementById('NotifyStreamer').checked = false;
-			document.getElementById('NotifyUpdate').checked = true
+			document.getElementById('NotifyStreamerChanged').checked = true;
 		} if (localJSON('Config').Notifications.online == 'Enable') {
-			document.getElementById('Notify').checked = false;
 			document.getElementById('NotifyStreamer').checked = true;
-			document.getElementById('NotifyUpdate').checked = false
+		} if (localJSON('Config').Notifications.follow == 'Enable') {
+			document.getElementById('NotifyUpdate').checked = true;
 		}
 	}
-}
-
-function checkModifyNotify() {
-	document.getElementById('NotifyStreamer').checked = false;
-	document.getElementById('NotifyUpdate').checked = false;
-	createCookie('changed_Notify','1',365)
-}
-
-function checkModifyNotifyStreamer() {
-	document.getElementById('Notify').checked = false;
-	document.getElementById('NotifyUpdate').checked = false;
-	createCookie('changed_Notify_Streamer','1',365)
-}
-
-function checkModifyNotifyUpdate() {
-	document.getElementById('Notify').checked = false;
-	document.getElementById('NotifyStreamer').checked = false;
-	createCookie('changed_Notify_Update','1',365)
 }
 
 function openCloseReportAbug() {
@@ -219,8 +198,8 @@ function FollowedChannelsList(content,status) {
 	if (LinesInListOfFollowedChannels == 22) {
 		NumberOfidOfListOfFollowedChannels += 1;
 		LinesInListOfFollowedChannels = 0		
-	} else {if(NumberOfidOfListOfFollowedChannels==4){document.getElementById('FollowedChannelsList').style.overflow='auto'}} 
-	if (status == 'Online') {statusColor = 'rgb(0, 194, 40)'} else {statusColor = 'black'}
+	} else {if(NumberOfidOfListOfFollowedChannels==4) document.getElementById('FollowedChannelsList').style.overflow='auto' } 
+	if (status == 'Online') statusColor = 'rgb(0, 194, 40)'; else statusColor = 'black';
 
 	idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
 	TempVariable = document.getElementById(idOfListOfFollowedChannels).innerHTML;
@@ -249,14 +228,11 @@ function openFollowedList() {
 
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 
-	var CountOfChannels = [];
 	CountOfChannels.length = localStorage['Following'];
-	CountOfRetryEach = 0;
 	
-	$.each(CountOfChannels, function() {
-		FollowedChannelsList(localStorage['Stream_Name_'+CountOfRetryEach], localStorage['Stream_Status_'+CountOfRetryEach]);
-		CountOfRetryEach += 1;
-	})
+	for (var i;i<=Math.floor(localStorage['Following']);i++) {
+		FollowedChannelsList(localStorage['Stream_Name_'+i], localStorage['Stream_Status_'+i])
+	}
 }
 
 function closeFollowedList() {
@@ -268,12 +244,12 @@ function closeFollowedList() {
 		$('#firstScane').removeClass('animated fadeOut');
 		$('#firstScane').addClass('animated fadeIn')
 	});
-	insertText('','InsertFollowedChannelsHere1');
-	insertText('','InsertFollowedChannelsHere2');
-	insertText('','InsertFollowedChannelsHere3');
-	insertText('','InsertFollowedChannelsHere4');
-	insertText('','InsertFollowedChannelsHere5');
-	insertText('','InsertFollowedChannelsHere6');
+	document.getElementById('InsertFollowedChannelsHere1').innerHTML=null;
+	document.getElementById('InsertFollowedChannelsHere2').innerHTML=null;
+	document.getElementById('InsertFollowedChannelsHere3').innerHTML=null;
+	document.getElementById('InsertFollowedChannelsHere4').innerHTML=null;
+	document.getElementById('InsertFollowedChannelsHere5').innerHTML=null;
+	document.getElementById('InsertFollowedChannelsHere6').innerHTML=null;
 	NumberOfidOfListOfFollowedChannels = 1;
 	LinesInListOfFollowedChannels = 0
 }
@@ -328,7 +304,8 @@ function CloseAppVersionChanges() {
 
 function changeAppContent(App) {
 	if (App == 'AppFirst') {
-		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.9 A little redesign, added DejaVu font</a></div>";
+		AppFirst = "<div class='AppInfo'><a class='aAppInfo'>-1.2.9.9 Now options are easy to understand</a></div>";
+		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.9 A little redesign, added DejaVu font</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.8 Bug fixes, improvements</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.7 Bug fixes</a></div>";
 		AppFirst += "<div class='AppInfo'><a class='aAppInfo'>-1.2.6 Added 'Watch now!' to notifications</a></div>";
@@ -457,19 +434,14 @@ document.addEventListener( "DOMContentLoaded" , function () {
 		style.appendChild(document.createTextNode(css));
 		document.getElementsByTagName('head')[0].appendChild(style)
 	}*/
-	document.getElementsByClassName('pCloseBelow1')[0].setAttribute('style','border:none;color:rgb(0,194,40);position:absolute;width:150;top:-3')
-	document.getElementsByClassName('closeBelow2')[0].setAttribute('style','position:absolute;left:530;top:47;height:102;width:165;border:1px black dotted')
-	document.getElementsByClassName('pCloseBelow2')[0].setAttribute('style','border:none;color:black;position:absolute;width:165;left:4;top:16')
-	document.getElementsByClassName('pCloseBelow4')[0].setAttribute('style','border:none;color:black;position:absolute;width:140;left:10;top:35')
 
 	AppVersion('Version');
 	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);
 	document.getElementById("ChgUsrSnd").addEventListener( "click" , changeScriptStarter);
 	document.getElementById("LstFlwdChnls").addEventListener( "click" , openFollowedList);
 	document.getElementById("ClsFlwdChnlsLst").addEventListener( "click" , closeFollowedList);
-	document.getElementById("Notify").addEventListener("change", checkModifyNotify);
-	document.getElementById("NotifyStreamer").addEventListener("change", checkModifyNotifyStreamer);
-	document.getElementById("NotifyUpdate").addEventListener("change", checkModifyNotifyUpdate);
+	document.getElementById("EnNotify").addEventListener("change", function(){document.getElementById('DisNotify').checked=false;document.getElementById('NotifyStreamer').disabled=false;document.getElementById('NotifyStreamerChanged').disabled=false;document.getElementById('NotifyUpdate').disabled=false});
+	document.getElementById("DisNotify").addEventListener("change", function(){document.getElementById('EnNotify').checked=false;document.getElementById('NotifyStreamer').disabled=true;document.getElementById('NotifyStreamerChanged').disabled=true;document.getElementById('NotifyUpdate').disabled=true});
 	document.getElementById("fndAbug").addEventListener("click", openCloseReportAbug);
 	document.getElementById("AppVersionClick").addEventListener("click", openAppVersionChanges);
 	document.getElementById("SoundSelect").addEventListener("change", changeSoundFile);
@@ -479,7 +451,7 @@ document.addEventListener( "DOMContentLoaded" , function () {
 	document.getElementById("AppInfoClose").addEventListener("click", function(){CloseAppVersionChanges()});
 	document.getElementById('userChangePopup2').addEventListener('click', function(){clickChangeUserCls()});
 	document.getElementById('AppInfoBack').addEventListener('click', function(){CloseAppVersionChanges()});
-	document.getElementById('Dashboard').addEventListener('click', function(){_gaq.push(['_trackEvent', 'Dashboard', 'clicked']);window.open('http://www.twitch.tv/broadcast/dashboard')});
-	document.getElementById('Direct').addEventListener('click', function(){_gaq.push(['_trackEvent', 'Direct', 'clicked']);window.open('http://www.twitch.tv/directory/following')});
+	document.getElementById('Dashboard').addEventListener('click', function(){_gaq.push(['_trackEvent','Dashboard','clicked']);window.open('http://www.twitch.tv/broadcast/dashboard')});
+	document.getElementById('Direct').addEventListener('click', function(){_gaq.push(['_trackEvent','Direct','clicked']);window.open('http://www.twitch.tv/directory/following')});
 	document.getElementById("SoundCheck").addEventListener("click", function(){ if (document.getElementById('SoundCheck').checked){document.getElementById('SoundSelect').disabled=false}else{document.getElementById('SoundSelect').disabled=true}});
 } );

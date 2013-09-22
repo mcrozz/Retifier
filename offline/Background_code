@@ -32,9 +32,6 @@
     6 - Name doesn't set up!
     7 - First start
 */
-if (localStorage['Following'] == undefined) localStorage['Following']=0;
-if (localStorage['Following'] == 'undefined') localStorage['Following']=0;
-
 try {
     if (JSON.parse(localStorage['Following']).Following) {
         Following = JSON.parse(localStorage['Following']).Following;
@@ -94,7 +91,7 @@ function checkStatus(url,key) {
             if (localStorage[TitleToStorage] == undefined) notifyUser(Name+' just went live!',Status,'Online',Name);
             if (localStorage[TitleToStorage] != Status) {
                 if (localStorage[TitleToStorage] != undefined) {
-                    notifyUser(Name+' changed stream title on',Status,'Online',Name)
+                    notifyUser(Name+' changed stream title on',Status,'Changed',Name)
                 }
             } if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(localStorage[TimeToStorage]))) {
                 localStorage[TimeToStorage] = Time
@@ -143,9 +140,10 @@ var FirstStart = '1',
 
 function getCheckInsert() {
     checkDonations();
-    if (localStorage['Following'] == undefined) localStorage['Following'] = 0;
+    if (localStorage['Following'] == undefined) localStorage['Following']=0;
+    if (localStorage['Following'] == 'undefined') localStorage['Following']=0;
     var twitch = 'Not loaded yet!',
-        urlToJSON = 'https://api.twitch.tv/kraken/users/'+JSON.parse(localStorage['Config']).User_Name+'/follows/channels?limit=116&offset=0';
+        urlToJSON = 'https://api.twitch.tv/kraken/users/'+localJSON('Config').User_Name+'/follows/channels?limit=116&offset=0';
     localJSON('Status','update','1');
 
     if (JSON.parse(localStorage['Config']).User_Name == 'Guest') {

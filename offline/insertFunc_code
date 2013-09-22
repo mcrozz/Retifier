@@ -203,25 +203,26 @@ setInterval(function(){
 	-7 - First start
 
 	*/
+	InsertHere=document.getElementById('FollowedChannelsOnline');
 	if (localJSON('Status','update') == '0') {
-		insertText('Now online '+localJSON('Status','online')+' from '+localJSON('Following'),'FollowedChannelsOnline');
+		InsertHere.innerHTML='Now online '+localJSON('Status','online')+' from '+localJSON('Following');
 		progressBar('Disable')
 	} else if (localJSON('Status','update') == '1') {
-		insertText('Behold! Update!','FollowedChannelsOnline');
+		InsertHere.innerHTML='Behold! Update!';
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '2') { 
-		insertText('Updating list of followed channels...','FollowedChannelsOnline');
+		InsertHere.innerHTML='Updating list of followed channels...';
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '3') { 
-		insertText('List of followed channels updated.','FollowedChannelsOnline');
+		InsertHere.innerHTML='List of followed channels updated.';
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '4') { 
-		insertText('Checking, online '+localJSON('Status','online')+' from '+localJSON('Following'),'FollowedChannelsOnline');
+		InsertHere.innerHTML='Checking, online '+localJSON('Status','online')+' from '+localJSON('Following');
 		progressBar('Enable')
 	} else if (localJSON('Status','update') == '5') { 
-		insertText('App had a problem with update','FollowedChannelsOnline')
+		InsertHere.innerHTML='App had a problem with update'
 	} else if (localJSON('Status','update') == '6') { 
-		insertText("Name doesn't set up yet!",'FollowedChannelsOnline')
+		InsertHere.innerHTML="Name doesn't set up yet!"
 	}
 }, 100);
 

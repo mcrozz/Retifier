@@ -66,7 +66,7 @@ function createCookie(name,value,days) {
 function readCookie(name) {
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
+	for (var i=0;i<ca.length;i++) {
 		var c = ca[i];
 		while (c.charAt(0)==' ') c = c.substring(1,c.length);
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
@@ -148,19 +148,13 @@ chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notif
 chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId, function(){}) });
 
 function notifyUser(streamerName, titleOfStream, type, streamer) {
-	if (JSON.parse(localStorage['Config']).Notifications.status == 'Enable') {
-		if (type == 'Update') {
-			if (JSON.parse(localStorage['Config']).Notifications.update == 'Enable') {
-				sendNotify(streamerName, titleOfStream, streamer, 'UpdateStat')
-			} else if (JSON.parse(localStorage['Config']).Notifications.update == 'Enable' && JSON.parse(localStorage['Config']).Notifications.status == 'Enable') {
-				sendNotify(streamerName, titleOfStream, streamer, 'UpdateStat')
-			}
-		} if (type == 'Online') {
-			if (JSON.parse(localStorage['Config']).Notifications.online == 'Enable') {
-				sendNotify(streamerName, titleOfStream, streamer)
-			} else if (JSON.parse(localStorage['Config']).Notifications.online == 'Enable' && JSON.parse(localStorage['Config']).Notifications.status == 'Enable') {
-				sendNotify(streamerName, titleOfStream, streamer)
-			}
+	if (localJSON('Config').Notifications.status == 'Enable') {
+		if (type == 'Update' && localJSON('Config').Notifications.follow == 'Enable') {
+			sendNotify(streamerName, titleOfStream, streamer, 'UpdateStat')
+		} if (type == 'Online' && localJSON('Config').Notifications.online == 'Enable') {
+			sendNotify(streamerName, titleOfStream, streamer)
+		} if (type == 'Changed' && localJSON('Config').Notifications.update == 'Enable') {
+			sendNotify(streamerName, titleOfStream, streamer)
 		} if (type == 'ScriptUpdate') {
 			sendNotify(streamerName, titleOfStream, streamerName, 'Update')
 		}
