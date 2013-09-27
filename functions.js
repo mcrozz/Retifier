@@ -156,7 +156,8 @@ function notifyUser(streamerName, titleOfStream, type, streamer) {
 		} if (type == 'Changed' && localJSON('Config').Notifications.update == 'Enable') {
 			sendNotify(streamerName, titleOfStream, streamer)
 		} if (type == 'ScriptUpdate') {
-			sendNotify(streamerName, titleOfStream, streamerName, 'Update')
+			if (!sessionStorage['Disable_Update_Notifies'])
+			sendNotify(streamerName, titleOfStream, streamerName, 'Update');
 		}
 	}
 }

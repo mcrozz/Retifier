@@ -171,7 +171,7 @@ console.log('[UPDATER]: Start up');
 acceptedVersions = {"background": "60", "popup": "74", "insertFunc": "101"};
 
 function CheckForUpdates() {
-	JSONparse = JSON.parse(localStorage['Code']);
+	JSONparse = localJSON('Code');
 
 	//Check app version
 	console.log('[UPDATER]: Checking for update');
