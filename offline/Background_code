@@ -32,11 +32,16 @@
     6 - Name doesn't set up!
     7 - First start
 */
-try {
-    if (JSON.parse(localStorage['Following']).Following) {
-        Following = JSON.parse(localStorage['Following']).Following;
-        localStorage['Following'] = Following}
-} catch(err) {console.error(err)}
+
+/* A bug */
+DamnBug = localJSON('Code');
+DamnBug.Popup.version = 75;
+localStorage['Code'] = JSON.stringify(DamnBug);
+/* -----  */
+
+/*
+if (localJSON('Following','Following')) localStorage['Following']=localJSON('Following','Following');
+*/
 
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
@@ -131,7 +136,7 @@ function afterUpdate() {
     CheckBar = '--------------------------------------------------------------------------------------------------------------------';
     CheckBar2 = '';
 
-    for (var i=0;i<=Math.floor(localStorage['Following']);i++) 
+    for (var i=0;i<=localJSON('Following');i++) 
         checkStatus('https://api.twitch.tv/kraken/streams/'+localStorage['Stream_Name_'+i], i)
 }
 
@@ -186,23 +191,23 @@ function getCheckInsert() {
 }
 
 if (FirstStart == '1') setTimeout(function(){ getCheckInsert() }, 10);
-setInterval(function(){getCheckInsert()}, 1000 * 60 * Math.floor(JSON.parse(localStorage['Config']).Interval_of_Checking));
+setInterval(function(){getCheckInsert()}, 1000 * 60 * Math.floor(localJSON('Config').Interval_of_Checking));
 
 
 setInterval(function(){
     if (readCookie('InstatntCheck') == '1') getCheckInsert(); createCookie('InstatntCheck','0',365);
     if (readCookie('First_Notify') == '1') {
-        if (Math.floor(JSON.parse(localStorage['Status']).online) > 1) {
+        if (Math.floor(localJSON('Status','online')) > 1) {
             textANDchannel = 'Now online '+localJSON('Status','online')+' channels';
             notifyUser('Update finished!',textANDchannel,'Update')
-        } else if (JSON.parse(localStorage['Status']).online == '1'){
+        } else if (localJSON('Status','online') == '1'){
             textANDchannel = 'Now online one channel';
             notifyUser('Update finished!',textANDchannel,'Update')
-        } else if (JSON.parse(localStorage['Status']).online == '0'){
+        } else if (localJSON('Status','online') == '0'){
             textANDchannel = 'No one online right now :(';
             notifyUser('Update finished!',textANDchannel,'Update')}
         createCookie('First_Notify','0',365)
     } 
     if (localJSON('Config','User_Name') == 'Guest') {JustAvariableRandom = 0; delete localStorage['Following']}
-    if (localStorage['Insert'] == 'true') getCheckInsert(); delete localStorage['Insert']
+    if (localStorage['Insert'] == 'true') {getCheckInsert(); delete localStorage['Insert']}
 },1000)

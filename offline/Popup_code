@@ -17,6 +17,7 @@
 var NumberOfidOfListOfFollowedChannels = 1,
 	LinesInListOfFollowedChannels = 0;
 TimersetToUpdate = [];
+AddedEventListener = [];
 FirstLoadVar = 1;
 openCloseVersionVar = 1;
 openCloseReportVar = 1;
@@ -227,10 +228,8 @@ function openFollowedList() {
 	$('#FollowedChannelsList').addClass('animated fadeIn');
 
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
-
-	CountOfChannels.length = localStorage['Following'];
 	
-	for (var i;i<=Math.floor(localStorage['Following']);i++) {
+	for (var i=0;i<localJSON('Following');i++) {
 		FollowedChannelsList(localStorage['Stream_Name_'+i], localStorage['Stream_Status_'+i])
 	}
 }
@@ -407,6 +406,26 @@ function progressBar(type) {
 		},800);
 	}
 }
+/*
+function mousePos(name,where,id) {
+	if (name == 'tumb') {
+		if (where == 'over') {
+
+		} else if (where == 'out') {
+
+		}
+	}
+}
+
+setInterval(function(){
+	for (var i=0;i<localJSON('Following');i++) {
+		if (AddedEventListener.indexOf(i)<0){
+			document.getElementById('stream_img_'+i).addEventListener('mouseover',mousePos('tumb','over',i));
+			document.getElementById('stream_img_'+i).addEventListener('mouseout',mousePos('tumb','out',i));
+			AddedEventListener.push(i)
+		}
+	}
+},1000);*/
 
 document.addEventListener( "DOMContentLoaded" , function () {
 	/*
