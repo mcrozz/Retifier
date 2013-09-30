@@ -25,7 +25,7 @@ b {border: 2px dotted #d6d4d4}
 .content3 {height:505;width:707;position:relative;display:block;padding:5px;margin-top:-3;margin-left:-12}
 
 .tumblr {background:url('./StillDownloading.gif');height:200px;width:320px;display:inline;position:absolute;margin-left:10px}
-.tumblr:hover::after {content:"Go to streaming page";width:317px;height:22px;z-index:1;position:absolute;left:1;top:168;text-align:center;color:rgba(255,255,255,0.5);padding:4 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39, 39, 39, 0.66)),to(rgba(0, 0, 0, 0.85)));}
+.tumblr:hover::after {content:"Go to streaming page";width:317px;height:22px;z-index:1;position:absolute;left:1;top:168;text-align:center;color:rgba(255,255,255,0.5);padding:4 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39, 39, 39, 0.66)),to(rgba(0, 0, 0, 0.85)));-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
 
 .information {width:345px;height:200px;display:inline;position:absolute;right:0;top:6}
 
@@ -35,7 +35,7 @@ b {border: 2px dotted #d6d4d4}
 .gamename {width:340px;height:30px;display:inline}
 
 .informationTextTitle {cursor:default;position:absolute;top:15;z-index:1;left:75;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
-.informationTextTitle:hover::after {content:attr(data-title);position:absolute;left:0%;top:215%;width:244px;background:rgba(255,255,255,0.9);font-size:11px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34)}
+.informationTextTitle:hover::after {content:attr(data-title);position:absolute;left:0%;top:215%;width:244px;background:rgba(255,255,255,0.9);font-size:11px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:1s}
 .informationTextStreamer {cursor:pointer;font-size:16;color:black;position:absolute;top:50;left:75;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
 .informationTextViewers {cursor:default;position: absolute;top:85;left:75;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
 .informationTextGame {cursor:pointer;font-size:16;color:black;position:absolute;top:120;left:75;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
@@ -51,22 +51,16 @@ b {border: 2px dotted #d6d4d4}
 .userChangeBGofBackground {background:rgba(0,0,0,0.65);z-index:5;display:none;position:absolute;width:100%;height:100%;left:0;right:0;top:0;bottom:0}
 
 button {border:none;cursor:default}
-
 button.first {color:white;text-decoration:none;font-size:22;font-family:ExtFont, sans-serif;font-size: 14px;color: #fafafa;padding: 5px 20px;background: -moz-linear-gradient(top,#6441a5 0%,#2a1b47);background: -webkit-gradient(linear, left top, left bottom, from(#6441a5),to(#2a1b47));-moz-border-radius: 14px;-webkit-border-radius: 14px;border-radius: 14px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}
-
-button.button {color:white;text-decoration:none;font-size:22;background:url('./img.png') no-repeat;background-position:-306px -1084px;width:150px;height:40px}
+button.button {color:white;text-decoration:none;font-size:22;background:url('img.png') no-repeat;background-position:-306px -1084px;width:150px;height:40px}
 button.button:hover {color:rgb(207, 207, 207);background-position:-458px -1084px}
-
-button.Left {color:white;text-decoration:none;font-size:22;background:url('./img.png') no-repeat;background-position:-2px -1084px;width:150px;height:40px}
+button.Left {color:white;text-decoration:none;font-size:22;background:url('img.png') no-repeat;background-position:-2px -1084px;width:150px;height:40px}
 button.Left:hover {color:rgb(207, 207, 207);background-position:-154px -1084px}
-
-button.Left2 {color:white;text-decoration:none;font-size:22;background:url('./img.png') no-repeat;background-position:-701px -2px;width:150px;height:40px}
+button.Left2 {color:white;text-decoration:none;font-size:22;background:url('img.png') no-repeat;background-position:-701px -2px;width:150px;height:40px}
 button.Left2:hover {color:rgb(207, 207, 207);background-position:-853px -2px}
-
-button.Right {color:white;text-decoration:none;font-size:22;background: url('./img.png') no-repeat;background-position:-306px -1126px;width:150px;height:40px}
+button.Right {color:white;text-decoration:none;font-size:22;background:url('img.png') no-repeat;background-position:-306px -1126px;width:150px;height:40px}
 button.Right:hover {color:rgb(207, 207, 207);background-position:-458px -1126px}
-
-button.Right2 {color:white;text-decoration:none;font-size:22;background: url('./img.png') no-repeat;background-position:-2px -1126px;width:150px;height:40px}
+button.Right2 {color:white;text-decoration:none;font-size:22;background:url('img.png') no-repeat;background-position:-2px -1126px;width:150px;height:40px}
 button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px}
 
 .DashboardButton {position: absolute}
