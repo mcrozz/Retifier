@@ -92,17 +92,14 @@ function checkStatus(url,key) {
 
             if (Status == null) Status = 'Untitled stream';
             if (Game == null) Game = 'Not playing';
-
             if (localStorage[TitleToStorage] == undefined) notifyUser(Name+' just went live!',Status,'Online',Name);
-            if (localStorage[TitleToStorage] != Status) {
-                if (localStorage[TitleToStorage] != undefined) {
-                    notifyUser(Name+' changed stream title on',Status,'Changed',Name)
-                }
-            } if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(localStorage[TimeToStorage]))) {
+            if (localStorage[TitleToStorage] != Status && localStorage[TitleToStorage] != undefined)
+                notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+
+            if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(localStorage[TimeToStorage]))) {
                 localStorage[TimeToStorage] = Time
             } else if (!localStorage[TimeToStorage]){
-                localStorage[TimeToStorage] = Time
-            }
+                localStorage[TimeToStorage] = Time}
 
             localStorage['Stream_Title_'+key] = Status;
             localStorage['Stream_Viewers_'+key] = checkStatus.responseJSON.stream.viewers;
@@ -118,8 +115,6 @@ function checkStatus(url,key) {
         } if (localJSON('Status','checked') == localStorage['Following']) {
             BadgeOnlineCount(localJSON('Status','online'));
             createCookie('First_Notify','1',365);
-            CheckBar2 += '|';
-            console.log('[ '+CheckBar2+CheckBar.substring(0, localStorage['Following']-localJSON('Status','checked'))+']');
             if (JSON.parse(localStorage['Status']).checked != '0') 
                 console.log('Checked '+JSON.parse(localStorage['Status']).checked+'/'+localStorage['Following']);
             console.log('Every channel checked');
