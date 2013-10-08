@@ -35,7 +35,7 @@
 
 /* A bug */
 DamnBug = localJSON('Code');
-DamnBug.Popup.version = 75;
+DamnBug.Popup.version = 76;
 localStorage['Code'] = JSON.stringify(DamnBug);
 /* -----  */
 
@@ -45,6 +45,7 @@ if (localJSON('Following','Following')) localStorage['Following']=localJSON('Fol
 
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
+    BadgeOnlineCount('0');
     for (var i=0;i<Math.floor(localJSON('Following'));i++) {
         delete localStorage['Stream_Title_'+i];
         delete localStorage['Stream_Time_'+i];

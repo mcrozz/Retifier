@@ -13,7 +13,8 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-var NotificationsToClose = [];
+var NotificationsToClose = [],
+	NotificationsToClose2 = [];
 
 if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
 setInterval(function(){
@@ -76,30 +77,17 @@ function readCookie(name) {
 
 function delCookie(name) {document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
 
-function BadgeOnlineCount(count) {
-	if (count == '0') {
-		chrome.browserAction.setBadgeText({text: String('')})
-	} else {
-		chrome.browserAction.setBadgeText({text: String(count)})
-	}
-}
-var NotificationVar = [];
+function BadgeOnlineCount(count) {if (count == '0') chrome.browserAction.setBadgeText({text: String('')}); else chrome.browserAction.setBadgeText({text: String(count)})};
 
 function sendNotify(Title, msg, streamer, scriptUpd) {
 	if (!scriptUpd) {
 		console.error(new Date+' : '+Title+' -  '+msg);
 		chrome.notifications.create(streamer,
-			{
-				type:"basic",
-				title:Title,
-				message:msg,
-				iconUrl:"goesOnline.png",
-				buttons: [{title:"Watch now!"}]
-			},
+			{type:"basic",title:Title,message:msg,iconUrl:"goesOnline.png",buttons:[{title:"Watch now!"}]},
 		function(){})
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
-			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
+			MusicName = '/Music/'+localJSON('Config').Notifications.sound+'.mp3';
 			Audio.setAttribute('src', MusicName);
 			Audio.setAttribute('autoplay', 'autoplay');
 			Audio.play()
@@ -107,32 +95,9 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 	} else if (scriptUpd == 'Update') {
 		console.error(new Date+' : '+Title+' -  '+msg);
 		chrome.notifications.create(scriptUpd,
-			{
-				type:"basic",
-				title:Title,
-				message:msg,
-				iconUrl:"goesOnlineUpd.png"
-			},
+			{type:"basic",title:Title,message:msg,iconUrl:"goesOnlineUpd.png"},
 		function(){sessionStorage['NtfcnTemp'] = scriptUpd});
 		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp'], function(){})},10*1000)
-		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
-			Audio = document.createElement('audio');
-			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
-			Audio.setAttribute('src', MusicName);
-			Audio.setAttribute('autoplay', 'autoplay');
-			Audio.play()
-		}
-	} else if (scriptUpd == 'UpdateStat') {
-		console.error(new Date+' : '+Title+' -  '+msg);
-		chrome.notifications.create(scriptUpd+Math.floor(Math.random()*10),
-			{
-				type:"basic",
-				title:Title,
-				message:msg,
-				iconUrl:"goesOnlineUpdStatus.png"
-			},
-		function(){sessionStorage['NtfcnTemp2'] = scriptUpd});
-		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp2'], function(){})},10*1000)
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
 			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
@@ -144,17 +109,29 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 }
 
 chrome.notifications.onButtonClicked.addListener(function(notificationId){window.open('http://www.twitch.tv/'+notificationId)});
-chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId, function(){}) });
-chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId, function(){}) });
+chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
+chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
+
+setInterval(function(){
+	for (var i=0;i<=NotificationsToClose.length;i++)
+		setTimeout(function(){
+			if (NotificationsToClose2[i] < 5) {
+				NotificationsToClose2[i] += 1
+			} else if (NotificationsToClose2[i] == 5) {
+				chrome.notifications.clear(NotificationsToClose[i],function(){});
+			}
+		},1000)
+},1000);
 
 function notifyUser(streamerName, titleOfStream, type, streamer) {
 	if (localJSON('Config').Notifications.status == 'Enable') {
-		if (type == 'Update' && localJSON('Config').Notifications.follow == 'Enable') {
-			sendNotify(streamerName, titleOfStream, streamer, 'UpdateStat')
-		} if (type == 'Online' && localJSON('Config').Notifications.online == 'Enable') {
+		if (type == 'Online' && localJSON('Config').Notifications.online == 'Enable') {
 			sendNotify(streamerName, titleOfStream, streamer)
 		} if (type == 'Changed' && localJSON('Config').Notifications.update == 'Enable') {
-			sendNotify(streamerName, titleOfStream, streamer)
+			key = streamer+Math.floor(Math.random()*100);
+			sendNotify(streamerName, titleOfStream, key);
+			NotificationsToClose.push(key);
+			NotificationsToClose2.push(1)
 		} if (type == 'ScriptUpdate') {
 			if (!sessionStorage['Disable_Update_Notifies'])
 			sendNotify(streamerName, titleOfStream, streamerName, 'Update');
@@ -172,17 +149,17 @@ function AppVersion(type, ver) {
 	}
 }
 
-if ( Math.floor(JSON.parse(localStorage['Code']).Background.version) < Math.floor(JSON.parse(localStorage['Code']).Background.version_geted) ) {Background = 'Out dated'} else {Background = 'New'}
-if ( Math.floor(JSON.parse(localStorage['Code']).Popup.version) < Math.floor(JSON.parse(localStorage['Code']).Background.version_geted) ) {Popup = 'Out dated'} else {Popup = 'New'}
-if ( Math.floor(JSON.parse(localStorage['Code']).Background.version) < Math.floor(JSON.parse(localStorage['Code']).Background.version_geted) ) {insertFunc = 'Out dated'} else {insertFunc = 'New'}
+if ( Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ) {Background = 'Out dated'} else {Background = 'New'}
+if ( Math.floor(localJSON('Code').Popup.version) < Math.floor(localJSON('Code').Background.version_geted) ) {Popup = 'Out dated'} else {Popup = 'New'}
+if ( Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ) {insertFunc = 'Out dated'} else {insertFunc = 'New'}
 
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25472862-3']);
 _gaq.push(['_setCustomVar', 3, 'App_Version', localStorage['App_Version'], 1]);
-_gaq.push(['_setCustomVar', 2, 'BackgroundJS', JSON.parse(localStorage['Code']).Background.version, 1]);
-_gaq.push(['_setCustomVar', 2, 'PopupJS', JSON.parse(localStorage['Code']).Popup.version, 1]);
-_gaq.push(['_setCustomVar', 3, 'insertFuncJS', JSON.parse(localStorage['Code']).Background.version, 1]);
+_gaq.push(['_setCustomVar', 2, 'BackgroundJS', localJSON('Code').Background.version, 1]);
+_gaq.push(['_setCustomVar', 2, 'PopupJS', localJSON('Code').Popup.version, 1]);
+_gaq.push(['_setCustomVar', 3, 'insertFuncJS', localJSON('Code').Background.version, 1]);
 _gaq.push(['_trackPageview']);
 _gaq.push(['_trackEvent', 'App Version', localStorage['App_Version']]);
 _gaq.push(['_trackEvent', 'BackgroundJS version', Background]);

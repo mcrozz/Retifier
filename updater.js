@@ -168,7 +168,7 @@ if (!localStorage['OldSetting']) {
 
 console.log('[UPDATER]: Start up');
 
-acceptedVersions = {"background": "60", "popup": "74", "insertFunc": "101"};
+acceptedVersions = {"background": "67", "popup": "76", "insertFunc": "110"};
 
 function CheckForUpdates() {
 	JSONparse = localJSON('Code');
