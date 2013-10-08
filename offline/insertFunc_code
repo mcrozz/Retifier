@@ -16,6 +16,7 @@
 
 FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
+
 /*
 --New cut engine in work :P--
 alphabet=['abcdefghijklmnopqrstuvwxyz','абвгдеёжзийклмнопрстуфхцчшщъыьэюя','!@#$%^&*(){}[]\|/-+.,',' '];
@@ -76,21 +77,30 @@ function InsertOnlineList() {
 		StreamTitle = localStorage['Stream_Title_'+i];
 		StreamerName = localStorage['Stream_Name_'+i];
 		StreamGame = localStorage['Stream_Game_'+i];
-		
+		if (localJSON('Config','Format') == 'Full') {
+			Num = 25;
+			Num2 = 40;
+			Num3 = 'none'
+		} else {
+			Num = 55;
+			Num2 = 40;
+			Num3 = 90
+		};
+
 		if (TimersetToUpdate.indexOf(i) < 0) {
 			if (localStorage['Stream_Status_'+i] == 'Online') {
 				StreamListUnit = '<div class="content" id="'+i+'">';
 				StreamListUnit += '<div class="tumblr">';
-				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img width="320px" height="200px" id="stream_img_'+i+'" /></a>';
-				StreamListUnit += '<a href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"><img width="40px" height="56px" id="stream_game_img_'+i+'" /></a>';
-				StreamListUnit += '<img width="40px" height="56px" id="stream_game_2_img_'+i+'" />';
+				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
+				StreamListUnit += '<a href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
+				StreamListUnit += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
 				StreamListUnit += '<div class="title">';
 				StreamListUnit += '<p class="pTitle">Title</p>';
 				StreamListUnit += '<div class="informationTextTitle" data-title="'+StreamTitle+'" id="Title_'+i+'"">';
-				if (StreamTitle.length >= 25) {
-					CountToCut = StreamTitle.length - 25;
+				if (StreamTitle.length >= Num) {
+					CountToCut = StreamTitle.length - Num;
 					StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
 				} else { StreamListUnit += StreamTitle }
 				StreamListUnit += '</div>';
@@ -110,32 +120,32 @@ function InsertOnlineList() {
 				StreamListUnit += '<div class="gamename">';
 				StreamListUnit += '<p class="pGamename">Game</p>';
 				StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+i+'">';
-				if (StreamGame.length >= 25) {
-					CountToCut = StreamGame.length - 25;
+				if (StreamGame.length >= Num) {
+					CountToCut = StreamGame.length - Num;
 					StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut)+'...'
 				} else { StreamListUnit += StreamGame }
 				StreamListUnit += '</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="StreamOnChannelPage">';
-				StreamListUnit += '<div style="width:150;height:40;position:absolute;left:0"><a href="http://www.twitch.tv/'+StreamerName+'" target="_blank">';
+				StreamListUnit += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/'+StreamerName+'" target="_blank">';
 				StreamListUnit += '<button type="button" name="Go to a stream page" class="button">Channel page';
 				StreamListUnit += '</button></a></div>';
-				StreamListUnit += '<div style="width:170;height:40;position:absolute;right:15;top:164">';
+				StreamListUnit += '<div class="StreamDurationDiv">';
 				StreamListUnit += '<a id="Stream_Duration_'+i+'" class="StreamDuration">';
 				StreamListUnit += '</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
-				
+
 				document.getElementById('insertContentHere').innerHTML += StreamListUnit;
 				if (FirstLoadInsertFunc != 1) $('#'+i).addClass('animated fadeIn');
 				TimersetToUpdate.push(i);
 
-				document.getElementById('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer');
+				document.getElementById('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
 				if (StreamGame != 'Not playing') {
-					document.getElementById('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:3;position:absolute;margin:142 0 0 -42;cursor:pointer')
-					document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:40;z-index:2;position:absolute;margin:142 0 0 -42;cursor:pointer')
+					document.getElementById('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
+					document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:'+Num2+';cursor:pointer')
 				} else {
 					document.getElementById('stream_game_'+i).setAttribute('style','cursor:default')
 					document.getElementById('stream_game_img_'+i).setAttribute('style','display:none')
@@ -148,17 +158,17 @@ function InsertOnlineList() {
 				if (document.getElementById(i) != null) document.getElementById(i).remove();
 			}
 
-			if (StreamTitle.length >= 25) {
-				CountToCut = StreamTitle.length - 25;
+			if (StreamTitle.length >= Num) {
+				CountToCut = StreamTitle.length - Num;
 				document.getElementById('Title_'+i).innerHTML = StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
 			} else {
 				document.getElementById('Title_'+i).innerHTML = StreamTitle
 			}
 			document.getElementById('Viewers_'+i).innerHTML=localStorage['Stream_Viewers_'+i];
-			document.getElementById('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);cursor:pointer;z-index:0')
+			document.getElementById('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0')
 			if (StreamGame != 'Not playing') {
-				document.getElementById('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:40;z-index:3;position:absolute;margin:142 0 0 -42;cursor:pointer')
-				document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:40;z-index:2;position:absolute;margin:142 0 0 -42;cursor:pointer')
+				document.getElementById('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
+				document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:40;cursor:pointer')
 			} else {
 				document.getElementById('stream_game_'+i).setAttribute('style','cursor:default')
 				document.getElementById('stream_game_2_'+i).setAttribute('style','cursor:default')
@@ -176,7 +186,6 @@ setInterval(function(){
 	if (!sessionStorage['FirstStartPopup']) {
 		localJSON('Status','InsertOnlineList','0');
 		sessionStorage['FirstStartPopup'] = 'true';
-		document.getElementById('insertContentHere').innerHTML = null;
 		InsertOnlineList()
 	} else if (sessionStorage['FirstStartPopup'] == 'true') {
 		if (localJSON('Status','InsertOnlineList') == '1')
@@ -224,7 +233,7 @@ setInterval(function(){
 
 setInterval(function(){
 	if (localJSON('Config','Duration_of_stream') == 'Enable') {
-		for (var i=0;i<TimersetToUpdate.length;i++)
+		for (var i=0;i<TimersetToUpdate.length;i++) {
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
 			StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[i];
 			SubtractTimes = Math.abs(new Date() - new Date(localStorage[StreamDurationTime])) / 1000;
@@ -239,12 +248,13 @@ setInterval(function(){
 			if (Seconds == 0) {Seconds = '00s'} else { if (Seconds < 10) {Seconds = '0'+Seconds+'s'} else if (Seconds >= 10) {Seconds = Seconds+'s'} };
 			Time = Days+''+Hours+''+Minutes+''+Seconds;
 			if (document.getElementById(InsertTimeHere)) document.getElementById(InsertTimeHere).innerHTML=Time;
+		}
 	} 
 
 	if (localJSON('Config','Timeout')) {
 		if (Math.abs(new Date(localJSON('Config','Timeout'))) - Math.abs(new Date()) < 0) {
 			localJSON('Config','Closed',false);
-			donationUnit = "<a style='color:black;margin-left:45'>Don't forget support me by a donate ;)</a>";
+			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
 			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
@@ -263,7 +273,7 @@ setInterval(function(){
 			});
 			document.getElementById('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
 		} else if (!localJSON('Config','Closed')) {
-			donationUnit = "<a style='color:black;margin-left:45'>Don't forget support me by a donate ;)</a>";
+			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
 			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';

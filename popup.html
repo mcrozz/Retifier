@@ -6,7 +6,6 @@
 <script src="firstStart.js"></script>
 <script src="insertFunc.js"></script>
 <script src="popup.js"></script>
-<style id="StreamList"></style>
 
 <body id="body">
 
@@ -89,18 +88,28 @@
 
 <div class="Notify_Sound_Select">
 	<p class="pSoundChoose">
-	<select id="SoundSelect" style="width:90">
-		<option value="DinDon">Din-Don</option>
-		<option value="DinDon">More comin' soon</option>
-		<option value="DinDon">[:D</option>
-	</select>
+		<select id="SoundSelect" style="width:90">
+			<option value="DinDon">Din-Don</option>
+			<option value="DinDon">More comin' soon</option>
+			<option value="DinDon">[:D</option>
+		</select>
 	</p>
 	<p class="pSoundChoose2">Choose sound</p>
 </div>
 
 <div class="DurationOfStream">
-<p class="pStreamDuration"><input type="checkbox" name="StreamDuration" id="StreamDurationCheck"></p>
-<p class="pStreamDuration2">Enable duration of stream</p>
+	<p class="pStreamDuration"><input type="checkbox" id="StreamDurationCheck"></p>
+	<p class="pStreamDuration2">Enable duration of stream</p>
+</div>
+
+<div class="List_Format">
+	<p class="pListFormat">
+		<select id="List_Format_List" style="width:90">	
+			<option value="Full">Full</option>
+			<option value="Mini">Light</option>
+		</select>
+	</p>
+	<p class="pListFormat2">Choose style of online list</p>
 </div>
 
 <button type="button" id="ChgUsrSnd" class="OptionsSave">Save / Close</button>
