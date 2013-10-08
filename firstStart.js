@@ -34,6 +34,7 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 	document.addEventListener( "DOMContentLoaded" , function () {
 		setTimeout(function(){
 		if (localStorage['FirstLaunch'] == 'true'){
+
 			localStorage['Following'] = 0;
 			JSONstatus.update = '7';
 			JSONstatus.ShowWaves = 'false';
@@ -57,6 +58,9 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 				document.getElementById("SetUpUserName").addEventListener("click", firstLaunchUser);
 		    }
 		    setInterval(function(){
+		    	date = new Date();
+	            localJSON('Config','Timeout',date.setDate(date.getDate()+14));
+	            localJSON('Config','Ceneled',true)
 				document.getElementById('SetUpUserNameInp').onkeyup = function(evt) {
 					if(evt.keyCode == 13){
 						firstLaunchUser()
