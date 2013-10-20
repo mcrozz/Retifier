@@ -17,55 +17,6 @@
 FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
 
-/*
---New cut engine in work :P--
-alphabet=['abcdefghijklmnopqrstuvwxyz','абвгдеёжзийклмнопрстуфхцчшщъыьэюя','!@#$%^&*(){}[]\|/-+.,',' '];
-
-UpperCaseCount = 0;
-LowerCaseCount = 0;
-SymbolsCount = 0;
-SpacesCount = 0;
-for (var i=0;i<=localStorage['Stream_Title_4'].length;i++) {
-	if (alphabet[0].indexOf(localStorage['Stream_Title_4'][i]) != -1) LowerCaseCount++;
-	if (alphabet[0].toUpperCase().indexOf(localStorage['Stream_Title_4'][i]) != -1) UpperCaseCount++;
-	if (alphabet[1].indexOf(localStorage['Stream_Title_4'][i]) != -1) LowerCaseCount++;
-	if (alphabet[1].toUpperCase().indexOf(localStorage['Stream_Title_4'][i]) != -1) UpperCaseCount++;
-	if (alphabet[2].indexOf(localStorage['Stream_Title_4'][i]) != -1) SymbolsCount++;
-	if (alphabet[3].indexOf(localStorage['Stream_Title_4'][i]) != -1) SpacesCount++;
-}
-
-PerCent = 100/(UpperCaseCount+LowerCaseCount+SymbolsCount+SpacesCount);
-UpperPercent = Math.floor(UpperCaseCount*PerCent);
-LowerPercent = Math.floor(LowerCaseCount*PerCent);
-SymbolsPercent = Math.floor(SymbolsCount*PerCent);
-SpacesPercent = Math.floor(SpacesCount*PerCent);
-
-
-"EPiCCRAFT Road to Sky Islands/!\ Build! [Private Server] DayZ Later!"
-26//53//6//13
-Length 65
-Need cut to 29
-
-"Earning Million in Spelunky with To/!\rNis [ENG/RUS]"
-22//59//6//12
-Length 49
-Need cut to 35
-
-"[RU] Рисовач для FSX..."
-26//39//21//13
-Length 23
-Need cut to none
-
-"[Day 284/365] Golden voice one year challenge!"
-5//70//10//15
-Length 46
-Need cut to 33
-
-
-if (NAME.legth > 16)
-
-
-*/
 function InsertOnlineList() {
 	if (localJSON('Status','online') <= 2) {
 		document.getElementById('insertContentHere').style.overflow='hidden'
@@ -74,18 +25,10 @@ function InsertOnlineList() {
 	}
 
 	for (var i=0;i<Math.floor(localStorage['Following']);i++){
-		StreamTitle = localStorage['Stream_Title_'+i];
-		StreamerName = localStorage['Stream_Name_'+i];
-		StreamGame = localStorage['Stream_Game_'+i];
-		if (localJSON('Config','Format') == 'Full') {
-			Num = 25;
-			Num2 = 40;
-			Num3 = 'none'
-		} else {
-			Num = 55;
-			Num2 = 40;
-			Num3 = 90
-		};
+		StreamTitle=localStorage['Stream_Title_'+i];
+		StreamerName=localStorage['Stream_Name_'+i];
+		StreamGame=localStorage['Stream_Game_'+i];
+		if (localJSON('Config','Format')=='Full') {Num=35;Num2=43;Num3='none';Num4=40}else{Num=55;Num2=43;Num3=90;Num4=23};
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 			if (localStorage['Stream_Status_'+i] == 'Online') {
@@ -97,42 +40,31 @@ function InsertOnlineList() {
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="information">';
 				StreamListUnit += '<div class="title">';
-				StreamListUnit += '<p class="pTitle">Title</p>';
-				StreamListUnit += '<div class="informationTextTitle" data-title="'+StreamTitle+'" id="Title_'+i+'"">';
-				if (StreamTitle.length >= Num) {
-					CountToCut = StreamTitle.length - Num;
-					StreamListUnit += StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
-				} else { StreamListUnit += StreamTitle }
-				StreamListUnit += '</div>';
+				StreamListUnit += '<div class="';
+				if (StreamTitle.length > Num) {StreamListUnit+='informationTextTitle'} else {StreamListUnit+='informationTextTitle2'};				
+				StreamListUnit += '" data-title="'+StreamTitle+'" id="Title_'+i+'"">'+StreamTitle+'</div>';			
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="streamer">';
-				StreamListUnit += '<p class="pStreamer">Streamer</p>';
 				StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">';
-				StreamListUnit += StreamerName;
-				StreamListUnit += '</a>';
+				StreamListUnit += StreamerName+'</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="viewers">';
-				StreamListUnit += '<p class="pViewers">Viewers</p>';
 				StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+i+'">';
-				StreamListUnit += localStorage['Stream_Viewers_'+i];
-				StreamListUnit += '</div>';
+				StreamListUnit += localStorage['Stream_Viewers_'+i]+'</div>';
+				StreamListUnit += '<p class="pViewers">viewers</p>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="gamename">';
-				StreamListUnit += '<p class="pGamename">Game</p>';
-				StreamListUnit += '<a class="informationTextGame" target="_blank" id="stream_game_'+i+'">';
-				if (StreamGame.length >= Num) {
-					CountToCut = StreamGame.length - Num;
-					StreamListUnit += StreamGame.substring (0, StreamGame.length - CountToCut)+'...'
-				} else { StreamListUnit += StreamGame }
-				StreamListUnit += '</a>';
+				StreamListUnit += '<a class="';
+				if (StreamGame.length > Num4) {StreamListUnit+='informationTextGame"'} else {StreamListUnit+='informationTextGame2"'};
+				if (StreamGame!='Not Playing'){StreamListUnit+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"'}
+				StreamListUnit += 'id="stream_game_'+i+'" data-title="'+StreamGame+'" >'+StreamGame+'</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="StreamOnChannelPage">';
 				StreamListUnit += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/'+StreamerName+'" target="_blank">';
 				StreamListUnit += '<button type="button" name="Go to a stream page" class="button">Channel page';
 				StreamListUnit += '</button></a></div>';
 				StreamListUnit += '<div class="StreamDurationDiv">';
-				StreamListUnit += '<a id="Stream_Duration_'+i+'" class="StreamDuration">';
-				StreamListUnit += '</a>';
+				StreamListUnit += '<a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '</div>';
@@ -158,17 +90,13 @@ function InsertOnlineList() {
 				if (document.getElementById(i) != null) document.getElementById(i).remove();
 			}
 
-			if (StreamTitle.length >= Num) {
-				CountToCut = StreamTitle.length - Num;
-				document.getElementById('Title_'+i).innerHTML = StreamTitle.substring (0, StreamTitle.length - CountToCut)+'...';
-			} else {
-				document.getElementById('Title_'+i).innerHTML = StreamTitle
-			}
+			document.getElementById('Title_'+i).innerHTML = StreamTitle
+			document.getElementById('stream_game_'+i).innerHTML = StreamGame
 			document.getElementById('Viewers_'+i).innerHTML=localStorage['Stream_Viewers_'+i];
 			document.getElementById('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0')
 			if (StreamGame != 'Not playing') {
 				document.getElementById('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
-				document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:40;cursor:pointer')
+				//document.getElementById('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:40;cursor:pointer')
 			} else {
 				document.getElementById('stream_game_'+i).setAttribute('style','cursor:default')
 				document.getElementById('stream_game_2_'+i).setAttribute('style','cursor:default')
@@ -253,7 +181,7 @@ setInterval(function(){
 
 	if (localJSON('Config','Timeout')) {
 		if (Math.abs(new Date(localJSON('Config','Timeout'))) - Math.abs(new Date()) < 0) {
-			localJSON('Config','Closed',false);
+			localJSON('Config','Closed','false');
 			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
 			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
@@ -269,10 +197,10 @@ setInterval(function(){
 				document.getElementById('News').setAttribute('style','display:none');
 				localJSON('Config','Timeout',Math.abs(new Date())+5*24*60*60*1000);
 				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-				localJSON('Config','Closed',true)
+				localJSON('Config','Closed','true')
 			});
 			document.getElementById('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
-		} else if (!localJSON('Config','Closed')) {
+		} else if (localJSON('Config','Closed') != 'true') {
 			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
 			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
@@ -288,7 +216,7 @@ setInterval(function(){
 				document.getElementById('News').setAttribute('style','display:none');
 				localJSON('Config','Timeout',Math.abs(new Date())+5*24*60*60*1000);
 				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-				localJSON('Config','Closed',true)
+				localJSON('Config','Closed','true')
 			});
 			document.getElementById('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
 		}
