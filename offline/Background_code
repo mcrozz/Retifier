@@ -33,16 +33,6 @@
     7 - First start
 */
 
-/* A bug */
-DamnBug = localJSON('Code');
-DamnBug.Popup.version = 76;
-localStorage['Code'] = JSON.stringify(DamnBug);
-/* -----  */
-
-/*
-if (localJSON('Following','Following')) localStorage['Following']=localJSON('Following','Following');
-*/
-
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     BadgeOnlineCount('0');
@@ -56,6 +46,26 @@ if (!sessionStorage['FirstLoad']) {
     }
 }
 
+/*
+    for (var i=0;i<=NotificationsToClose.length;i++)
+        setTimeout(function(){
+            if (NotificationsToClose2[i] < 5) {
+                NotificationsToClose2[i] += 1
+            } else if (NotificationsToClose2[i] == 5) {
+                chrome.notifications.clear(NotificationsToClose[i],function(){});
+            }
+        },1000)
+*/
+var NotificationsToClose={},NotificationsCount=0;
+/*function NotificationsCenter(id,time){
+    if (!id && !time){
+
+    } else {
+
+    }
+}
+setInterval(NotificationsCenter,1000);*/
+
 function checkDonations() {
     var GetDonationsList = $.ajax({url:"https://app.mcrozz.net/Twitch.tv_Notifier/DonationsList.php"});
     GetDonationsList.complete(function(){
@@ -63,17 +73,15 @@ function checkDonations() {
         if (ParsedResponse.indexOf(hex_md5(localJSON('Config','User_Name'))) != -1 ) {
             date = new Date();
             localJSON('Config','Timeout',date.setDate(date.getDate()+30));
-            localJSON('Config','Ceneled',true)
+            localJSON('Config','Ceneled','true');
+            localJSON('Config','Closed','true');
         }
     });
 }
 
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
-        .fail(function(){
-            notifyUser("Update follows list", "Error, can't update","Update");
-            localJSON('Status','update','8')
-        });
+        .fail(function(){notifyUser("Update follows list", "Error, can't update","Update");localJSON('Status','update','8')});
 
     checkStatus.complete(function() {
         localJSON('Status','checked',Math.floor(localJSON('Status','checked'))+1);
@@ -186,12 +194,27 @@ function getCheckInsert() {
     }
 }
 
-if (FirstStart == '1') setTimeout(function(){ getCheckInsert() }, 10);
-setInterval(function(){getCheckInsert()}, 1000 * 60 * Math.floor(localJSON('Config').Interval_of_Checking));
+IntervalSetted=0;
+setInterval(function(){
+    if (localJSON('Status','StopInterval')=='false' && IntervalSetted==0){
+        getCheckInsert();
+        CheckTwitch = setInterval(function(){getCheckInsert()}, 60000 * Math.floor(localJSON('Config').Interval_of_Checking));
+        IntervalSetted=1
+    } else if (localJSON('Status','StopInterval')=='true' && IntervalSetted==1){
+        clearInterval(CheckTwitch);
+        IntervalSetted=0;
+        localJSON('Status','StopInterval','false')
+    } else if (localJSON('Status','StopInterval')=='true'){
+        IntervalSetted=0;
+        localJSON('Status','StopInterval','false')
+    }
+},100);
+
 
 
 setInterval(function(){
-    if (readCookie('InstatntCheck') == '1') getCheckInsert(); createCookie('InstatntCheck','0',365);
+    if (localStorage['Following'] == undefined) localStorage['Following']=0;
+    if (localStorage['Following'] == 'undefined') localStorage['Following']=0;
     if (readCookie('First_Notify') == '1') {
         if (Math.floor(localJSON('Status','online')) > 1) {
             textANDchannel = 'Now online '+localJSON('Status','online')+' channels';
