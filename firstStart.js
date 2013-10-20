@@ -15,30 +15,25 @@
 */
 
 if (localStorage['Status'] != null && localStorage['Config'] != null) {
-	JSONstatus = JSON.parse(localStorage['Status']);
-	JSONconfig = JSON.parse(localStorage['Config']);
-
 	function firstLaunchUser() {
 		if (document.getElementById('SetUpUserNameInp').value != undefined && document.getElementById('SetUpUserNameInp').value != ' ' && document.getElementById('SetUpUserNameInp').value != ''){ 
-			JSONconfig.User_Name = document.getElementById('SetUpUserNameInp').value;
-			localStorage['Config'] = JSON.stringify(JSONconfig)
-		} else {
-			document.getElementById('FollowedChannelsOnline').innerHTML = 'Invalid name!'
-		}
+			localJSON('Config','User_Name',document.getElementById('SetUpUserNameInp').value);
+			date = new Date();
+	        localJSON('Config','Timeout',date.setDate(date.getDate()+14));
+	        localJSON('Config','Ceneled','true');
+	        localJSON('Config','Closed','true');
+	        localJSON('Status','update','0');
+		} else {document.getElementById('FollowedChannelsOnline').innerHTML = 'Invalid name!'}
 	}
-
-	if (!localStorage['FirstLaunch']) {
-		localStorage['FirstLaunch'] = 'true';
-		console.error('Set up your user name in options')
-	}
+	if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true';console.error('Set up your user name in options')}
 	document.addEventListener( "DOMContentLoaded" , function () {
-		setTimeout(function(){
 		if (localStorage['FirstLaunch'] == 'true'){
-
 			localStorage['Following'] = 0;
-			JSONstatus.update = '7';
-			JSONstatus.ShowWaves = 'false';
-			localStorage['Status'] = JSON.stringify(JSONstatus);
+			localJSON('Status','update','7');
+			date = new Date();
+			localJSON('Config','Timeout',date.setDate(date.getDate()+14));
+	        localJSON('Config','Ceneled','true');
+	        localJSON('Config','Closed','true');
 			
 			document.getElementById('NoOneOnline').setAttribute('style', 'display:none');
 			document.getElementById('FollowedChannelsOnline').innerHTML = "Greetings!";
@@ -51,26 +46,17 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 			WelcomeMsg += '<p class="pWelcome5">Hope this app will be useful for you</p>';
 			WelcomeMsg += '<button type="button" id="SetUpUserName" name="SetUpUserName" class="WelcomOK">OK</button>';
 			WelcomeMsg += '</div>';
-			
-			if (document.getElementById('insertContentHere').innerHTML != WelcomeMsg) {
-				document.getElementById('insertContentHere').innerHTML = WelcomeMsg;
-				document.getElementById('SetUpUserNameInp').focus();
-				document.getElementById("SetUpUserName").addEventListener("click", firstLaunchUser);
-		    }
-		    setInterval(function(){
-		    	date = new Date();
-	            localJSON('Config','Timeout',date.setDate(date.getDate()+14));
-	            localJSON('Config','Ceneled',true)
-				document.getElementById('SetUpUserNameInp').onkeyup = function(evt) {
-					if(evt.keyCode == 13){
-						firstLaunchUser()
-					}
-				}
+			document.getElementById('insertContentHere').innerHTML = WelcomeMsg;
+			document.getElementById('SetUpUserNameInp').focus();
+			document.getElementById("SetUpUserName").addEventListener("click", firstLaunchUser);
+		    
+		    setInterval(function(){		    	
+				document.getElementById('SetUpUserNameInp').onkeyup=function(evt){if(evt.keyCode == 13)firstLaunchUser()}
 				
-			    if (document.getElementById('SetUpUserNameInp').value == JSONconfig.User_Name) {
+			    if (document.getElementById('SetUpUserNameInp').value == localJSON('Config','User_Name')) {
 					localStorage['FirstLaunch'] = 'false';
 					document.getElementById('insertContentHere').innerHTML = null;
-					createCookie('InstatntCheck','1',365);
+					localJSON('Status','StopInterval','true');
 					document.getElementById('NoOneOnline').setAttribute('style', 'display:block');
 					document.getElementById('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 					localStorage['Reload'] = 0;
@@ -78,6 +64,5 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 				}
 			},10);
 		}
-		},100);
 	});
 }
