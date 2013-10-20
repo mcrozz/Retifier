@@ -70,7 +70,7 @@ $.ajaxSetup ({cache:false});
 
 Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": "0","version_geted": "0"},"Popup": {"code": "//code","date": "date",	"hex": "hex","version": "0","version_geted": "0"},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": "0","version_geted": "0"}};
 Config = {"User_Name": "Guest","Notifications": {"status": "Enable","online": "Enable","update": "Enable","sound_status": "Enable","sound": "DinDon"},"Duration_of_stream": "Enable","Interval_of_Checking": "3"};
-Status = {"update": "0","online": "0","checked": "0","ShowWaves": "true","InsertOnlineList": "0"};
+Status = {"update": "0","online": "0","checked": "0","ShowWaves": "true","InsertOnlineList": "0","StopInterval": "true"};
 if (localStorage['Code'] == undefined) localStorage['Code'] = JSON.stringify(Code);
 if (localStorage['Config'] == undefined) localStorage['Config'] = JSON.stringify(Config);
 if (localStorage['Status'] == undefined) localStorage['Status'] = JSON.stringify(Status);

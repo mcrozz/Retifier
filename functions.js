@@ -13,8 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-var NotificationsToClose = [],
-	NotificationsToClose2 = [];
+var NotificationsCount;
 
 if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
 setInterval(function(){
@@ -37,11 +36,7 @@ if (localStorage['Status'] != undefined && localStorage['Config'] != undefined) 
 function localJSON(name,vars,values) {
 	if (values == undefined && vars != undefined) {
 		returnVal = JSON.parse(localStorage[name]);
-		if (returnVal[vars] != undefined) {
-			return returnVal[vars];
-		} else {
-			return false;
-		}
+		if (returnVal[vars] != undefined) { return returnVal[vars]; } else { return false; }
 	} else if (values != undefined && vars != undefined) {
 		returnVal = JSON.parse(localStorage[name]);
 		returnVal[vars] = values;
@@ -49,35 +44,12 @@ function localJSON(name,vars,values) {
 		return true;
 	} else if (vars == undefined && values == undefined) {
 		return JSON.parse(localStorage[name]);
-	} else {
-		return false;
-	}
+	} else { return false; }
 }
-
-function createCookie(name,value,days) {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		expires = "; expires="+date.toGMTString();
-	}
-	else expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
-}
-
-function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for (var i=0;i<ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
-}
-
-function delCookie(name) {document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
-
-function BadgeOnlineCount(count) {if (count == '0') chrome.browserAction.setBadgeText({text: String('')}); else chrome.browserAction.setBadgeText({text: String(count)})};
+function createCookie(name,value,days){if(days){var date=new Date();date.setTime(date.getTime()+(days*24*60*60*1000));expires="; expires="+date.toGMTString();} else expires="";document.cookie=name+"="+value+expires+"; path=/";}
+function readCookie(name){var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0) return c.substring(nameEQ.length,c.length);}return null;}
+function delCookie(name){document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
+function BadgeOnlineCount(count){if(count=='0')chrome.browserAction.setBadgeText({text:String('')});else chrome.browserAction.setBadgeText({text:String(count)})};
 
 function sendNotify(Title, msg, streamer, scriptUpd) {
 	if (!scriptUpd) {
@@ -100,7 +72,7 @@ function sendNotify(Title, msg, streamer, scriptUpd) {
 		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp'], function(){})},10*1000)
 		if (JSON.parse(localStorage['Config']).Notifications.sound_status == 'Enable') {
 			Audio = document.createElement('audio');
-			MusicName = '/Music/'+JSON.parse(localStorage['Config']).Notifications.sound+'.mp3';
+			MusicName = '/Music/'+localJSON('Config').Notifications.sound+'.mp3';
 			Audio.setAttribute('src', MusicName);
 			Audio.setAttribute('autoplay', 'autoplay');
 			Audio.play()
@@ -112,40 +84,16 @@ chrome.notifications.onButtonClicked.addListener(function(notificationId){window
 chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
 chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
 
-setInterval(function(){
-	for (var i=0;i<=NotificationsToClose.length;i++)
-		setTimeout(function(){
-			if (NotificationsToClose2[i] < 5) {
-				NotificationsToClose2[i] += 1
-			} else if (NotificationsToClose2[i] == 5) {
-				chrome.notifications.clear(NotificationsToClose[i],function(){});
-			}
-		},1000)
-},1000);
-
 function notifyUser(streamerName, titleOfStream, type, streamer) {
 	if (localJSON('Config').Notifications.status == 'Enable') {
 		if (type == 'Online' && localJSON('Config').Notifications.online == 'Enable') {
-			sendNotify(streamerName, titleOfStream, streamer)
+			sendNotify(streamerName, titleOfStream, streamer);NotificationsCount+=1
 		} if (type == 'Changed' && localJSON('Config').Notifications.update == 'Enable') {
-			key = streamer+Math.floor(Math.random()*100);
-			sendNotify(streamerName, titleOfStream, key);
-			NotificationsToClose.push(key);
-			NotificationsToClose2.push(1)
+			sendNotify(streamerName, titleOfStream, NotificationsCount);NotificationsCount+=1;
 		} if (type == 'ScriptUpdate') {
 			if (!sessionStorage['Disable_Update_Notifies'])
-			sendNotify(streamerName, titleOfStream, streamerName, 'Update');
+			sendNotify(streamerName, titleOfStream, streamerName, 'Update');NotificationsCount+=1
 		}
-	}
-}
-
-function AppVersion(type, ver) {
-	if (type == 'Version') {
-		VersionUnit = 'ver. ';
-		VersionUnit += localStorage['App_Version'];
-		VersionUnit += ' (changes)';
-		
-		document.getElementById('AppVersionClick').innerHTML = VersionUnit
 	}
 }
 
