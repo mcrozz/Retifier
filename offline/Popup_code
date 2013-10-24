@@ -24,16 +24,17 @@ openCloseReportVar = 1;
 
 function CSScompiler() {
 	style=document.createElement('style');
-	if (localJSON('Config','Format') == false) {
+	format=localJSON('Config','v',['Format']);
+	if (localJSON('Config','v',['Format']) == false) {
 		StrmLst = localJSON('Config');
 		StrmLst.Format = 'Mini';
 		localStorage['Config'] = JSON.stringify(StrmLst);
 		CSScompiler()
 	} else {
-	AddAnyway = '::-webkit-scrollbar {width:12px}';
-	AddAnyway += '::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}';
-	AddAnyway += '::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}';
-	if (localJSON('Config','Format') == 'Full') {
+	AddAnyways = '::-webkit-scrollbar {width:12px}';
+	AddAnyways += '::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}';
+	AddAnyways += '::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}';
+	if (format == 'Full') {
 		css = '.StreamDuration {color:black;margin:0 0 0 17}';
 		css += '.title {width:340px;height:30px;display:block;border-bottom:1px solid black;margin-bottom:5px}';
 		css += 'button:focus {outline-color:rgba(255,255,255,0)}';
@@ -63,7 +64,7 @@ function CSScompiler() {
 		css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
 		css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
 		css += 'button.button {color:black;text-decoration:none;font-size:22px;width:150px;height:30px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.73)),to(rgba(129, 129, 129, 0.64)))}';
-	} else if (localJSON('Config','Format') == 'Mini') {
+	} else if (format == 'Mini') {
 		css = '.StreamDuration {color:black;margin:0 0 0 17;font-size:19}';
 		css += '.title {width:530px;height:20px;border-bottom:1px solid black;padding-bottom:3px}';
 		css += '.streamer {width:230px;height:20px;display:inline}';
@@ -92,34 +93,59 @@ function CSScompiler() {
         css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
         css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
 		css += 'button.button {color:black;text-decoration:none;font-size:18px;width:110px;height:22px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.73)),to(rgba(129, 129, 129, 0.64)))}';
+	} else if (format == 'Grid') {
+		css = '.StreamDuration {color:black;margin:0 0 0 17}';
+		css += '.title {width:340px;height:30px;display:block;border-bottom:1px solid black;margin-bottom:5px}';
+		css += 'button:focus {outline-color:rgba(255,255,255,0)}';
+		css += '.streamer {width:150px;height:30px;display:block}';
+		css += '.viewers {width:160px;height:30px;display:block;position:absolute;right:15;top:37;text-align:right}';
+		css += '.gamename {width:340px;height:30px;display:block;margin-top:-6px;text-align:center;border-top:1px solid black}';
+		css += '.pViewers {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}';
+		css += '.content {height:200px;width:685px;padding:2;position:relative}';
+		css += '.content2 {max-height:100%;overflow:auto}';
+		css += '.content3 {height:505;width:703;position:relative;display:block;padding:5px;margin-top:-3;margin-left:-12}';
+		css += '.tumblr {background:url("StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}';
+		css += '.tumblr:hover::after {content:"Go to streaming page";width:317px;height:22px;z-index:1;position:absolute;left:1;top:168;text-align:center;color:rgba(255,255,255,0.5);padding:4 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39, 39, 39, 0.66)),to(rgba(0, 0, 0, 0.85)));-webkit-animation-name:fadeIn;-webkit-animation-duration:0.5s}';
+		css += '.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}';
+		css += '.informationTextTitle,.informationTextTitle2 {cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:328px}';
+		css += '.informationTextTitle:hover::after {content:attr(data-title);left:-1%;top:0%;width:322px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}';
+		css += '.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:6}';
+		css += '.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}';
+		css += '.informationTextGame,.informationTextGame2 {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;margin-top:5px}';
+		css += '.informationTextGame:hover::after {content:attr(data-title);left:-1%;top:45%;width:322px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1;text-align:center}';
+		css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}';
+		css += '.GameTumb1 {z-index:3}';
+		css += '.GameTumb2 {z-index:2}';
+		css += '.TumbStream {width:320px;height:200px}';
+		css += '.StreamOnChannelPage {width:340px;height:40px;padding-top:2px}';
+		css += '.StreamDurationDiv {width:170;height:40;position:absolute;right:16;top:96;text-align:right}';
+		css += '.ChannelPageDiv {width:150;height:40;display:inline}';
+		css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
+		css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
+		css += 'button.button {color:black;text-decoration:none;font-size:22px;width:150px;height:30px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.73)),to(rgba(129, 129, 129, 0.64)))}';
 	}
-	css += AddAnyway;
-	if (style.styleSheet) {
-		style.styleSheet.cssText=css;
-	} else {
-		style.appendChild(document.createTextNode(css));
-		document.getElementsByTagName('head')[0].appendChild(style)
-	}
+	css += AddAnyways;
+	if (style.styleSheet){style.styleSheet.cssText=css}else{style.appendChild(document.createTextNode(css));document.getElementsByTagName('head')[0].appendChild(style)}
 	}
 }
 
 function clickChangeUser() {
-	document.getElementById("userChangePopup").style.display = 'block';
-	document.getElementById("userChangePopup2").setAttribute("style","display:block");
-	document.getElementById("userChangePopup").setAttribute("style","left:173");
-	document.getElementById("AppVersion").setAttribute("style","display:none");
+	doc("userChangePopup").style.display='block';
+	doc("userChangePopup2").setAttribute("style","display:block");
+	doc("userChangePopup").setAttribute("style","left:173");
+	doc("AppVersion").setAttribute("style","display:none");
 	$('#userChangePopup2').removeClass('animated FadeOut');
 	$('#userChangePopup2').addClass('animated FadeIn');
 	$('#userChangePopup').removeClass('animated bounceOut');
 	$('#userChangePopup').addClass('animated bounceIn');
-	document.getElementById("ChgUsrNam").value=localJSON('Config','User_Name');
-	document.getElementById("ChgUsrInt").value=localJSON('Config','Interval_of_Checking');
-	document.getElementById('fndAbug').setAttribute("style","display:block;top:190;right:-68");
-	createCookie('userChangePopup','open',1);
+	doc("ChgUsrNam").value=localJSON('Config','v',['User_Name']);
+	doc("ChgUsrInt").value=localJSON('Config','v',['Interval_of_Checking']);
+	doc('fndAbug').setAttribute("style","display:block;top:190;right:-68");
 	changeNotify('Checking');
 	checkSoundEnable('Checking');
 	checkStreamDuration('Checking');
-	document.getElementById('List_Format_List').value = localJSON('Config','Format');
+	doc('List_Format_List').value=localJSON('Config','v',['Format']);
+
 	_gaq.push(['_trackEvent', 'Options', 'clicked'])
 }
 
@@ -128,18 +154,18 @@ function clickChangeUserCls() {
 	$('#userChangePopup').addClass('animated bounceOut');
 	$('#userChangePopup2').removeClass('animated FadeIn');
 	$('#userChangePopup2').addClass('animated FadeOut');
-	document.getElementById('fndAbug').setAttribute("style","display:none");
-	document.getElementById("AppVersion").setAttribute("style","display:block");
+	doc('fndAbug').setAttribute("style","display:none");
+	doc("AppVersion").setAttribute("style","display:block");
 	setTimeout(function(){
-		document.getElementById("userChangePopup").style.display = 'none';
-		document.getElementById("userChangePopup2").setAttribute("style","display:none");
-		document.getElementById("FoundAbugText").setAttribute('style', 'display:none');
+		doc("userChangePopup").style.display = 'none';
+		doc("userChangePopup2").setAttribute("style","display:none");
+		doc("FoundAbugText").setAttribute('style', 'display:none');
 		openCloseReportVar = 1
 	},800);
 }
 
 function changeUserName() {
-	if (document.getElementById("ChgUsrNam").value != localJSON('Config','User_Name')) {
+	if (doc("ChgUsrNam").value != localJSON('Config','v',['User_Name'])) {
 		for (var i=0;i<Math.floor(localJSON('Following'));i++){
 	        delete localStorage['Stream_Title_'+i];
 	        delete localStorage['Stream_Time_'+i];
@@ -148,14 +174,14 @@ function changeUserName() {
 	        delete localStorage['Stream_Game_'+i];
 	        delete localStorage['Stream_Status_'+i];
 	        delete localStorage['Stream_Name_'+i]}
-		localJSON('Config','User_Name',document.getElementById("ChgUsrNam").value);
-		localJSON('Status','StopInterval','true');
-		document.getElementById('insertContentHere').innerHTML=null;
+		localJSON('Config','c',['User_Name',doc("ChgUsrNam").value]);
+		localJSON('Status','c',['StopInterval','true']);
+		doc('insertContentHere').innerHTML=null;
 		InsertOnlineList();		
-	} if (document.getElementById("ChgUsrNam").value == '') {
-		localJSON('Config','User_Name','Guest');
-		localJSON('Status','update','6');
-		document.getElementById('insertContentHere').innerHTML=null;
+	} if (doc("ChgUsrNam").value == '') {
+		localJSON('Config','c',['User_Name','Guest']);
+		localJSON('Status','c',['update','6']);
+		doc('insertContentHere').innerHTML=null;
 		InsertOnlineList();
 		for (var i=0;i<Math.floor(localJSON('Following'));i++)
 	        delete localStorage['Stream_Title_'+i];
@@ -168,58 +194,38 @@ function changeUserName() {
 	}
 }
 
-function changeReftInt() {
-	if (!isNaN(document.getElementById("ChgUsrInt").value)) {
-		localJSON('Config','Interval_of_Checking',document.getElementById("ChgUsrInt").value)		
-	}
-}
-
 function changeNotify(type) {
 	if (type == 'Change') {
 		NotifyChange=localJSON('Config');
-		if (document.getElementById('EnNotify').checked) {
-			NotifyChange.Notifications.status = 'Enable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} if (document.getElementById('DisNotify').checked) {
-			NotifyChange.Notifications.status = 'Disable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		}
-		if (document.getElementById('NotifyStreamer').checked) {
-			NotifyChange.Notifications.online = 'Enable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} else {
-			NotifyChange.Notifications.online = 'Disable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} if (document.getElementById('NotifyStreamerChanged').checked) {
-			NotifyChange.Notifications.update = 'Enable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} else {
-			NotifyChange.Notifications.update = 'Disable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} if (document.getElementById('NotifyUpdate').checked) {
-			NotifyChange.Notifications.follow = 'Enable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		} else {
-			NotifyChange.Notifications.follow = 'Disable';
-			localStorage['Config'] = JSON.stringify(NotifyChange)
-		}
-	} else if (type == 'Checking') {
-		if (localJSON('Config').Notifications.status == 'Disable') {
-			document.getElementById('EnNotify').checked = false;
-			document.getElementById('NotifyStreamerChanged').disabled = true;
-			document.getElementById('NotifyStreamer').disabled = true;
-			document.getElementById('NotifyUpdate').disabled = true;
-		} else if (localJSON('Config').Notifications.status == 'Enable') {
-			document.getElementById('EnNotify').checked = true;
-			document.getElementById('NotifyStreamerChanged').disabled = false;
-			document.getElementById('NotifyStreamer').disabled = false;
-			document.getElementById('NotifyUpdate').disabled = false
-		} if (localJSON('Config').Notifications.update == 'Enable') {
-			document.getElementById('NotifyStreamerChanged').checked = true;
-		} if (localJSON('Config').Notifications.online == 'Enable') {
-			document.getElementById('NotifyStreamer').checked = true;
-		} if (localJSON('Config').Notifications.follow == 'Enable') {
-			document.getElementById('NotifyUpdate').checked = true;
+		if (doc('EnNotify').checked) {localJSON('Config','c',['Notifications','status','Enable'])} 
+		if (doc('DisNotify').checked) {localJSON('Config','c',['Notifications','status','Disable'])}
+		
+		if (doc('NotifyStreamer').checked) {localJSON('Config','c',['Notifications','online','Enable'])
+		} else {localJSON('Config','c',['Notifications','online','Disable'])} 
+		
+		if (doc('NotifyStreamerChanged').checked) {localJSON('Config','c',['Notifications','update','Enable'])
+		} else {localJSON('Config','c',['Notifications','update','Disable'])} 
+		
+		if (doc('NotifyUpdate').checked) {localJSON('Config','c',['Notifications','follow','Enable'])
+		} else {localJSON('Config','c',['Notifications','follow','Disable'])}
+		
+		} else if (type == 'Checking') {
+		if (localJSON('Config','v',['Notifications','status']) == 'Disable') {
+			doc('EnNotify').checked = false;
+			doc('NotifyStreamerChanged').disabled = true;
+			doc('NotifyStreamer').disabled = true;
+			doc('NotifyUpdate').disabled = true;
+		} else if (localJSON('Config','v',['Notifications','status']) == 'Enable') {
+			doc('EnNotify').checked = true;
+			doc('NotifyStreamerChanged').disabled = false;
+			doc('NotifyStreamer').disabled = false;
+			doc('NotifyUpdate').disabled = false
+		} if (localJSON('Config','v',['Notifications','update']) == 'Enable') {
+			doc('NotifyStreamerChanged').checked = true;
+		} if (localJSON('Config','v',['Notifications','online']) == 'Enable') {
+			doc('NotifyStreamer').checked = true;
+		} if (localJSON('Config','v',['Notifications','follow']) == 'Enable') {
+			doc('NotifyUpdate').checked = true;
 		}
 	}
 }
@@ -229,22 +235,22 @@ function openCloseReportAbug() {
 	
 	if ($('#userChangePopup').css('display') == 'block') {
 		if (openCloseReportVar == 1) {
-			document.getElementById("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
-			document.getElementById("fndAbug").setAttribute('style','right:39;top:190');
+			doc("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
+			doc("fndAbug").setAttribute('style','right:39;top:190');
 			openCloseReportVar = 0
 		} else if (openCloseReportVar == 0) {
-			document.getElementById("FoundAbugText").setAttribute('style','display:none');
-			document.getElementById("fndAbug").setAttribute('style','display:block;top:190;right:-68')
+			doc("FoundAbugText").setAttribute('style','display:none');
+			doc("fndAbug").setAttribute('style','display:block;top:190;right:-68')
 			openCloseReportVar = 1
 		}
 	} else if ($('#AppChanges').css('display') == 'block') {
 		if (openCloseReportVar == 1) {
-			document.getElementById("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
-			document.getElementById("fndAbug").setAttribute('style','right:39;top:190');
+			doc("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
+			doc("fndAbug").setAttribute('style','right:39;top:190');
 			openCloseReportVar = 0
 		} else if (openCloseReportVar == 0) {
-			document.getElementById("FoundAbugText").setAttribute('style','display:none');
-			document.getElementById("fndAbug").setAttribute('style','display:block;top:190;right:-68');
+			doc("FoundAbugText").setAttribute('style','display:none');
+			doc("fndAbug").setAttribute('style','display:block;top:190;right:-68');
 			openCloseReportVar = 1
 		}
 	}
@@ -253,39 +259,36 @@ function openCloseReportAbug() {
 function checkSoundEnable(type) {
 	if (type == 'Change') {
 		SoundEnbl = localJSON('Config');
-		if (document.getElementById('SoundCheck').checked == true) {
+		if (doc('SoundCheck').checked == true) {
 			SoundEnbl.Notifications.sound_status = 'Enable';
 			localStorage['Config'] = JSON.stringify(SoundEnbl)
-		} else if (document.getElementById('SoundCheck').checked == false) {
+		} else if (doc('SoundCheck').checked == false) {
 			SoundEnbl.Notifications.sound_status = 'Disable';
 			localStorage['Config'] = JSON.stringify(SoundEnbl);
 		}
 	} else if (type == 'Checking') {
-		if (localJSON('Config').Notifications.sound_status == 'Enable') {
-			document.getElementById('SoundCheck').checked = true;
-			document.getElementById('SoundSelect').disabled = false
-		} else if (localJSON('Config').Notifications.sound_status == 'Disable') {
-			document.getElementById('SoundCheck').checked = false;
-			document.getElementById('SoundSelect').disabled = true
+		if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
+			doc('SoundCheck').checked = true;
+			doc('SoundSelect').disabled = false
+		} else if (localJSON('Config','v',['Notifications','sound_status']) == 'Disable') {
+			doc('SoundCheck').checked = false;
+			doc('SoundSelect').disabled = true
 		}
 	}
 }
 
 function checkStreamDuration(type) {
 	if (type == 'Change') {
-		StrmDur = localJSON('Config');
-		if (document.getElementById('StreamDurationCheck').checked == true) {
-			StrmDur.Duration_of_stream = 'Enable';
-			localStorage['Config'] = JSON.stringify(StrmDur)
-		} else if (document.getElementById('StreamDurationCheck').checked == false) {
-			StrmDur.Duration_of_stream = 'Disable';
-			localStorage['Config'] = JSON.stringify(StrmDur)
+		if (doc('StreamDurationCheck').checked == true) {
+			localJSON('Config','c',['Duration_of_stream','Enable'])
+		} else if (doc('StreamDurationCheck').checked == false) {
+			localJSON('Config','c',['Duration_of_stream','Disable'])
 		}
 	} else if (type == 'Checking') {
-		if (localJSON('Config').Duration_of_stream == 'Enable') {
-			document.getElementById('StreamDurationCheck').checked = true
-		} else if (localJSON('Config').Duration_of_stream == 'Disable') {
-			document.getElementById('StreamDurationCheck').checked = false
+		if (localJSON('Config','c',['Duration_of_stream']) == 'Enable') {
+			doc('StreamDurationCheck').checked = true
+		} else if (localJSON('Config','c',['Duration_of_stream']) == 'Disable') {
+			doc('StreamDurationCheck').checked = false
 		}
 	}
 }
@@ -293,12 +296,12 @@ function checkStreamDuration(type) {
 function changeScriptStarter() {
 	changeSoundFile('Change');
 	changeUserName();
-	changeReftInt();
+	if(!isNaN(doc("ChgUsrInt").value)){localJSON('Config','c',['Interval_of_Checking',doc("ChgUsrInt").value])};
 	changeNotify('Change');
 	checkSoundEnable('Change');
 	checkStreamDuration('Change');
 	clickChangeUserCls();
-	localJSON('Config','Format',document.getElementById('List_Format_List').value);
+	localJSON('Config','c',['Format',doc('List_Format_List').value]);
 	element = document.getElementsByTagName("style");
 	element[0].parentNode.removeChild(element[0]);
 	CSScompiler();
@@ -309,13 +312,13 @@ function FollowedChannelsList(content,status) {
 	if (LinesInListOfFollowedChannels == 22) {
 		NumberOfidOfListOfFollowedChannels += 1;
 		LinesInListOfFollowedChannels = 0		
-	} else {if(NumberOfidOfListOfFollowedChannels==4) document.getElementById('FollowedChannelsList').style.overflow='auto' } 
+	} else {if(NumberOfidOfListOfFollowedChannels==4) doc('FollowedChannelsList').style.overflow='auto' } 
 	if (status == 'Online') statusColor = 'rgb(0, 194, 40)'; else statusColor = 'black';
 
 	idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
-	TempVariable = document.getElementById(idOfListOfFollowedChannels).innerHTML;
+	TempVariable = doc(idOfListOfFollowedChannels).innerHTML;
 	TempVariable += '<div><a href="http://www.twitch.tv/'+content+'/profile" style="color:'+statusColor+';border-bottom:1px black dotted" target="_blank">'+content+'</a><br></div>';
-	document.getElementById(idOfListOfFollowedChannels).innerHTML = TempVariable;
+	doc(idOfListOfFollowedChannels).innerHTML = TempVariable;
 
 	LinesInListOfFollowedChannels += 1
 	// If 19 lines then go to next sector
@@ -323,17 +326,17 @@ function FollowedChannelsList(content,status) {
 }
 
 function openFollowedList() {
-	document.getElementById('InsertFollowedChannelsHere1').style.height='590px';
-	document.getElementById('InsertFollowedChannelsHere2').style.height='590px';
-	document.getElementById('InsertFollowedChannelsHere3').style.height='590px';
-	document.getElementById('InsertFollowedChannelsHere4').style.height='590px';
-	document.getElementById('InsertFollowedChannelsHere5').style.height='590px';
-	document.getElementById('InsertFollowedChannelsHere6').style.height='590px';
+	doc('InsertFollowedChannelsHere1').style.height='590px';
+	doc('InsertFollowedChannelsHere2').style.height='590px';
+	doc('InsertFollowedChannelsHere3').style.height='590px';
+	doc('InsertFollowedChannelsHere4').style.height='590px';
+	doc('InsertFollowedChannelsHere5').style.height='590px';
+	doc('InsertFollowedChannelsHere6').style.height='590px';
 
-	document.getElementById("firstScane").setAttribute("style","display:none");
-	document.getElementById("FollowedChannelsList").style.display = 'block';
-	document.getElementById("FollowedChannelsList").style.overflow = 'hidden';
-	document.getElementById("FollowedChannelsList").style.height = '584px';
+	doc("firstScane").setAttribute("style","display:none");
+	doc("FollowedChannelsList").style.display = 'block';
+	doc("FollowedChannelsList").style.overflow = 'hidden';
+	doc("FollowedChannelsList").style.height = '584px';
 	$('#FollowedChannelsList').removeClass('animated fadeOut');
 	$('#FollowedChannelsList').addClass('animated fadeIn');
 
@@ -348,17 +351,17 @@ function closeFollowedList() {
 	$('#FollowedChannelsList').removeClass('fadeIn');
 	$('#FollowedChannelsList').addClass('animated fadeOut');
 	setTimeout(function(){
-		document.getElementById("FollowedChannelsList").setAttribute("style","display:none");
-		document.getElementById("firstScane").setAttribute("style","display:block");
+		doc("FollowedChannelsList").setAttribute("style","display:none");
+		doc("firstScane").setAttribute("style","display:block");
 		$('#firstScane').removeClass('animated fadeOut');
 		$('#firstScane').addClass('animated fadeIn')
 	});
-	document.getElementById('InsertFollowedChannelsHere1').innerHTML=null;
-	document.getElementById('InsertFollowedChannelsHere2').innerHTML=null;
-	document.getElementById('InsertFollowedChannelsHere3').innerHTML=null;
-	document.getElementById('InsertFollowedChannelsHere4').innerHTML=null;
-	document.getElementById('InsertFollowedChannelsHere5').innerHTML=null;
-	document.getElementById('InsertFollowedChannelsHere6').innerHTML=null;
+	doc('InsertFollowedChannelsHere1').innerHTML=null;
+	doc('InsertFollowedChannelsHere2').innerHTML=null;
+	doc('InsertFollowedChannelsHere3').innerHTML=null;
+	doc('InsertFollowedChannelsHere4').innerHTML=null;
+	doc('InsertFollowedChannelsHere5').innerHTML=null;
+	doc('InsertFollowedChannelsHere6').innerHTML=null;
 	NumberOfidOfListOfFollowedChannels = 1;
 	LinesInListOfFollowedChannels = 0
 }
@@ -370,12 +373,12 @@ function openAppVersionChanges() {
 		$('#AppChanges').addClass('animated bounceInUp');
 		$('#AppInfoBack').removeClass('animated FadeOut');
 		$('#AppInfoBack').addClass('animated FadeIn');
-        document.getElementById('fndAbug').setAttribute("style","display:block");
-		document.getElementById("fndAbug").setAttribute('style', 'display:block;top:190;right:-68');
-		document.getElementById('AppChanges').setAttribute('style', 'display:block');
-		document.getElementById('body').setAttribute('style', 'overflow:hidden');
-		document.getElementById("AppInfoBack").setAttribute("style","display:block");
-		document.getElementById("AppVersion").setAttribute("style","display:none");
+        doc('fndAbug').setAttribute("style","display:block");
+		doc("fndAbug").setAttribute('style', 'display:block;top:190;right:-68');
+		doc('AppChanges').setAttribute('style', 'display:block');
+		doc('body').setAttribute('style', 'overflow:hidden');
+		doc("AppInfoBack").setAttribute("style","display:block");
+		doc("AppVersion").setAttribute("style","display:none");
 		changeAppContent('AppFirst');
 		openCloseVersionVar = 0
 	} else if (openCloseVersionVar == 0) {
@@ -383,14 +386,14 @@ function openAppVersionChanges() {
 		$('#AppChanges').addClass('animated bounceOutDown');
 		$('#AppInfoBack').removeClass('animated FadeIn');
 		$('#AppInfoBack').addClass('animated FadeOut');
-		document.getElementById("AppVersion").setAttribute("style","display:block");
+		doc("AppVersion").setAttribute("style","display:block");
 		setTimeout(function(){
-			document.getElementById('fndAbug').setAttribute("style","display:none");
-			document.getElementById("FoundAbugText").setAttribute('style', 'display:none');
-			document.getElementById('AppChanges').setAttribute('style', 'display:none');
-			document.getElementById('body').setAttribute('style', 'overflow:auto');
-			document.getElementById('fndAbug').setAttribute("style","display:none");
-			document.getElementById("AppInfoBack").setAttribute("style","display:none")
+			doc('fndAbug').setAttribute("style","display:none");
+			doc("FoundAbugText").setAttribute('style', 'display:none');
+			doc('AppChanges').setAttribute('style', 'display:none');
+			doc('body').setAttribute('style', 'overflow:auto');
+			doc('fndAbug').setAttribute("style","display:none");
+			doc("AppInfoBack").setAttribute("style","display:none")
 		},800);
 		openCloseVersionVar = 1
 	}
@@ -401,13 +404,13 @@ function CloseAppVersionChanges() {
 	$('#AppChanges').addClass('animated bounceOutDown');
 	$('#AppInfoBack').removeClass('animated FadeIn');
 	$('#AppInfoBack').addClass('animated FadeOut');
-	document.getElementById("AppVersion").setAttribute("style","display:block");
-	document.getElementById('fndAbug').setAttribute("style","display:none");
+	doc("AppVersion").setAttribute("style","display:block");
+	doc('fndAbug').setAttribute("style","display:none");
 	setTimeout(function(){
-		document.getElementById("FoundAbugText").setAttribute('style', 'display:none');
-		document.getElementById('AppChanges').setAttribute('style', 'display:none');
-		document.getElementById('body').setAttribute('style', 'overflow:auto');
-		document.getElementById("AppInfoBack").setAttribute("style","display:none")
+		doc("FoundAbugText").setAttribute('style', 'display:none');
+		doc('AppChanges').setAttribute('style', 'display:none');
+		doc('body').setAttribute('style', 'overflow:auto');
+		doc("AppInfoBack").setAttribute("style","display:none")
 	},800);
 	openCloseVersionVar = 1
 }
@@ -443,12 +446,12 @@ function changeAppContent(App) {
 		$('#AppVersionContent').removeClass('animated bounceOutDown');
 		$('#AppVersionContent').addClass('animated bounceOutDown');
 		setTimeout(function(){
-			document.getElementById('AppVersionContent').innerHTML = AppFirst;
+			doc('AppVersionContent').innerHTML = AppFirst;
 
-			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+			doc('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
+			doc('AppThird').setAttribute('style','border-bottom:2px solid white');
+			doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 
 			$('#AppVersionContent').removeClass('animated bounceOutDown');
 			$('#AppVersionContent').removeClass('animated fadeIn');
@@ -460,12 +463,12 @@ function changeAppContent(App) {
 		$('#AppVersionContent').removeClass('animated bounceOutDown');
 		$('#AppVersionContent').addClass('animated bounceOutDown');
 		setTimeout(function(){
-			document.getElementById('AppVersionContent').innerHTML = AppSecond;
+			doc('AppVersionContent').innerHTML = AppSecond;
 
-			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+			doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
+			doc('AppSecond').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			doc('AppThird').setAttribute('style','border-bottom:2px solid white');
+			doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 
 			$('#AppVersionContent').removeClass('animated bounceOutDown');
 			$('#AppVersionContent').removeClass('animated fadeIn');
@@ -481,12 +484,12 @@ function changeAppContent(App) {
 		$('#AppVersionContent').removeClass('animated bounceOutDown');
 		$('#AppVersionContent').addClass('animated bounceOutDown');
 		setTimeout(function(){
-			document.getElementById('AppVersionContent').innerHTML = AppThird;
+			doc('AppVersionContent').innerHTML = AppThird;
 
-			document.getElementById('AppFirst').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppSecond').setAttribute('style','border-bottom:2px solid white');
-			document.getElementById('AppThird').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-			document.getElementById('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
+			doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
+			doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
+			doc('AppThird').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
+			doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 
 			$('#AppVersionContent').removeClass('animated bounceOutDown');
 			$('#AppVersionContent').removeClass('animated fadeIn');
@@ -498,24 +501,22 @@ function changeAppContent(App) {
 function changeSoundFile(type) {
 	if (type != 'Change') {
 		var Audio = document.createElement('audio');
-		MusicName = '/Music/'+document.getElementById("SoundSelect").value+'.mp3';
+		MusicName = '/Music/'+doc("SoundSelect").value+'.mp3';
 		Audio.setAttribute('src', MusicName);
 		Audio.setAttribute('autoplay', 'autoplay');
 		Audio.play()
 	} else if (type == 'Change'){
-		SndFile = localJSON('Config')
-		SndFile.Notifications.sound = document.getElementById("SoundSelect").value;
-		localStorage['Config'] = JSON.stringify(SndFile)
+		localJSON('Config','c',['Notifications','sound',doc("SoundSelect").value])
 	}
 }
 
 function progressBar(type) {
 	if (type == 'Enable') {
-		document.getElementById('CheckingProgress').setAttribute('style', 'display:block');
-		document.getElementById('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * localJSON('Status','checked'))
+		doc('CheckingProgress').setAttribute('style', 'display:block');
+		doc('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * localJSON('Status','checked'))
 	} else if (type == 'Disable') {
 		setTimeout(function(){
-			document.getElementById('CheckingProgress').setAttribute('style', 'display:none')
+			doc('CheckingProgress').setAttribute('style', 'display:none')
 		},800);
 	}
 }
@@ -523,23 +524,23 @@ function progressBar(type) {
 
 document.addEventListener("DOMContentLoaded",function (){
 	CSScompiler();    
-	document.getElementById('AppVersion').innerHTML='ver. '+localStorage['App_Version']+' (changes)';
-	document.getElementById("ChgUsr").addEventListener( "click" , clickChangeUser);
-	document.getElementById("ChgUsrSnd").addEventListener( "click" , changeScriptStarter);
-	document.getElementById("LstFlwdChnls").addEventListener( "click" , openFollowedList);
-	document.getElementById("ClsFlwdChnlsLst").addEventListener( "click" , closeFollowedList);
-	document.getElementById("EnNotify").addEventListener("change", function(){document.getElementById('DisNotify').checked=false;document.getElementById('NotifyStreamer').disabled=false;document.getElementById('NotifyStreamerChanged').disabled=false;document.getElementById('NotifyUpdate').disabled=false});
-	document.getElementById("DisNotify").addEventListener("change", function(){document.getElementById('EnNotify').checked=false;document.getElementById('NotifyStreamer').disabled=true;document.getElementById('NotifyStreamerChanged').disabled=true;document.getElementById('NotifyUpdate').disabled=true});
-	document.getElementById("fndAbug").addEventListener("click", openCloseReportAbug);
-	document.getElementById("AppVersion").addEventListener("click", openAppVersionChanges);
-	document.getElementById("SoundSelect").addEventListener("change", changeSoundFile);
-	document.getElementById("AppFirst").addEventListener("click", function(){changeAppContent('AppFirst')});
-	document.getElementById("AppSecond").addEventListener("click", function(){changeAppContent('AppSecond')});
-	document.getElementById("AppThird").addEventListener("click", function(){changeAppContent('AppThird')});
-	document.getElementById("AppInfoClose").addEventListener("click", function(){CloseAppVersionChanges()});
-	document.getElementById('userChangePopup2').addEventListener('click', function(){clickChangeUserCls()});
-	document.getElementById('AppInfoBack').addEventListener('click', function(){CloseAppVersionChanges()});
-	document.getElementById('Dashboard').addEventListener('click', function(){_gaq.push(['_trackEvent','Dashboard','clicked']);window.open('http://www.twitch.tv/broadcast/dashboard')});
-	document.getElementById('Direct').addEventListener('click', function(){_gaq.push(['_trackEvent','Direct','clicked']);window.open('http://www.twitch.tv/directory/following')});
-	document.getElementById("SoundCheck").addEventListener("click", function(){ if (document.getElementById('SoundCheck').checked){document.getElementById('SoundSelect').disabled=false}else{document.getElementById('SoundSelect').disabled=true}});
+	doc('AppVersion').innerHTML='ver. '+localStorage['App_Version']+' (changes)';
+	doc("ChgUsr").addEventListener( "click" , clickChangeUser);
+	doc("ChgUsrSnd").addEventListener( "click" , changeScriptStarter);
+	doc("LstFlwdChnls").addEventListener( "click" , openFollowedList);
+	doc("ClsFlwdChnlsLst").addEventListener( "click" , closeFollowedList);
+	doc("EnNotify").addEventListener("change", function(){doc('DisNotify').checked=false;doc('NotifyStreamer').disabled=false;doc('NotifyStreamerChanged').disabled=false;doc('NotifyUpdate').disabled=false});
+	doc("DisNotify").addEventListener("change", function(){doc('EnNotify').checked=false;doc('NotifyStreamer').disabled=true;doc('NotifyStreamerChanged').disabled=true;doc('NotifyUpdate').disabled=true});
+	doc("fndAbug").addEventListener("click", openCloseReportAbug);
+	doc("AppVersion").addEventListener("click", openAppVersionChanges);
+	doc("SoundSelect").addEventListener("change", changeSoundFile);
+	doc("AppFirst").addEventListener("click", function(){changeAppContent('AppFirst')});
+	doc("AppSecond").addEventListener("click", function(){changeAppContent('AppSecond')});
+	doc("AppThird").addEventListener("click", function(){changeAppContent('AppThird')});
+	doc("AppInfoClose").addEventListener("click", function(){CloseAppVersionChanges()});
+	doc('userChangePopup2').addEventListener('click', function(){clickChangeUserCls()});
+	doc('AppInfoBack').addEventListener('click', function(){CloseAppVersionChanges()});
+	doc('Dashboard').addEventListener('click', function(){_gaq.push(['_trackEvent','Dashboard','clicked']);window.open('http://www.twitch.tv/broadcast/dashboard')});
+	doc('Direct').addEventListener('click', function(){_gaq.push(['_trackEvent','Direct','clicked']);window.open('http://www.twitch.tv/directory/following')});
+	doc("SoundCheck").addEventListener("click", function(){ if (doc('SoundCheck').checked){doc('SoundSelect').disabled=false}else{doc('SoundSelect').disabled=true}});
 } );
