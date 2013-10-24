@@ -6,7 +6,6 @@
 <script src="firstStart.js"></script>
 <script src="insertFunc.js"></script>
 <script src="popup.js"></script>
-
 <body id="body">
 
 <div id="FollowedChannelsList" class="FollowedChannelsList" style="display:none">
@@ -45,71 +44,38 @@
 
 <p class="pGreetings">Hello dear user!</p>
 
-<div class="UserName">
-	<p class="pUserName"><input type="text" name="userName" id="ChgUsrNam" class="inUserName"></p>
-	<p class="pUserName2">User name</p>
-</div>
 
-<div class="CheckInterval">
-	<p class="pCheckInt"><input type="text" name="refInt" id="ChgUsrInt" class="inCheckInt"></p>
-	<p class="pCheckInt2">(min) Check interval</p>
-</div>
-
-<div class="Notify_All">
-	<p class="pNotify"><input type="radio" id="EnNotify"></p>
-	<p class="pNotify2">Enable notifications</p>
-</div>
-
-<div class="DisNotify_All">
-	<p class="pNotify4"><input type="radio" id="DisNotify"></p>
-	<p class="pNotify3">Disable all notifications</p>
-</div>
-
-<div class="Notify_Streamer">
-	<p class="pNotifyStreamer"><input type="checkbox" id="NotifyStreamer"></p>
-	<p class="pNotifyStreamer2">When streamer goes online</p>
-</div>
-
-<div class="Notify_Streamer_Changed">
-	<p class="pNotifyStreamer4"><input type="checkbox" id="NotifyStreamerChanged"></p>
-	<p class="pNotifyStreamer3">When streamer changed title</p>
-</div>
-
-<div class="Notify_Upd">
-	<p class="pNotifyUpdate"><input type="checkbox" id="NotifyUpdate"></p>
-	<p class="pNotifyUpdate2">When updating following list</p>
-</div>
-
-<div class="Notify_Sound">
-	<p class="pSound"><input type="checkbox" id="SoundCheck"></p>
-	<p class="pSound2">Enable sound in notifications</p>
-</div>
+<div class="UserName"><input type="text" id="ChgUsrNam" class="inUserName">User name</div>
+<div class="CheckInterval"><input type="text" id="ChgUsrInt" class="inCheckInt">(min) Check interval</div>
+<div class="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
+<div class="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
+<div class="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
+<div class="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
+<div class="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
+<div class="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
 
 <div class="Notify_Sound_Select">
-	<p class="pSoundChoose">
-		<select id="SoundSelect" style="width:90">
-			<option value="DinDon">Din-Don</option>
-			<option value="DinDon">More comin' soon</option>
-			<option value="DinDon">[:D</option>
-		</select>
-	</p>
-	<p class="pSoundChoose2">Choose sound</p>
+	<select id="SoundSelect" style="width:90">
+		<option value="DinDon">Din-Don</option>
+		<option value="DinDon">More comin' soon</option>
+		<option value="DinDon">[:D</option>
+	</select>
+	Choose sound
 </div>
 
-<div class="DurationOfStream">
-	<p class="pStreamDuration"><input type="checkbox" id="StreamDurationCheck"></p>
-	<p class="pStreamDuration2">Enable duration of stream</p>
-</div>
+<div class="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
 
 <div class="List_Format">
-	<p class="pListFormat">
-		<select id="List_Format_List" style="width:90">	
-			<option value="Full">Full</option>
-			<option value="Mini">Light</option>
-		</select>
-	</p>
-	<p class="pListFormat2">Choose style of online list</p>
+	<select id="List_Format_List" style="width:90">	
+		<option value="Full">Full</option>
+		<option value="Mini">Light</option>
+		<option value="Grid">Grid</option>
+	</select>
+	Choose style of online list
 </div>
+
+
+
 
 <button type="button" id="ChgUsrSnd" class="OptionsSave">Save / Close</button>
 
