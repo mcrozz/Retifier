@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-var NotificationsCount;
+var NotificationsCount=0;
 
 if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
 setInterval(function(){
@@ -33,85 +33,150 @@ setInterval(function(){
 
 if (localStorage['Status']&&localStorage['Config']) {
 
-function localJSON(name,type,js0n) {
-	if (name&&type=='c'&&js0n) {
-		sz = js0n.length;
+function localJSON(name,type,arrayz) {
+	if (name&&type=='c'&&arrayz) {
+		sz = arrayz.length;
 		b = JSON.parse(localStorage[name]);
 		if (sz == 2) {
-			b[js0n[0]]=js0n[1];
+			b[arrayz[0]]=arrayz[1];
 			if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}	
 		} else if (sz == 3) {
-			h = b[js0n[0]];
-			h[js0n[1]] = js0n[2];
-			b[js0n[0]] = h;
+			h = b[arrayz[0]];
+			h[arrayz[1]] = arrayz[2];
+			b[arrayz[0]] = h;
 			if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}		
-		}
-	} else if (name&&type=='v'&&js0n) {
-		b = JSON.parse(localStorage[name]);
-		if (js0n.length == 1){			
-			if (b[js0n[0]]) {return b[js0n[0]];} else {return false;}
-		} else if (js0n.length == 2) {
-			f = b[js0n[0]];
-			if (f[js0n[1]]) {return f[js0n[1]];} else {return false;}
 		} else {return false;}
-	} else if (name&&!type&&!js0n) {
+	} else if (name&&type=='v'&&arrayz) {
+		b = JSON.parse(localStorage[name]);
+		if (arrayz.length == 1){			
+			if (b[arrayz[0]]) {return b[arrayz[0]];} else {return false;}
+		} else if (arrayz.length == 2) {
+			f = b[arrayz[0]];
+			if (f[arrayz[1]]) {return f[arrayz[1]];} else {return false;}
+		} else {return false;}
+	} else if (name&&!type&&!arrayz) {
 		return JSON.parse(localStorage[name]);
-	} else {console.error('[ERROR]: Wrong input in localJSON function!')}
+	} else {return false;console.error('[ERROR]: Wrong input in localJSON function!')}
+}
+
+sessionStorage['Notifications']='{}';
+function NotifierStrg(ids,cmd,time,strm) {
+	b = JSON.parse(sessionStorage['Notifications']);
+	if (ids&&cmd==''&&time&&strm) {
+		b[ids]={};
+		z=b[ids];
+		z['Date']=time;
+		z['Del']=false;
+		z['Streamer']=strm;
+		if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
+	} else if (ids&&cmd=='ch') {
+		if (b[ids]!=null) {
+			z=b[ids];
+			return [z['Date'],z['Del'],z['Streamer']];
+		} else {console.debug('Check failed, id is '+ids)}
+	} else if (ids&&cmd) {
+		if (b[ids]!=null) {
+			z=b[ids];
+			z['Del']=cmd;
+			if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
+		} else {console.debug('Failed to change id: '+ids+'. Cmd is '+cmd)}
+	} else {return 'Nope :|';console.error('[ERROR]: Wrong input in NotifierStrg function!')}
+}
+
+/*
+{
+	"id from 0 to number of following":
+		{
+			"Name": "NAME",
+			"Stream": 
+				{
+					"Title": "TITLE",
+					"Game": "",
+					"Viewers": "",
+					"Time": ""
+				}
+		}
+}
+*/
+if (localStorage['FollowingList']==undefined) {localStorage['FollowingList']='{}'};
+function FollowingList(type,id,name,stream) {
+	b = JSON.parse(localStorage['FollowingList']);
+	if (type == 'add') {
+		b[id]={};
+		z=b[id];
+		z['Name']=name;
+		z['Stream']=false;
+		if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+	} else if (type == 'c') {
+		z=b[id];
+		if (stream) {
+			z['Stream']={};
+			x=z['Stream'];
+			x['Title']=stream[0];
+			x['Game']=stream[1];
+			x['Viewers']=stream[2];
+			x['Time']=stream[3]
+		} else { z['Stream']=false }
+		if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+	} else if (type == 'v') {
+		z=b[id];
+		x=z['Stream'];
+		if (!x) {return [ z['Name'] ];
+		} else {
+			return [ z['Name'], x['Title'], x['Game'], x['Viewers'], x['Time'] ];
+		}
+	}
 }
 
 function createCookie(name,value,days){if(days){var date=new Date();date.setTime(date.getTime()+(days*24*60*60*1000));expires="; expires="+date.toGMTString();} else expires="";document.cookie=name+"="+value+expires+"; path=/";}
 function readCookie(name){var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0) return c.substring(nameEQ.length,c.length);}return null;}
 function delCookie(name){document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
-
-function doc(id){return document.getElementById(id);};
-
-function BadgeOnlineCount(count){if(count=='0')chrome.browserAction.setBadgeText({text:String('')});else chrome.browserAction.setBadgeText({text:String(count)})};
+function doc(id){return document.getElementById(id);}
+function BadgeOnlineCount(count){if(count==0)chrome.browserAction.setBadgeText({text:String('')});else chrome.browserAction.setBadgeText({text:String(count)})}
 
 function sendNotify(Title, msg, streamer, scriptUpd) {
-	if (!scriptUpd) {
-		console.error(new Date+' : '+Title+' -  '+msg);
-		chrome.notifications.create(streamer,
-			{type:"basic",title:Title,message:msg,iconUrl:"goesOnline.png",buttons:[{title:"Watch now!"}]},
-		function(){})
-		if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
-			Audio = document.createElement('audio');
-			MusicName = '/Music/'+localJSON('Config','v',['Notifications','sound'])+'.mp3';
-			Audio.setAttribute('src', MusicName);
-			Audio.setAttribute('autoplay', 'autoplay');
-			Audio.play()
-		}
-	} else if (scriptUpd == 'Update') {
-		console.error(new Date+' : '+Title+' -  '+msg);
-		chrome.notifications.create(scriptUpd,
-			{type:"basic",title:Title,message:msg,iconUrl:"goesOnlineUpd.png"},
-		function(){sessionStorage['NtfcnTemp'] = scriptUpd});
-		setTimeout(function(){chrome.notifications.clear(sessionStorage['NtfcnTemp'], function(){})},10*1000)
-		if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
-			Audio = document.createElement('audio');
-			MusicName = '/Music/'+localJSON('Config','v',['Notifications','sound'])+'.mp3';
-			Audio.setAttribute('src', MusicName);
-			Audio.setAttribute('autoplay', 'autoplay');
-			Audio.play()
-		}
+	console.debug(new Date+': '+Title+' -  '+msg);
+	NotifyConf = {type:"basic",title:Title,message:msg,iconUrl:"goesOnline.png"};
+	if (!scriptUpd) {NotifyConf['buttons']=[{title:"Watch now!"}]};
+	chrome.notifications.create(streamer,NotifyConf,function(){});
+	if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
+		Audio = document.createElement('audio');
+		MusicName = '/Music/'+localJSON('Config','v',['Notifications','sound'])+'.mp3';
+		Audio.setAttribute('src', MusicName);
+		Audio.setAttribute('autoplay', 'autoplay');
+		Audio.play()
 	}
 }
-
-chrome.notifications.onButtonClicked.addListener(function(notificationId){window.open('http://www.twitch.tv/'+notificationId)});
-chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
-chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){}) });
 
 function notifyUser(streamerName, titleOfStream, type, streamer) {
-	if (localJSON('Config','v',['Notifications','status']) == 'Enable') {
-		if (type == 'Online' && localJSON('Config','v',['Notifications','online']) == 'Enable') {
-			sendNotify(streamerName, titleOfStream, streamer);NotificationsCount+=1
-		} if (type == 'Changed' && localJSON('Config','v',['Notifications','update']) == 'Enable') {
-			sendNotify(streamerName, titleOfStream, NotificationsCount);NotificationsCount+=1;
-		} if (type == 'ScriptUpdate') {
+	if (localJSON('Config','v',['Notifications','status'])) {
+		date = new Date();
+		if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
+			sendNotify(streamerName, titleOfStream, 'nf'+NotificationsCount);
+			NotifierStrg('nf'+NotificationsCount,'',new Date().setSeconds(new Date().getSeconds()+60),streamer);
+			NotificationsCount++;
+		} else if (type == 'Changed' && localJSON('Config','v',['Notifications','update'])) {
+			sendNotify(streamerName, titleOfStream, 'nf'+NotificationsCount);
+			NotifierStrg('nf'+NotificationsCount,'',new Date().setSeconds(new Date().getSeconds()+15),streamer);
+			NotificationsCount++;
+		} else if (type == 'ScriptUpdate') {
 			if (!sessionStorage['Disable_Update_Notifies'])
-			sendNotify(streamerName, titleOfStream, streamerName, 'Update');NotificationsCount+=1
+			sendNotify(streamerName, titleOfStream, 'nf'+NotificationsCount, 'Update');
+			NotifierStrg('nf'+NotificationsCount,'',new Date().setSeconds(new Date().getSeconds()+5),streamer)
+			NotificationsCount++;
+		} else {
+			console.debug(new Date()+': '+streamerName+' '+titleOfStream+'   [Was not displayed]')
 		}
+		sessionStorage['NotificationsCount'] = NotificationsCount;
 	}
 }
+
+chrome.notifications.onButtonClicked.addListener(function(notificationId){
+	window.open('http://www.twitch.tv/'+NotifierStrg(notificationId,'ch')[2]);
+	NotifierStrg(notificationId,true)
+});
+chrome.notifications.onClosed.addListener(function(notificationId){ NotifierStrg(notificationId,true); chrome.notifications.clear(notificationId,function(){})});
+chrome.notifications.onClicked.addListener(function(notificationId){ NotifierStrg(notificationId,true);chrome.notifications.clear(notificationId,function(){})});
 
 if ( Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ) {Background = 'Out dated'} else {Background = 'New'}
 if ( Math.floor(localJSON('Code').Popup.version) < Math.floor(localJSON('Code').Background.version_geted) ) {Popup = 'Out dated'} else {Popup = 'New'}
@@ -121,20 +186,9 @@ if ( Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Co
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25472862-3']);
 _gaq.push(['_setCustomVar', 3, 'App_Version', localStorage['App_Version'], 1]);
-_gaq.push(['_setCustomVar', 2, 'BackgroundJS', localJSON('Code').Background.version, 1]);
-_gaq.push(['_setCustomVar', 2, 'PopupJS', localJSON('Code').Popup.version, 1]);
-_gaq.push(['_setCustomVar', 3, 'insertFuncJS', localJSON('Code').Background.version, 1]);
+_gaq.push(['_setCustomVar', 2, 'BackgroundJS', localJSON('Code','v',['Background','version']), 1]);
+_gaq.push(['_setCustomVar', 2, 'PopupJS', localJSON('Code','v',['Popup','version']), 1]);
+_gaq.push(['_setCustomVar', 3, 'insertFuncJS', localJSON('Code','v',['Background','version']), 1]);
 _gaq.push(['_trackPageview']);
-_gaq.push(['_trackEvent', 'App Version', localStorage['App_Version']]);
-_gaq.push(['_trackEvent', 'BackgroundJS version', Background]);
-_gaq.push(['_trackEvent', 'PopupJS version', Popup]);
-_gaq.push(['_trackEvent', 'insertFuncJS version', insertFunc]);
 
-(function() {
-	var ga = document.createElement('script'); 
-	ga.type = 'text/javascript'; 
-	ga.async = true;
-	ga.src = 'https://ssl.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-}
+(function() {var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src='https://ssl.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga, s)})()}

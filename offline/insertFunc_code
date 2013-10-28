@@ -24,14 +24,15 @@ function InsertOnlineList() {
 		doc('insertContentHere').style.overflow='auto'
 	}
 
-	for (var i=0;i<Math.floor(localStorage['Following']);i++){
-		StreamTitle=localStorage['Stream_Title_'+i];
-		StreamerName=localStorage['Stream_Name_'+i];
-		StreamGame=localStorage['Stream_Game_'+i];
-		if (localJSON('Config','v',['Format'])=='Full') {Num=35;Num2=43;Num3='none';Num4=40}else{Num=55;Num2=43;Num3=90;Num4=23};
+	for (var i=0;i<localJSON('Following');i++){
+		StreamTitle=FollowingList('v',i)[1];
+		StreamerName=FollowingList('v',i)[0];
+		StreamGame=FollowingList('v',i)[2];
+		c=localJSON('Config','v',['Format']);
+		if (c=='Full'||c=='Grid') {Num=35;Num2=43;Num3='none';Num4=40}else{Num=55;Num2=43;Num3=90;Num4=23};
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-			if (localStorage['Stream_Status_'+i] == 'Online') {
+			if (FollowingList('v',i)[1]) {
 				StreamListUnit = '<div class="content" id="'+i+'">';
 				StreamListUnit += '<div class="tumblr">';
 				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -50,7 +51,7 @@ function InsertOnlineList() {
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="viewers">';
 				StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+i+'">';
-				StreamListUnit += localStorage['Stream_Viewers_'+i]+'</div>';
+				StreamListUnit += FollowingList('v',i)[3]+'</div>';
 				StreamListUnit += '<p class="pViewers">viewers</p>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="gamename">';
@@ -86,13 +87,11 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-			if (localStorage['Stream_Status_'+i] == 'Offline') {
-				if (doc(i) != null) doc(i).remove();
-			}
+			if (FollowingList('v',i)[1]==undefined && doc(i) != null) doc(i).remove();
 
 			doc('Title_'+i).innerHTML = StreamTitle
 			doc('stream_game_'+i).innerHTML = StreamGame
-			doc('Viewers_'+i).innerHTML=localStorage['Stream_Viewers_'+i];
+			doc('Viewers_'+i).innerHTML=FollowingList('v',i)[3];
 			doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0')
 			if (StreamGame != 'Not playing') {
 				doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
@@ -105,7 +104,7 @@ function InsertOnlineList() {
 		}
 
 		if (localJSON('Status','v',['online']) == 0 && localJSON('Status','v',['update']) == 0) 
-			doc('insertContentHere').innerHTML='<a style="color:black">No one online right now :(</a>';
+			doc('insertContentHere').innerHTML='<a style="color:black;width:713px;text-align:center">No one online right now :(</a>';
 	}
 }
 
@@ -164,8 +163,7 @@ setInterval(function(){
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
 			StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[i];
-			SubtractTimes = Math.abs(new Date() - new Date(localStorage[StreamDurationTime])) / 1000;
-			SubtractTimes = Math.floor(SubtractTimes);
+			SubtractTimes = Math.floor((new Date() - new Date(FollowingList('v',TimersetToUpdate[i])[4])) / 1000);
 			Days = Math.floor((SubtractTimes % 31536000) / 86400);
 			Hours = Math.floor(((SubtractTimes % 31536000) % 86400) / 3600);
 			Minutes = Math.floor((((SubtractTimes % 31536000) % 86400) % 3600) / 60);

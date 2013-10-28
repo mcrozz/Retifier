@@ -29,8 +29,8 @@ function CSScompiler() {
 		StrmLst = localJSON('Config');
 		StrmLst.Format = 'Mini';
 		localStorage['Config'] = JSON.stringify(StrmLst);
-		CSScompiler()
-	} else {
+		CSScompiler()} 
+	else {
 	AddAnyways = '::-webkit-scrollbar {width:12px}';
 	AddAnyways += '::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}';
 	AddAnyways += '::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}';
@@ -94,32 +94,32 @@ function CSScompiler() {
         css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
 		css += 'button.button {color:black;text-decoration:none;font-size:18px;width:110px;height:22px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.73)),to(rgba(129, 129, 129, 0.64)))}';
 	} else if (format == 'Grid') {
-		css = '.StreamDuration {color:black;margin:0 0 0 17}';
-		css += '.title {width:340px;height:30px;display:block;border-bottom:1px solid black;margin-bottom:5px}';
+		css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17}';
+		css += '.title {width:315px;height:30px;display:block;border-bottom:1px solid black;margin-bottom:5px}';
 		css += 'button:focus {outline-color:rgba(255,255,255,0)}';
 		css += '.streamer {width:150px;height:30px;display:block}';
-		css += '.viewers {width:160px;height:30px;display:block;position:absolute;right:15;top:37;text-align:right}';
-		css += '.gamename {width:340px;height:30px;display:block;margin-top:-6px;text-align:center;border-top:1px solid black}';
+		css += '.viewers {width:160px;height:30px;display:block;position:absolute;right:3;top:37;text-align:right}';
+		css += '.gamename {width:315px;height:30px;display:block;margin-top:-6px;text-align:center;border-top:1px solid black}';
 		css += '.pViewers {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}';
-		css += '.content {height:200px;width:685px;padding:2;position:relative}';
+		css += '.content {height:290px;width:330px;padding:2;position:relative;display:inline-block;margin-left:7}';
 		css += '.content2 {max-height:100%;overflow:auto}';
 		css += '.content3 {height:505;width:703;position:relative;display:block;padding:5px;margin-top:-3;margin-left:-12}';
 		css += '.tumblr {background:url("StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}';
 		css += '.tumblr:hover::after {content:"Go to streaming page";width:317px;height:22px;z-index:1;position:absolute;left:1;top:168;text-align:center;color:rgba(255,255,255,0.5);padding:4 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39, 39, 39, 0.66)),to(rgba(0, 0, 0, 0.85)));-webkit-animation-name:fadeIn;-webkit-animation-duration:0.5s}';
-		css += '.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}';
-		css += '.informationTextTitle,.informationTextTitle2 {cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:328px}';
-		css += '.informationTextTitle:hover::after {content:attr(data-title);left:-1%;top:0%;width:322px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}';
-		css += '.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:6}';
+		css += '.information {width:315px;height:90px;display:inline;position:absolute;left:15;top:200}';
+		css += '.informationTextTitle,.informationTextTitle2 {cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px}';
+		css += '.informationTextTitle:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}';
+		css += '.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3}';
 		css += '.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}';
-		css += '.informationTextGame,.informationTextGame2 {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;margin-top:5px}';
-		css += '.informationTextGame:hover::after {content:attr(data-title);left:-1%;top:45%;width:322px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1;text-align:center}';
+		css += '.informationTextGame,.informationTextGame2 {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;display:block;margin-top:5px}';
+		css += '.informationTextGame:hover::after {content:attr(data-title);left:-2%;top:65%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1;text-align:center}';
 		css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}';
 		css += '.GameTumb1 {z-index:3}';
 		css += '.GameTumb2 {z-index:2}';
 		css += '.TumbStream {width:320px;height:200px}';
-		css += '.StreamOnChannelPage {width:340px;height:40px;padding-top:2px}';
-		css += '.StreamDurationDiv {width:170;height:40;position:absolute;right:16;top:96;text-align:right}';
-		css += '.ChannelPageDiv {width:150;height:40;display:inline}';
+		css += '.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}';
+		css += '.StreamDurationDiv {width:170;height:40;display:inline}';
+		css += '.ChannelPageDiv {display:none}';
 		css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
 		css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
 		css += 'button.button {color:black;text-decoration:none;font-size:22px;width:150px;height:30px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.73)),to(rgba(129, 129, 129, 0.64)))}';
@@ -166,67 +166,35 @@ function clickChangeUserCls() {
 
 function changeUserName() {
 	if (doc("ChgUsrNam").value != localJSON('Config','v',['User_Name'])) {
-		for (var i=0;i<Math.floor(localJSON('Following'));i++){
-	        delete localStorage['Stream_Title_'+i];
-	        delete localStorage['Stream_Time_'+i];
-	        delete localStorage['Stream_Tumb_'+i];
-	        delete localStorage['Stream_Viewers_'+i];
-	        delete localStorage['Stream_Game_'+i];
-	        delete localStorage['Stream_Status_'+i];
-	        delete localStorage['Stream_Name_'+i]}
+		localStorage['FollowingList']='{}';
+		localStorage['Following']=0;
 		localJSON('Config','c',['User_Name',doc("ChgUsrNam").value]);
-		localJSON('Status','c',['StopInterval','true']);
+		localJSON('Status','c',['StopInterval',true]);
 		doc('insertContentHere').innerHTML=null;
 		InsertOnlineList();		
-	} if (doc("ChgUsrNam").value == '') {
+	} if (doc("ChgUsrNam").value == ''||doc("ChgUsrNam").value==null||!doc("ChgUsrNam").value||doc("ChgUsrNam").value == 'Guest') {
 		localJSON('Config','c',['User_Name','Guest']);
-		localJSON('Status','c',['update','6']);
+		localJSON('Status','c',['update',6]);
 		doc('insertContentHere').innerHTML=null;
 		InsertOnlineList();
-		for (var i=0;i<Math.floor(localJSON('Following'));i++)
-	        delete localStorage['Stream_Title_'+i];
-	        delete localStorage['Stream_Time_'+i];
-	        delete localStorage['Stream_Tumb_'+i];
-	        delete localStorage['Stream_Viewers_'+i];
-	        delete localStorage['Stream_Game_'+i];
-	        delete localStorage['Stream_Status_'+i];
-	        delete localStorage['Stream_Name_'+i];
+		localStorage['FollowingList']='{}';
+		localStorage['Following']=0;
 	}
 }
 
 function changeNotify(type) {
 	if (type == 'Change') {
-		NotifyChange=localJSON('Config');
-		if (doc('EnNotify').checked) {localJSON('Config','c',['Notifications','status','Enable'])} 
-		if (doc('DisNotify').checked) {localJSON('Config','c',['Notifications','status','Disable'])}
-		
-		if (doc('NotifyStreamer').checked) {localJSON('Config','c',['Notifications','online','Enable'])
-		} else {localJSON('Config','c',['Notifications','online','Disable'])} 
-		
-		if (doc('NotifyStreamerChanged').checked) {localJSON('Config','c',['Notifications','update','Enable'])
-		} else {localJSON('Config','c',['Notifications','update','Disable'])} 
-		
-		if (doc('NotifyUpdate').checked) {localJSON('Config','c',['Notifications','follow','Enable'])
-		} else {localJSON('Config','c',['Notifications','follow','Disable'])}
-		
-		} else if (type == 'Checking') {
-		if (localJSON('Config','v',['Notifications','status']) == 'Disable') {
-			doc('EnNotify').checked = false;
-			doc('NotifyStreamerChanged').disabled = true;
-			doc('NotifyStreamer').disabled = true;
-			doc('NotifyUpdate').disabled = true;
-		} else if (localJSON('Config','v',['Notifications','status']) == 'Enable') {
-			doc('EnNotify').checked = true;
-			doc('NotifyStreamerChanged').disabled = false;
-			doc('NotifyStreamer').disabled = false;
-			doc('NotifyUpdate').disabled = false
-		} if (localJSON('Config','v',['Notifications','update']) == 'Enable') {
-			doc('NotifyStreamerChanged').checked = true;
-		} if (localJSON('Config','v',['Notifications','online']) == 'Enable') {
-			doc('NotifyStreamer').checked = true;
-		} if (localJSON('Config','v',['Notifications','follow']) == 'Enable') {
-			doc('NotifyUpdate').checked = true;
-		}
+		if (doc('EnNotify').checked) {localJSON('Config','c',['Notifications','status',true])} 
+		else if (doc('DisNotify').checked) {localJSON('Config','c',['Notifications','status',false])};
+		localJSON('Config','c',['Notifications','online',doc('NotifyStreamer').checked]);
+		localJSON('Config','c',['Notifications','update',doc('NotifyStreamerChanged').checked]);
+		localJSON('Config','c',['Notifications','follow',doc('NotifyUpdate').checked])		
+	} else if (type == 'Checking') {
+		if (localJSON('Config','v',['Notifications','status'])) {doc('EnNotify').checked=true;doc('DisNotify').checked=false;doc('NotifyStreamerChanged').disabled=false;doc('NotifyStreamer').disabled=false;doc('NotifyUpdate').disabled=false} 
+		else {doc('EnNotify').checked=false;doc('DisNotify').checked=true;doc('NotifyStreamerChanged').disabled=true;doc('NotifyStreamer').disabled=true;doc('NotifyUpdate').disabled=true} 
+		doc('NotifyStreamerChanged').checked = localJSON('Config','v',['Notifications','update']);
+		doc('NotifyStreamer').checked = localJSON('Config','v',['Notifications','online']);
+		doc('NotifyUpdate').checked = localJSON('Config','v',['Notifications','follow'])
 	}
 }
 
@@ -258,13 +226,10 @@ function openCloseReportAbug() {
 
 function checkSoundEnable(type) {
 	if (type == 'Change') {
-		SoundEnbl = localJSON('Config');
-		if (doc('SoundCheck').checked == true) {
-			SoundEnbl.Notifications.sound_status = 'Enable';
-			localStorage['Config'] = JSON.stringify(SoundEnbl)
-		} else if (doc('SoundCheck').checked == false) {
-			SoundEnbl.Notifications.sound_status = 'Disable';
-			localStorage['Config'] = JSON.stringify(SoundEnbl);
+		if (doc('SoundCheck').checked) {
+			localJSON('Config','c',['Notifications','sound_status','Enable'])
+		} else if (!doc('SoundCheck').checked) {
+			localJSON('Config','c',['Notifications','sound_status','Disable'])
 		}
 	} else if (type == 'Checking') {
 		if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
@@ -279,24 +244,20 @@ function checkSoundEnable(type) {
 
 function checkStreamDuration(type) {
 	if (type == 'Change') {
-		if (doc('StreamDurationCheck').checked == true) {
-			localJSON('Config','c',['Duration_of_stream','Enable'])
-		} else if (doc('StreamDurationCheck').checked == false) {
-			localJSON('Config','c',['Duration_of_stream','Disable'])
-		}
+		if (doc('StreamDurationCheck').checked) {localJSON('Config','c',['Duration_of_stream','Enable'])} 
+		else if (!doc('StreamDurationCheck').checked) {localJSON('Config','c',['Duration_of_stream','Disable'])}
 	} else if (type == 'Checking') {
-		if (localJSON('Config','c',['Duration_of_stream']) == 'Enable') {
-			doc('StreamDurationCheck').checked = true
-		} else if (localJSON('Config','c',['Duration_of_stream']) == 'Disable') {
-			doc('StreamDurationCheck').checked = false
-		}
+		if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {doc('StreamDurationCheck').checked = true}
+		else {doc('StreamDurationCheck').checked = false}
 	}
 }
 
 function changeScriptStarter() {
 	changeSoundFile('Change');
 	changeUserName();
-	if(!isNaN(doc("ChgUsrInt").value)){localJSON('Config','c',['Interval_of_Checking',doc("ChgUsrInt").value])};
+	if(!isNaN(doc('ChgUsrInt').value)&&localJSON('Config','v',['Interval_of_Checking'])!=doc('ChgUsrInt'))
+		{localJSON('Config','c',['Interval_of_Checking',Math.floor(doc("ChgUsrInt").value)]);
+		localJSON('Status','c',['StopInterval',true])}
 	changeNotify('Change');
 	checkSoundEnable('Change');
 	checkStreamDuration('Change');
@@ -311,8 +272,8 @@ function changeScriptStarter() {
 function FollowedChannelsList(content,status) {
 	if (LinesInListOfFollowedChannels == 22) {
 		NumberOfidOfListOfFollowedChannels += 1;
-		LinesInListOfFollowedChannels = 0		
-	} else {if(NumberOfidOfListOfFollowedChannels==4) doc('FollowedChannelsList').style.overflow='auto' } 
+		LinesInListOfFollowedChannels = 0} 
+	else if (NumberOfidOfListOfFollowedChannels==4) {doc('FollowedChannelsList').style.overflow='auto'};
 	if (status == 'Online') statusColor = 'rgb(0, 194, 40)'; else statusColor = 'black';
 
 	idOfListOfFollowedChannels = 'InsertFollowedChannelsHere'+NumberOfidOfListOfFollowedChannels;
@@ -321,8 +282,8 @@ function FollowedChannelsList(content,status) {
 	doc(idOfListOfFollowedChannels).innerHTML = TempVariable;
 
 	LinesInListOfFollowedChannels += 1
-	// If 19 lines then go to next sector
-	// InsertFollowedChannelsHere + Number (From 1 to 4)
+	// If 19 lines in current #div then change to next #div
+	// "InsertFollowedChannelsHere" += Number (1 ~ 4)
 }
 
 function openFollowedList() {
@@ -343,7 +304,8 @@ function openFollowedList() {
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 	
 	for (var i=0;i<localJSON('Following');i++) {
-		FollowedChannelsList(localStorage['Stream_Name_'+i], localStorage['Stream_Status_'+i])
+		if (FollowingList('v',i)[1]!=undefined) {p="Online"}else{p="Offline"};
+		FollowedChannelsList(FollowingList('v',i)[0],p)
 	}
 }
 
@@ -513,7 +475,7 @@ function changeSoundFile(type) {
 function progressBar(type) {
 	if (type == 'Enable') {
 		doc('CheckingProgress').setAttribute('style', 'display:block');
-		doc('CheckingProgress').value = Math.floor(100 / localStorage['Following'] * localJSON('Status','checked'))
+		doc('CheckingProgress').value = Math.floor(100 / localJSON('Following') * localJSON('Status','v',['checked']))
 	} else if (type == 'Disable') {
 		setTimeout(function(){
 			doc('CheckingProgress').setAttribute('style', 'display:none')
