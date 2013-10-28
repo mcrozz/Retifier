@@ -12,159 +12,25 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
-
-	
-	=====Structure of======
-	localStorage['Code']
-	{
-		"Background": {
-			"code": "code",
-			"date": "Date",
-			"hex": "hex",
-			"version": "version",
-			"version_geted": "version_geted"
-		},
-		"Popup": {
-			"code": "code",	
-			"date": "date",	
-			"hex": "hex",
-			"version": "version",
-			"version_geted": "version_geted"},
-			"insertFunc": {
-				"code": "code",
-				"date": "date",
-				"hex": "hex",
-				"version": "version",
-				"version_geted": "version_geted"
-			}
-		}
-	}
-
-	=====Structure of======
-	localStorage['Config']
-	{
-		"User_Name": "Guest",
-		"Notifications": {
-			"status": "Enable",
-			"online": "Enable",
-			"update": "Enable",
-			"sound_status": "Enable",
-			"sound": "DinDon"
-		},
-		"Duration_of_stream": "Enable",
-		"Interval_of_Checking": "3"
-	}
-
-    =====Structure of======
-	localStorage['Status']
-	{
-		"update": "0",
-		"online": "2",
-		"checked": "37",
-		"ShowWaves": "true",
-		"InsertOnlineList": "1"
-	}
 */
 
 $.ajaxSetup ({cache:false});
 
 Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": "0","version_geted": "0"},"Popup": {"code": "//code","date": "date",	"hex": "hex","version": "0","version_geted": "0"},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": "0","version_geted": "0"}};
-Config = {"User_Name": "Guest","Notifications": {"status": "Enable","online": "Enable","update": "Enable","sound_status": "Enable","sound": "DinDon"},"Duration_of_stream": "Enable","Interval_of_Checking": "3"};
-Status = {"update": "0","online": "0","checked": "0","ShowWaves": "true","InsertOnlineList": "0","StopInterval": "true"};
-if (localStorage['Code'] == undefined) localStorage['Code'] = JSON.stringify(Code);
-if (localStorage['Config'] == undefined) localStorage['Config'] = JSON.stringify(Config);
-if (localStorage['Status'] == undefined) localStorage['Status'] = JSON.stringify(Status);
+Config = {"User_Name": "Guest","Notifications": {"status": true,"online": true,"update": false,"sound_status": true,"sound": "DinDon"},"Duration_of_stream": true,"Interval_of_Checking": 3};
+Status = {"update": "0","online": "0","checked": "0","InsertOnlineList": "0","StopInterval": true};
+if (localStorage['Code'] == undefined) {localStorage['Code'] = JSON.stringify(Code)};
+if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringify(Config)};
+if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)};
+
+
+// Old settings
+if (localJSON('Config','v',['Notifications','status'])=='Enable'||localJSON('Config','v',['Notifications','status'])=='Disable') {localJSON('Config','c',['Notifications','status',true])};
+if (localJSON('Config','v',['Notifications','online'])=='Enable'||localJSON('Config','v',['Notifications','online'])=='Disable') {localJSON('Config','c',['Notifications','online',true])};
+if (localJSON('Config','v',['Notifications','update'])=='Enable'||localJSON('Config','v',['Notifications','update'])=='Disable') {localJSON('Config','c',['Notifications','update',true])};
+if (localJSON('Config','v',['Notifications','follow'])=='Enable'||localJSON('Config','v',['Notifications','follow'])=='Disable') {localJSON('Config','c',['Notifications','follow',false])};
 
 $.getJSON('/manifest.json', function(data){localStorage['App_Version']=data.version});
-
-// Export old formated setting
-
-if (!localStorage['OldSetting']) {
-	if (readCookie('UserName') != null) {
-		console.error('Exporting old-format settings');
-		Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": "0","version_geted": "0"},"Popup": {"code": "//code","date": "date",	"hex": "hex","version": "0","version_geted": "0"},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": "0","version_geted": "0"}};
-		Config = {"User_Name": "Guest","Notifications": {"status": "Enable","online": "Enable","update": "Enable","sound_status": "Enable","sound": "DinDon"},"Duration_of_stream": "Enable","Interval_of_Checking": "3"};
-		Status = {"update": "0","online": "0","checked": "0","ShowWaves": "true","InsertOnlineList": "0"};
-		Following = {"Following": "count","Stream": {"Name": "","Status": "","Title": "","Game": "","Time": "","Tumb": ""}};
-		localStorage['Code'] = JSON.stringify(Code);
-		localStorage['Config'] = JSON.stringify(Config);
-		localStorage['Status'] = JSON.stringify(Status);
-		localStorage['Following'] = JSON.stringify(Following);
-		DeleteStream = [];
-		if (localStorage['ChannelsCount']) {
-			DeleteStream.length = localStorage['ChannelsCount'];
-			RandomVariable = 0;
-			$.each(DeleteStream, function(){
-				delete localStorage['Stream_Name_'+RandomVariable];
-				delete localStorage['Stream_Game_'+RandomVariable];
-				delete localStorage['Stream_Tumb_'+RandomVariable];
-				delete localStorage['Stream_Title_'+RandomVariable];
-				delete localStorage['Stream_Status_'+RandomVariable];
-				delete localStorage['Stream_Time_'+RandomVariable];
-				delete localStorage['Stream_Viewers_'+RandomVariable];
-				RandomVariable += 1 
-			});
-			delete localStorage['Stream_Name_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Game_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Tumb_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Title_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Status_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Time_'+localStorage['ChannelsCount']];
-			delete localStorage['Stream_Viewers_'+localStorage['ChannelsCount']];
-		}
-		delete localStorage['Version_BackgroundJS'];
-		delete localStorage['Version_BackgroundJS_Date'];
-		delete localStorage['Version_BackgroundJS_Hex'];
-		delete localStorage['Version_BackgroundJS_get'];
-		delete localStorage['Version_PopupJS'];
-		delete localStorage['Version_PopupJS_Date'];
-		delete localStorage['Version_PopupJS_Hex'];
-		delete localStorage['Version_PopupJS_get'];
-		delete localStorage['Version_insertFuncJS'];
-		delete localStorage['Version_insertFuncJS_Date'];
-		delete localStorage['Version_insertFuncJS_Hex'];
-		delete localStorage['code_Background'];
-		delete localStorage['code_Popup'];
-		delete localStorage['code_insertFunc'];
-		delete localStorage['ChannelsCount'];
-		delete localStorage['FollowingChannels'];
-		delete localStorage['InsertOnlineList'];
-		delete localStorage['NumberOfChecked'];
-		delete localStorage['ShowWaves'];
-		JSONparse = localJSON('Config');
-		JSONparse.User_Name = readCookie('UserName');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Notifications.status = readCookie('conf_Notify');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Notifications.online = readCookie('conf_Notify_Online');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Notifications.update = readCookie('conf_Notify_Update');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Notifications.sound_status = readCookie('conf_Sound');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Notifications.sound = readCookie('conf_Sound_Name')
-		localStorage['Config'] = JSON.stringify(JSONparse);
-
-		JSONparse.Duration_of_stream = readCookie('conf_StreamDuration');
-		localStorage['Config'] = JSON.stringify(JSONparse);
-		
-		delCookie('conf_StreamDuration');
-		delCookie('UserName');
-		delCookie('conf_Sound_Name');
-		delCookie('conf_Sound');
-		delCookie('conf_Notify_Update');
-		delCookie('conf_Notify_Online');
-		delCookie('conf_Notify');
-
-		localStorage['OldSetting'] = 'Exported';
-		localStorage['SecondReload'] = 'True';
-	} else {localStorage['OldSetting'] = 'Skipped';location.reload()}
-} else {
 
 console.log('[UPDATER]: Start up');
 
@@ -358,4 +224,3 @@ function CheckForUpdates() {
 
 CheckForUpdates();
 setInterval(CheckForUpdates,1000*60*10)
-}
