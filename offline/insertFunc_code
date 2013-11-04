@@ -32,7 +32,7 @@ function InsertOnlineList() {
 		if (c=='Full'||c=='Grid') {Num=35;Num2=43;Num3='none';Num4=40}else{Num=55;Num2=43;Num3=90;Num4=23};
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-			if (FollowingList('v',i)[1]) {
+			if (FollowingList('v',i)[1]!=null) {
 				StreamListUnit = '<div class="content" id="'+i+'">';
 				StreamListUnit += '<div class="tumblr">';
 				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -57,7 +57,7 @@ function InsertOnlineList() {
 				StreamListUnit += '<div class="gamename">';
 				StreamListUnit += '<a class="';
 				if (StreamGame.length > Num4) {StreamListUnit+='informationTextGame"'} else {StreamListUnit+='informationTextGame2"'};
-				if (StreamGame!='Not Playing'){StreamListUnit+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"'}
+				if (StreamGame!='Not Playing') {StreamListUnit+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"'};
 				StreamListUnit += 'id="stream_game_'+i+'" data-title="'+StreamGame+'" >'+StreamGame+'</a>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="StreamOnChannelPage">';
@@ -87,7 +87,7 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-			if (FollowingList('v',i)[1]==undefined && doc(i) != null) doc(i).remove();
+			if (FollowingList('v',i)[1]==null && doc(i) != null) doc(i).remove();
 
 			doc('Title_'+i).innerHTML = StreamTitle
 			doc('stream_game_'+i).innerHTML = StreamGame
@@ -109,29 +109,17 @@ function InsertOnlineList() {
 }
 
 setInterval(function(){
-	if (!sessionStorage['FirstStartPopup']) {
-		localJSON('Status','c',['InsertOnlineList',0]);
-		sessionStorage['FirstStartPopup'] = 'true';
-		InsertOnlineList()
-	} else if (sessionStorage['FirstStartPopup'] == 'true') {
-		if (localJSON('Status','v',['InsertOnlineList']) == 1)
-			InsertOnlineList();
-			localJSON('Status','c',['InsertOnlineList',0]);
-	}
-}, 1000);
-
-setInterval(function(){
 	/*
 	StatusUpdate : 
 	
-	-0 - Not updating, finished
-	-1 - Timer ended, start update
-	-2 - Update list of followed channels
-	-3 - List of followed channels updated
-	-4 - Checking online channel
-	-5 - Error
-	-6 - Name doesn't set up!
-	-7 - First start
+	0 :: Not updating, finished
+	1 :: Timer ended, start update
+	2 :: Update list of followed channels
+	3 :: List of followed channels updated
+	4 :: Checking online channel
+	5 :: Error
+	6 :: Name doesn't set up!
+	7 :: First start
 
 	*/
 	InsertHere=doc('FollowedChannelsOnline');
@@ -222,4 +210,6 @@ setInterval(function(){
 
 	if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) > Math.abs(new Date())+5*24*60*60*1000) 
 		localJSON('Config','c',['Timeout',0]);
+
+	InsertOnlineList()
 },1000)

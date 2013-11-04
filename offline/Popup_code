@@ -25,9 +25,9 @@ openCloseReportVar = 1;
 function CSScompiler() {
 	style=document.createElement('style');
 	format=localJSON('Config','v',['Format']);
-	if (localJSON('Config','v',['Format']) == false) {
+	if (!localJSON('Config','v',['Format'])) {
 		StrmLst = localJSON('Config');
-		StrmLst.Format = 'Mini';
+		StrmLst.Format = 'Grid';
 		localStorage['Config'] = JSON.stringify(StrmLst);
 		CSScompiler()} 
 	else {
@@ -475,7 +475,7 @@ function changeSoundFile(type) {
 function progressBar(type) {
 	if (type == 'Enable') {
 		doc('CheckingProgress').setAttribute('style', 'display:block');
-		doc('CheckingProgress').value = Math.floor(100 / localJSON('Following') * localJSON('Status','v',['checked']))
+		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * localJSON('Status','v',['checked']) )
 	} else if (type == 'Disable') {
 		setTimeout(function(){
 			doc('CheckingProgress').setAttribute('style', 'display:none')

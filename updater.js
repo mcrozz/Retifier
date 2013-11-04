@@ -18,11 +18,13 @@ $.ajaxSetup ({cache:false});
 
 Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": "0","version_geted": "0"},"Popup": {"code": "//code","date": "date",	"hex": "hex","version": "0","version_geted": "0"},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": "0","version_geted": "0"}};
 Config = {"User_Name": "Guest","Notifications": {"status": true,"online": true,"update": false,"sound_status": true,"sound": "DinDon"},"Duration_of_stream": true,"Interval_of_Checking": 3};
-Status = {"update": "0","online": "0","checked": "0","InsertOnlineList": "0","StopInterval": true};
+Status = {"update": 0,"online": 0,"checked": 0,"StopInterval": true};
 if (localStorage['Code'] == undefined) {localStorage['Code'] = JSON.stringify(Code)};
 if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringify(Config)};
 if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)};
 
+if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true';console.debug('Set up your user name in options')};
+sessionStorage['Notifications']='{}';
 
 // Old settings
 if (localJSON('Config','v',['Notifications','status'])=='Enable'||localJSON('Config','v',['Notifications','status'])=='Disable') {localJSON('Config','c',['Notifications','status',true])};

@@ -15,22 +15,19 @@
 
 
     https://api.twitch.tv/kraken/users/ NAME OF PROFILE /follows/channels?limit=116&offset=0
-    Limit is 116, you have more than that? email me hostingmcrozz@hotmail.com about it :D
-    Offset must be 0 (ZERO)
-
     Object.follows[number, from 0 to follows count].channel.name
 
 
     StatusUpdate
 
-    0 - Not updating, finished
-    1 - Timer ended, start update
-    2 - Update list of followed channels
-    3 - List of followed channels updated
-    4 - Checking online channel or not
-    5 - Error
-    6 - Name doesn't set up!
-    7 - First start
+    0 :: Not updating, finished
+    1 :: Timer ended, start update
+    2 :: Update list of followed channels
+    3 :: List of followed channels updated
+    4 :: Checking online channel
+    5 :: Error
+    6 :: Name doesn't set up!
+    7 :: First start
 */
 
 if (localStorage['AfterUPDchange']==undefined) {localStorage['Following']=0}
@@ -48,8 +45,7 @@ function checkDonations() {
     GetDonationsList.complete(function(){
         ParsedResponse = JSON.parse(GetDonationsList.responseText);
         if (ParsedResponse.indexOf(hex_md5(localJSON('Config','v',['User_Name']))) != -1 ) {
-            date = new Date();
-            localJSON('Config','c',['Timeout',date.setDate(date.getDate()+30)]);
+            localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+30)]);
             localJSON('Config','c',['Ceneled','true']);
             localJSON('Config','c',['Closed','true']);
         }
@@ -67,57 +63,48 @@ function checkStatus(url,key) {
 
         if (checkStatus.responseJSON.stream) {
             localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);
-            localJSON('Status','c',['InsertOnlineList','1']);
-            
-            TitleToStorage = 'Stream_Title_'+key;
-            TimeToStorage = 'Stream_Time_'+key;
+            FlwLst = FollowingList('v',key);
 
             Game = checkStatus.responseJSON.stream.game;
             Status = checkStatus.responseJSON.stream.channel.status;
-            Name =  FollowingList('v',key)[0];
+            Name = FollowingList('v',key)[0];
             Time = checkStatus.responseJSON.stream.channel.updated_at;           
 
-            if (Status == null) {Status = 'Untitled stream'};
-            if (Game == null) {Game = 'Not playing'};
-            if (FollowingList('v',key)[1] == undefined) {notifyUser(Name+' just went live!',Status,'Online',Name)};
-            if (FollowingList('v',key)[1] != Status && FollowingList('v',key)[1] != undefined){notifyUser(Name+' changed stream title on',Status,'Changed',Name)};
-            if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(FollowingList('v',key)[4])) || !FollowingList('v',key) || FollowingList('v',key)[4] == undefined){
+            if (Status == null) Status = 'Untitled stream';
+            if (Game == null) Game = 'Not playing';
+            if (FlwLst[1] == null) notifyUser(Name+' just went live!',Status,'Online',Name);
+            if (FlwLst[1] != Status && FlwLst[1] != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+            if (Math.abs(new Date()-new Date(Time))>Math.abs(new Date()-new Date(FlwLst[4])) || !FollowingList('v',key) || FlwLst[4] == null){
                 Time2 = Time 
-            } else {
-                Time2 = FollowingList('v',key)[4]
-            }
+            } else {Time2 = FlwLst[4]}
 
             FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2])
         } else {FollowingList('c',key,'',false)} 
         if (localJSON('Status','v',['checked']) == localJSON('Following')) {
             BadgeOnlineCount(localJSON('Status','v',['online']));
-            sessionStorage
-            createCookie('First_Notify','1',365);
+            sessionStorage['First_Notify']=1;
             if (localJSON('Status','v',['checked'])!=0){console.log('Checked '+localJSON('Status','v',['checked'])+'/'+localJSON('Following'))};
             console.log('Every channel checked');
-            localJSON('Status','c',['update',0]);
-            localJSON('Status','c',['InsertOnlineList','1'])
+            localJSON('Status','c',['update',0])
         }
     });
 }
 
-function afterUpdate() {
+function CheckUserStatus() {
     localJSON('Status','c',['checked',0]);
     localJSON('Status','c',['online',0]);
     localJSON('Status','c',['update',4]);
     CheckBar = '--------------------------------------------------------------------------------------------------------------------';
     CheckBar2 = '';
 
-    for (var i=0;i<=localJSON('Following');i++) 
-        checkStatus('https://api.twitch.tv/kraken/streams/'+FollowingList('v',i)[0], i)
+    for (var i=0;i<=localJSON('Following');i++) checkStatus('https://api.twitch.tv/kraken/streams/'+FollowingList('v',i)[0], i);
 }
 
-var FirstStart = '1',
-    FirstStart2 = '1';
+var FirstStart = '1',FirstStart2 = '1';
 
-function getCheckInsert() {
+function CheckFollowingList() {
     checkDonations();
-    if (localStorage['Following']==undefined||localStorage['Following']==null) {localStorage['Following']=0};
+    if (localStorage['Following']==undefined||localStorage['Following']==null) localStorage['Following']=0;
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+localJSON('Config','v',['User_Name'])+'/follows/channels?limit=116&offset=0';
     localJSON('Status','c',['update',1]);
@@ -154,18 +141,18 @@ function getCheckInsert() {
                     } else {console.debug(updateFollowingListAndCheck.responseJSON);console.error('Get name of '+i+' ended with error')}
                 }
             }
-            afterUpdate()
+            CheckUserStatus()
         } );
     }
 }
-getCheckInsert()
-CheckTwitch = setInterval(function(){getCheckInsert()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
+CheckFollowingList()
+CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
 localJSON('Status','c',['StopInterval',false]);
 IntervalSetted=1;
 setInterval(function(){
     if (!localJSON('Status','v',['StopInterval']) && IntervalSetted==0){
-        getCheckInsert();
-        CheckTwitch = setInterval(function(){getCheckInsert()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
+        CheckFollowingList();
+        CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
         IntervalSetted=1
     } else if (localJSON('Status','v',['StopInterval']) && IntervalSetted==1){
         clearInterval(CheckTwitch);
@@ -188,7 +175,7 @@ setInterval(function(){
 
 
 setInterval(function(){
-    if (readCookie('First_Notify') == '1') {
+    if (sessionStorage['First_Notify'] == 1) {
         if (localJSON('Status','v',['online']) > 1) {
             textANDchannel = 'Now online '+localJSON('Status','v',['online'])+' channels';
             notifyUser('Update finished!',textANDchannel,'Update')
@@ -198,6 +185,6 @@ setInterval(function(){
         } else if (localJSON('Status','v',['online']) == 0){
             textANDchannel = 'No one online right now :(';
             notifyUser('Update finished!',textANDchannel,'Update')}
-        createCookie('First_Notify','0',365)
+        sessionStorage['First_Notify']=0
     }
 },1000)
