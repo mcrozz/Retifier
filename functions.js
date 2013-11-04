@@ -59,7 +59,6 @@ function localJSON(name,type,arrayz) {
 	} else {return false;console.error('[ERROR]: Wrong input in localJSON function!')}
 }
 
-sessionStorage['Notifications']='{}';
 function NotifierStrg(ids,cmd,time,strm) {
 	b = JSON.parse(sessionStorage['Notifications']);
 	if (ids&&cmd==''&&time&&strm) {
@@ -71,8 +70,7 @@ function NotifierStrg(ids,cmd,time,strm) {
 		if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
 	} else if (ids&&cmd=='ch') {
 		if (b[ids]!=null) {
-			z=b[ids];
-			return [z['Date'],z['Del'],z['Streamer']];
+			return [b[ids]['Date'],b[ids]['Del'],b[ids]['Streamer']];
 		} else {console.debug('Check failed, id is '+ids)}
 	} else if (ids&&cmd) {
 		if (b[ids]!=null) {
@@ -120,17 +118,13 @@ function FollowingList(type,id,name,stream) {
 		if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
 	} else if (type == 'v') {
 		z=b[id];
-		x=z['Stream'];
-		if (!x) {return [ z['Name'] ];
+		if (!z['Stream']) { return [ z['Name'] ];
 		} else {
-			return [ z['Name'], x['Title'], x['Game'], x['Viewers'], x['Time'] ];
+			return [ z['Name'], z['Stream']['Title'], z['Stream']['Game'], z['Stream']['Viewers'], z['Stream']['Time'] ];
 		}
 	}
 }
 
-function createCookie(name,value,days){if(days){var date=new Date();date.setTime(date.getTime()+(days*24*60*60*1000));expires="; expires="+date.toGMTString();} else expires="";document.cookie=name+"="+value+expires+"; path=/";}
-function readCookie(name){var nameEQ=name+"=";var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)==0) return c.substring(nameEQ.length,c.length);}return null;}
-function delCookie(name){document.cookie=name+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'}
 function doc(id){return document.getElementById(id);}
 function BadgeOnlineCount(count){if(count==0)chrome.browserAction.setBadgeText({text:String('')});else chrome.browserAction.setBadgeText({text:String(count)})}
 
@@ -153,7 +147,7 @@ function notifyUser(streamerName, titleOfStream, type, streamer) {
 		date = new Date();
 		if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
 			sendNotify(streamerName, titleOfStream, 'nf'+NotificationsCount);
-			NotifierStrg('nf'+NotificationsCount,'',new Date().setSeconds(new Date().getSeconds()+60),streamer);
+			NotifierStrg('nf'+NotificationsCount,'',new Date().setHours(new Date().getHours()+1),streamer);
 			NotificationsCount++;
 		} else if (type == 'Changed' && localJSON('Config','v',['Notifications','update'])) {
 			sendNotify(streamerName, titleOfStream, 'nf'+NotificationsCount);
