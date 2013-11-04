@@ -16,27 +16,26 @@
 
 if (localStorage['Status'] != null && localStorage['Config'] != null) {
 	function firstLaunchUser() {
-		if (document.getElementById('SetUpUserNameInp').value != undefined && document.getElementById('SetUpUserNameInp').value != ' ' && document.getElementById('SetUpUserNameInp').value != ''){ 
-			localJSON('Config','User_Name',document.getElementById('SetUpUserNameInp').value);
-			date = new Date();
-	        localJSON('Config','Timeout',date.setDate(date.getDate()+14));
-	        localJSON('Config','Ceneled','true');
-	        localJSON('Config','Closed','true');
-	        localJSON('Status','update','0');
-		} else {document.getElementById('FollowedChannelsOnline').innerHTML = 'Invalid name!'}
+		if (doc('SetUpUserNameInp').value != undefined && doc('SetUpUserNameInp').value != ' ' && doc('SetUpUserNameInp').value != ''){ 
+			localJSON('Config','c',['User_Name',doc('SetUpUserNameInp').value]);
+	        localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+14)]);
+	        localJSON('Config','c',['Ceneled','true']);
+	        localJSON('Config','c',['Closed','true']);
+	        localJSON('Status','c',['update',0]);
+		} else { doc('FollowedChannelsOnline').innerHTML = 'Invalid name!' }
 	}
-	if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true';console.error('Set up your user name in options')}
-	document.addEventListener( "DOMContentLoaded" , function () {
+	document.addEventListener("DOMContentLoaded",function (){
 		if (localStorage['FirstLaunch'] == 'true'){
 			localStorage['Following'] = 0;
-			localJSON('Status','update','7');
-			date = new Date();
-			localJSON('Config','Timeout',date.setDate(date.getDate()+14));
-	        localJSON('Config','Ceneled','true');
-	        localJSON('Config','Closed','true');
+			localJSON('Status','c',['update',7]);
+			localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+14)]);
+	        localJSON('Config','c',['Ceneled','true']);
+	        localJSON('Config','c',['Closed','true']);
+	        BadgeOnlineCount(' Hi ');
 			
-			document.getElementById('NoOneOnline').setAttribute('style', 'display:none');
-			document.getElementById('FollowedChannelsOnline').innerHTML = "Greetings!";
+			doc('NoOneOnline').setAttribute('style', 'display:none');
+			doc('FollowedChannelsOnline').innerHTML = "Greetings!";
+
 			WelcomeMsg = '<div class="Welcome" style="animated FadeIn">';
 			WelcomeMsg += '<p class="pWelcome1">Hello!</p>';
 			WelcomeMsg += '<p class="pWelcome2">Before you will use this app,</p>';
@@ -46,22 +45,32 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 			WelcomeMsg += '<p class="pWelcome5">Hope this app will be useful for you</p>';
 			WelcomeMsg += '<button type="button" id="SetUpUserName" name="SetUpUserName" class="WelcomOK">OK</button>';
 			WelcomeMsg += '</div>';
-			document.getElementById('insertContentHere').innerHTML = WelcomeMsg;
-			document.getElementById('SetUpUserNameInp').focus();
-			document.getElementById("SetUpUserName").addEventListener("click", firstLaunchUser);
+			doc('insertContentHere').innerHTML = WelcomeMsg;
+			doc('SetUpUserNameInp').focus();
+			doc("SetUpUserName").addEventListener("click", firstLaunchUser);
+
+			doc('ChgUsr').disabled = true;
+			doc('LstFlwdChnls').disabled = true;
+			doc('Direct').disabled = true;
+			doc('Dashboard').disabled = true;
 		    
-		    setInterval(function(){		    	
-				document.getElementById('SetUpUserNameInp').onkeyup=function(evt){if(evt.keyCode == 13)firstLaunchUser()}
+		    d = setInterval(function(){		    	
+				doc('SetUpUserNameInp').onkeyup=function(evt){if(evt.keyCode == 13)firstLaunchUser()}
 				
-			    if (document.getElementById('SetUpUserNameInp').value == localJSON('Config','User_Name')) {
+			    if (doc('SetUpUserNameInp').value == localJSON('Config','v',['User_Name'])) {
 					localStorage['FirstLaunch'] = 'false';
-					document.getElementById('insertContentHere').innerHTML = null;
-					localJSON('Status','StopInterval','true');
-					document.getElementById('NoOneOnline').setAttribute('style', 'display:block');
-					document.getElementById('FollowedChannelsOnline').innerHTML = "Please wait a moment";
-					localStorage['Reload'] = 0;
-					setTimeout(function(){location.reload()},1000*5);
+					doc('insertContentHere').innerHTML = null;
+					localJSON('Status','c',['StopInterval',true]);
+					localJSON('Status','c',['InsertOnlineList',1]);
+					doc('NoOneOnline').setAttribute('style', 'display:block');
+					doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
+					doc('ChgUsr').disabled = false;
+					doc('LstFlwdChnls').disabled = false;
+					doc('Direct').disabled = false;
+					doc('Dashboard').disabled = false;
 				}
+
+				if (localStorage['FirstLaunch'] == 'false') clearInterval(d);
 			},10);
 		}
 	});
