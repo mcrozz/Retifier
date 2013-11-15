@@ -32,7 +32,9 @@ function InsertOnlineList() {
 		if (c=='Full'||c=='Grid') {Num=35;Num2=43;Num3='none';Num4=40}else{Num=55;Num2=43;Num3=90;Num4=23};
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-			if (FollowingList('v',i)[1]!=null) {
+		    if (FollowingList('v', i)[1] != null) {
+		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
+
 				StreamListUnit = '<div class="content" id="'+i+'">';
 				StreamListUnit += '<div class="tumblr">';
 				StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -123,9 +125,11 @@ setInterval(function(){
 
 	*/
 	InsertHere=doc('FollowedChannelsOnline');
-	Upd=localJSON('Status','v',['update']);
-	if (localJSON('Status','v',['update']) == 0) {
-		InsertHere.innerHTML='Now online '+localJSON('Status','v',['online'])+' from '+localJSON('Following');
+	Upd = localJSON('Status', 'v', ['update']);
+	Onlv = localJSON('Status', 'v', ['online']);
+	if (!Onlv) Onlv = 0;
+	if (localJSON('Status', 'v', ['update']) == 0) {
+	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localJSON('Following');
 		progressBar('Disable')
 	} else if (Upd == 1) {
 		InsertHere.innerHTML='Behold! Update!';
@@ -137,7 +141,7 @@ setInterval(function(){
 		InsertHere.innerHTML='List of followed channels updated.';
 		progressBar('Enable')
 	} else if (Upd == 4) { 
-		InsertHere.innerHTML='Checking, online '+localJSON('Status','v',['online'])+' from '+localJSON('Following');
+	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localJSON('Following');
 		progressBar('Enable')
 	} else if (Upd == 5) { 
 		InsertHere.innerHTML='App had a problem with update'
@@ -208,8 +212,6 @@ setInterval(function(){
 		}
 	} else { localJSON('Config','c',['Timeout',new Date()]) }
 
-	if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) > Math.abs(new Date())+5*24*60*60*1000) 
-		localJSON('Config','c',['Timeout',0]);
-
+	if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) > Math.abs(new Date())+5*24*60*60*1000) localJSON('Config','c',['Timeout',0]);
 	InsertOnlineList()
 },1000)
