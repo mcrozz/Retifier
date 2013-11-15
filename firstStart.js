@@ -61,7 +61,6 @@ if (localStorage['Status'] != null && localStorage['Config'] != null) {
 					localStorage['FirstLaunch'] = 'false';
 					doc('insertContentHere').innerHTML = null;
 					localJSON('Status','c',['StopInterval',true]);
-					localJSON('Status','c',['InsertOnlineList',1]);
 					doc('NoOneOnline').setAttribute('style', 'display:block');
 					doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 					doc('ChgUsr').disabled = false;

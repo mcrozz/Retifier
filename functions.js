@@ -15,22 +15,6 @@
 */
 var NotificationsCount=0;
 
-if (localStorage['Reload'] == undefined){localStorage['Reload']='false'}
-setInterval(function(){
-
-	if (localStorage['SecondReload'] == 'True') {
-		setTimeout(location.reload, 3000);
-		delete localStorage['SecondReload']}
-	if (localStorage['JustReload'] == '1') {
-		delete localStorage['JustReload'];
-		setTimeout(window.location.reload.bind(window.location), 200)}
-	if (localStorage['Reload'] != 'false') {
-		setTimeout(window.location.reload.bind(window.location), 200)
-		localStorage['Reload'] = 'false'
-	}
-
-},1000);
-
 if (localStorage['Status']&&localStorage['Config']) {
 
 function localJSON(name,type,arrayz) {
