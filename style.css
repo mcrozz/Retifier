@@ -37,6 +37,7 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 .DashboardButton {position: absolute}
 
 #FollowedChannelsOnline {cursor:default;border-right:none;font-size:20px}
+
 .aAppInfoAbout1::selection,.aAppInfoAbout2::selection,.aAppInfoAbout3::selection,.aAppInfoAbout4::selection,.aAppInfoAbout5::selection,.AppInfoAbout1::selection,.AppInfoAbout2::selection,.AppInfoAbout3::selection,.AppInfoAbout4::selection,.AppInfoAbout5::selection,.aAppInfo::selection,.aAppInfoFuture::selection,#AppVersion::selection,#FollowedChannelsOnline::selection,#CheckInterval::selection,#UserName::selection,#Notify_All::selection,#DisNotify_All::selection,#Notify_Streamer::selection,#Notify_Streamer_Changed::selection,#Notify_Upd::selection,#Notify_Sound::selection,#Notify_Sound_Select::selection,#DurationOfStream::selection,#List_Format::selection,#AppVersionContent::selection
     {background:rgba(0, 0, 0, 0.00)}
 
@@ -55,8 +56,8 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 /* Options page */
 
 .pGreetings {color:white;font-size:18px;border:none;cursor:default;margin-top:-10px;text-align:center}
-.inUserName {width:160px;font-size:21px;border:2px rgb(105,105,105) inset;color:white;background:none;padding:0 8 0 8}
-.inCheckInt {width:160px;font-size:21px;margin-top:-10px;border:2px rgb(105,105,105) inset;color:white;background:none;padding:0 8 0 8}
+.inUserName {width:160px;font-size:21px;border:2px rgb(105,105,105) inset;color:white;background:none;padding:0 8 0 8;margin-right:32px}
+.inCheckInt {width:160px;font-size:21px;margin-top:-10px;border:2px rgb(105,105,105) inset;color:white;background:none;padding:0 8 0 8;margin-right:6px}
 
 #CheckInterval,#UserName,#Notify_All,#DisNotify_All,#Notify_Streamer,#Notify_Streamer_Changed,#Notify_Upd,#Notify_Sound,#Notify_Sound_Select,#DurationOfStream,#List_Format
     {width:320px;height:30px;border:none;color:white;display:block;text-shadow:none;cursor:pointer}

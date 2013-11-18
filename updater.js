@@ -36,7 +36,8 @@ $.getJSON('/manifest.json', function(data){localStorage['App_Version']=data.vers
 
 console.log('[UPDATER]: Start up');
 
-acceptedVersions = {"background": "67", "popup": "76", "insertFunc": "110"};
+acceptedVersions = {"background": "77", "popup": "84", "insertFunc": "116"};
+
 
 function CheckForUpdates() {
 	JSONparse = localJSON('Code');
