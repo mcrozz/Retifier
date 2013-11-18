@@ -36,7 +36,8 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 
 .DashboardButton {position: absolute}
 
-.pNowOnline {cursor:default;border-right:none;font-size:20px}
+#FollowedChannelsOnline {cursor:default;border-right:none;font-size:20px}
+#FollowedChannelsOnline::selection {background:rgba(0, 0, 0, 0.00)}
 
 .TwitchLogo {background:url('img.png') no-repeat;background-position:-763px -1126px;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
 
@@ -58,6 +59,8 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 
 #CheckInterval,#UserName,#Notify_All,#DisNotify_All,#Notify_Streamer,#Notify_Streamer_Changed,#Notify_Upd,#Notify_Sound,#Notify_Sound_Select,#DurationOfStream,#List_Format
     {width:320px;height:30px;border:none;color:white;display:block;text-shadow:none;cursor:pointer}
+#CheckInterval::selection,#UserName::selection,#Notify_All::selection,#DisNotify_All::selection,#Notify_Streamer::selection,#Notify_Streamer_Changed::selection,#Notify_Upd::selection,#Notify_Sound::selection,#Notify_Sound_Select::selection,#DurationOfStream::selection,#List_Format::selection
+    {background:rgba(0, 0, 0, 0.00)}
 #Notify_Streamer,#Notify_Streamer_Changed,#Notify_Upd {margin-left:10px}
 #UserName {margin-bottom:10px}
 /**/
