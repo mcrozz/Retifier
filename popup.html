@@ -1,4 +1,4 @@
-<meta charset='utf-8'> 
+﻿<meta charset='utf-8'> 
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="animate.css" type="text/css" />
 <script src="jquery-1.10.2.min.js"></script>
@@ -45,16 +45,16 @@
 <p class="pGreetings">Hello dear user!</p>
 
 
-<div class="UserName"><input type="text" id="ChgUsrNam" class="inUserName">User name</div>
-<div class="CheckInterval"><input type="text" id="ChgUsrInt" class="inCheckInt">(min) Check interval</div>
-<div class="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
-<div class="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
-<div class="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
-<div class="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
-<div class="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
-<div class="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
+<div id="UserName"><input type="text" id="ChgUsrNam" class="inUserName">User name</div>
+<div id="CheckInterval"><input type="text" id="ChgUsrInt" class="inCheckInt">(min) Check interval</div>
+<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
+<div id="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
+<div id="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
+<div id="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
+<div id="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
+<div id="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
 
-<div class="Notify_Sound_Select">
+<div id="Notify_Sound_Select">
 	<select id="SoundSelect" style="width:90">
 		<option value="DinDon">Din-Don</option>
 		<option value="DinDon">More comin' soon</option>
@@ -63,15 +63,15 @@
 	Choose sound
 </div>
 
-<div class="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
+<div id="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
 
-<div class="List_Format">
-	<select id="List_Format_List" style="width:90">	
-		<option value="Full">Full</option>
-		<option value="Mini">Light</option>
-		<option value="Grid">Grid</option>
-	</select>
-	Choose style of online list
+<div id="List_Format">
+    <select id="List_Format_List" style="width:90">
+        <option value="Full">Full</option>
+        <option value="Mini">Light</option>
+        <option value="Grid">Grid</option>
+    </select>
+    Choose style of online list
 </div>
 
 
