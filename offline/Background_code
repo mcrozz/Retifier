@@ -35,6 +35,7 @@ if (localStorage['AfterUPDchange']==undefined) {localStorage['Following']=0}
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     BadgeOnlineCount(0);
+    localJSON('Status', 'c', ['online',0]);
     for (var i=0;i<Math.floor(localJSON('Following'));i++) {
         FollowingList('c',i,'',false)
     }
@@ -60,10 +61,10 @@ function checkStatus(url,key) {
         localJSON('Status','c',['checked',localJSON('Status','v',['checked'])+1]);
         CheckBar2+='|';
         console.log('[ '+CheckBar2+CheckBar.substring(0,localStorage['Following']-localJSON('Status','v',['checked']))+' ]');
+        FlwLst = FollowingList('v',key);
 
         if (checkStatus.responseJSON.stream) {
-            localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);
-            FlwLst = FollowingList('v',key);
+            localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);            
 
             Game = checkStatus.responseJSON.stream.game;
             Status = checkStatus.responseJSON.stream.channel.status;
@@ -78,7 +79,11 @@ function checkStatus(url,key) {
             else { Time2 = FlwLst[4] }
 
             FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2])
-        } else {FollowingList('c',key,'',false)} 
+        } else if (FlwLst[1]) {
+            localJSON('Status', 'c', ['online', localJSON('Status', 'v', ['online']) - 1]);
+            BadgeOnlineCount(Onln);
+            FollowingList('c', key, '', false)                      
+        }
         if (localJSON('Status', 'v', ['checked']) == localJSON('Following')) {
             Onln = localJSON('Status', 'v', ['online']);
             if (!Onln) Onln = 0;
@@ -93,7 +98,6 @@ function checkStatus(url,key) {
 
 function CheckUserStatus() {
     localJSON('Status','c',['checked',0]);
-    localJSON('Status','c',['online',0]);
     localJSON('Status','c',['update',4]);
     CheckBar = '--------------------------------------------------------------------------------------------------------------------';
     CheckBar2 = '';
