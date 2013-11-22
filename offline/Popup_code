@@ -478,9 +478,7 @@ function progressBar(type) {
 		doc('CheckingProgress').setAttribute('style', 'display:block');
 		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * localJSON('Status','v',['checked']) )
 	} else if (type == 'Disable') {
-		setTimeout(function(){
-			doc('CheckingProgress').setAttribute('style', 'display:none')
-		},800);
+		setTimeout(function(){ doc('CheckingProgress').setAttribute('style', 'display:none') },800);
 	}
 }
 
@@ -495,19 +493,23 @@ document.addEventListener("DOMContentLoaded",function (){
     doc("Notify_All").addEventListener('click', function () { doc('EnNotify').checked = true; doc('DisNotify').checked = false; doc('NotifyStreamer').disabled = false; doc('NotifyStreamerChanged').disabled = false; doc('NotifyUpdate').disabled = false });
     doc("DisNotify_All").addEventListener('click', function () { doc('DisNotify').checked = true; doc('EnNotify').checked = false; doc('NotifyStreamer').disabled = true; doc('NotifyStreamerChanged').disabled = true; doc('NotifyUpdate').disabled = true });
     doc('Notify_Streamer').addEventListener('click', function () { if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
+    doc('NotifyStreamer').addEventListener('click', function () { if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
     doc('Notify_Streamer_Changed').addEventListener('click', function () { if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
+    doc('NotifyStreamerChanged').addEventListener('click', function () { if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
     doc('Notify_Upd').addEventListener('click', function () { if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
-    doc('Notify_Sound').addEventListener('click', function () { if (doc('SoundCheck').checked && !doc('SoundCheck').disabled) doc('SoundCheck').checked = false; else if (!doc('SoundCheck').disabled) doc('SoundCheck').checked = true });
+    doc('NotifyUpdate').addEventListener('click', function () { if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
+    doc('Notify_Sound').addEventListener('click', function () { if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
+    doc('SoundCheck').addEventListener('click', function () { if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false }});
     doc("fndAbug").addEventListener("click", openCloseReportAbug);
-	doc("AppVersion").addEventListener("click", openAppVersionChanges);
-	doc("SoundSelect").addEventListener("change", changeSoundFile);
-	doc("AppFirst").addEventListener("click", function () { changeAppContent('AppFirst') });
-	doc("AppSecond").addEventListener("click", function () { changeAppContent('AppSecond') });
-	doc("AppThird").addEventListener("click", function () { changeAppContent('AppThird') });
-	doc("AppInfoClose").addEventListener("click", function () { CloseAppVersionChanges() });
-	doc('userChangePopup2').addEventListener('click', function () { clickChangeUserCls() });
-	doc('AppInfoBack').addEventListener('click', function () { CloseAppVersionChanges() });
-	doc('Dashboard').addEventListener('click', function () { _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
-	doc('Direct').addEventListener('click', function () { _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
-	doc("SoundCheck").addEventListener("click", function () { if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
+    doc("AppVersion").addEventListener("click", openAppVersionChanges);
+    doc("SoundSelect").addEventListener("change", changeSoundFile);
+    doc("AppFirst").addEventListener("click", function () { changeAppContent('AppFirst') });
+    doc("AppSecond").addEventListener("click", function () { changeAppContent('AppSecond') });
+    doc("AppThird").addEventListener("click", function () { changeAppContent('AppThird') });
+    doc("AppInfoClose").addEventListener("click", function () { CloseAppVersionChanges() });
+    doc('userChangePopup2').addEventListener('click', function () { clickChangeUserCls() });
+    doc('AppInfoBack').addEventListener('click', function () { CloseAppVersionChanges() });
+    doc('Dashboard').addEventListener('click', function () { _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
+    doc('Direct').addEventListener('click', function () { _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
+    doc("SoundCheck").addEventListener("click", function () { if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
 } );
