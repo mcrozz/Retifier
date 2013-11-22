@@ -64,7 +64,7 @@ function checkStatus(url,key) {
         FlwLst = FollowingList('v',key);
 
         if (checkStatus.responseJSON.stream) {
-            localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);            
+            if (!FlwLst[1]) localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);            
 
             Game = checkStatus.responseJSON.stream.game;
             Status = checkStatus.responseJSON.stream.channel.status;
@@ -128,7 +128,6 @@ function CheckFollowingList() {
                 console.error(updateFollowingListAndCheck.status);
                 localJSON('Status','c',['update',5]);
                 notifyUser("Update follows list","Error, can't update","Update");
-                BadgeOnlineCount(0)
             } else {
                 localJSON('Status','c',['update',3]);
                 console.log('Following channels list updated, checking status')
