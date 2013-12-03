@@ -18,51 +18,61 @@ var NotificationsCount=0;
 if (localStorage['Status']&&localStorage['Config']) {
 
 function localJSON(name,type,arrayz) {
-	if (name&&type=='c'&&arrayz) {
-		sz = arrayz.length;
-		b = JSON.parse(localStorage[name]);
-		if (sz == 2) {
-			b[arrayz[0]]=arrayz[1];
-			if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}	
-		} else if (sz == 3) {
-			h = b[arrayz[0]];
-			h[arrayz[1]] = arrayz[2];
-			b[arrayz[0]] = h;
-			if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}		
-		} else {return false;}
-	} else if (name&&type=='v'&&arrayz) {
-		b = JSON.parse(localStorage[name]);
-		if (arrayz.length == 1){			
-			if (b[arrayz[0]]) {return b[arrayz[0]];} else {return false;}
-		} else if (arrayz.length == 2) {
-			f = b[arrayz[0]];
-			if (f[arrayz[1]]) {return f[arrayz[1]];} else {return false;}
-		} else {return false;}
-	} else if (name&&!type&&!arrayz) {
-		return JSON.parse(localStorage[name]);
-	} else {return false;console.error('[ERROR]: Wrong input in localJSON function!')}
+    try {
+        if (name && type == 'c' && arrayz) {
+            sz = arrayz.length;
+            b = JSON.parse(localStorage[name]);
+            if (sz == 2) {
+                b[arrayz[0]]=arrayz[1];
+                if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}	
+            } else if (sz == 3) {
+                h = b[arrayz[0]];
+                h[arrayz[1]] = arrayz[2];
+                b[arrayz[0]] = h;
+                if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}		
+            } else {return false;}
+        } else if (name&&type=='v'&&arrayz) {
+            b = JSON.parse(localStorage[name]);
+            if (arrayz.length == 1){			
+                if (b[arrayz[0]]) {return b[arrayz[0]];} else {return false;}
+            } else if (arrayz.length == 2) {
+                f = b[arrayz[0]];
+                if (f[arrayz[1]]) {return f[arrayz[1]];} else {return false;}
+            } else {return false;}
+        } else if (name&&!type&&!arrayz) {
+            return JSON.parse(localStorage[name]);
+        } else {return false;console.error('[ERROR]: Wrong input in localJSON function!')}
+    } catch (e) {
+        console.error('[ERROR] localJSON() ended with error: ' + e.message);
+        return "ERROR";
+    }
 }
 
-function NotifierStrg(ids,cmd,time,strm) {
-	b = JSON.parse(sessionStorage['Notifications']);
-	if (ids&&cmd==''&&time&&strm) {
-		b[ids]={};
-		z=b[ids];
-		z['Date']=time;
-		z['Del']=false;
-		z['Streamer']=strm;
-		if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
-	} else if (ids&&cmd=='ch') {
-		if (b[ids]!=null) {
-			return [b[ids]['Date'],b[ids]['Del'],b[ids]['Streamer']];
-		} else {console.debug('Check failed, id is '+ids)}
-	} else if (ids&&cmd) {
-		if (b[ids]!=null) {
-			z=b[ids];
-			z['Del']=cmd;
-			if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
-		} else {console.debug('Failed to change id: '+ids+'. Cmd is '+cmd)}
-	} else {return 'Nope :|';console.error('[ERROR]: Wrong input in NotifierStrg function!')}
+function NotifierStrg(ids, cmd, time, strm) {
+    try {
+        b = JSON.parse(sessionStorage['Notifications']);
+        if (ids&&cmd==''&&time&&strm) {
+            b[ids]={};
+            z=b[ids];
+            z['Date']=time;
+            z['Del']=false;
+            z['Streamer']=strm;
+            if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
+        } else if (ids&&cmd=='ch') {
+            if (b[ids]!=null) {
+                return [b[ids]['Date'],b[ids]['Del'],b[ids]['Streamer']];
+            } else {console.debug('Check failed, id is '+ids)}
+        } else if (ids&&cmd) {
+            if (b[ids]!=null) {
+                z=b[ids];
+                z['Del']=cmd;
+                if (sessionStorage['Notifications']=JSON.stringify(b)) {return true;}else{return false;}
+            } else {console.debug('Failed to change id: '+ids+'. Cmd is '+cmd)}
+        } else {return 'Nope :|';console.error('[ERROR]: Wrong input in NotifierStrg function!')}
+    } catch (e) {
+        console.error('[ERROR] NotifierStrg() ended with error: ' + e.message);
+        return "ERROR";
+    }
 }
 
 /*
@@ -82,35 +92,45 @@ function NotifierStrg(ids,cmd,time,strm) {
 */
 if (localStorage['FollowingList']==undefined) {localStorage['FollowingList']='{}'};
 function FollowingList(type,id,name,stream) {
-	b = JSON.parse(localStorage['FollowingList']);
-	if (type == 'add') {
-		b[id]={};
-		z=b[id];
-		z['Name']=name;
-		z['Stream']=false;
-		if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
-	} else if (type == 'c') {
-		z=b[id];
-		if (stream) {
-			z['Stream']={};
-			x=z['Stream'];
-			x['Title']=stream[0];
-			x['Game']=stream[1];
-			x['Viewers']=stream[2];
-			x['Time']=stream[3]
-		} else { z['Stream']=false }
-		if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
-	} else if (type == 'v') {
-		z=b[id];
-		if (!z['Stream']) { return [ z['Name'] ];
-		} else {
-			return [ z['Name'], z['Stream']['Title'], z['Stream']['Game'], z['Stream']['Viewers'], z['Stream']['Time'] ];
-		}
-	}
+    try {
+        b = JSON.parse(localStorage['FollowingList']);
+        if (type == 'add') {
+            b[id]={};
+            z=b[id];
+            z['Name']=name;
+            z['Stream']=false;
+            if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+        } else if (type == 'c') {
+            z=b[id];
+            if (stream) {
+                z['Stream']={};
+                x=z['Stream'];
+                x['Title']=stream[0];
+                x['Game']=stream[1];
+                x['Viewers']=stream[2];
+                x['Time'] = stream[3];
+                x['GameIMG'] = stream[4]
+            } else { z['Stream']=false }
+            if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+        } else if (type == 'v') {
+            z=b[id];
+            if (!z['Stream']) { return [ z['Name'] ];
+            } else {
+                return [z['Name'], z['Stream']['Title'], z['Stream']['Game'], z['Stream']['Viewers'], z['Stream']['Time'], z['Stream']['GameIMG']];
+            }
+        } else if (type == 'GameIMG') {
+            x = b[id]['Stream'];
+            x['GameIMG'] = name;
+            return true;
+        }
+    } catch (e) {
+        console.error('[ERROR] FollowingList() ended with error: ' + e.message);
+        return "ERROR";
+    }
 }
 
 function doc(id){return document.getElementById(id);}
-function BadgeOnlineCount(count){if(count==0)chrome.browserAction.setBadgeText({text:String('')});else chrome.browserAction.setBadgeText({text:String(count)})}
+function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
 
 function sendNotify(Title, msg, streamer, scriptUpd) {
 	console.debug(new Date+': '+Title+' -  '+msg);
