@@ -14,7 +14,17 @@
 	limitations under the License.
 */
 
-
+// Record the last element to be right-clicked, since that information isn't
+// passed to the contextmenu click handler that calls top_open_blacklist_ui
+var rightclicked_item = null;
+if (document.body) {
+    document.body.addEventListener("contextmenu", function (e) {
+        rightclicked_item = e.srcElement;
+    });
+    document.body.addEventListener("click", function () {
+        rightclicked_item = null;
+    });
+}
 
 FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
@@ -31,6 +41,13 @@ function InsertOnlineList() {
 	    StreamTitle = b[1];
 		StreamerName = b[0];
 		StreamGame = b[2];
+		StreamVievers = b[3];
+
+		if ('object'.indexOf(StreamTitle) != -1) StreamTitle = 'getting...';
+		if ('object'.indexOf(StreamerName) != -1) StreamerName = 'getting...';
+		if ('object'.indexOf(StreamGame) != -1) StreamGame = 'getting...';
+		if ('object'.indexOf(StreamVievers) != -1) StreamVievers = '...';
+
 		c = localJSON('Config', 'v', ['Format']);
 		if (c == 'Full' || c == 'Grid') { Num = 35; Num2 = 43; Num3 = 'none'; Num4 = 40 } else { Num = 55; Num2 = 43; Num3 = 90; Num4 = 23 };
 
@@ -56,7 +73,7 @@ function InsertOnlineList() {
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="viewers">';
 				StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+i+'">';
-				StreamListUnit += b[3]+'</div>';
+				StreamListUnit += StreamVievers + '</div>';
 				StreamListUnit += '<p class="pViewers">viewers</p>';
 				StreamListUnit += '</div>';
 				StreamListUnit += '<div class="gamename">';
@@ -167,8 +184,8 @@ setInterval(function(){
 			if (Hours == 0) {Hours = ''} else { if (Hours < 10) {Hours = '0'+Hours+'h:'} else if (Hours >= 10) {Hours = Hours+'h:'} };
 			if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m:'} else if (Minutes >= 10) {Minutes = Minutes+'m:'} };
 			if (Seconds == 0) {Seconds = '00s'} else { if (Seconds < 10) {Seconds = '0'+Seconds+'s'} else if (Seconds >= 10) {Seconds = Seconds+'s'} };
-			Time = Days+''+Hours+''+Minutes+''+Seconds;
-			if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML=Time;
+			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+            if (doc(InsertTimeHere) && 'NaN'.indexOf(Time) == -1) doc(InsertTimeHere).innerHTML = Time;
 		}
 	} 
 
