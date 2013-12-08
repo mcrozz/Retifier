@@ -43,33 +43,38 @@ if (!sessionStorage['FirstLoad']) {
 
 function checkDonations() {
     var GetDonationsList = $.ajax({url:"https://app.mcrozz.net/Twitch.tv_Notifier/DonationsList.php"});
-    GetDonationsList.complete(function(){
-        ParsedResponse = JSON.parse(GetDonationsList.responseText);
-        if (ParsedResponse.indexOf(hex_md5(localJSON('Config','v',['User_Name']))) != -1 ) {
-            localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+30)]);
-            localJSON('Config','c',['Ceneled','true']);
-            localJSON('Config','c',['Closed','true']);
+    GetDonationsList.done(function(){
+        try {
+            ParsedResponse = JSON.parse(GetDonationsList.responseText);
+            if (ParsedResponse.indexOf(hex_md5(localJSON('Config','v',['User_Name']))) != -1 ) {
+                localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+30)]);
+                localJSON('Config','c',['Ceneled','true']);
+                localJSON('Config','c',['Closed','true']);
+            }
+        } catch (e) {
+            console.error('Failed to parse donations list... ' + e.message);
         }
     });
+    GetDonationsList.error(function () { console.error('Failed to get donations list... '); });
 }
 
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
-        .fail(function(){notifyUser("Update follows list", "Error, can't update","Update");localJSON('Status','c',['update',8])});
+        .fail(function () { notifyUser("Update follows list", "Error, can't update", "Update"); localJSON('Status', 'c', ['update', 5]) });    
 
     checkStatus.complete(function() {
-        localJSON('Status','c',['checked',localJSON('Status','v',['checked'])+1]);
+        localJSON('Status', 'c', ['checked', localJSON('Status', 'v', ['checked']) + 1]);
         CheckBar2+='|';
-        console.log('[ '+CheckBar2+CheckBar.substring(0,localStorage['Following']-localJSON('Status','v',['checked']))+' ]');
+        console.log('[ ' + CheckBar2 + CheckBar.substring(0, localStorage['Following'] - localJSON('Status', 'v', ['checked'])) + ' ]');
         FlwLst = FollowingList('v',key);
 
         if (checkStatus.responseJSON.stream) {
-            if (!FlwLst[1]) localJSON('Status','c',['online',localJSON('Status','v',['online'])+1]);            
+            if (!FlwLst[1]) localJSON('Status', 'c', ['online', localJSON('Status', 'v', ['online']) + 1]);
 
             Game = checkStatus.responseJSON.stream.game;
             Status = checkStatus.responseJSON.stream.channel.status;
             Name = FollowingList('v',key)[0];
-            Time = checkStatus.responseJSON.stream.channel.updated_at;           
+            Time = checkStatus.responseJSON.stream.channel.updated_at;            
 
             if (Status == null) Status = 'Untitled stream';
             if (Game == null) Game = 'Not playing';
@@ -78,7 +83,7 @@ function checkStatus(url,key) {
             if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(FlwLst[4])) || !FollowingList('v', key) || FlwLst[4] == null) { Time2 = Time }
             else { Time2 = FlwLst[4] }
 
-            FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2])
+            FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
         } else if (FlwLst[1]) {
             localJSON('Status', 'c', ['online', localJSON('Status', 'v', ['online']) - 1]);
             BadgeOnlineCount(Onln);
@@ -93,7 +98,7 @@ function checkStatus(url,key) {
             console.log('Every channel checked');
             localJSON('Status','c',['update',0])
         }
-    });
+    });    
 }
 
 function CheckUserStatus() {
@@ -130,14 +135,21 @@ function CheckFollowingList() {
                 notifyUser("Update follows list","Error, can't update","Update");
             } else {
                 localJSON('Status','c',['update',3]);
-                console.log('Following channels list updated, checking status')
+                console.log('Following channels list updated, checking status');
             }
         });
 
-        updateFollowingListAndCheck.complete(function(){
+        updateFollowingListAndCheck.fail(function () {
+            console.error("Can't get following list");
+            localJSON('Status', 'c', ['update', 8]);
+            notifyUser("Update follows list", "Error, can't update", "Update");
+        });
+
+        updateFollowingListAndCheck.done(function(){
             if (Math.floor(localStorage['Following']) != twitch._total) {
                 console.log('Update list of following channels');
                 localStorage['Following'] = twitch._total;
+                localJSON('Status', 'c', ['online', 0]);
 
                 for (var i=0;i<Math.floor(localStorage['Following']);i++) {
                     if (updateFollowingListAndCheck.responseJSON.follows[i]) {
@@ -177,8 +189,37 @@ setInterval(function(){
 },500);
 
 
+// Check IMG urls in work!
+var CheckedIMGfalse = [],
+    CheckedIMGtrue = [];
+setInterval(function () {
+    try { x = JSON.parse(localStorage['FollowingList']) }
+    catch (e) { console.error(e.message) };
+    for (var i = 0; i < localJSON('Following');i++) {
+        b = x[i];
+        if (b['Stream']) {
+            if (b['Stream']['Game'].indexOf(CheckedIMGtrue) == -1 || b['Stream']['Game'].indexOf(CheckedIMGfalse) == -1) {
+                console.debug('Trying to get img...');
+                var resp = 'NotYet';
+                var checkURL = $.ajax({
+                    type: "HEAD",
+                    crossDomain: true,
+                    url: "http://static-cdn.jtvnw.net/ttv-boxart/" + b['Stream']['Game'] + ".jpg"
+                })
+                .done(function () {
+                    FollowingList('GameIMG', i, true);
+                    CheckedIMGtrue.add(b['Stream']['Game']);
+                    console.debug('Changed on true ' + i);
+                })
+                .error(function () {
+                    FollowingList('GameIMG', i, false);
+                    CheckedIMGfalse.add(b['Stream']['Game']);
+                    console.debug('Changed on false ' + i);
+                });
+            }
+        }
+    };
 
-setInterval(function(){
     if (sessionStorage['First_Notify'] == 1) {
         if (localJSON('Status','v',['online']) > 1) {
             textANDchannel = 'Now online '+localJSON('Status','v',['online'])+' channels';
