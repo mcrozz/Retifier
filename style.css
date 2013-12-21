@@ -1,14 +1,15 @@
 @font-face {font-family:ExtFont;src:url('DejaVuSans.ttf')}
-body {background:rgba(141,141,141,0.22);width:697px;height:584px;font-family:ExtFont, sans-serif;overflow:hidden;margin:0}
+html {background:rgba(141,141,141,0.22);width:697px;height:584px;font-family:ExtFont, sans-serif;overflow:hidden;margin:0}
+body {margin:0}
 a {color: white;text-decoration:none;font-size:22px;cursor:default}
 p {color: black;border-right:1px dotted black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}
 b {border: 2px dotted #d6d4d4}
 
-.header {background:url('img.png') no-repeat;background-position:-2px -1178px;height:80px;display:block}
+#header {background:url('/img/img.png') no-repeat;background-position:-2px -1178px;height:80px;display:block}
 
-.controls {height:80px;display:block}
+#controls {height:80px;display:block}
 
-.online {height:30px;position:absolute;top:33;text-align:center;width:397px;margin:0 0 0 150}
+#nowONline {height:30px;position:absolute;top:33;text-align:center;width:397px;margin:0 0 0 150}
 
 .close {position:absolute;right:10px;top:10px}
 
@@ -25,13 +26,13 @@ b {border: 2px dotted #d6d4d4}
 button {border:none;cursor:default}
 button.first {color:white;text-decoration:none;font-size:22px;font-family:ExtFont, sans-serif;font-size: 14px;color: #fafafa;padding: 5px 20px;background: -moz-linear-gradient(top,#6441a5 0%,#2a1b47);background: -webkit-gradient(linear, left top, left bottom, from(#6441a5),to(#2a1b47));-moz-border-radius: 14px;-webkit-border-radius: 14px;border-radius: 14px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}
 button.button:hover {color:rgba(0, 0, 0, 0.66);background:-webkit-gradient(linear,left top,left bottom,from(rgba(255, 255, 255, 0.41)),to(rgba(129, 129, 129, 1)))}
-button.Left {color:white;text-decoration:none;font-size:22px;background:url('img.png') no-repeat;background-position:-2px -1084px;width:150px;height:40px}
+button.Left {color:white;text-decoration:none;font-size:22px;background:url('/img/img.png') no-repeat;background-position:-2px -1084px;width:150px;height:40px}
 button.Left:hover {color:rgb(207, 207, 207);background-position:-154px -1084px}
-button.Left2 {color:white;text-decoration:none;font-size:22px;background:url('img.png') no-repeat;background-position:-701px -2px;width:150px;height:40px}
+button.Left2 {color:white;text-decoration:none;font-size:22px;background:url('/img/img.png') no-repeat;background-position:-701px -2px;width:150px;height:40px}
 button.Left2:hover {color:rgb(207, 207, 207);background-position:-853px -2px}
-button.Right {color:white;text-decoration:none;font-size:22px;background:url('img.png') no-repeat;background-position:-306px -1126px;width:150px;height:40px}
+button.Right {color:white;text-decoration:none;font-size:22px;background:url('/img/img.png') no-repeat;background-position:-306px -1126px;width:150px;height:40px}
 button.Right:hover {color:rgb(207, 207, 207);background-position:-458px -1126px}
-button.Right2 {color:white;text-decoration:none;font-size:22px;background:url('img.png') no-repeat;background-position:-2px -1126px;width:150px;height:40px}
+button.Right2 {color:white;text-decoration:none;font-size:22px;background:url('/img/img.png') no-repeat;background-position:-2px -1126px;width:150px;height:40px}
 button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px}
 
 .DashboardButton {position: absolute}
@@ -41,7 +42,7 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 .aAppInfoAbout1::selection,.aAppInfoAbout2::selection,.aAppInfoAbout3::selection,.aAppInfoAbout4::selection,.aAppInfoAbout5::selection,.AppInfoAbout1::selection,.AppInfoAbout2::selection,.AppInfoAbout3::selection,.AppInfoAbout4::selection,.AppInfoAbout5::selection,.aAppInfo::selection,.aAppInfoFuture::selection,#AppVersion::selection,#FollowedChannelsOnline::selection,#CheckInterval::selection,#UserName::selection,#Notify_All::selection,#DisNotify_All::selection,#Notify_Streamer::selection,#Notify_Streamer_Changed::selection,#Notify_Upd::selection,#Notify_Sound::selection,#Notify_Sound_Select::selection,#DurationOfStream::selection,#List_Format::selection,#AppVersionContent::selection
     {background:rgba(0, 0, 0, 0.00)}
 
-.TwitchLogo {background:url('img.png') no-repeat;background-position:-763px -1126px;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
+.TwitchLogo {background:url('/img/img.png') no-repeat;background-position:-763px -1126px;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
 
 .LoginORoutButton  {margin-left:547px;position:absolute}
 
@@ -65,7 +66,7 @@ button.Right2:hover {color:rgb(207, 207, 207);background-position:-154px -1126px
 #UserName {margin-bottom:10px}
 /**/
 
-button.INfoundAbug {background:url('img.png');background-position:-610px -1084px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);color:black}
+button.INfoundAbug {background:url('/img/img.png');background-position:-610px -1084px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);color:black}
 button.INfoundAbug:hover {background-position:-775px -1084px}
 .foundAbug:hover {background:-webkit-gradient(linear,left top,left bottom,from(rgba(1,1,1,0.5)),to(rgba(1,1,1,0.8)))}
 
@@ -79,7 +80,7 @@ button.INfoundAbug:hover {background-position:-775px -1084px}
 .pWelcome5 {border:none;font-size:21px;margin:0 0 5 0;text-align:center}
 .inSetUpUserName {margin:0 0 5 73;width:250px;height:30px;font-size:23px;text-align:center}
 
-#AppVersion {position:fixed;right:24px;top:570px;-webkit-border-radius:15px;background:white;padding:4px;color:black;font-size:15px;cursor:help;z-index:15;-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
+#AppVersion {position:fixed;right:15px;bottom:-5px;-webkit-border-radius:15px;background:white;padding:4px;color:black;font-size:15px;cursor:help;z-index:15;-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
 #AppChanges {background:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,1)),to(rgba(85,85,85,0.95)));position:fixed;z-index:35;width:400px;height:400px;left:157px;bottom:0}
 
 .AppInfo::selection {background:rgba(0, 0, 0, 0.00)}
@@ -116,8 +117,9 @@ button.OptionsSave:hover {color:rgb(207, 207, 207);background:-webkit-gradient(l
 button.WelcomOK {left:0;margin-top:5px;color:white;text-decoration:none;font-size:22px;width:396px;height:36px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0)),to(rgba(87,87,87,0.78)))}
 button.WelcomOK:hover {color:rgb(207, 207, 207);background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0)),to(rgba(182,182,182,0.78)))}
 
-button.INfoundAbug {background:url("img.png");background-position:-610px -1084px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);-webkit-animation-name:fadeIn;-webkit-animation-duration:1s;font-size:21px}
+button.INfoundAbug {background:url("/img/img.png");background-position:-610px -1084px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);-webkit-animation-name:fadeIn;-webkit-animation-duration:1s;font-size:21px}
 
+#content3 {height:515px;width:703px;position:relative;display:block;padding:5px;padding-bottom:0;margin-left:-12px}
 
 /* MINI FORM 
 StreamDuration {color:black;margin:0 0 0 17;font-size:19}
@@ -138,7 +140,7 @@ StreamDuration {color:black;margin:0 0 0 17;font-size:19}
 .informationTextStreamer {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
 .informationTextViewers {cursor:default;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
 .informationTextGame {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}
-.tumblr {background:url("StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}
+.tumblr {background:url("/img/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}
 .GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1}
 .GameTumb1 {z-index:3}
 .GameTumb2 {z-index:2}
@@ -157,10 +159,10 @@ StreamDuration {color:black;margin:0 0 0 17}
 .pStreamer {cursor:default;width:75px}
 .pViewers {cursor:default;width:75px}
 .pGamename {cursor:default;width:75px}
-.content {background:url("img.png");background-position:-2px -1262px;height:200px;width:685px;padding:2;position:relative}
+.content {background:url("/img/img.png");background-position:-2px -1262px;height:200px;width:685px;padding:2;position:relative}
 .content2 {max-height:100%;overflow:auto}
 .content3 {height:505;width:707;position:relative;display:block;padding:5px;margin-top:-3;margin-left:-12}
-.tumblr {background:url("StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}
+.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}
 .tumblr:hover::after {content:"Go to streaming page";width:317px;height:22px;z-index:1;position:absolute;left:1;top:168;text-align:center;color:rgba(255,255,255,0.5);padding:4 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39, 39, 39, 0.66)),to(rgba(0, 0, 0, 0.85)));-webkit-animation-name:fadeIn;-webkit-animation-duration:0.5s}
 .information {width:345px;height:200px;display:inline;position:absolute;right:0;top:6}
 .informationTextTitle {cursor:default;position:absolute;top:15;z-index:1;left:75;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}

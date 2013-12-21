@@ -1,15 +1,14 @@
 ﻿<meta charset='utf-8'> 
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="animate.css" type="text/css" />
-<script src="jquery-1.10.2.min.js"></script>
-<script src="functions.js"></script>
-<script src="firstStart.js"></script>
+<script src="/lib/jquery-1.10.2.min.js"></script>
+<script src="/lib/functions.js"></script>
+<script src="/lib/firstStart.js"></script>
 <script src="insertFunc.js"></script>
 <script src="popup.js"></script>
 <body id="body">
 
 <div id="FollowedChannelsList" class="FollowedChannelsList" style="display:none">
-
 	<div class="close">
 		<button type="button" id="ClsFlwdChnlsLst" name="Close List of Followed channels" class="button" style="width:167px">Close</button>
 	</div>
@@ -22,15 +21,14 @@
 		<p class="pCloseBelow4">Click on name to go on profile</p>
 	</div>
 	
-	<div id="InsertFollowedChannelsHere1" style="position:absolute;width:180;height:500;left:0"> </div>
-	<div id="InsertFollowedChannelsHere2" style="position:absolute;width:180;height:500;left:185"> </div>
-	<div id="InsertFollowedChannelsHere3" style="position:absolute;width:180;height:500;left:370"> </div>
-	<div id="InsertFollowedChannelsHere4" style="position:absolute;width:180;height:500;left:0;top:505"> </div>
-	<div id="InsertFollowedChannelsHere5" style="position:absolute;width:180;height:500;left:185;top:505"> </div>
-	<div id="InsertFollowedChannelsHere6" style="position:absolute;width:180;height:500;left:370;top:505"> </div>
+	<div id="InsertFollowedChannelsHere1" style="position: absolute; width: 180px; height: 500px; left: 0"> </div>
+	<div id="InsertFollowedChannelsHere2" style="position: absolute; width: 180px; height: 500px; left: 185px; "> </div>
+	<div id="InsertFollowedChannelsHere3" style="position: absolute; width: 180px; height: 500px; left: 370px; "> </div>
+	<div id="InsertFollowedChannelsHere4" style="position: absolute; width: 180px; height: 500px; left: 0; top: 505px; "> </div>
+	<div id="InsertFollowedChannelsHere5" style="position: absolute; width: 180px; height: 500px; left: 185px; top: 505px; "> </div>
+	<div id="InsertFollowedChannelsHere6" style="position: absolute; width: 180px; height: 500px; left: 370px; top: 505px; "> </div>
 
 </div>
-
 
 <div id="firstScane" style="display:block;overflow:hidden">
 
@@ -75,34 +73,32 @@
 </div>
 
 
-
-
 <button type="button" id="ChgUsrSnd" class="OptionsSave">Save / Close</button>
 
 </div>
 
-<div class="header">
-<div class="controls">
-	<div class="DashboardButton">
-		<button type="button" id="Dashboard" class="left">Dashboard</button>
-	</div>
-	<div class="ProbablyNothing">
-		<button type="button" id="Direct" class="left2">Direct</button>
-	</div>
+<div id="header">
+    <div id="controls">
+        <div class="DashboardButton">
+            <button type="button" id="Dashboard" class="left">Dashboard</button>
+        </div>
+        <div class="ProbablyNothing">
+            <button type="button" id="Direct" class="left2">Direct</button>
+        </div>
 
-	<div>
-		<a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
-	</div>
+        <div>
+            <a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
+        </div>
 
-	<div class="LoginORoutButton">
-		<button type="button" id="ChgUsr" class="right">Options</button>
-	</div>
-	<div class="ListOfFollowed">
-		<button type="button" id="LstFlwdChnls" class="right2">Following List</button>
-	</div>
-</div>
+        <div class="LoginORoutButton">
+            <button type="button" id="ChgUsr" class="right">Options</button>
+        </div>
+        <div class="ListOfFollowed">
+            <button type="button" id="LstFlwdChnls" class="right2">Following List</button>
+        </div>
+    </div>
 
-<div id="nowONline" class="online">
+<div id="nowONline">
 	<p class="pNowOnline" id="FollowedChannelsOnline"></p>
 </div>
 
@@ -112,8 +108,8 @@
 <div class="NoOneOnline" id="NoOneOnline" style="display:block"></div>
 <progress class="CheckingProgress" style="display:none" id="CheckingProgress" max="100" value="0"></progress>
 
-<div class="content3">
-	<div class="content2" id="insertContentHere"></div>
+<div id="content3">
+	<div id="insertContentHere"></div>
 </div>
 
 <div id="AppInfoBack"></div>
