@@ -37,7 +37,7 @@ if (!sessionStorage['FirstLoad']) {
 }
 
 function checkDonations() {
-    var GetDonationsList = $.ajax({url:"https://app.mcrozz.net/Twitch.tv_Notifier/DonationsList.php"});
+    var GetDonationsList = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php" });
     GetDonationsList.done(function(){
         try {
             ParsedResponse = JSON.parse(GetDonationsList.responseText);
@@ -47,15 +47,15 @@ function checkDonations() {
                 localJSON('Config','c',['Closed','true']);
             }
         } catch (e) {
-            console.error('Failed to parse donations list... ' + e.message);
+            err('[0x05] Failed to parse donations list... ' + e.message);
         }
     });
-    GetDonationsList.error(function () { console.error('Failed to get donations list... '); });
+    GetDonationsList.error(function () { err('[0x06] Failed to get donations list... '); });
 }
 
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
-        .fail(function () { notifyUser("Update follows list", "Error, can't update", "Update"); localJSON('Status', 'c', ['update', 5]) });    
+        .fail(function () { err('[0x04] checkStatus() ended with error'); notifyUser("Update follows list", "Error, can't update", "Update"); localJSON('Status', 'c', ['update', 5]) });
 
     checkStatus.complete(function() {
         localJSON('Status', 'c', ['checked', localJSON('Status', 'v', ['checked']) + 1]);
@@ -120,7 +120,7 @@ function CheckFollowingList() {
         var updateFollowingListAndCheck = $.getJSON(urlToJSON, function (data, status) {
             twitch = data;
             if ([200, 304].indexOf(updateFollowingListAndCheck.status) == -1) {
-                err("Can't get following list "+updateFollowingListAndCheck.status);
+                err("[0x07] Can't get following list "+updateFollowingListAndCheck.status);
                 localJSON('Status', 'c', ['update', 5]);
                 notifyUser("Update follows list", "Error, can't update", "Update");
             } else {
@@ -130,7 +130,7 @@ function CheckFollowingList() {
         });
 
         updateFollowingListAndCheck.fail(function () {
-            err("Can't get following list");
+            err("[0x07] Can't get following list");
             localJSON('Status', 'c', ['update', 5]);
             notifyUser("Update follows list", "Error, can't update", "Update");
         });
@@ -167,29 +167,42 @@ setInterval(function(){
     } else if (localJSON('Status','v',['StopInterval'])){
         IntervalSetted=0;
         localJSON('Status','c',['StopInterval',false])
-    }
-
-
-    for (var i=0;i<sessionStorage['NotificationsCount'];i++) {
-        if (Math.abs(new Date()) > NotifierStrg('nf'+i,'ch')[0] && !NotifierStrg('nf'+i,'ch')[1]) {
-            chrome.notifications.clear('nf'+i,function(){});
-            NotifierStrg('nf'+i,true)
-        }
-    }
+    }        
 },500);
 
 
 setInterval(function () {
     if (sessionStorage['First_Notify'] == 1) {
-        if (localJSON('Status','v',['online']) > 1) {
-            textANDchannel = 'Now online '+localJSON('Status','v',['online'])+' channels';
-            notifyUser('Update finished!',textANDchannel,'Update')
-        } else if (localJSON('Status','v',['online']) == 1){
+        if (localJSON('Status', 'v', ['online']) > 1) {
+            textANDchannel = 'Now online ' + localJSON('Status', 'v', ['online']) + ' channels';
+            notifyUser('Update finished!', textANDchannel, 'Update')
+        } else if (localJSON('Status', 'v', ['online']) == 1) {
             textANDchannel = 'Now online one channel';
-            notifyUser('Update finished!',textANDchannel,'Update')
-        } else if (localJSON('Status','v',['online']) == 0){
+            notifyUser('Update finished!', textANDchannel, 'Update')
+        } else if (localJSON('Status', 'v', ['online']) == 0) {
             textANDchannel = 'No one online right now :(';
-            notifyUser('Update finished!',textANDchannel,'Update')}
-        sessionStorage['First_Notify']=0
+            notifyUser('Update finished!', textANDchannel, 'Update')
+        }
+        sessionStorage['First_Notify'] = 0
     }
-},1000)
+    for (var i = 0; i < sessionStorage['NotificationsCount']; i++) {
+        if (Math.abs(new Date()) > NotifierStrg('nf' + i, 'ch')[0] && !NotifierStrg('nf' + i, 'ch')[1])
+            chrome.notifications.clear('nf' + i, function () { NotifierStrg('nf' + i, true) });
+    }
+}, 1000);
+
+setInterval(function () {
+    // Send logged errors to my site if user want to improve my app...
+    if (new Date(localStorage['LogInf']).getDate() >= 14 && localJSON('Config','v',['Send_Erros'])) {
+        console.debug('Send errors log to my site...');
+        rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors=" + err('export') })
+        .done(function () {
+            if ((rAjax.responseText).indexOf('0x01') != -1) {
+                console.debug('Success! Thanks for help!)');
+                localStorage['LogInf'] = TimeNdate(14, 0);
+                err('erase');
+            } else { console.debug('Server caused error...'); }
+        })
+        .fail(function () { console.debug('Failed to connect...'); });
+    } else if (!localStorage['LogInf']) localStorage['LogInf'] = TimeNdate(0,0);
+}, 15000);
