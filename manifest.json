@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
   "name": "Twitch.tv Notifier",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Get notified when your following channel going online",
   "background": {
     "persistent": true,
@@ -15,7 +15,7 @@
 	"256": "/img/icon.png",
     "512": "/img/icon.png"
   },
-  "permissions": ["http://*.twitch.tv/", "https://*.twitch.tv/", "https://app.mcrozz.net/", "http://*.jtvnw.net/ttv-boxart/*", "notifications", "cookies", "storage"],
+  "permissions": ["http://*.twitch.tv/", "https://*.twitch.tv/", "https://*.mcrozz.net/", "http://*.jtvnw.net/ttv-boxart/*", "notifications", "cookies", "storage"],
   "browser_action": {
     "default_title": "Who's online?",
     "default_icon": "/img/icon.png",

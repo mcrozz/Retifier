@@ -26,14 +26,11 @@
     7 :: First start
 */
 if (localStorage['AfterUPDchange'] == undefined) localStorage['Following'] = 0;
-if (!localJSON('Config', 'v', ['auth'])) localJSON('Config', 'c', ['auth', 'not']);
 if (!sessionStorage['FirstLoad']) {
     sessionStorage['FirstLoad'] = 'true';
     BadgeOnlineCount(0);
     localJSON('Status', 'c', ['online',0]);
-    for (var i=0;i<Math.floor(localJSON('Following'));i++) {
-        FollowingList('c', i, '', false)
-    }
+    for (var i=0;i<Math.floor(localJSON('Following'));i++) { FollowingList('c', i, '', false) }
 }
 
 function checkDonations() {
