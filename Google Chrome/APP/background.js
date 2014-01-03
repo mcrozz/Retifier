@@ -52,7 +52,11 @@ function checkDonations() {
 
 function checkStatus(url,key) {
     var checkStatus = $.getJSON(url)
-        .fail(function () { err('[0x04] checkStatus() ended with error'); notifyUser("Update follows list", "Error, can't update", "Update"); localJSON('Status', 'c', ['update', 5]) });
+        .fail(function () { 
+            err('[0x04] checkStatus() ended with error'); 
+            notifyUser("Update follows list", "Error, can't update", "Update"); 
+            localJSON('Status', 'c', ['update', 5]);
+        });
 
     checkStatus.complete(function() {
         localJSON('Status', 'c', ['checked', localJSON('Status', 'v', ['checked']) + 1]);

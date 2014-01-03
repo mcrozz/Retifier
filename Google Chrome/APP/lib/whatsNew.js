@@ -30,12 +30,12 @@
 ];
 var messages = {
     "v.1.3.3": {
-        "msg": "Happy New Year to You!",
+        "msg": "Happy New Year for You!",
         "contain": "-Fixed some stuff...",
         "change": null
     },
     "v.1.3.4": {
-        "msg": "Happy New Year to You!",
+        "msg": "Happy New Year for You!",
         "contain": "-Added popup window with changes of current extension <br /> -Added error loggin and error reporting (http://bit.ly/1hROPBy)",
         "change": {
             "JSON": [null],
@@ -47,7 +47,7 @@ var messages = {
 try {
     JSON.parse(localStorage['App_Version']);
 } catch (e) {
-    localStorage['App_Version'] = '{"Ver": "v.1.3.3", "Got": "0"}';
+    localStorage['App_Version'] = '{"Ver": "0", "Got": "0"}';
 }
 
 function versionCheck() {

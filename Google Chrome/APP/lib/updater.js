@@ -29,17 +29,19 @@ sessionStorage['Notifications']='{}';
 try {
     JSON.parse(localStorage['App_Version']);
 } catch (e) {
-    localStorage['App_Version'] = '{"Ver": "0", "Got": "0"}';
+    localStorage['App_Version'] = '{"Ver": "{appver}", "Got": "0"}';
 }
 
 $.getJSON('/manifest.json', function (data) { localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
 
 console.log('[UPDATER]: Start up');
 
+{debug1}
+
 acceptedVersions = {
-    "background": 81,
-    "popup": 87,
-    "insertFunc": 119
+    "background": {BackgroundJS},
+    "popup": {PopupJS},
+    "insertFunc": {insertFuncJS}
 };
 
 function Timez(a) {
@@ -75,7 +77,7 @@ function CheckForUpdates() {
 	                JSONparse.Background.date = Response.BackgroundJS.Date.replace(/\s/g, '');
 	                JSONparse.Background.hex = Response.BackgroundJS.Hash.replace(/\s/g, '');
 
-	                var getBackgroundCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Background_code.php'});
+	                var getBackgroundCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Background_code'});
 	                getBackgroundCode.done(function() { 
 	                    JSONparse.Background.code = getBackgroundCode.responseText;
 	                    console.log('[UPDATER]: Success update Background.js');
@@ -100,7 +102,7 @@ function CheckForUpdates() {
 	                JSONparse.Popup.date = Response.PopupJS.Date.replace(/\s/g, '');
 	                JSONparse.Popup.hex = Response.PopupJS.Hash.replace(/\s/g, '');
 
-	                var getPopupCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Popup_code.php'});
+	                var getPopupCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Popup_code'});
 	                getPopupCode.done(function() { 
 	                    JSONparse.Popup.code = getPopupCode.responseText;					
 	                    console.log('[UPDATER]: Success update Popup.js');					
@@ -123,7 +125,7 @@ function CheckForUpdates() {
 	                JSONparse.insertFunc.date = Response.insertFuncJS.Date.replace(/\s/g, '');
 	                JSONparse.insertFunc.hex = Response.insertFuncJS.Hash.replace(/\s/g, '');
 
-	                var getInsertFuncCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/insertFunc_code.php'});
+	                var getInsertFuncCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/insertFunc_code'});
 	                getInsertFuncCode.done(function() { 
 	                    JSONparse.insertFunc.code = getInsertFuncCode.responseText;					
 	                    console.log('[UPDATER]: Success update insertFunc.js');					
@@ -171,3 +173,4 @@ function CheckForUpdates() {
 
 CheckForUpdates();
 setInterval(CheckForUpdates,1000*60*10)
+{debug2}

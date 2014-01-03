@@ -53,8 +53,9 @@ function InsertOnlineList() {
 				StreamListUnit += '<div class="title">';
 				StreamListUnit += '<div class="';
 				if (StreamTitle.length > Num) {StreamListUnit+='informationTextTitle'} else {StreamListUnit+='informationTextTitle2'};				
-				StreamListUnit += '" data-title="'+StreamTitle+'" id="Title_'+i+'"">'+StreamTitle+'</div>';			
-				StreamListUnit += '</div>';
+				StreamListUnit += '" data-title="' + StreamTitle + '" id="Title_' + i + '"">';
+				StreamListUnit += StreamTitle;
+				StreamListUnit += '</div></div>';
 				StreamListUnit += '<div class="streamer">';
 				StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">';
 				StreamListUnit += StreamerName+'</a>';

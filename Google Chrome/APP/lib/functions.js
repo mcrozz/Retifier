@@ -18,7 +18,7 @@ var NotificationsCount=0;
 if (localStorage['Status']&&localStorage['Config']) {
 
     if (localStorage['Log'] == undefined) { localStorage['Log'] = "0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0" };
-    ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
+    var ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
     function err(msg) {
         if (err == 'erase') {
             localStorage['Log'] = "0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0";
@@ -65,7 +65,7 @@ if (localStorage['Status']&&localStorage['Config']) {
                 b = JSON.parse(localStorage[name]);
                 if (sz == 2) {
                     b[arrayz[0]]=arrayz[1];
-                    if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}	
+                    if (localStorage[name]=JSON.stringify(b)) return true; else return false;
                 } else if (sz == 3) {
                     h = b[arrayz[0]];
                     h[arrayz[1]] = arrayz[2];
@@ -98,7 +98,7 @@ if (localStorage['Status']&&localStorage['Config']) {
                 z['Date'] = time;
                 z['Del'] = false;
                 z['Streamer'] = strm;
-                if (sessionStorage['Notifications'] = JSON.stringify(b)) { return true; } else { return false; }
+                if (sessionStorage['Notifications'] = JSON.stringify(b)) return true; else return false;
             } else if (ids&&cmd=='ch') {
                 if (b[ids]!=null) {
                     return [b[ids]['Date'], b[ids]['Del'], b[ids]['Streamer']];
