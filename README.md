@@ -3,6 +3,10 @@ Twitch.tv Notifier for Google Chrome
 
 [In Google Web Store]
 
+Twitch.tv Notifier for Mozilla FireFox
+
+Coming soon...
+
 # Installation
 Clone this repository into any empty folder, open Extensions page in Chrome, press Load unpacked extension and select folder with this repository.
 
