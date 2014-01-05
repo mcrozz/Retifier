@@ -1,3 +1,6 @@
+server/*
+*.lnk
+*.publishproj
 publish.py
 publish.cmd
 server/*
@@ -5,6 +8,7 @@ nbproject/*
 build/*
 debug/*
 Mozilla FireFox/*
+ETC/*
 .gitattributes
 .gitignore
 *.pydevproject
