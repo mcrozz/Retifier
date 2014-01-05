@@ -8,7 +8,13 @@
 Coming soon...
 
 # Installation
-Clone this repository into any empty folder, open Extensions page in Chrome, press Load unpacked extension and select folder with this repository.
+Copy this repo in any folder
+
+Start build.py or build.cmd (Located in folder "Google Chrome")
+
+Choose debug
+
+In Google Chrome: Tools -> Extensions -> Load unpacked extension, now choose "debug" folder, which located in folder "Google Chrome"
 
 # License
 Copyright 2013 Ivan 'MacRozz' Zarudny
