@@ -1,9 +1,27 @@
 import shutil, os, distutils.core, zipfile;
 
-appver="1.3.4"
-BackgroundJS="81"
-PopupJS="87"
-insertFuncJS="119"
+def replaceSmth(what, onWhat, where):
+	with open(where,'r') as f:
+		newlines = []
+		finded = 'false';
+		for line in f.readlines():
+			if line.find(what):
+				finded = 'true';
+			newlines.append(line.replace(what, onWhat));
+	with open(where, 'w') as f:
+		for line in newlines:
+			f.write(line);
+	f.close()
+	return finded;
+
+with open("versions.config",'r') as f:
+	config = []
+	for line in f.readlines(): config.append(line);
+	appver=config[0].replace('\n', '')
+	BackgroundJS=config[1].replace('\n', '')
+	PopupJS=config[2].replace('\n', '')
+	insertFuncJS=config[3].replace('\n', '')
+	Build=config[4].replace('\n', '');
 
 debug1="/* << -- DELETE BEFORE RELEASE -- >>"
 debug2="<< -- DELETE BEFORE RELEASE -- >> */"
@@ -12,16 +30,7 @@ dirApp=os.path.join(os.getcwd(), "APP")
 dirDebug=os.path.join(os.getcwd(), "debug")
 dirBuild=os.path.join(os.getcwd(), "build", appver)
 
-def replaceSmth(what, onWhat, where):
-	with open(where,'r') as f:
-		newlines = []
-		for line in f.readlines():
-			newlines.append(line.replace(what, onWhat));
-	with open(where, 'w') as f:
-		for line in newlines:
-			f.write(line);
-	f.close();
-
+print "App ver. "+appver+" (Build "+Build+")"
 print "==============================="
 print "  [1]: Debug"
 print "  [2]: Clear debug folder"
@@ -89,13 +98,31 @@ elif inkey == 3:
 	shutil.move(os.path.join(dirBuild, r"client\insertFunc.js"), dirBuild)
 	os.rmdir(os.path.join(dirBuild, "client"))
 	print "Replacing app version in manifest"
-	replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json"))
+	if replaceSmth("{appver}", appver, os.path.join(dirBuild, "manifest.json")) == 'true': print "-Success"
+	else: print "-Fail";
 	print "Enable update.js"
-	replaceSmth("{debug1}", " ", os.path.join(dirDebug, r"lib\updater.js"))
-	replaceSmth("{debug2}", " ", os.path.join(dirDebug, r"lib\updater.js"))
+	if replaceSmth("{debug1}", " ", os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{debug2}", " ", os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
 	print "Insert JS versions"
-	replaceSmth("{BackgroundJS}", BackgroundJS, os.path.join(dirDebug, r"lib\updater.js"))
-	replaceSmth("{PopupJS}", PopupJS, os.path.join(dirDebug, r"lib\updater.js"))
-	replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirDebug, r"lib\updater.js"))
+	if replaceSmth("{appver}", appver, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{BackgroundJS}", BackgroundJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{PopupJS}", PopupJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success" 
+	else: print "-Fail";
+	if replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	with open("versions.config",'w') as f:
+		needLine = 0
+		Build = int(Build) + 1
+		for line in config:
+			needLine+=1
+			if needLine == 5:
+				f.write(str(Build))
+			else:
+				f.write(line);
+		f.close();
 else:
 	print "Error - invalid input"
