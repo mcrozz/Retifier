@@ -457,7 +457,7 @@ function progressBar(type) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    if (localStorage['NewYearMode'] == undefined) localStorage['NewYearMode'] = 'true';
+    if (localStorage['NewYearMode'] == undefined) localStorage['NewYearMode'] = 'false';
     if (localStorage['NewYearMode'] == 'true') $(document).snowfall({ deviceorientation: true, round: true, minSize: 1, maxSize: 5, flakeCount: 50 });
 
     CSScompiler();
@@ -476,7 +476,9 @@ document.addEventListener("DOMContentLoaded", function () {
     doc('Notify_Upd').addEventListener('click', function () { if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
     doc('NotifyUpdate').addEventListener('click', function () { if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
     doc('Notify_Sound').addEventListener('click', function () { if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
-    doc('SoundCheck').addEventListener('click', function () { if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false }});
+    doc('SoundCheck').addEventListener('click', function () { if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
+    doc('DurationOfStream').addEventListener('click', function () { doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
+    doc('StreamDurationCheck').addEventListener('click', function () { doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
     doc("fndAbug").addEventListener("click", openCloseReportAbug);
     doc("AppVersion").addEventListener("click", openAppVersionChanges);
     doc("SoundSelect").addEventListener("change", changeSoundFile);

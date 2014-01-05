@@ -152,6 +152,7 @@ function CheckFollowingList() {
         });
     }
 }
+
 CheckFollowingList()
 CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
 localJSON('Status','c',['StopInterval',false]);
@@ -186,24 +187,28 @@ setInterval(function () {
         }
         sessionStorage['First_Notify'] = 0
     }
-    for (var i = 0; i < sessionStorage['NotificationsCount']; i++) {
-        if (Math.abs(new Date()) > NotifierStrg('nf' + i, 'ch')[0] && !NotifierStrg('nf' + i, 'ch')[1])
-            chrome.notifications.clear('nf' + i, function () { NotifierStrg('nf' + i, true) });
+    /*
+    if (sessionStorage['NotificationsCount'] != 0) {
+        for (var i = 0; i < sessionStorage['NotificationsCount']; i++) {
+            if (Math.abs(new Date()) > NotifierStrg('nf' + i, 'ch')[0] && !NotifierStrg('nf' + i, 'ch')[1])
+                chrome.notifications.clear('nf' + i, function () { NotifierStrg('nf' + i, true) });
+        }
     }
+    */
 }, 1000);
 
 setInterval(function () {
-    // Send logged errors to my site if user want to improve my app...
-    if (new Date(localStorage['LogInf']).getDate() >= 14 && localJSON('Config','v',['Send_Erros'])) {
+    // Send logged errors to my site...
+    if (new Date(localStorage['LogInf']).getDate() >= 14) {
         console.debug('Send errors log to my site...');
         rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors=" + err('export') })
         .done(function () {
             if ((rAjax.responseText).indexOf('0x01') != -1) {
                 console.debug('Success! Thanks for help!)');
-                localStorage['LogInf'] = TimeNdate(14, 0);
+                localStorage['LogInf'] = TimeNdate(14, 0, ' ');
                 err('erase');
             } else { console.debug('Server caused error...'); }
         })
         .fail(function () { console.debug('Failed to connect...'); });
-    } else if (!localStorage['LogInf']) localStorage['LogInf'] = TimeNdate(0,0);
+    } else if (!localStorage['LogInf']) localStorage['LogInf'] = TimeNdate(0,0,' ');
 }, 15000);

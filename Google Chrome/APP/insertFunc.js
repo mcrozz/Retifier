@@ -98,19 +98,22 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-			if (FollowingList('v',i)[1]==null && doc(i) != null) doc(i).remove();
+		    if (FollowingList('v', i)[1] == null && doc(i) != null) doc(i).remove();
 
 			doc('Title_'+i).innerHTML = StreamTitle
 			doc('stream_game_'+i).innerHTML = StreamGame
-			doc('Viewers_'+i).innerHTML=FollowingList('v',i)[3];
-			doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0')
-			if (StreamGame != 'Not playing') {
-				doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
-			} else {
-				doc('stream_game_'+i).setAttribute('style','cursor:default')
-				doc('stream_game_2_'+i).setAttribute('style','cursor:default')
-				doc('stream_game_img_'+i).setAttribute('style','display:none')
-				doc('stream_game_2_img_'+i).setAttribute('style','display:none')
+			doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
+
+			if (doc('stream_img_' + i).style.background.substring(4, doc('stream_img_' + i).style.background.length - 5) != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_' + StreamerName + '-320x200.jpg')
+			    doc('stream_img_' + i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_' + StreamerName + '-320x200.jpg);background-size:' + Num3 + ';cursor:pointer;z-index:0');
+			
+			if (StreamGame == 'Not playing') {
+			    doc('stream_game_' + i).setAttribute('style', 'cursor:default');
+			    doc('stream_game_2_' + i).setAttribute('style', 'cursor:default');
+			    doc('stream_game_img_' + i).setAttribute('style', 'display:none');
+			    doc('stream_game_2_img_' + i).setAttribute('style', 'display:none');
+			} else if (StreamGame != 'Not playing' && doc('stream_game_img_' + i).style.background.substring(4, doc('stream_game_img_' + i).style.background.length - 5) != ('http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg').replace(' ', '%20')) {
+			    doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
 			}
 		}
 

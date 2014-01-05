@@ -15,56 +15,6 @@
 	   See the License for the specific language governing permissions and
 	   limitations under the License.
 	====================================================================
-
-	Version 1.51 Dec 2nd 2012
-	// fixed bug where snow collection didn't happen if a valid doctype was declared.
-	
-	Version 1.5 Oct 5th 2011
-	Added collecting snow! Uses the canvas element to collect snow. In order to initialize snow collection use the following
-	
-	$(document).snowfall({collection : 'element'});
-
-    element = any valid jquery selector.
-
-	The plugin then creates a canvas above every element that matches the selector, and collects the snow. If there are a varrying amount of elements the 
-	flakes get assigned a random one on start they will collide.
-
-	Version 1.4 Dec 8th 2010
-	Fixed issues (I hope) with scroll bars flickering due to snow going over the edge of the screen. 
-	Added round snowflakes via css, will not work for any version of IE. - Thanks to Luke Barker of http://www.infinite-eye.com/
-	Added shadows as an option via css again will not work with IE. The idea behind shadows, is to show flakes on lighter colored web sites - Thanks Yutt
- 
-	Version 1.3.1 Nov 25th 2010
-	Updated script that caused flakes not to show at all if plugin was initialized with no options, also added the fixes that Han Bongers suggested 
-	
-	Developed by Jason Brown for any bugs or questions email me at loktar69@hotmail
-	info on the plugin is located on Somethinghitme.com
-	
-	values for snow options are
-	
-	flakeCount,
-	flakeColor,
-	flakeIndex,
-	minSize,
-	maxSize,
-	minSpeed,
-	maxSpeed,
-	round, 		true or false, makes the snowflakes rounded if the browser supports it.
-	shadow		true or false, gives the snowflakes a shadow if the browser supports it.
-	
-	Example Usage :
-	$(document).snowfall({flakeCount : 100, maxSpeed : 10});
-	
-	-or-
-	
-	$('#element').snowfall({flakeCount : 800, maxSpeed : 5, maxSize : 5});
-	
-	-or with defaults-
-	
-	$(document).snowfall();
-	
-	- To clear -
-	$('#element').snowfall('clear');
 */
 
 (function($){
@@ -87,13 +37,9 @@
 			random = function random(min, max){
 				return Math.round(min + Math.random()*(max-min)); 
 			};
-			
-			$(element).data("snowfall", this);			
-			
-			// Snow flake object
+			$(element).data("snowfall", this);
 			function Flake(_x, _y, _size, _speed, _id)
 			{
-				// Flake properties
 				this.id = _id; 
 				this.x  = _x;
 				this.y  = _y;
@@ -116,8 +62,6 @@
 				}
 				
 				this.element = document.getElementById('flake-' + this.id);
-				
-				// Update function, used to update the snow flakes, and checks current snowflake against bounds
 				this.update = function(){
 					this.y += this.speed;
 					
@@ -135,8 +79,6 @@
 					} else {
 						this.x += (doRatio + Math.cos(this.step));
 					}
-
-					// Pileup check
 					if(options.collection){
 						if(this.x > this.target.x && this.x < this.target.width + this.target.x && this.y > this.target.y && this.y < this.target.height + this.target.y){
 							var ctx = this.target.element.getContext("2d"),
@@ -161,18 +103,14 @@
 										}
 										this.reset();
 									}else{
-										// flow to the sides
 										this.speed = 1;
 										this.stepSize = 0;
 									
 										if(parseInt(curX)+1 < this.target.width && colData[parseInt(curX)+1][parseInt(curY)+1] == undefined ){
-											// go left
 											this.x++;
 										}else if(parseInt(curX)-1 > 0 && colData[parseInt(curX)-1][parseInt(curY)+1] == undefined ){
-											// go right
 											this.x--;
 										}else{
-											//stop
 											ctx.fillStyle = "#fff";
 											ctx.fillRect(curX, curY, this.size, this.size);
 											colData[parseInt(curX)][parseInt(curY)] = 1;
@@ -187,8 +125,6 @@
 						this.reset();
 					}
 				}
-				
-				// Resets the snowflake once it reaches one of the bounds set
 				this.reset = function(){
 					this.y = 0;
 					this.x = random(widthOffset, elWidth - widthOffset);
@@ -197,8 +133,6 @@
 					this.speed = random(options.minSpeed, options.maxSpeed);
 				}
 			}
-		
-			// Private vars
 			var flakes = [],
 				flakeId = 0,
 				i = 0,
@@ -206,8 +140,6 @@
 				elWidth = $(element).width(),
 				widthOffset = 0,
 				snowTimeout = 0;
-		
-			// Collection Piece ******************************
 			if(options.collection !== false){
 				var testElem = document.createElement('canvas');
 				if(!!(testElem.getContext && testElem.getContext('2d'))){
@@ -236,49 +168,32 @@
 							}
 					}
 				}else{
-					// Canvas element isnt supported
 					options.collection = false;
 				}
 			}
-			// ************************************************
-			
-			// This will reduce the horizontal scroll bar from displaying, when the effect is applied to the whole page
 			if($(element).get(0).tagName === $(document).get(0).tagName){
 				widthOffset = 25;
 			}
-			
-			// Bind the window resize event so we can get the innerHeight again
 			$(window).bind("resize", function(){  
 				elHeight = $(element).height();
 				elWidth = $(element).width();
-			}); 
-			
-
-			// initialize the flakes
+			});
 			for(i = 0; i < options.flakeCount; i+=1){
 				flakeId = flakes.length;
 				flakes.push(new Flake(random(widthOffset,elWidth - widthOffset), random(0, elHeight), random((options.minSize * 100), (options.maxSize * 100)) / 100, random(options.minSpeed, options.maxSpeed), flakeId));
 			}
-
-			// This adds the style to make the snowflakes round via border radius property 
 			if(options.round){
 				$('.snowfall-flakes').css({'-moz-border-radius' : options.maxSize, '-webkit-border-radius' : options.maxSize, 'border-radius' : options.maxSize});
 			}
-			
-			// This adds shadows just below the snowflake so they pop a bit on lighter colored web pages
 			if(options.shadow){
 				$('.snowfall-flakes').css({'-moz-box-shadow' : '1px 1px 1px #555', '-webkit-box-shadow' : '1px 1px 1px #555', 'box-shadow' : '1px 1px 1px #555'});
 			}
-
-			// On newer Macbooks Snowflakes will fall based on deviceorientation
 			var doRatio = false;
 			if (options.deviceorientation) {
 				$(window).bind('deviceorientation', function(event) {
 					doRatio = event.originalEvent.gamma * 0.1;
 				});
 			}
-
-			// this controls flow of the updating snow
 			function snow(){
 				for( i = 0; i < flakes.length; i += 1){
 					flakes[i].update();
@@ -288,18 +203,12 @@
 			}
 			
 			snow();
-		
-		// Public Methods
-		
-		// clears the snowflakes
 		this.clear = function(){
 						$(element).children('.snowfall-flakes').remove();
 						flakes = [];
 						clearTimeout(snowTimeout);
 					};
 	};
-	
-	// Initialize the options and the plugin
 	$.fn.snowfall = function(options){
 		if(typeof(options) == "object" || options == undefined){		
 				 return this.each(function(i){

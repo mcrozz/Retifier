@@ -24,7 +24,7 @@ if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringif
 if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)};
 
 if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true';console.debug('Set up your user name in options')};
-sessionStorage['Notifications']='{}';
+//sessionStorage['Notifications']='{}';
 
 try {
     JSON.parse(localStorage['App_Version']);
@@ -39,8 +39,8 @@ console.log('[UPDATER]: Start up');
 {debug1}
 
 acceptedVersions = {
-    "background": {BackgroundJS},
-    "popup": {PopupJS},
+    "Background": {BackgroundJS},
+    "Popup": {PopupJS},
     "insertFunc": {insertFuncJS}
 };
 
@@ -57,120 +57,78 @@ function Timez(a) {
     return Days+''+Hours+''+Minutes;
 }
 
-function CheckForUpdates() {
-	JSONparse = localJSON('Code');
-
-	console.log('[UPDATER]: Check versions');
-	var getVersions = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Update.php?callback=Versions'})
+function update(name) {
+    var updateSolve = new $.Deferred(),
+        JSONparse = localJSON('Code');
+    console.log('[UPDATER]: Check '+name+'.js');
+    var getVersions = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Update.php?callback=Versions'})
 	.complete(function(){
 	    if ([200,301].indexOf(getVersions.status) != -1) {
-	        try {
-	            Response = JSON.parse(getVersions.responseText);
-	        } catch (e) {
-	            err("[0x08] Can't parse response")
-	        }
-        
+	        try { var Response = JSON.parse(getVersions.responseText) } 
+	        catch (e) { err("[0x08] Can't parse response") }
+
 	        if (JSON.parse(localStorage['App_Version']).Got == Response['AppVersion']) {
-	            // Update...
-	            if (JSONparse.Background.version < Response.BackgroundJS.Version) {
-	                JSONparse.Background.version = Response.BackgroundJS.Version;				
-	                JSONparse.Background.date = Response.BackgroundJS.Date.replace(/\s/g, '');
-	                JSONparse.Background.hex = Response.BackgroundJS.Hash.replace(/\s/g, '');
+	            if (JSONparse[name]['version'] < Response[name+'JS']['Version']) {
+	                JSONparse[name]['version'] = Response[name+'JS']['Version'];				
+	                JSONparse[name]['date'] = Response[name+'JS']['Date'];
+	                JSONparse[name]['hex'] = Response[name+'JS']['Hash'];
 
-	                var getBackgroundCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Background_code'});
-	                getBackgroundCode.done(function() { 
-	                    JSONparse.Background.code = getBackgroundCode.responseText;
-	                    console.log('[UPDATER]: Success update Background.js');
-	                    notifyUser('Success update Background.js','Ver. '+JSONparse.Background.version+' (edited '+ Timez(JSONparse.Background.date) +' ago)','ScriptUpdate');
-	                    // Check Background.js sums {
-	                    if (hex_md5(JSONparse.Background.code) != JSONparse.Background.hex) {
-	                        JSONparse.Background.version = '0';
-	                        localStorage['Code'] = JSON.stringify(JSONparse);
-	                        err('[0x09] Background.js is broken, redownload...');
-	                    } else { localStorage['Code'] = JSON.stringify(JSONparse) }
-	                    // }
-	                    localStorage['JustReload'] = 1;
-	                })
-                    .fail(function(){
-                        err("[0x10] Can't update Background.js");
+	                var source = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/'+name+'_code.php'})
+                    .done(function() { 
+                        if ([200,301].indexOf(source.status) != -1) {
+                            JSONparse[name]['code'] = source.responseText;
+                            console.debug('[UPDATER]: Update '+name+'.js  '+JSONparse[name]['version']+'->'+Response[name+'JS']['Version']+' (Length: '+JSONparse[name]['code'].length+')')
+                            if (hex_md5(JSONparse[name]['code']) != JSONparse[name]['hex']) {
+                                JSONparse[name]['version'] = 0;
+                                localStorage['Code'] = JSON.stringify(JSONparse);
+                                err('[0x09] '+name+'.js is broken, redownload...');
+                                if (name == 'Background') localStorage['JustReload'] = 1;
+                                return updateSolve.promise();
+                            } else { 
+                                localStorage['Code'] = JSON.stringify(JSONparse);
+                                console.log('[UPDATER]: Success update '+name+'.js');
+                                notifyUser('Success update '+name+'.js', 'Ver. '+JSONparse[name]["version"]+' (edited '+ Timez(JSONparse[name]["date"]) +' ago)', 'ScriptUpdate', 'Upd'+Math.floor(Math.random(100)*100));
+                                if (name == 'Background') localStorage['JustReload'] = 1;
+                                return updateSolve.promise();
+                            }
+                        }
                     });
-	            } else { console.log('[UPDATER]: Background.js is up to date...') }
-
-	            //Popup.js check...
-	            if (JSONparse.Popup.version < Response.PopupJS.Version) {
-	                JSONparse.Popup.version = Response.PopupJS.Version;
-	                JSONparse.Popup.date = Response.PopupJS.Date.replace(/\s/g, '');
-	                JSONparse.Popup.hex = Response.PopupJS.Hash.replace(/\s/g, '');
-
-	                var getPopupCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/Popup_code'});
-	                getPopupCode.done(function() { 
-	                    JSONparse.Popup.code = getPopupCode.responseText;					
-	                    console.log('[UPDATER]: Success update Popup.js');					
-	                    notifyUser('Success update Popup.js','Ver. '+localJSON('Code').Popup.version+' (edited '+ Timez(JSONparse.Popup.date) +' ago)','ScriptUpdate');
-	                    // Check Popup.js sums {
-	                    if (hex_md5(localJSON('Code').Popup.code) != localJSON('Code').Popup.hex) {
-	                        JSONparse.Popup.version = '0';
-	                        localStorage['Code'] = JSON.stringify(JSONparse);
-	                        err('[0x11] Popup.js is broken, redownload...');
-	                    } else { localStorage['Code'] = JSON.stringify(JSONparse) }
-	                    // }
-	                })
-                    .fail(function(){
-                        err("[0x12] Can't update Popup.js");
-                    });
-	            } else { console.log('[UPDATER]: Popup.js is up to date...') }
-	            //insertFunc.js check...
-	            if (JSONparse.insertFunc.version < Response.insertFuncJS.Version) {
-	                JSONparse.insertFunc.version = Response.insertFuncJS.Version;
-	                JSONparse.insertFunc.date = Response.insertFuncJS.Date.replace(/\s/g, '');
-	                JSONparse.insertFunc.hex = Response.insertFuncJS.Hash.replace(/\s/g, '');
-
-	                var getInsertFuncCode = $.ajax({url:'https://www.mcrozz.net/app/Twitch.tv_Notifier/insertFunc_code'});
-	                getInsertFuncCode.done(function() { 
-	                    JSONparse.insertFunc.code = getInsertFuncCode.responseText;					
-	                    console.log('[UPDATER]: Success update insertFunc.js');					
-	                    notifyUser('Success update insertFunc.js','Ver. '+localJSON('Code').insertFunc.version+' (edited '+ Timez(JSONparse.insertFunc.date) +' ago)','ScriptUpdate');
-	                    // Check insertFunc.js sums {
-	                    if (hex_md5(localJSON('Code').insertFunc.code) != localJSON('Code').insertFunc.hex) {
-	                        JSONparse.insertFunc.version = '0';
-	                        localStorage['Code'] = JSON.stringify(JSONparse);
-	                        err('[0x13] insertFunc.js is broken, redownload...');
-	                    } else { localStorage['Code'] = JSON.stringify(JSONparse) }
-	                    // }
-	                })
-                    .fail(function(){
-                        err("[0x14] Can't update insertFunc.js");
-                    });
-	            } else { console.log('[UPDATER]: insertFunc.js is up to date...') }
-	        } else { err('[0x15] Please update extension...') }
-	    } else {
-	        if (JSONparse.Background.version < acceptedVersions.background) {
-	            var getBackgroundCode = $.ajax({url:'/lib/Background_code'});
-	            getBackgroundCode.done(function() { 
-	                JSONparse.Background.code = getBackgroundCode.responseText;
-	                JSONparse.Background.version = acceptedVersions.Background;
-	                localStorage['Code'] = JSON.stringify(JSONparse);
-	                localStorage['JustReload'] = 1;
-	            });
-	        } if (JSONparse.Popup.version < acceptedVersions.popup) {
-	            var getPopupCode = $.ajax({url:'/lib/Popup_code'});
-	            getPopupCode.done(function() { 
-	                JSONparse.Popup.code = getPopupCode.responseText;
-	                JSONparse.Popup.version = acceptedVersions.Popup;
-	                localStorage['Code'] = JSON.stringify(JSONparse);
-	            });
-	        } if (JSONparse.insertFunc.version < acceptedVersions.insertFunc) {
-	            var getInsertFuncCode = $.ajax({url:'/lib/insertFunc_code'});
-	            getInsertFuncCode.done(function() { 
-	                JSONparse.insertFunc.code = getInsertFuncCode.responseText;
-	                JSONparse.insertFunc.version = acceptedVersions.insertFunc;
-	                localStorage['Code'] = JSON.stringify(JSONparse);
+	            } else { console.log('[UPDATER]: '+name+'.js is up to date...'); localStorage['JustReload'] = 0 }
+	        } else if (JSONparse[name]['version'] < acceptedVersions[name]) {
+	            console.log('[UPDATER]: Could not connect to update server...')
+	            var source = $.ajax({url:'/lib/'+name+'_code'})
+	            .done(function() {
+	                if ([200,301].indexOf(source.status) != -1) {
+	                    JSONparse[name]['code'] = source.responseText;
+	                    JSONparse[name]['version'] = acceptedVersions[name];
+	                    JSONparse[name]['hex'] = hex_md5(JSONparse[name]['code']);
+	                    localStorage['Code'] = JSON.stringify(JSONparse);
+	                    if (name=='Background') localStorage['JustReload'] = 1;
+	                    return updateSolve.promise();
+	                }
 	            });
 	        }
 	    }
-	});
+	})
+    .fail(function(){
+        if (JSONparse[name]['version'] < acceptedVersions[name]) {
+            console.log('[UPDATER]: Could not connect to update server...')
+            var source = $.ajax({url:'/lib/'+name+'_code'})
+            .done(function() {
+                if ([200,301].indexOf(source.status) != -1) {
+                    JSONparse[name]['code'] = source.responseText;
+                    JSONparse[name]['version'] = acceptedVersions[name];
+                    JSONparse[name]['hex'] = hex_md5(JSONparse[name]['code']);
+                    localStorage['Code'] = JSON.stringify(JSONparse);
+                    if (name=='Background') localStorage['JustReload'] = 1;
+                    return updateSolve.promise();
+                }
+            });
+        }
+    });
 }
 
-CheckForUpdates();
-setInterval(CheckForUpdates,1000*60*10)
+
+$.when(update('Background')).done( $.when(update('Popup')).done( $.when(update('insertFunc')).done() ) );
+setInterval(function(){ $.when(update('Background')).done( $.when(update('Popup')).done( $.when(update('insertFunc')).done() ) ); } ,1000*60*10);
 {debug2}
