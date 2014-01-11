@@ -91,7 +91,7 @@ function checkStatus(url,key) {
             console.log('Every channel checked (' + localJSON('Status', 'v', ['checked']) + ')');
             localJSON('Status', 'c', ['update', 0]);
         }
-    });    
+    });
 }
 
 function CheckUserStatus() {
@@ -199,7 +199,7 @@ setInterval(function () {
 
 setInterval(function () {
     // Send logged errors to my site...
-    if (new Date(localStorage['LogInf']).getDate() >= 14) {
+    if (new Date().getDate() - new Date(localStorage['LogInf']).getDate() >= 14 || new Date(localStorage['LogInf']).getDate() - new Date().getDate() >= 14) {
         console.debug('Send errors log to my site...');
         rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors=" + err('export') })
         .done(function () {
