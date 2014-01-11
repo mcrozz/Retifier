@@ -457,9 +457,6 @@ function progressBar(type) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    if (localStorage['NewYearMode'] == undefined) localStorage['NewYearMode'] = 'false';
-    if (localStorage['NewYearMode'] == 'true') $(document).snowfall({ deviceorientation: true, round: true, minSize: 1, maxSize: 5, flakeCount: 50 });
-
     CSScompiler();
     versionCheck();
     doc('AppVersion').innerHTML = localJSON('App_Version', 'v', ['Ver']) + ' (changes)';
