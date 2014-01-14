@@ -17,7 +17,7 @@ Choose debug
 In Google Chrome: Tools -> Extensions -> Load unpacked extension, now choose "debug" folder, which located in folder "Google Chrome"
 
 # License
-Copyright 2013 Ivan 'MacRozz' Zarudny
+Copyright 2014 Ivan 'MacRozz' Zarudny
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
