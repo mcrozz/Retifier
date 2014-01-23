@@ -113,6 +113,7 @@ function CSScompiler() {
 		css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}';
 		css += '.GameTumb1 {z-index:3}';
 		css += '.GameTumb2 {z-index:2}';
+		css += '.GamaTumb1:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation-name:fadeInDown;-webkit-animation-duration:0.2s;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}';
 		css += '.TumbStream {width:320px;height:200px}';
 		css += '.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}';
 		css += '.StreamDurationDiv {width:170;height:40;display:inline}';

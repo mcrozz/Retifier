@@ -39,7 +39,7 @@ print "==============================="
 try:
 	inkey = input("Your choose: ")
 except Exception, e:
-	inkey = 0
+	inkey = 1
 
 
 os.chmod(dirApp, 436)

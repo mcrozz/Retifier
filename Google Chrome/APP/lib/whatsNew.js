@@ -22,7 +22,7 @@ var changes = [
     "-1.3.1 Bug fixes, style improvements",
     "-1.3.0 Added possibility to change style of online list, improvements",
     "-1.2.9.9 Now options are easy to understand",
-    "-1.2.9 A little redesign, added DejaVu font<",
+    "-1.2.9 A little redesign, added DejaVu font",
     "-1.2.8 Bug fixes, improvements",
     "-1.2.7 Bug fixes",
     "-1.2.6 Added 'Watch now!' to notifications",
@@ -58,10 +58,10 @@ var messages = {
 
 function versionCheck() {
     if (localStorage['FirstLaunch'] != 'true') {
-        versionGot = localJSON('App_Version', 'v', ['Got']);
+        versions = localJSON('App_Version');
 
-        if (versionGot != localJSON('App_Version', 'v', ['Ver'])) {
-            notifyUser("Extension has been updated", "From " + localJSON('App_Version', 'v', ['Ver']) + " to " + versionGot, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
+        if (versions.Got != versions.Ver) {
+            notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versionGot, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versionGot]);
 
             msgUnit = '<div class="msgTitle">';
