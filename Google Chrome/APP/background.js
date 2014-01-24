@@ -90,6 +90,17 @@ function checkStatus(url,key) {
             sessionStorage['First_Notify'] = 1;
             console.log('Every channel checked (' + localJSON('Status', 'v', ['checked']) + ')');
             localJSON('Status', 'c', ['update', 0]);
+
+            if (localJSON('Status', 'v', ['online']) > 1) {
+                textANDchannel = 'Now online ' + localJSON('Status', 'v', ['online']) + ' channels';
+                notifyUser('Update finished!', textANDchannel, 'Update')
+            } else if (localJSON('Status', 'v', ['online']) == 1) {
+                textANDchannel = 'Now online one channel';
+                notifyUser('Update finished!', textANDchannel, 'Update')
+            } else if (localJSON('Status', 'v', ['online']) == 0) {
+                textANDchannel = 'No one online right now :(';
+                notifyUser('Update finished!', textANDchannel, 'Update')
+            }
         }
     });
 }
@@ -172,42 +183,20 @@ setInterval(function(){
     }        
 },500);
 
-
-setInterval(function () {
-    if (sessionStorage['First_Notify'] == 1) {
-        if (localJSON('Status', 'v', ['online']) > 1) {
-            textANDchannel = 'Now online ' + localJSON('Status', 'v', ['online']) + ' channels';
-            notifyUser('Update finished!', textANDchannel, 'Update')
-        } else if (localJSON('Status', 'v', ['online']) == 1) {
-            textANDchannel = 'Now online one channel';
-            notifyUser('Update finished!', textANDchannel, 'Update')
-        } else if (localJSON('Status', 'v', ['online']) == 0) {
-            textANDchannel = 'No one online right now :(';
-            notifyUser('Update finished!', textANDchannel, 'Update')
-        }
-        sessionStorage['First_Notify'] = 0
-    }
-    /*
-    if (sessionStorage['NotificationsCount'] != 0) {
-        for (var i = 0; i < sessionStorage['NotificationsCount']; i++) {
-            if (Math.abs(new Date()) > NotifierStrg('nf' + i, 'ch')[0] && !NotifierStrg('nf' + i, 'ch')[1])
-                chrome.notifications.clear('nf' + i, function () { NotifierStrg('nf' + i, true) });
-        }
-    }
-    */
-}, 1000);
-
 setInterval(function () {
     // Send logged errors to my site...
     if (new Date().getDate() - new Date(localStorage['LogInf']).getDate() >= 14 || new Date(localStorage['LogInf']).getDate() - new Date().getDate() >= 14) {
         console.debug('Send errors log to my site...');
-        rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors=" + err('export') })
+        rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors=" + localStorage['Log'] })
         .done(function () {
             if ((rAjax.responseText).indexOf('0x01') != -1) {
-                console.debug('Success! Thanks for help!)');
                 localStorage['LogInf'] = TimeNdate(14, 0, ' ');
-                err('erase');
-            } else { console.debug('Server caused error...'); }
+                localStorage['Log'] = clearErrors;
+                console.debug('Success! Thanks for help!)');
+            } else { 
+                console.debug('Server caused error...');
+                console.debug(rAjax);
+            }
         })
         .fail(function () { console.debug('Failed to connect...'); });
     } else if (!localStorage['LogInf']) localStorage['LogInf'] = TimeNdate(0,0,' ');

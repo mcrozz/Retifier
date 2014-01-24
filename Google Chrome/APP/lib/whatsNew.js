@@ -64,6 +64,9 @@ function versionCheck() {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versionGot, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versionGot]);
 
+            l = localStorage['Log'].split('<!>');
+            localStorage['Log'] = l.join('/');
+
             msgUnit = '<div class="msgTitle">';
             msgUnit += messages[versionGot]["msg"];
             msgUnit += '</div>';

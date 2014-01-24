@@ -14,40 +14,31 @@
 	limitations under the License.
 */
 var NotificationsCount=0,
-    clearErrors = "0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0<!>0";
+    clearErrors = "0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+    ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
+if (localStorage['Log'] == undefined) localStorage['Log'] = clearErrors;
 
 if (localStorage['Status']&&localStorage['Config']) {
-
-    if (localStorage['Log'] == undefined) { localStorage['Log'] = clearErrors };
-    var ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
     function err(msg) {
-        if (err == 'erase') {
-            localStorage['Log'] = clearErrors;
-            return true;
-        } else if (err == 'export') {
-            return localStorage['Log'];
-        } else {
-            try {
-                log = localStorage['Log'].split('<!>');
-                msg[3]=='0' ? code = Math.floor(msg[4]) : code = Math.floor(msg[4]*10);
-                j = ErrorList.indexOf(code);
-                if (j != -1) {
-                    log[j] = Math.floor(log[j]) + 1;
-                    if (log[j + 1] == "0") log[j + 1] = Math.abs(new Date());
-                    console.debug('Adding to ' + ErrorList[j] + ' one');
-                    log = log.join('<!>').replace(']', '')
-                    localStorage['Log'] = log.replace('[', '');
-                    console.error('[ERROR] ' + msg.substring(7));
-                    return true;
-                } else {
-                    return false;
-                    console.error("[ERROR] err() ended with error: Couldn't find error in list");
-                }
-            } catch (e) {
-                localStorage['Log'] = clearErrors;
-                console.error('[ERROR] err() ended with error: ' + e.message);
+        try {
+            log = localStorage['Log'].split('/');
+            msg[3]=='0' ? code = Math.floor(msg[4]) : code = Math.floor(msg[4]*10);
+            j = ErrorList.indexOf(code);
+            if (j != -1) {
+                log[j] = Math.floor(log[j]) + 1;
+                if (log[j + 1] == "0") log[j + 1] = Math.abs(new Date());
+                console.debug('Adding to ' + ErrorList[j] + ' one');
+                localStorage['Log'] = log.join('/');
+                console.error('[ERROR] ' + msg.substring(7));
+                return true;
+            } else {
                 return false;
+                console.error("[ERROR] err() ended with error: Couldn't find error in list");
             }
+        } catch (e) {
+            localStorage['Log'] = clearErrors;
+            console.error('[ERROR] err() ended with error: ' + e.message);
+            return false;
         }
     }
 
@@ -61,7 +52,8 @@ if (localStorage['Status']&&localStorage['Config']) {
         else time += (newDate.getDate() + d);
         time += k;
         time += ((new Date()).getYear() - 100);
-        time += ' ' + newDate.getHours() + ':' + newDate.getMinutes();
+        time += ' ' + newDate.getHours() + ':';
+        newDate.getMinutes()<10 ? time += newDate.getMinutes()*10 : time += newDate.getMinutes();
         return time;
     }
 
