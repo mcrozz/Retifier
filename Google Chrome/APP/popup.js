@@ -15,12 +15,12 @@
 */
 
 var NumberOfidOfListOfFollowedChannels = 1,
-	LinesInListOfFollowedChannels = 0;
-TimersetToUpdate = [];
-AddedEventListener = [];
-FirstLoadVar = 1;
-openCloseVersionVar = 1;
-openCloseReportVar = 1;
+	LinesInListOfFollowedChannels = 0,
+	TimersetToUpdate = [],
+	AddedEventListener = [],
+	FirstLoadVar = 1,
+	openCloseVersionVar = 1,
+	openCloseReportVar = 1;
 
 function CSScompiler() {
 	style=document.createElement('style');

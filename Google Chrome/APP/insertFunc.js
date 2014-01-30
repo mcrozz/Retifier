@@ -23,24 +23,23 @@ function InsertOnlineList() {
 	} else if (localJSON('Status','v',['online']) > 2) {
 		doc('insertContentHere').style.overflow='auto'
 	}
+	var c = localJSON('Config', 'v', ['Format']),
+		FollowList = localJSON('FollowingList');
+	if (c == 'Full' || c == 'Grid') { var Num = 35, Num2 = 43, Num3 = 'none', Num4 = 40; } else { var Num = 55, Num2 = 43, Num3 = 90, Num4 = 23; };
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
-	    b = FollowingList('v', i);
-	    StreamTitle = b[1];
-		StreamerName = b[0];
-		StreamGame = b[2];
-		StreamVievers = b[3];
-
+		StreamTitle = FollowList[i]['Stream']['Title'];
+		StreamerName = FollowList[i]['Name'];
+		StreamGame = FollowList[i]['Stream']['Game'];
+		StreamVievers = FollowList[i]['Stream']['Viewers'];
+		
 		if ('object'.indexOf(StreamTitle) != -1) StreamTitle = 'getting...';
 		if ('object'.indexOf(StreamerName) != -1) StreamerName = 'getting...';
 		if ('object'.indexOf(StreamGame) != -1) StreamGame = 'getting...';
 		if ('object'.indexOf(StreamVievers) != -1) StreamVievers = '...';
-
-		c = localJSON('Config', 'v', ['Format']);
-		if (c == 'Full' || c == 'Grid') { Num = 35; Num2 = 43; Num3 = 'none'; Num4 = 40 } else { Num = 55; Num2 = 43; Num3 = 90; Num4 = 23 };
-
+		
 		if (TimersetToUpdate.indexOf(i) < 0) {
-		    if (FollowingList('v', i)[1] != null) {
+		    if (FollowList[i]['Stream']) {
 		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
 
 				StreamListUnit = '<div class="content" id="'+i+'">';
@@ -156,7 +155,7 @@ setInterval(function(){
 	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localJSON('Following');
 		progressBar('Enable')
 	} else if (Upd == 5) { 
-		InsertHere.innerHTML='App had a problem with update'
+		InsertHere.innerHTML='App have a problem with update'
 	} else if (Upd == 6) { 
 		InsertHere.innerHTML="Name doesn't set up yet!"
 	}
