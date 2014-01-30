@@ -78,7 +78,7 @@ function checkStatus(url,key) {
             else { Time2 = FlwLst[4] }
 
             FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
-        } else if (FlwLst[1]) {
+        } else if (FlwLst[1] != null) {
             localJSON('Status', 'c', ['online', localJSON('Status', 'v', ['online']) - 1]);
             BadgeOnlineCount(Onln);
             FollowingList('c', key, '', false)                      
