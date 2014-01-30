@@ -15,6 +15,7 @@
 */
 
 var changes = [
+    "-1.3.6 Cumulative udate",
     "-1.3.5 Fixed update script",
     "-1.3.4 Happy New Year!",
     "-1.3.3 Cumulative update",
@@ -46,12 +47,12 @@ var changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 var messages = {
-    "v.1.3.5": {
-        "msg": "Snowfall",
-        "contain": "-Snowfall is now disabled by default but you can enable it down below <br / > -Fixed update script",
+    "v.1.3.6": {
+        "msg": "Cumulative update",
+        "contain": "-Fixed update script <br /> -Code optimisation",
         "change": {
             "JSON": [null],
-            "STORAGE": ['NewYearMode', 'Snowfall']
+            "STORAGE": [null]
         }
     }
 };
@@ -64,8 +65,7 @@ function versionCheck() {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versionGot, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versionGot]);
 
-            l = localStorage['Log'].split('<!>');
-            localStorage['Log'] = l.join('/');
+            localStorage['Log'] = localStorage['Log'].split('<!>').join('/');
 
             msgUnit = '<div class="msgTitle">';
             msgUnit += messages[versionGot]["msg"];
@@ -74,12 +74,13 @@ function versionCheck() {
             msgUnit += messages[versionGot]["contain"];
             msgUnit += '</div>';
 
+            /*
             msgUnit += '<div class="msgChange">Please disable or enable option below</div>';
 
             msgUnit += '<div class="msgCheckbox"><input type="checkbox" id="msgDisSmth_1" checked="false">';
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
             msgUnit += '</input></div>';
-            
+            */
             msgUnit += '<button id="msgClose">Okay</button>';
             doc('WhatsNew').style.display = 'block';
             $('#WhatsNew').addClass('animated slideInDown');
@@ -91,8 +92,6 @@ function versionCheck() {
                 setTimeout(function () {
                     doc('WhatsNew').style.display = 'none';
                 }, 1000);
-                if (doc('msgDisSmth_1').checked) localStorage[messages[versionGot]['change']['STORAGE'][0]] = doc('msgDisSmth_1').checked;
-                err('erase');
                 setTimeout(function () { location.reload() }, 1005);
             });
         }
