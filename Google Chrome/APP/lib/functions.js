@@ -27,7 +27,6 @@ if (localStorage['Status']&&localStorage['Config']) {
             if (j != -1) {
                 log[j] = Math.floor(log[j]) + 1;
                 if (log[j + 1] == "0") log[j + 1] = Math.abs(new Date());
-                console.debug('Adding to ' + ErrorList[j] + ' one');
                 localStorage['Log'] = log.join('/');
                 console.error('[ERROR] ' + msg.substring(7));
                 return true;
