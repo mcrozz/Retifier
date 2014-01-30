@@ -68,7 +68,7 @@ function update(name) {
 	        catch (e) { err("[0x08] Can't parse response") }
 
 	        if (JSON.parse(localStorage['App_Version']).Got == Response['AppVersion']) {
-	            if (JSONparse[name]['version'] < Response[name+'JS']['Version']) {
+	            if (JSONparse[name]['version'] < Response[name+'JS']['Version'] || JSONparse[name]['version'] == null) {
 	                JSONparse[name]['version'] = Response[name+'JS']['Version'];				
 	                JSONparse[name]['date'] = Response[name+'JS']['Date'];
 	                JSONparse[name]['hex'] = Response[name+'JS']['Hash'];
