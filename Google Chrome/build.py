@@ -32,7 +32,8 @@ dirBuild=os.path.join(os.getcwd(), "build", appver)
 
 print "App ver. "+appver+" (Build "+Build+")"
 print "==============================="
-print "  [1]: Debug"
+print "  [1]: Debug without update.js"
+print "  [11]: Debug with update.js"
 print "  [2]: Clear debug folder"
 print "  [3]: Build"
 print "==============================="
@@ -63,6 +64,48 @@ if inkey == 1:
 	print "Blocking update.js"
 	replaceSmth("{debug1}", debug1, os.path.join(dirDebug, r"lib\updater.js"))
 	replaceSmth("{debug2}", debug2, os.path.join(dirDebug, r"lib\updater.js"))
+elif inkey == 11:
+	print "==========DEBUG MODE==========="
+	print "Coping files..."
+	if os.path.exists(dirDebug):
+		os.chmod(dirDebug, 436)
+		shutil.rmtree(dirDebug)
+		os.makedirs(dirDebug)
+		print "Folder cleared"
+	else:
+		os.makedirs(dirDebug)
+		print "Folder created";
+	os.chmod(dirDebug, 436)
+	distutils.dir_util.copy_tree(dirApp, dirDebug)
+	print "Replacing app version in manifest"
+	replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json"))
+	print "Enable update.js"
+	replaceSmth("{debug1}", '', os.path.join(dirDebug, r"lib\updater.js"))
+	replaceSmth("{debug2}", '', os.path.join(dirDebug, r"lib\updater.js"))
+	shutil.move(os.path.join(dirDebug, "background.js"), os.path.join(dirDebug, "lib\Background_code"))
+	shutil.move(os.path.join(dirDebug, "popup.js"), os.path.join(dirDebug, "lib\Popup_code"))
+	shutil.move(os.path.join(dirDebug, "insertFunc.js"), os.path.join(dirDebug, "lib\insertFunc_code"))
+	shutil.move(os.path.join(dirDebug, r"client\background.js"), dirDebug)
+	shutil.move(os.path.join(dirDebug, r"client\popup.js"), dirDebug)
+	shutil.move(os.path.join(dirDebug, r"client\insertFunc.js"), dirDebug)
+	os.rmdir(os.path.join(dirDebug, "client"))
+	print "Replacing app version in manifest"
+	if replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json")) == 'true': print "-Success"
+	else: print "-Fail";
+	print "Enable update.js"
+	if replaceSmth("{debug1}", " ", os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{debug2}", " ", os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	print "Insert JS versions"
+	if replaceSmth("{appver}", appver, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{BackgroundJS}", BackgroundJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
+	if replaceSmth("{PopupJS}", PopupJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success" 
+	else: print "-Fail";
+	if replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
+	else: print "-Fail";
 elif inkey == 2:
 	print "======CLEAR DEBUG FOLDER======="
 	if os.path.exists(dirDebug):
