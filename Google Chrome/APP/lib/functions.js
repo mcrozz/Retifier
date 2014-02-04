@@ -14,6 +14,7 @@
 	limitations under the License.
 */
 var NotificationsCount = 0,
+    NameBuffer = [],
     clearErrors = "0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
     ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
 if (localStorage['Log'] == undefined) localStorage['Log'] = clearErrors;
@@ -164,21 +165,24 @@ if (localStorage['Status']&&localStorage['Config']) {
 		    if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
+                NameBuffer.push(streamer);
 		    } else if (type == 'Changed' && localJSON('Config','v',['Notifications','update'])) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
+                NameBuffer.push(streamer);
 		    } else if (type == 'ScriptUpdate' && !sessionStorage['Disable_Update_Notifies']) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
+                NameBuffer.push(' ');
 		    } else {
 		        console.debug(TimeNdate(0, 0, '/') + ': ' + streamerName + ' ' + titleOfStream + '   [Was not displayed]')
 		    }
 	    }
     }
 
-    chrome.notifications.onButtonClicked.addListener(function(notificationId){ window.open('http://www.twitch.tv/'+notificationId) });
-    chrome.notifications.onClosed.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){})});
-    chrome.notifications.onClicked.addListener(function(notificationId){ chrome.notifications.clear(notificationId,function(){})});
+    chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
+    chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
+    chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
     Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ? Background = 'Out dated' : Background = 'New';
     Math.floor(localJSON('Code').Popup.version) < Math.floor(localJSON('Code').Background.version_geted) ? Popup = 'Out dated' : Popup = 'New';
