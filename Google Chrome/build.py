@@ -17,11 +17,12 @@ def replaceSmth(what, onWhat, where):
 with open("versions.config",'r') as f:
 	config = []
 	for line in f.readlines(): config.append(line);
-	appver=config[0].replace('\n', '')
-	BackgroundJS=config[1].replace('\n', '')
-	PopupJS=config[2].replace('\n', '')
-	insertFuncJS=config[3].replace('\n', '')
-	Build=config[4].replace('\n', '');
+	
+appver=config[0].replace('\n', '')
+BackgroundJS=config[1].replace('\n', '')
+PopupJS=config[2].replace('\n', '')
+insertFuncJS=config[3].replace('\n', '')
+Build=config[4].replace('\n', '');
 
 debug1="/* << -- DELETE BEFORE RELEASE -- >>"
 debug2="<< -- DELETE BEFORE RELEASE -- >> */"
@@ -64,6 +65,16 @@ if inkey == 1:
 	print "Blocking update.js"
 	replaceSmth("{debug1}", debug1, os.path.join(dirDebug, r"lib\updater.js"))
 	replaceSmth("{debug2}", debug2, os.path.join(dirDebug, r"lib\updater.js"))
+	with open("versions.config",'w') as f:
+		needLine = 0
+		Build = int(Build) + 1
+		for line in config:
+			needLine+=1
+			if needLine == 5:
+				f.write(str(Build))
+			else:
+				f.write(line);
+		f.close();
 elif inkey == 11:
 	print "==========DEBUG MODE==========="
 	print "Coping files..."
@@ -106,6 +117,16 @@ elif inkey == 11:
 	else: print "-Fail";
 	if replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
 	else: print "-Fail";
+	with open("versions.config",'w') as f:
+		needLine = 0
+		Build = int(Build) + 1
+		for line in config:
+			needLine+=1
+			if needLine == 5:
+				f.write(str(Build))
+			else:
+				f.write(line);
+		f.close();
 elif inkey == 2:
 	print "======CLEAR DEBUG FOLDER======="
 	if os.path.exists(dirDebug):
