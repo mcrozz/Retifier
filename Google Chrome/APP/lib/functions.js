@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-var NotificationsCount=0,
+var NotificationsCount = 0,
     clearErrors = "0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
     ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
 if (localStorage['Log'] == undefined) localStorage['Log'] = clearErrors;
@@ -129,35 +129,50 @@ if (localStorage['Status']&&localStorage['Config']) {
     function doc(id){return document.getElementById(id);}
     function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
 
-    function sendNotify(Title, msg, streamer, scriptUpd) {
-        console.debug(TimeNdate(0, 0, '/') + ': ' + Title + ' -  ' + msg);
-	    NotifyConf = {type:"basic",title:Title,message:msg,iconUrl:"/img/goesOnline.png"};
-	    if (!scriptUpd) NotifyConf['buttons']=[{title:"Watch now!"}];
-	    chrome.notifications.create(streamer,NotifyConf,function(){});
-	    if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
-		    Audio = document.createElement('audio');
-		    Audio.setAttribute('src', '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3');
-		    Audio.setAttribute('autoplay', 'autoplay');
-		    Audio.play()
-	    }
-    }
-
     function notifyUser(streamerName, titleOfStream, type, streamer) {
-	    if (localJSON('Config','v',['Notifications','status'])) {
-		    date = new Date();
+	    
+        function delNotify(id, types) {
+            var idToDel = id, times;
+            if (types == 'Online') {
+                times = 1000*15;
+            } else if (types == 'Changed') {
+                times = 1000*10;
+            } else {
+                times = 1000*20;
+            }
+            setTimeout(function(){
+                chrome.notifications.clear(idToDel, function(){});
+            }, times);
+        }
+
+        function sendNotify(tle, msg, strm, upd) {
+            console.debug(TimeNdate(0, 0, '/') + ': ' + tle + ' -  ' + msg);
+            NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/goesOnline.png"};
+            if (upd != 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
+            chrome.notifications.create('n'+strm, NotifyConf, function(){});
+            delNotify('n'+strm, upd);
+            if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
+                var Audio = document.createElement('audio');
+                Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
+                Audio.autoplay = 'autoplay';
+                Audio.play()
+            }
+        }
+
+        if (localJSON('Config','v',['Notifications','status'])) {
+		    var date = new Date();
 		    if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
-		        sendNotify(streamerName, titleOfStream, streamer);
+		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
 		    } else if (type == 'Changed' && localJSON('Config','v',['Notifications','update'])) {
-		        sendNotify(streamerName, titleOfStream, streamer);
+		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
 		    } else if (type == 'ScriptUpdate' && !sessionStorage['Disable_Update_Notifies']) {
-		        sendNotify(streamerName, titleOfStream, streamer, 'Update');
+		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
 		    } else {
 		        console.debug(TimeNdate(0, 0, '/') + ': ' + streamerName + ' ' + titleOfStream + '   [Was not displayed]')
 		    }
-		    sessionStorage['NotificationsCount'] = NotificationsCount;
 	    }
     }
 
