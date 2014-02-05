@@ -62,16 +62,16 @@ function versionCheck() {
         versions = localJSON('App_Version');
 
         if (versions.Got != versions.Ver) {
-            notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versionGot, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
-            localJSON('App_Version', 'c', ['Ver', versionGot]);
+            notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
+            localJSON('App_Version', 'c', ['Ver', versions.Got]);
 
             localStorage['Log'] = localStorage['Log'].split('<!>').join('/');
 
             msgUnit = '<div class="msgTitle">';
-            msgUnit += messages[versionGot]["msg"];
+            msgUnit += messages[versions.Got]["msg"];
             msgUnit += '</div>';
             msgUnit += '<div class="msgContain">';
-            msgUnit += messages[versionGot]["contain"];
+            msgUnit += messages[versions.Got]["contain"];
             msgUnit += '</div>';
 
             /*
