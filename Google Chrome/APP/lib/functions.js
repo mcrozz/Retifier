@@ -180,18 +180,34 @@ if (localStorage['Status']&&localStorage['Config']) {
 	    }
     }
 
+    function Animation(id, name, clr, adds) {
+        if (doc(id)) {
+            var name = name,
+                id = id,
+                clr = clr,
+                adds = adds;
+            if (!clr) $('#'+id).show();
+            $('#'+id).addClass(name);
+            setTimeout(function(){
+                $('#'+id).removeClass(name);
+                if (clr) $('#'+id).hide();
+                if (adds) adds();
+            },800);
+        }
+    }
+
     chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
     chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
     chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
-    Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ? Background = 'Out dated' : Background = 'New';
-    Math.floor(localJSON('Code').Popup.version) < Math.floor(localJSON('Code').Background.version_geted) ? Popup = 'Out dated' : Popup = 'New';
-    Math.floor(localJSON('Code').Background.version) < Math.floor(localJSON('Code').Background.version_geted) ? insertFunc = 'Out dated' : insertFunc = 'New';
+    localJSON('Code').Background.version < localJSON('Code').Background.version_geted ? Background = 'Out dated' : Background = 'New';
+    localJSON('Code').Popup.version < localJSON('Code').Background.version_geted ? Popup = 'Out dated' : Popup = 'New';
+    localJSON('Code').Background.version < localJSON('Code').Background.version_geted ? insertFunc = 'Out dated' : insertFunc = 'New';
 
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25472862-3']);
-    _gaq.push(['_setCustomVar', 3, 'App_Version', localStorage['App_Version'], 1]);
+    _gaq.push(['_setCustomVar', 3, 'App_Version', localJSON('App_Version').Ver, 1]);
     _gaq.push(['_setCustomVar', 2, 'BackgroundJS', localJSON('Code','v',['Background','version']), 1]);
     _gaq.push(['_setCustomVar', 2, 'PopupJS', localJSON('Code','v',['Popup','version']), 1]);
     _gaq.push(['_setCustomVar', 3, 'insertFuncJS', localJSON('Code','v',['Background','version']), 1]);
