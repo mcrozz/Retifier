@@ -16,6 +16,7 @@
 
 FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
+refresh = false;
 
 function InsertOnlineList() {
 	if (localJSON('Status','v',['online']) <= 2) {
@@ -25,13 +26,16 @@ function InsertOnlineList() {
 	}
 	var c = localJSON('Config', 'v', ['Format']),
 		FollowList = localJSON('FollowingList');
-	if (c == 'Full' || c == 'Grid') { var Num = 35, Num2 = 43, Num3 = 'none', Num4 = 40; } else { var Num = 55, Num2 = 43, Num3 = 90, Num4 = 23; };
+
+	if (c == 'Grid') { var Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; } 
+	else if (c == 'Full') { var Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
+	else { var Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; };
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
-		StreamTitle = FollowList[i]['Stream']['Title'];
-		StreamerName = FollowList[i]['Name'];
-		StreamGame = FollowList[i]['Stream']['Game'];
-		StreamVievers = FollowList[i]['Stream']['Viewers'];
+		var StreamTitle = FollowList[i].Stream.Title,
+			StreamerName = FollowList[i].Name,
+			StreamGame = FollowList[i].Stream.Game,
+			StreamVievers = FollowList[i].Stream.Viewers;
 		
 		if ('object'.indexOf(StreamTitle) != -1) StreamTitle = 'getting...';
 		if ('object'.indexOf(StreamerName) != -1) StreamerName = 'getting...';
@@ -41,32 +45,33 @@ function InsertOnlineList() {
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (FollowList[i]['Stream']) {
 		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
-
-				StreamListUnit = '<div class="content" id="'+i+'">';
+				
+				var TitleWidth = false, GameWidth = false;
+				doc('textWidth').innerHTML = StreamTitle;
+				doc('textWidth').style.fontSize = Num4;
+				if (doc('textWidth').offsetWidth > Num) TitleWidth = true;
+				doc('textWidth').innerHTML = StreamGame;
+				doc('textWidth').style.fontSize = Num4;
+				if (doc('textWidth').offsetWidth > Num6) GameWidth = true;
+				
+				var StreamListUnit = '<div class="content" id="'+i+'">';
 					StreamListUnit += '<div class="tumblr">';
 						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
 						StreamListUnit += '<a';
-						if (StreamGame == 'Not Playing') { StreamGame += 'data-title="Nothing"' }
-						 else { StreamListUnit += 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank" data-title="Who else playing '+StreamGame+'"' }
+						StreamListUnit += StreamGame == 'Not Playing' ? 'data-title="Nothing"' : 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank" data-title="Who else playing '+StreamGame+'"';
 						StreamListUnit +='><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
 						StreamListUnit += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 					StreamListUnit += '</div>';
 					StreamListUnit += '<div class="information">';
-						StreamListUnit += '<div class="title">';
-						StreamListUnit += '<div class="';
-							StreamTitle.length > Num ? StreamListUnit += 'informationTextTitle' : StreamListUnit += 'informationTextTitle2';
-							StreamListUnit += '" data-title="' + StreamTitle + '" id="Title_' + i + '">';
-							StreamListUnit += StreamTitle + '</div></div>';
+						StreamListUnit += '<div class="informationTextTitle" id="Title_'+i+'">'+ StreamTitle + '</div>';
 						StreamListUnit += '<div class="streamer">';
 							StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
 						StreamListUnit += '</div>';
 						StreamListUnit += '<div class="viewers">';
 							StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+i+'">' + StreamVievers + '</div>';
 							StreamListUnit += '<p class="pViewers">viewers</p>';
-						StreamListUnit += '</div>';
-						StreamListUnit += '<div class="gamename" id="stream_game_'+i+'" data-title="'+StreamGame+'">'+StreamGame;
+						StreamListUnit += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
 							StreamListUnit += '<a class=';
-							StreamGame.length > Num4 ? StreamListUnit += '"informationTextGame"' : StreamListUnit += '"informationTextGame2"';
 							if (StreamGame!='Not Playing') StreamListUnit+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
 							StreamListUnit += '</a>';
 						StreamListUnit += '</div>';
@@ -82,7 +87,22 @@ function InsertOnlineList() {
 				StreamListUnit += '</div>';
 
 				doc('insertContentHere').innerHTML += StreamListUnit;
-				if (FirstLoadInsertFunc != 1) $('#'+i).addClass('animated fadeIn');
+				if (TitleWidth) {
+					doc("Title_"+i).onmouseover = function(call){
+						doc('message').innerHTML = doc(call.target.id).innerHTML;
+						doc('message').style.display = 'block';
+					};
+					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
+				}
+				if (GameWidth) {
+					doc('stream_game_'+i).onmouseover = function(call){
+						doc('message').innerHTML = doc(call.target.id).innerHTML;
+						doc('message').style.display = 'block';
+					};
+					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
+				}
+
+				if (FirstLoadInsertFunc != 1) Animation(i, 'animated fadeIn', false);
 				TimersetToUpdate.push(i);
 
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
@@ -90,10 +110,10 @@ function InsertOnlineList() {
 					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
 					doc('stream_game_2_img_'+i).setAttribute('style','background:url("/img/playing.png");background-size:'+Num2+';cursor:pointer')
 				} else {
-					doc('stream_game_'+i).setAttribute('style','cursor:default')
-					doc('stream_game_img_'+i).setAttribute('style','display:none')
-					doc('stream_game_2_img_'+i).setAttribute('style','display:none')
-					doc('stream_game_2_img_'+i).setAttribute('style','cursor:default')
+					doc('stream_game_'+i).setAttribute('style','cursor:default');
+					$('#stream_game_img_'+i).hide();
+					$('#stream_game_2_img_'+i).hide();
+					doc('stream_game_2_img_'+i).setAttribute('style','cursor:default');
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
@@ -103,16 +123,16 @@ function InsertOnlineList() {
 			doc('stream_game_'+i).innerHTML = StreamGame
 			doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
 
-			if (doc('stream_img_' + i).style.background.substring(4, doc('stream_img_' + i).style.background.length - 5) != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_' + StreamerName + '-320x200.jpg')
-			    doc('stream_img_' + i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_' + StreamerName + '-320x200.jpg);background-size:' + Num3 + ';cursor:pointer;z-index:0');
+			if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+				doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
 			
 			if (StreamGame == 'Not playing') {
-			    doc('stream_game_' + i).setAttribute('style', 'cursor:default');
-			    doc('stream_game_2_' + i).setAttribute('style', 'cursor:default');
-			    doc('stream_game_img_' + i).setAttribute('style', 'display:none');
-			    doc('stream_game_2_img_' + i).setAttribute('style', 'display:none');
-			} else if (StreamGame != 'Not playing' && doc('stream_game_img_' + i).style.background.substring(4, doc('stream_game_img_' + i).style.background.length - 5) != ('http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg').replace(' ', '%20')) {
-			    doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
+				doc('stream_game_' + i).setAttribute('style', 'cursor:default');
+				doc('stream_game_2_' + i).setAttribute('style', 'cursor:default');
+				$('#stream_game_img_'+i).hide();
+				$('#stream_game_2_img_'+i).hide();
+			} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
+				doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
 			}
 		}
 
@@ -141,19 +161,24 @@ setInterval(function(){
 	if (!Onlv) Onlv = 0;
 	if (localJSON('Status', 'v', ['update']) == 0) {
 	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localJSON('Following');
-		progressBar('Disable')
+		progressBar('Disable');
+		refresh = false;
 	} else if (Upd == 1) {
 		InsertHere.innerHTML='Behold! Update!';
-		progressBar('Enable')
+		progressBar('Enable');
+		refresh = true;
 	} else if (Upd == 2) { 
 		InsertHere.innerHTML='Updating list of followed channels...';
-		progressBar('Enable')
+		progressBar('Enable');
+		refresh = true;
 	} else if (Upd == 3) { 
 		InsertHere.innerHTML='List of followed channels updated.';
-		progressBar('Enable')
+		progressBar('Enable');
+		refresh = true;
 	} else if (Upd == 4) { 
 	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localJSON('Following');
-		progressBar('Enable')
+		progressBar('Enable');
+		refresh = true;
 	} else if (Upd == 5) { 
 		InsertHere.innerHTML='App have a problem with update'
 	} else if (Upd == 6) { 
@@ -162,6 +187,8 @@ setInterval(function(){
 }, 100);
 
 setInterval(function(){
+	if (refresh) Animation('refresh', 'animated spin', false);
+	
 	if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
@@ -225,4 +252,4 @@ setInterval(function(){
 
 	if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) > Math.abs(new Date())+5*24*60*60*1000) localJSON('Config','c',['Timeout',0]);
 	InsertOnlineList()
-},1000)
+},1001)

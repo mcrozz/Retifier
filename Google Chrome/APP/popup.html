@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="animate.css" type="text/css" />
 <script src="lib/jquery-1.10.2.min.js"></script>
-<script src='lib/snowfall.jquery.js'></script>
 <script src="lib/functions.js"></script>
 <script src="lib/firstStart.js"></script>
 <script src="lib/whatsNew.js"></script>
@@ -10,121 +9,114 @@
 <script src="popup.js"></script>
 <body id="body">
 
-<div id="FollowedChannelsList" class="FollowedChannelsList" style="display:none">
+<div id="FollowedChannelsList" style="display:none">
 	<div class="close">
-		<button type="button" id="ClsFlwdChnlsLst" name="Close List of Followed channels" class="button" style="width:167px">Close</button>
+		<a class="aFollow">Following list</a>
+		<button type="button" id="ClsFlwdChnlsLst" class="button">Close</button>
 	</div>
-	
-	<div class="closeBelow2"></div>
-	<div class="closeBelow">
-		<p class="pCloseBelow3">P.S.</p>
-		<p class="pCloseBelow1">Green who's online</p>
-		<p class="pCloseBelow2">Black who's offline</p>
-		<p class="pCloseBelow4">Click on name to go on profile</p>
+	<div style="overflow:auto;width:100%;max-height:100%">
+		<div id="IFCH_1" class="IFCH"></div>
+		<div id="IFCH_2" class="IFCH"></div>
+		<div id="IFCH_3" class="IFCH"></div>
+		<div id="IFCH_4" class="IFCH"></div>
+		<div id="IFCH_5" class="IFCH"></div>
+		<div id="IFCH_6" class="IFCH"></div>
 	</div>
-	
-	<div id="InsertFollowedChannelsHere1" style="position: absolute; width: 180px; height: 500px; left: 0"> </div>
-	<div id="InsertFollowedChannelsHere2" style="position: absolute; width: 180px; height: 500px; left: 185px; "> </div>
-	<div id="InsertFollowedChannelsHere3" style="position: absolute; width: 180px; height: 500px; left: 370px; "> </div>
-	<div id="InsertFollowedChannelsHere4" style="position: absolute; width: 180px; height: 500px; left: 0; top: 505px; "> </div>
-	<div id="InsertFollowedChannelsHere5" style="position: absolute; width: 180px; height: 500px; left: 185px; top: 505px; "> </div>
-	<div id="InsertFollowedChannelsHere6" style="position: absolute; width: 180px; height: 500px; left: 370px; top: 505px; "> </div>
-
 </div>
 
 <div id="firstScane" style="display:block;overflow:hidden">
+	<div id="message"></div>
+	<div id="textWidth"></div>
 
-<div id="FoundAbugText" style="display:none" class="foundAbug">
-	<a class="aFoundAbug" href="https://github.com/mcrozz/Twitch.tv_Notifier/issues" target="_blank">Open new issue on GitHub</a>
-</div>
-<button type="button" id="fndAbug" name="Found a bug?" style="display:none" class="INfoundAbug">Found a bug?</button>
-
-<div id="userChangePopup2" class="userChangeBGofBackground"> </div>
-<div id="userChangePopup" class="userChangePopup" style="display:none;margin-left:190">
-
-<p class="pGreetings">Hello dear user!</p>
-
-
-<div id="UserName"><input type="text" id="ChgUsrNam" class="inUserName">User name</div>
-<div id="CheckInterval"><input type="text" id="ChgUsrInt" class="inCheckInt">(min) Check interval</div>
-<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
-<div id="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
-<div id="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
-<div id="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
-<div id="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
-<div id="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
-
-<div id="Notify_Sound_Select">
-	<select id="SoundSelect" style="width:90">
-		<option value="DinDon">Din-Don</option>
-		<option value="DinDon">More comin' soon</option>
-		<option value="DinDon">[:D</option>
-	</select>
-	Choose sound
-</div>
-
-<div id="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
-
-<div id="List_Format">
-    <select id="List_Format_List" style="width:90">
-        <option value="Full">Full</option>
-        <option value="Mini">Light</option>
-        <option value="Grid">Grid</option>
-    </select>
-    Choose style of online list
-</div>
-
-
-<button type="button" id="ChgUsrSnd" class="OptionsSave">Save / Close</button>
-
-</div>
-
-<div id="header">
-    <div id="controls">
-        <div class="DashboardButton">
-            <button type="button" id="Dashboard" class="left">Dashboard</button>
-        </div>
-        <div class="ProbablyNothing">
-            <button type="button" id="Direct" class="left2">Direct</button>
-        </div>
-
-        <div>
-            <a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
-        </div>
-
-        <div class="LoginORoutButton">
-            <button type="button" id="ChgUsr" class="right">Options</button>
-        </div>
-        <div class="ListOfFollowed">
-            <button type="button" id="LstFlwdChnls" class="right2">Following List</button>
-        </div>
-    </div>
-
-<div id="nowONline">
-	<p class="pNowOnline" id="FollowedChannelsOnline"></p>
-</div>
-
-</div>
-
-<div id="News"></div>
-<div id="WhatsNew"></div>
-<div id="NoOneOnline" style="display:block"></div>
-<progress class="CheckingProgress" style="display:none" id="CheckingProgress" max="100" value="0"></progress>
-
-<div id="content3">
-	<div id="insertContentHere"></div>
-</div>
-
-<div id="AppInfoBack"></div>
-<div id="AppVersion"></div>
-<div id="AppChanges" style="display:none">
-	<div class="AppInfoNav">
-		<button type="button" id="AppFirst" name="Changes" class="AppInfo">Changes</button>
-		<button type="button" id="AppSecond" name="In future" class="AppInfo">In future</button>
-		<button type="button" id="AppThird" name="About" class="AppInfo">About</button>
-		<button type="button" id="AppInfoClose" name="Close" class="AppInfo">Close</button>
+	<div id="FoundAbugText" style="display:none" class="foundAbug">
+		<a class="aFoundAbug" href="https://github.com/mcrozz/Twitch.tv_Notifier/issues" target="_blank">Open new issue on GitHub</a>
 	</div>
-	<div class="AppVersionContent2"><div class="AppVersionContent3"><div id="AppVersionContent"></div></div></div>
-</div>
+	<button type="button" id="fndAbug" name="Found a bug?" style="display:none" >Found a bug?</button>
+
+	<div id="userChangePopup2"></div>
+	<div id="userChangePopup" style="display:none;margin-left:190">
+
+		<p class="pGreetings">Hello dear user!</p>
+
+
+		<div id="UserName"><input type="text" id="ChgUsrNam">User name</div>
+		<div id="CheckInterval"><input type="text" id="ChgUsrInt">(min) Check interval</div>
+		<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
+		<div id="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
+		<div id="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
+		<div id="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
+		<div id="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
+		<div id="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
+
+		<div id="Notify_Sound_Select">
+			<select id="SoundSelect">
+				<option value="DinDon">Din-Don</option>
+				<option value="DinDon">More comin' soon</option>
+				<option value="DinDon">[:D</option>
+			</select>
+			Choose sound
+		</div>
+
+		<div id="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
+
+		<div id="List_Format">
+		    <select id="List_Format_List">
+		        <option value="Full">Full</option>
+		        <option value="Mini">Light</option>
+		        <option value="Grid">Grid</option>
+		    </select>
+		    Choose style of online list
+		</div>
+
+
+		<button type="button" id="ChgUsrSnd">Save / Close</button>
+
+	</div>
+
+	<div id="header">
+	    <div id="controls">
+	        <div class="DashboardButton">
+	            <button type="button" id="Dashboard" class="dash">Dashboard</button>
+	        </div>
+	        <div class="ProbablyNothing">
+	            <button type="button" id="Direct" class="dash">Direct</button>
+	        </div>
+
+	        <div>
+	            <a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
+	        </div>
+
+	        <span id="refresh"></span>
+
+	        <div class="LoginORoutButton">
+	            <button type="button" id="ChgUsr" class="dash">Options</button>
+	        </div>
+	        <div class="ListOfFollowed">
+	            <button type="button" id="LstFlwdChnls" class="dash">Following List</button>
+	        </div>
+	    </div>
+
+		<div id="nowONline"><p id="FollowedChannelsOnline"></p></div>
+
+	</div>
+
+	<div id="News"></div>
+	<div id="WhatsNew"></div>
+	<div id="NoOneOnline"></div>
+	<progress style="display:none" id="CheckingProgress" max="100" value="0"></progress>
+
+	<div id="content3"><div id="insertContentHere"></div></div>
+
+	<div id="AppInfoBack"></div>
+	<div id="AppVersion"></div>
+	<div id="AppChanges" style="display:none">
+		<div class="AppInfoNav">
+			<button type="button" id="AppFirst" name="Changes" class="AppInfo">Changes</button>
+			<button type="button" id="AppSecond" name="In future" class="AppInfo">In future</button>
+			<button type="button" id="AppThird" name="About" class="AppInfo">About</button>
+			<button type="button" id="AppInfoClose" name="Close" class="AppInfo">Close</button>
+		</div>
+		<div class="AppVersionContent2"><div class="AppVersionContent3"><div id="AppVersionContent"></div></div></div>
+	</div>
 </div>
 </body>
