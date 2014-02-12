@@ -46,15 +46,14 @@ function InsertOnlineList() {
 		    if (FollowList[i]['Stream']) {
 		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
 				
-				var TitleWidth = false, GameWidth = false;
+				var TitleWidth = false, GameWidth = false, StreamListUnit;
 				doc('textWidth').innerHTML = StreamTitle;
 				doc('textWidth').style.fontSize = Num4;
 				if (doc('textWidth').offsetWidth > Num) TitleWidth = true;
 				doc('textWidth').innerHTML = StreamGame;
-				doc('textWidth').style.fontSize = Num4;
 				if (doc('textWidth').offsetWidth > Num6) GameWidth = true;
 				
-				var StreamListUnit = '<div class="content" id="'+i+'">';
+				StreamListUnit = '<div class="content" id="'+i+'">';
 					StreamListUnit += '<div class="tumblr">';
 						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
 						StreamListUnit += '<a';
@@ -90,14 +89,14 @@ function InsertOnlineList() {
 				if (TitleWidth) {
 					doc("Title_"+i).onmouseover = function(call){
 						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						doc('message').style.display = 'block';
+						$('#message').show();
 					};
 					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
 				}
 				if (GameWidth) {
 					doc('stream_game_'+i).onmouseover = function(call){
 						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						doc('message').style.display = 'block';
+						$('#message').show();
 					};
 					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
 				}
@@ -159,7 +158,7 @@ setInterval(function(){
 	Upd = localJSON('Status', 'v', ['update']);
 	Onlv = localJSON('Status', 'v', ['online']);
 	if (!Onlv) Onlv = 0;
-	if (localJSON('Status', 'v', ['update']) == 0) {
+	if (Upd == 0) {
 	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localJSON('Following');
 		progressBar('Disable');
 		refresh = false;
@@ -191,65 +190,45 @@ setInterval(function(){
 	
 	if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
-			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
-			StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[i];
-			SubtractTimes = Math.floor((new Date() - new Date(FollowingList('v',TimersetToUpdate[i])[4])) / 1000);
-			Days = Math.floor((SubtractTimes % 31536000) / 86400);
-			Hours = Math.floor(((SubtractTimes % 31536000) % 86400) / 3600);
-			Minutes = Math.floor((((SubtractTimes % 31536000) % 86400) % 3600) / 60);
-			Seconds = (((SubtractTimes % 31536000) % 86400) % 3600) % 60;
-			if (Days == 0) {Days = ''} else { if (Days < 10) {Days = '0'+Days+'d:'} else if (Days >= 10) {Days = Days+'d:'} };
-			if (Hours == 0) {Hours = ''} else { if (Hours < 10) {Hours = '0'+Hours+'h:'} else if (Hours >= 10) {Hours = Hours+'h:'} };
-			if (Minutes == 0) {Minutes = ''} else { if (Minutes < 10) {Minutes = '0'+Minutes+'m:'} else if (Minutes >= 10) {Minutes = Minutes+'m:'} };
-			if (Seconds == 0) {Seconds = '00s'} else { if (Seconds < 10) {Seconds = '0'+Seconds+'s'} else if (Seconds >= 10) {Seconds = Seconds+'s'} };
-			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-            if (doc(InsertTimeHere) && 'NaN'.indexOf(Time) == -1) doc(InsertTimeHere).innerHTML = Time;
+			var InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i],
+				StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[i],
+				hs, ms, ss,
+				date = new Date(Math.abs(new Date()) - Math.abs(new Date(FollowingList('v',TimersetToUpdate[i])[4])));
+			hs = date.getHours() < 10 ? '0'+date.getHours() : date.getHours();
+			ms = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
+			ss = date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds();
+            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = hs+'h:'+ms+'m:'+ss+'s';
 		}
 	} 
 
-	if (localJSON('Config','v',['Timeout'])) {
-		if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) < 0) {
-			localJSON('Config','c',['Closed','false']);
-			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
-			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
-			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
-			donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
-			donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
-			donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
-			donationUnit += '</form></div>';
-			donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
-			doc('News').innerHTML=donationUnit;
-			doc('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
-			doc('CloseNews').addEventListener('click',function(){
-				doc('News').setAttribute('style','display:none');
-				localJSON('Config','c',['Timeout',Math.abs(new Date())+5*24*60*60*1000]);
-				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-				localJSON('Config','c',['Closed','true'])
-			});
-			doc('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
-		} else if (localJSON('Config','v',['Closed']) != 'true') {
-			donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
-			donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
-			donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-			donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
-			donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
-			donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
-			donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
-			donationUnit += '</form></div>';
-			donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
-			doc('News').innerHTML=donationUnit;
-			doc('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
-			doc('CloseNews').addEventListener('click',function(){
-				doc('News').setAttribute('style','display:none');
-				localJSON('Config','c',['Timeout',Math.abs(new Date())+5*24*60*60*1000]);
-				_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-				localJSON('Config','c',['Closed','true'])
-			});
-			doc('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
-		}
+	function donationUnit() {
+		donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
+		donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
+		donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+		donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
+		donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
+		donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
+		donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
+		donationUnit += '</form></div>';
+		donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
+		doc('News').innerHTML=donationUnit;
+		doc('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
+		doc('CloseNews').addEventListener('click',function(){
+			$('#News').hide();
+			localJSON('Config','c',['Timeout',Math.abs(new Date())+432000000]);
+			_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
+			localJSON('Config','c',['Closed','true'])
+		});
+		doc('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
+	}
+	var timeout = localJSON('Config','v',['Timeout']);
+	if (timeout) {
+		if (Math.abs(new Date(timeout)) - Math.abs(new Date()) < 0) {
+			localJSON('Config','c',['Closed', 'false']);
+			donationUnit()
+		} else if (localJSON('Config','v',['Closed']) != 'true') { donationUnit() }
 	} else { localJSON('Config','c',['Timeout',new Date()]) }
 
-	if (Math.abs(new Date(localJSON('Config','v',['Timeout']))) - Math.abs(new Date()) > Math.abs(new Date())+5*24*60*60*1000) localJSON('Config','c',['Timeout',0]);
+	if (Math.abs(new Date(timeout)) - Math.abs(new Date()) > Math.abs(new Date())+432000000) localJSON('Config','c',['Timeout', 0]);
 	InsertOnlineList()
 },1001)
