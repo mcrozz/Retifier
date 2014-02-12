@@ -24,30 +24,30 @@ PopupJS=config[2].replace('\n', '')
 insertFuncJS=config[3].replace('\n', '')
 Build=config[4].replace('\n', '');
 
-debug1="/* << -- DELETE BEFORE RELEASE -- >>"
-debug2="<< -- DELETE BEFORE RELEASE -- >> */"
-
 dirApp=os.path.join(os.getcwd(), "APP")
 dirDebug=os.path.join(os.getcwd(), "debug")
 dirBuild=os.path.join(os.getcwd(), "build", appver)
 
 print "App ver. "+appver+" (Build "+Build+")"
 print "==============================="
-print "  [1]: Debug without update.js"
-print "  [11]: Debug with update.js"
+print "  [1]: Debug"
 print "  [2]: Clear debug folder"
 print "  [3]: Build"
+print "  [X]: Exit"
 print "==============================="
+
+inkey = 0;
 try:
 	inkey = input("Your choose: ")
 except Exception, e:
-	inkey = 1
+	inkey = 0
 
 
 os.chmod(dirApp, 436)
 
-
-if inkey == 1:
+if inkey == 0:
+    sys.exit();
+elif inkey == 1:
 	print "==========DEBUG MODE==========="
 	print "Coping files..."
 	if os.path.exists(dirDebug):
@@ -63,60 +63,6 @@ if inkey == 1:
 	print "Replacing app version in manifest"
 	replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json"))
 	print "Blocking update.js"
-	replaceSmth("{debug1}", debug1, os.path.join(dirDebug, r"lib\updater.js"))
-	replaceSmth("{debug2}", debug2, os.path.join(dirDebug, r"lib\updater.js"))
-	with open("versions.config",'w') as f:
-		needLine = 0
-		Build = int(Build) + 1
-		for line in config:
-			needLine+=1
-			if needLine == 5:
-				f.write(str(Build))
-			else:
-				f.write(line);
-		f.close();
-elif inkey == 11:
-	print "==========DEBUG MODE==========="
-	print "Coping files..."
-	if os.path.exists(dirDebug):
-		os.chmod(dirDebug, 436)
-		shutil.rmtree(dirDebug)
-		os.makedirs(dirDebug)
-		print "Folder cleared"
-	else:
-		os.makedirs(dirDebug)
-		print "Folder created";
-	os.chmod(dirDebug, 436)
-	distutils.dir_util.copy_tree(dirApp, dirDebug)
-	print "Replacing app version in manifest"
-	replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json"))
-	print "Enable update.js"
-	replaceSmth("{debug1}", '', os.path.join(dirDebug, r"lib\updater.js"))
-	replaceSmth("{debug2}", '', os.path.join(dirDebug, r"lib\updater.js"))
-	shutil.move(os.path.join(dirDebug, "background.js"), os.path.join(dirDebug, "lib\Background_code"))
-	shutil.move(os.path.join(dirDebug, "popup.js"), os.path.join(dirDebug, "lib\Popup_code"))
-	shutil.move(os.path.join(dirDebug, "insertFunc.js"), os.path.join(dirDebug, "lib\insertFunc_code"))
-	shutil.move(os.path.join(dirDebug, r"client\background.js"), dirDebug)
-	shutil.move(os.path.join(dirDebug, r"client\popup.js"), dirDebug)
-	shutil.move(os.path.join(dirDebug, r"client\insertFunc.js"), dirDebug)
-	os.rmdir(os.path.join(dirDebug, "client"))
-	print "Replacing app version in manifest"
-	if replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json")) == 'true': print "-Success"
-	else: print "-Fail";
-	print "Enable update.js"
-	if replaceSmth("{debug1}", " ", os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{debug2}", " ", os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	print "Insert JS versions"
-	if replaceSmth("{appver}", appver, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{BackgroundJS}", BackgroundJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{PopupJS}", PopupJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success" 
-	else: print "-Fail";
-	if replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirDebug, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
 	with open("versions.config",'w') as f:
 		needLine = 0
 		Build = int(Build) + 1
@@ -154,29 +100,8 @@ elif inkey == 3:
 		print "Tree copied"
 	else:
 		print "Error";
-	shutil.move(os.path.join(dirBuild, "background.js"), os.path.join(dirBuild, "lib\Background_code"))
-	shutil.move(os.path.join(dirBuild, "popup.js"), os.path.join(dirBuild, "lib\Popup_code"))
-	shutil.move(os.path.join(dirBuild, "insertFunc.js"), os.path.join(dirBuild, "lib\insertFunc_code"))
-	shutil.move(os.path.join(dirBuild, r"client\background.js"), dirBuild)
-	shutil.move(os.path.join(dirBuild, r"client\popup.js"), dirBuild)
-	shutil.move(os.path.join(dirBuild, r"client\insertFunc.js"), dirBuild)
-	os.rmdir(os.path.join(dirBuild, "client"))
 	print "Replacing app version in manifest"
 	if replaceSmth("{appver}", appver, os.path.join(dirBuild, "manifest.json")) == 'true': print "-Success"
-	else: print "-Fail";
-	print "Enable update.js"
-	if replaceSmth("{debug1}", " ", os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{debug2}", " ", os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	print "Insert JS versions"
-	if replaceSmth("{appver}", appver, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{BackgroundJS}", BackgroundJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
-	else: print "-Fail";
-	if replaceSmth("{PopupJS}", PopupJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success" 
-	else: print "-Fail";
-	if replaceSmth("{insertFuncJS}", insertFuncJS, os.path.join(dirBuild, r"lib\updater.js")) == 'true': print "-Success"
 	else: print "-Fail";
 	with open("versions.config",'w') as f:
 		needLine = 0
