@@ -18,13 +18,13 @@ $.ajaxSetup ({cache:false,crossDomain:true});
 Code = {"Background": {"code": "//code","date": "Date","hex": "hex","version": 0},"Popup": {"code": "//code","date": "date",    "hex": "hex","version": 0},"insertFunc": {"code": "//code","date": "date","hex": "hex","version": 0}};
 Config = {"User_Name": "Guest","Notifications": {"status": true,"online": true,"update": false,"sound_status": true,"sound": "DinDon"},"Duration_of_stream": true,"Interval_of_Checking": 3};
 Status = {"update": 0,"online": 0,"checked": 0,"StopInterval": true};
-if (localStorage['Code'] == undefined) {localStorage['Code'] = JSON.stringify(Code)};
-if (localStorage['Config'] == undefined) {localStorage['Config'] = JSON.stringify(Config)};
-if (localStorage['Status'] == undefined) {localStorage['Status'] = JSON.stringify(Status)};
-if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true';console.debug('Set up your user name in options')};
+if (localStorage['Code'] == undefined) localStorage['Code'] = JSON.stringify(Code);
+if (localStorage['Config'] == undefined) localStorage['Config'] = JSON.stringify(Config);
+if (localStorage['Status'] == undefined) localStorage['Status'] = JSON.stringify(Status);
+if (!localStorage['FirstLaunch']) {localStorage['FirstLaunch']='true'; console.debug('Set up your user name in options')}
 try { JSON.parse(localStorage['App_Version'])}
 catch(e) { localStorage['App_Version'] = '{"Ver": "{appver}", "Got": "0"}' }
-$.getJSON('/manifest.json', function (data) { localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
+$.getJSON('./manifest.json', function (data){ localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
 
 if (localStorage['Status'] != null && localStorage['Config'] != null) {
 	function firstLaunchUser() {
