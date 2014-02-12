@@ -1,6 +1,5 @@
 ﻿<meta charset='utf-8'> 
 <link rel="stylesheet" href="style.css" type="text/css" />
-<link rel="stylesheet" href="animate.css" type="text/css" />
 <script src="lib/jquery-1.10.2.min.js"></script>
 <script src="lib/functions.js"></script>
 <script src="lib/firstStart.js"></script>
@@ -34,11 +33,8 @@
 	<button type="button" id="fndAbug" name="Found a bug?" style="display:none" >Found a bug?</button>
 
 	<div id="userChangePopup2"></div>
-	<div id="userChangePopup" style="display:none;margin-left:190">
-
+	<div id="userChangePopup">
 		<p class="pGreetings">Hello dear user!</p>
-
-
 		<div id="UserName"><input type="text" id="ChgUsrNam">User name</div>
 		<div id="CheckInterval"><input type="text" id="ChgUsrInt">(min) Check interval</div>
 		<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
@@ -47,7 +43,6 @@
 		<div id="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
 		<div id="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
 		<div id="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
-
 		<div id="Notify_Sound_Select">
 			<select id="SoundSelect">
 				<option value="DinDon">Din-Don</option>
@@ -56,9 +51,7 @@
 			</select>
 			Choose sound
 		</div>
-
 		<div id="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
-
 		<div id="List_Format">
 		    <select id="List_Format_List">
 		        <option value="Full">Full</option>
@@ -67,10 +60,7 @@
 		    </select>
 		    Choose style of online list
 		</div>
-
-
 		<button type="button" id="ChgUsrSnd">Save / Close</button>
-
 	</div>
 
 	<div id="header">

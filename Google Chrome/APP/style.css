@@ -20,8 +20,8 @@ b {border: 2px dotted #d6d4d4}
 #ClsFlwdChnlsLst {width:167px}
 .aFollow {color:black;font-size:27;display:inline-block;width:505px;padding:3 0 0 15}
 
-#userChangePopup {z-index:10;width:320px;height:385px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,1)),to(rgba(87,87,87,1)));position:fixed;top:100px;padding:15px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);-moz-border-radius:14px;-webkit-border-radius:14px;border-radius:14px}
-#userChangePopup2 {background:rgba(0,0,0,0.65);z-index:5;display:none;position:absolute;width:100%;height:100%;left:0;right:0;top:0;bottom:0}
+#userChangePopup {display:none;z-index:10;width:320px;height:385px;position:fixed;left:173.5px;top:80px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,1)),to(rgba(87,87,87,1)));position:fixed;top:100px;padding:15px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);-moz-border-radius:14px;-webkit-border-radius:14px;border-radius:14px}
+#userChangePopup2 {display:none;z-index:5;width:100%;height:100%;position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.65)}
 
 button {border:none;cursor:default}
 
@@ -40,7 +40,7 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 .aAppInfoAbout1::selection,.aAppInfoAbout2::selection,.aAppInfoAbout3::selection,.aAppInfoAbout4::selection,.aAppInfoAbout5::selection,.AppInfoAbout1::selection,.AppInfoAbout2::selection,.AppInfoAbout3::selection,.AppInfoAbout4::selection,.AppInfoAbout5::selection,.aAppInfo::selection,.aAppInfoFuture::selection,#AppVersion::selection,#FollowedChannelsOnline::selection,#CheckInterval::selection,#UserName::selection,#Notify_All::selection,#DisNotify_All::selection,#Notify_Streamer::selection,#Notify_Streamer_Changed::selection,#Notify_Upd::selection,#Notify_Sound::selection,#Notify_Sound_Select::selection,#DurationOfStream::selection,#List_Format::selection,#AppVersionContent::selection
     {background:rgba(0, 0, 0, 0.00)}
 
-.TwitchLogo {background:url('/img/img.png') no-repeat;background-position:0px -50px;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
+.TwitchLogo {background:url('/img/img.png') no-repeat;background-position:0 0;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
 
 .LoginORoutButton  {margin-left:547px;position:absolute}
 
@@ -76,7 +76,7 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 .inSetUpUserName {margin:0 0 5 73;width:250px;height:30px;font-size:23px;text-align:center}
 
 #AppVersion {position:fixed;right:15px;bottom:-5px;-webkit-border-radius:15px;background:white;padding:4px;color:black;font-size:15px;cursor:help;z-index:15;-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
-#AppChanges {background:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,1)),to(rgba(85,85,85,0.95)));position:fixed;z-index:35;width:400px;height:400px;left:157px;bottom:0}
+#AppChanges {background:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,1)),to(rgba(85,85,85,0.95)));position:fixed;z-index:35;width:400px;height:400px;left:148.5px;bottom:0}
 
 .AppInfo::selection {background:rgba(0, 0, 0, 0.00)}
 button.AppInfo {background:-webkit-gradient(linear,left top,left bottom,from(rgba(165,165,165,0.8)),to(rgba(39,39,39,0.5)));padding:2 9 2 9;font-size:22;color:white}
@@ -137,7 +137,7 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 
 .spin { -webkit-animation-name:spin }
 @-webkit-keyframes spin {
-    0% { -webkit-transform:rotate(1deg) }
+    0% { -webkit-transform:rotate(0) }
     100% { -webkit-transform:rotate(360deg) }
 }
 
@@ -154,4 +154,28 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     display:block;
     position:absolute;
     z-index:-1
+}
+#userChangePopup { left:173px }
+
+/* 
+           Animate.css
+    http://daneden.me/animate
+*/
+@-webkit-keyframes fadeIn {
+    0% { opacity:0 }
+    100% { opacity:1 }
+}
+@-webkit-keyframes fadeOut { 
+    0% { opacity:1 }
+    100% { opacity:0 }
+}
+@-webkit-keyframes bounceInUp { 
+    0% { opacity:0;-webkit-transform:translateY(600px) }
+    99% { opacity:1;-webkit-transform:translateY(0) }
+    100% { -webkit-transform:translateY(0) }
+}
+@-webkit-keyframes bounceOutDown { 
+    0% { -webkit-transform:translateY(0) }
+    20% { opacity:1;-webkit-transform:translateY(-20px) }
+    100% { opacity:0;-webkit-transform:translateY(600px) }
 }

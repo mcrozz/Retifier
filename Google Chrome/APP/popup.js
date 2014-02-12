@@ -15,8 +15,6 @@
 */
 
 var TimersetToUpdate = [],
-	AddedEventListener = [],
-	FirstLoadVar = 1,
 	openCloseVersionVar = 1,
 	openCloseReportVar = 1;
 
@@ -114,12 +112,11 @@ function CSScompiler() {
 }
 
 function clickChangeUser() {
-	doc("userChangePopup").style.display='block';
-	doc("userChangePopup2").setAttribute("style","display:block");
-	doc("userChangePopup").setAttribute("style","left:173");
-	doc("AppVersion").setAttribute("style","display:none");
-	Animation('userChangePopup2', 'animated FadeIn', false);
-	Animation('userChangePopup', 'animated bounceIn', false);
+	$('#userChangePopup').show();
+	$('#userChangePopup2').show();
+	$('#AppVersion').hide();
+	Animation('userChangePopup2', 'fadeIn', false);
+	Animation('userChangePopup', 'bounceIn', false);
 	doc("ChgUsrNam").value = localJSON('Config','v',['User_Name']);
 	doc("ChgUsrInt").value = localJSON('Config','v',['Interval_of_Checking']);
 	doc('fndAbug').setAttribute("style","display:block;top:190;right:-68");
@@ -183,8 +180,8 @@ function openCloseReportAbug() {
 }
 
 function clickChangeUserCls() {
-	Animation('userChangePopup', 'animated bounceOut', true);
-	Animation('userChangePopup2', 'animated FadeOut', true);
+	Animation('userChangePopup', 'bounceOut', true);
+	Animation('userChangePopup2', 'fadeOut', true);
 	$('#fndAbug').hide();
 	$('#FoundAbugText').hide();
 	$('#AppVersion').show();
@@ -248,7 +245,7 @@ function openFollowedList() {
 	}
 
 	$('#firstScane').hide();
-	Animation('FollowedChannelsList', 'animated fadeIn', false);
+	Animation('FollowedChannelsList', 'fadeIn', false);
 
 	_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 	
@@ -259,8 +256,8 @@ function openFollowedList() {
 }
 
 function closeFollowedList() {
-	Animation('FollowedChannelsList', 'animated fadeOut', true);
-	Animation('firstScane', 'animated fadeIn', false);
+	Animation('FollowedChannelsList', 'fadeOut', true);
+	Animation('firstScane', 'fadeIn', false);
 	doc('IFCH_1').innerHTML=null;
 	doc('IFCH_2').innerHTML=null;
 	doc('IFCH_3').innerHTML=null;
@@ -272,16 +269,16 @@ function closeFollowedList() {
 function openAppVersionChanges() {
 	_gaq.push(['_trackEvent', 'App changes', 'clicked']);
 	if (openCloseVersionVar == 1) {
-		Animation('AppChanges', 'animated bounceInUp', false);
-		Animation('AppInfoBack', 'animated FadeIn', false);
+		Animation('AppChanges', 'bounceInUp', false);
+		Animation('AppInfoBack', 'fadeIn', false);
 		doc("fndAbug").setAttribute('style', 'display:block;top:190;right:-68');
 		doc('body').setAttribute('style', 'overflow:hidden');
 		$('#AppVersion').hide();
 		changeAppContent('AppFirst');
 		openCloseVersionVar = 0
 	} else if (openCloseVersionVar == 0) {
-		Animation('AppChanges', 'animated bounceOutDown', true, function(){ doc("AppVersion").setAttribute("style","display:block") });
-		Animation('AppInfoBack', 'animated FadeOut', true);
+		Animation('AppChanges', 'bounceOutDown', true, function(){ $('#AppVersion').show() });
+		Animation('AppInfoBack', 'fadeOut', true);
 		$('#fndAbug').hide();
 		$('#FoundAbugText').hide();
 		doc('body').setAttribute('style', 'overflow:auto');
@@ -290,12 +287,13 @@ function openAppVersionChanges() {
 }
 
 function CloseAppVersionChanges() {
-	Animation('AppChanges', 'animated bounceOutDown', true, function(){ doc("AppVersion").setAttribute("style","display:block") });
-	Animation('AppInfoBack', 'animated FadeOut', true, function(){
+	Animation('AppChanges', 'bounceOutDown', true);
+	Animation('AppInfoBack', 'fadeOut', true, function(){
 		$('#FoundAbugText').hide();
 		doc('body').setAttribute('style', 'overflow:auto')
 	});
-	$('#fndAbug').hide();
+	Animation('fndAbug', 'fadeOut', true);
+	Animation('AppVersion', 'fadeIn', false);
 	openCloseVersionVar = 1
 }
 
@@ -303,14 +301,14 @@ function changeAppContent(App) {
     if (App == 'AppFirst') {
         AppFirst = '';
         for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a class='aAppInfo'> " + changes[i] + " </a></div>";
-		Animation('AppVersionContent', 'animated fadeIn', false);
+		Animation('AppVersionContent', ['fadeIn', 0.8], false);
 		doc('AppVersionContent').innerHTML = AppFirst;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
 		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
 		doc('AppThird').setAttribute('style','border-bottom:2px solid white');
 		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 	} else if (App == 'AppSecond') {
-		Animation('AppVersionContent', 'animated fadeIn', false);
+		Animation('AppVersionContent', ['fadeIn', 0.8], false);
 		AppSecond = '<div class="AppInfoFuture"><a class="aAppInfoFuture"> For now, nothing...</a></div>';
 		doc('AppVersionContent').innerHTML = AppSecond;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
@@ -323,7 +321,7 @@ function changeAppContent(App) {
 		AppThird += "<div class='AppInfoAbout3'><a class='aAppInfoAbout3' href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
 		AppThird += "<div class='AppInfoAbout4'><a class='aAppInfoAbout4' href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
 		AppThird += "<div class='AppInfoAbout5'><a class='aAppInfoAbout5' href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
-		Animation('AppVersionContent', 'animated fadeIn', false);
+		Animation('AppVersionContent', ['fadeIn', 0.8], false);
 		doc('AppVersionContent').innerHTML = AppThird;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
 		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
