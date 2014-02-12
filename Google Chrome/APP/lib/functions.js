@@ -43,18 +43,19 @@ if (localStorage['Status']&&localStorage['Config']) {
     }
 
     function TimeNdate(d, m, k) {
-        newDate = new Date();
-        time = '';
-        if ((newDate.getMonth() + 1 + m) < 10) time += "0" + (newDate.getMonth() + 1 + m);
-        else time += (newDate.getMonth() + 1 + m);
-        time += k;
-        if ((newDate.getDate() + d) < 10) time += "0" + (newDate.getDate() + d);
-        else time += (newDate.getDate() + d);
-        time += k;
-        time += ((new Date()).getYear() - 100);
-        time += ' ' + newDate.getHours() + ':';
-        newDate.getMinutes()<10 ? time += newDate.getMinutes()*10 : time += newDate.getMinutes();
-        return time;
+        // TODO: do not add years
+        var newDate = new Date(),
+            time, month, year, day,
+            DaysInMonths = [31,28,31,30,31,30,31,31,30,31,30,31];
+        month = newDate.getMonth()+1+m;
+        if (newDate.getDate()+d > DaysInMonths[newDate.getMonth()]) {
+            month++;
+            day = (d-(DaysInMonths[newDate.getMonth()] - newDate.getDate())) < 10 ? '0'+(d-(DaysInMonths[newDate.getMonth()]-newDate.getDate())) : d-DaysInMonths[newDate.getMonth()]-newDate.getDate()
+        } else { day = newDate.getDate()+d < 10 ? '0'+(newDate.getDate()+d) : newDate.getDate()+d }
+        year = ((new Date()).getYear()-100);
+        time = newDate.getHours()+':';
+        time +=newDate.getMinutes() < 10 ? '0'+newDate.getMinutes() : newDate.getMinutes();
+        return [month < 10 ? '0'+month : month,day,year,time].join(k);
     }
 
     function localJSON(name,type,arrayz) {
@@ -134,21 +135,15 @@ if (localStorage['Status']&&localStorage['Config']) {
 	    
         function delNotify(id, types) {
             var idToDel = id, times;
-            if (types == 'Online') {
-                times = 1000*15;
-            } else if (types == 'Changed') {
-                times = 1000*10;
-            } else {
-                times = 1000*20;
-            }
-            setTimeout(function(){
-                chrome.notifications.clear(idToDel, function(){});
-            }, times);
+            if (types == 'Online') { times = 1000*15 }
+            else if (types == 'Changed') { times = 1000*10 }
+            else { times = 1000*20 }
+            setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
         }
 
         function sendNotify(tle, msg, strm, upd) {
             console.debug(TimeNdate(0, 0, '/') + ': ' + tle + ' -  ' + msg);
-            NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/goesOnline.png"};
+            NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
             if (upd != 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
             chrome.notifications.create('n'+strm, NotifyConf, function(){});
             delNotify('n'+strm, upd);
@@ -182,17 +177,13 @@ if (localStorage['Status']&&localStorage['Config']) {
 
     function Animation(id, name, clr, adds) {
         if (doc(id)) {
-            var name = name,
-                id = id,
-                clr = clr,
-                adds = adds;
-            if (!clr) $('#'+id).show();
-            $('#'+id).addClass(name);
+            var ci = $('#'+id);
+            if (!clr) ci.show();
+            ci.css('-webkit-animation', name+' both 1s');
             setTimeout(function(){
-                $('#'+id).removeClass(name);
-                if (clr) $('#'+id).hide();
+                if (clr) ci.hide();
                 if (adds) adds();
-            },800);
+            }, 1000);
         }
     }
 
@@ -200,17 +191,9 @@ if (localStorage['Status']&&localStorage['Config']) {
     chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
     chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
-    localJSON('Code').Background.version < localJSON('Code').Background.version_geted ? Background = 'Out dated' : Background = 'New';
-    localJSON('Code').Popup.version < localJSON('Code').Background.version_geted ? Popup = 'Out dated' : Popup = 'New';
-    localJSON('Code').Background.version < localJSON('Code').Background.version_geted ? insertFunc = 'Out dated' : insertFunc = 'New';
-
-
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25472862-3']);
     _gaq.push(['_setCustomVar', 3, 'App_Version', localJSON('App_Version').Ver, 1]);
-    _gaq.push(['_setCustomVar', 2, 'BackgroundJS', localJSON('Code','v',['Background','version']), 1]);
-    _gaq.push(['_setCustomVar', 2, 'PopupJS', localJSON('Code','v',['Popup','version']), 1]);
-    _gaq.push(['_setCustomVar', 3, 'insertFuncJS', localJSON('Code','v',['Background','version']), 1]);
     _gaq.push(['_trackPageview']);
 
     (function () { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = 'https://ssl.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s) })()
