@@ -21,12 +21,12 @@ var TimersetToUpdate = [],
 function CSScompiler() {
 	style=document.createElement('style');
 	format=localJSON('Config','v',['Format']);
-	if (!localJSON('Config','v',['Format'])) {
+	if (!format) {
 		StrmLst = localJSON('Config');
 		StrmLst.Format = 'Grid';
 		localStorage['Config'] = JSON.stringify(StrmLst);
-		CSScompiler()} 
-	else {
+		CSScompiler()
+	} else {
 	AddAnyways = '::-webkit-scrollbar {width:12px}';
 	AddAnyways += '::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}';
 	AddAnyways += '::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}';
@@ -155,36 +155,23 @@ function clickChangeUser() {
 
 function openCloseReportAbug() {
 	_gaq.push(['_trackEvent', 'Report a bug', 'clicked']);
-	
-	if ($('#userChangePopup').css('display') == 'block') {
-		if (openCloseReportVar == 1) {
-			doc("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
-			doc("fndAbug").setAttribute('style','right:39;top:190');
-			openCloseReportVar = 0
-		} else if (openCloseReportVar == 0) {
-			doc("FoundAbugText").setAttribute('style','display:none');
-			doc("fndAbug").setAttribute('style','display:block;top:190;right:-68')
-			openCloseReportVar = 1
-		}
-	} else if ($('#AppChanges').css('display') == 'block') {
-		if (openCloseReportVar == 1) {
-			doc("FoundAbugText").setAttribute('style','display:block;right:0;top:121');
-			doc("fndAbug").setAttribute('style','right:39;top:190');
-			openCloseReportVar = 0
-		} else if (openCloseReportVar == 0) {
-			doc("FoundAbugText").setAttribute('style','display:none');
-			doc("fndAbug").setAttribute('style','display:block;top:190;right:-68');
-			openCloseReportVar = 1
-		}
+	if (openCloseReportVar == 1) {
+		Animation('FoundAbugText', 'openReport', false);
+		Animation('fndAbug', 'openReportBtn', false);
+		openCloseReportVar = 0
+	} else if (openCloseReportVar == 0) {
+		Animation('FoundAbugText', 'closeReport', false);
+		Animation('fndAbug', 'closeReportBtn', false);
+		openCloseReportVar = 1
 	}
 }
 
 function clickChangeUserCls() {
 	Animation('userChangePopup', 'bounceOut', true);
 	Animation('userChangePopup2', 'fadeOut', true);
-	$('#fndAbug').hide();
-	$('#FoundAbugText').hide();
-	$('#AppVersion').show();
+	Animation('fndAbug', 'fadeOut', true);
+	Animation('FoundAbugText', 'fadeOut', true);
+	Animation('AppVersion', 'fadeIn', false);
 	openCloseReportVar = 1
 }
 
@@ -271,17 +258,21 @@ function openAppVersionChanges() {
 	if (openCloseVersionVar == 1) {
 		Animation('AppChanges', 'bounceInUp', false);
 		Animation('AppInfoBack', 'fadeIn', false);
-		doc("fndAbug").setAttribute('style', 'display:block;top:190;right:-68');
-		doc('body').setAttribute('style', 'overflow:hidden');
+		doc('fndAbug').setAttribute('style', 'top:190px;right:-68px');
+		Animation('fndAbug', 'fadeIn', false);
+		Animation('AppVersion', 'fadeOut', true);
+		$('#FoundAbugText').hide();
+		$('body').css('overflow', 'hidden');
 		$('#AppVersion').hide();
 		changeAppContent('AppFirst');
 		openCloseVersionVar = 0
 	} else if (openCloseVersionVar == 0) {
-		Animation('AppChanges', 'bounceOutDown', true, function(){ $('#AppVersion').show() });
+		Animation('AppChanges', 'bounceOutDown', true);
 		Animation('AppInfoBack', 'fadeOut', true);
-		$('#fndAbug').hide();
-		$('#FoundAbugText').hide();
-		doc('body').setAttribute('style', 'overflow:auto');
+		Animation('fndAbug', 'fadeOut', true);
+		Animation('FoundAbugText', 'fadeOut', true);
+		Animation('AppVersion', 'fadeIn', false);
+		$('body').css('overflow', 'auto');
 		openCloseVersionVar = 1
 	}
 }
@@ -290,7 +281,7 @@ function CloseAppVersionChanges() {
 	Animation('AppChanges', 'bounceOutDown', true);
 	Animation('AppInfoBack', 'fadeOut', true, function(){
 		$('#FoundAbugText').hide();
-		doc('body').setAttribute('style', 'overflow:auto')
+		$('body').css('overflow', 'auto');
 	});
 	Animation('fndAbug', 'fadeOut', true);
 	Animation('AppVersion', 'fadeIn', false);
@@ -299,29 +290,29 @@ function CloseAppVersionChanges() {
 
 function changeAppContent(App) {
     if (App == 'AppFirst') {
-        AppFirst = '';
+        var AppFirst = '';
         for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a class='aAppInfo'> " + changes[i] + " </a></div>";
-		Animation('AppVersionContent', ['fadeIn', 0.8], false);
+		Animation('AppVersionContent', 'fadeIn', false);
 		doc('AppVersionContent').innerHTML = AppFirst;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
 		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
 		doc('AppThird').setAttribute('style','border-bottom:2px solid white');
 		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 	} else if (App == 'AppSecond') {
-		Animation('AppVersionContent', ['fadeIn', 0.8], false);
-		AppSecond = '<div class="AppInfoFuture"><a class="aAppInfoFuture"> For now, nothing...</a></div>';
+		Animation('AppVersionContent', 'fadeIn', false);
+		var AppSecond = '<div class="AppInfoFuture"><a class="aAppInfoFuture"> For now, nothing...</a></div>';
 		doc('AppVersionContent').innerHTML = AppSecond;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
 		doc('AppSecond').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
 		doc('AppThird').setAttribute('style','border-bottom:2px solid white');
 		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
 	} else if (App == 'AppThird') {
-		AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
+		var AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
 		AppThird += "<div class='AppInfoAbout2'><a class='aAppInfoAbout2'>Ivan 'MacRozz' Zarudny</a></div>";
 		AppThird += "<div class='AppInfoAbout3'><a class='aAppInfoAbout3' href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
 		AppThird += "<div class='AppInfoAbout4'><a class='aAppInfoAbout4' href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
 		AppThird += "<div class='AppInfoAbout5'><a class='aAppInfoAbout5' href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
-		Animation('AppVersionContent', ['fadeIn', 0.8], false);
+		Animation('AppVersionContent', 'fadeIn', false);
 		doc('AppVersionContent').innerHTML = AppThird;
 		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
 		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
