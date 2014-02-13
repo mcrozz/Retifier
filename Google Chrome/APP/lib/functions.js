@@ -17,18 +17,18 @@ var NotificationsCount = 0,
     NameBuffer = [],
     clearErrors = "0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
     ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
-if (localStorage['Log'] == undefined) localStorage['Log'] = clearErrors;
+if (localStorage.Log == undefined) localStorage.Log = clearErrors;
 
-if (localStorage['Status']&&localStorage['Config']) {
+if (localStorage.Status&&localStorage.Config) {
     function err(msg) {
         try {
-            log = localStorage['Log'].split('/');
+            log = localStorage.Log.split('/');
             msg[3]=='0' ? code = Math.floor(msg[4]) : code = Math.floor(msg[4]*10);
             j = ErrorList.indexOf(code);
             if (j != -1) {
                 log[j] = Math.floor(log[j]) + 1;
                 if (log[j + 1] == "0") log[j + 1] = Math.abs(new Date());
-                localStorage['Log'] = log.join('/');
+                localStorage.Log = log.join('/');
                 console.error('[ERROR] ' + msg.substring(7));
                 return true;
             } else {
@@ -36,7 +36,7 @@ if (localStorage['Status']&&localStorage['Config']) {
                 console.error("[ERROR] err() ended with error: Couldn't find error in list");
             }
         } catch (e) {
-            localStorage['Log'] = clearErrors;
+            localStorage.Log = clearErrors;
             console.error('[ERROR] err() ended with error: ' + e.message);
             return false;
         }
@@ -89,37 +89,37 @@ if (localStorage['Status']&&localStorage['Config']) {
         }
     }
 
-    if (localStorage['FollowingList']==undefined) {localStorage['FollowingList']='{}'};
+    if (localStorage.FollowingList==undefined) localStorage.FollowingList='{}';
     function FollowingList(type,id,name,stream) {
         try {
-            b = JSON.parse(localStorage['FollowingList']);
+            b = JSON.parse(localStorage.FollowingList);
             if (type == 'add') {
                 b[id]={};
                 z=b[id];
-                z['Name']=name;
-                z['Stream']=false;
-                if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+                z.Name=name;
+                z.Stream=false;
+                if (localStorage.FollowingList=JSON.stringify(b)) {return true;} else {return false;}
             } else if (type == 'c') {
                 z=b[id];
                 if (stream) {
-                    z['Stream']={};
-                    x=z['Stream'];
-                    x['Title']=stream[0];
-                    x['Game']=stream[1];
-                    x['Viewers']=stream[2];
-                    x['Time'] = stream[3];
-                    x['GameIMG'] = stream[4]
-                } else { z['Stream']=false }
-                if (localStorage['FollowingList']=JSON.stringify(b)) {return true;} else {return false;}
+                    z.Stream={};
+                    x=z.Stream;
+                    x.Title=stream[0];
+                    x.Game=stream[1];
+                    x.Viewers=stream[2];
+                    x.Time = stream[3];
+                    x.GameIMG = stream[4]
+                } else { z.Stream=false }
+                if (localStorage.FollowingList=JSON.stringify(b)) {return true;} else {return false;}
             } else if (type == 'v') {
                 z=b[id];
-                if (!z['Stream']) { return [ z['Name'] ];
+                if (!z.Stream) { return [ z.Name ];
                 } else {
-                    return [z['Name'], z['Stream']['Title'], z['Stream']['Game'], z['Stream']['Viewers'], z['Stream']['Time'], z['Stream']['GameIMG']];
+                    return [z.Name, z.Stream.Title, z.Stream.Game, z.Stream.Viewers, z.Stream.Time, z.Stream.GameIMG];
                 }
             } else if (type == 'GameIMG') {
-                x = b[id]['Stream'];
-                x['GameIMG'] = name;
+                x = b[id].Stream;
+                x.GameIMG = name;
                 return true;
             }
         } catch (e) {
@@ -165,7 +165,7 @@ if (localStorage['Status']&&localStorage['Config']) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
                 NameBuffer.push(streamer);
-		    } else if (type == 'ScriptUpdate' && !sessionStorage['Disable_Update_Notifies']) {
+		    } else if (type == 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
                 NameBuffer.push(' ');
