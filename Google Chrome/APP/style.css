@@ -134,13 +134,11 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     right:150px
 }
 #refresh:hover { -webkit-transform:rotate(15deg) }
-
 .spin { -webkit-animation-name:spin }
 @-webkit-keyframes spin {
     0% { -webkit-transform:rotate(0) }
     100% { -webkit-transform:rotate(360deg) }
 }
-
 #message {
     display:none;
     position:absolute;
@@ -156,9 +154,27 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     z-index:-1
 }
 #userChangePopup { left:173px }
+#FoundAbugText { right:0;top:121px }
+@-webkit-keyframes openReport {
+    0% { -webkit-transform:translateX(108px) }
+    100% { -webkit-transform:translateX(0) }
+}
+@-webkit-keyframes closeReport {
+    0% { -webkit-transform:translateX(0) }
+    100% { -webkit-transform:translateX(108px) }
+}
+@-webkit-keyframes openReportBtn {
+    0% { -webkit-transform:translateX(0) rotate(-90deg) }
+    100% { -webkit-transform:translateX(-106px) rotate(-90deg) }
+}
+@-webkit-keyframes closeReportBtn {
+    0% { -webkit-transform:translateX(-106px) rotate(-90deg) }
+    100% { -webkit-transform:translateX(0) rotate(-90deg) }
+}
+
 
 /* 
-           Animate.css
+    based on Animate.css
     http://daneden.me/animate
 */
 @-webkit-keyframes fadeIn {
@@ -178,4 +194,12 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     0% { -webkit-transform:translateY(0) }
     20% { opacity:1;-webkit-transform:translateY(-20px) }
     100% { opacity:0;-webkit-transform:translateY(600px) }
+}
+@-webkit-keyframes bounceIn { 
+    0% { opacity:0;-webkit-transform:scale(.0) }
+    100% { opacity:1;-webkit-transform:scale(1) }
+}
+@-webkit-keyframes bounceOut {
+    0% { opacity:1;-webkit-transform:scale(1) }
+    100% { opacity:0;-webkit-transform:scale(.0) }
 }
