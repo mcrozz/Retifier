@@ -62,7 +62,6 @@ elif inkey == 1:
 	distutils.dir_util.copy_tree(dirApp, dirDebug)
 	print "Replacing app version in manifest"
 	replaceSmth("{appver}", appver, os.path.join(dirDebug, "manifest.json"))
-	print "Blocking update.js"
 	with open("versions.config",'w') as f:
 		needLine = 0
 		Build = int(Build) + 1
