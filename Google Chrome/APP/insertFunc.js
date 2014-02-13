@@ -19,11 +19,8 @@ TimersetToUpdate = [];
 refresh = false;
 
 function InsertOnlineList() {
-	if (localJSON('Status','v',['online']) <= 2) {
-		doc('insertContentHere').style.overflow='hidden'
-	} else if (localJSON('Status','v',['online']) > 2) {
-		doc('insertContentHere').style.overflow='auto'
-	}
+	if (localJSON('Status','v',['online']) <= 2) doc('insertContentHere').style.overflow='hidden'
+	else doc('insertContentHere').style.overflow='auto';
 	var c = localJSON('Config', 'v', ['Format']),
 		FollowList = localJSON('FollowingList');
 
@@ -36,23 +33,20 @@ function InsertOnlineList() {
 			StreamerName = FollowList[i].Name,
 			StreamGame = FollowList[i].Stream.Game,
 			StreamVievers = FollowList[i].Stream.Viewers;
-		
-		if ('object'.indexOf(StreamTitle) != -1) StreamTitle = 'getting...';
-		if ('object'.indexOf(StreamerName) != -1) StreamerName = 'getting...';
-		if ('object'.indexOf(StreamGame) != -1) StreamGame = 'getting...';
-		if ('object'.indexOf(StreamVievers) != -1) StreamVievers = '...';
-		
+
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (FollowList[i]['Stream']) {
 		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
-				
-				var TitleWidth = false, GameWidth = false, StreamListUnit;
-				doc('textWidth').innerHTML = StreamTitle;
-				doc('textWidth').style.fontSize = Num4;
-				if (doc('textWidth').offsetWidth > Num) TitleWidth = true;
-				doc('textWidth').innerHTML = StreamGame;
-				if (doc('textWidth').offsetWidth > Num6) GameWidth = true;
-				
+
+		        var TitleWidth = false, GameWidth = false, StreamListUnit, dc;
+		
+				dc = doc('textWidth')
+				dc.style.fontSize = '16px';
+				dc.innerHTML = StreamTitle;
+				if (dc.offsetWidth > Num) TitleWidth = true;
+				dc.innerHTML = StreamGame;
+				if (dc.offsetWidth > Num6) GameWidth = true;
+
 				StreamListUnit = '<div class="content" id="'+i+'">';
 					StreamListUnit += '<div class="tumblr">';
 						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -119,6 +113,21 @@ function InsertOnlineList() {
 		    if (FollowingList('v', i)[1] == null && doc(i) != null) doc(i).remove();
 
 			doc('Title_'+i).innerHTML = StreamTitle
+			if (TitleWidth) {
+				doc("Title_"+i).onmouseover = function(call){
+					doc('message').innerHTML = doc(call.target.id).innerHTML;
+					$('#message').show();
+				};
+				doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
+			}
+			if (GameWidth) {
+				doc('stream_game_'+i).onmouseover = function(call){
+					doc('message').innerHTML = doc(call.target.id).innerHTML;
+					$('#message').show();
+				};
+				doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
+			}
+
 			doc('stream_game_'+i).innerHTML = StreamGame
 			doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
 
@@ -126,8 +135,8 @@ function InsertOnlineList() {
 				doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
 			
 			if (StreamGame == 'Not playing') {
-				doc('stream_game_' + i).setAttribute('style', 'cursor:default');
-				doc('stream_game_2_' + i).setAttribute('style', 'cursor:default');
+				doc('stream_game_' + i).style.cursor = 'default';
+				doc('stream_game_2_' + i).style.cursor = 'default';
 				$('#stream_game_img_'+i).hide();
 				$('#stream_game_2_img_'+i).hide();
 			} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
@@ -186,7 +195,7 @@ setInterval(function(){
 }, 100);
 
 setInterval(function(){
-	if (refresh) Animation('refresh', 'animated spin', false);
+	if (refresh) Animation('refresh', 'spin', false);
 	
 	if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
