@@ -38,6 +38,7 @@ if (localStorage.Status&&localStorage.Config) {
         } catch (e) {
             localStorage.Log = clearErrors;
             console.error('[ERROR] err() ended with error: ' + e.message);
+            console.debug(e.stack);
             return false;
         }
     }
@@ -85,6 +86,7 @@ if (localStorage.Status&&localStorage.Config) {
             } else { return false; Error('[ERROR]: Wrong input in localJSON function!') }
         } catch (e) {
             err('[0x02] localJSON() ended with error: ' + e.message);
+            console.debug(e.stack);
             return "ERROR";
         }
     }
@@ -124,6 +126,7 @@ if (localStorage.Status&&localStorage.Config) {
             }
         } catch (e) {
             err('[0x03] FollowingList() ended with error: ' + e.message);
+            console.debug(e.stack);
             return false;
         }
     }
