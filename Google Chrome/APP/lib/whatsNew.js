@@ -15,7 +15,8 @@
 */
 
 var changes = [
-    "-1.3.6 Cumulative udate",
+    "-1.3.7 Deleted 'Live update' script, various style editings",
+    "-1.3.6 Cumulative update",
     "-1.3.5 Fixed update script",
     "-1.3.4 Happy New Year!",
     "-1.3.3 Cumulative update",
@@ -47,9 +48,9 @@ var changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 var messages = {
-    "v.1.3.6": {
+    "v.1.3.7": {
         "msg": "Cumulative update",
-        "contain": "-Fixed update script <br /> -Code optimisation",
+        "contain": "-Deleted 'Live update' script <br /> -Edited hover actions(you should try it) <br /> -Added quick refresh button <br /> -Fixed 'Following list' page <br /> -Edited stlye",
         "change": {
             "JSON": [null],
             "STORAGE": [null]
@@ -65,13 +66,12 @@ function versionCheck() {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
 
-            localStorage['Log'] = localStorage['Log'].split('<!>').join('/');
-
+            var msgUnit;
             msgUnit = '<div class="msgTitle">';
-            msgUnit += messages[versions.Got]["msg"];
+                msgUnit += messages[versions.Got]["msg"];
             msgUnit += '</div>';
             msgUnit += '<div class="msgContain">';
-            msgUnit += messages[versions.Got]["contain"];
+                msgUnit += messages[versions.Got]["contain"];
             msgUnit += '</div>';
 
             /*
@@ -82,17 +82,13 @@ function versionCheck() {
             msgUnit += '</input></div>';
             */
             msgUnit += '<button id="msgClose">Okay</button>';
-            doc('WhatsNew').style.display = 'block';
-            $('#WhatsNew').addClass('animated slideInDown');
-
+            
             doc('WhatsNew').innerHTML = msgUnit;
+            Animation('WhatsNew', 'slideInDown', false);
+            
             doc('msgClose').addEventListener('click', function () {
-                $('#WhatsNew').removeClass('animated slideInDown');
-                $('#WhatsNew').addClass('animated slideOutUp');
-                setTimeout(function () {
-                    doc('WhatsNew').style.display = 'none';
-                }, 1000);
-                setTimeout(function () { location.reload() }, 1005);
+                delete localStorage['Code'];
+                Animation('WhatsNew', 'slideOutUp', true, function(){ location.reload() });
             });
         }
     }
