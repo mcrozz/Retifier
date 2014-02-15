@@ -35,7 +35,7 @@ function InsertOnlineList() {
 			StreamVievers = FollowList[i].Stream.Viewers,
 			TitleWidth = false,
 			GameWidth = false,
-			StreamListUnit, dc;
+			SLU, dc;
 
 		if (FollowList[i].Stream) {
 			dc = doc('textWidth')
@@ -49,39 +49,40 @@ function InsertOnlineList() {
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (FollowList[i].Stream) {
 		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
-				StreamListUnit = '<div class="content" id="'+i+'">';
-					StreamListUnit += '<div class="tumblr">';
-						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
-						StreamListUnit += '<a';
-						StreamListUnit += StreamGame == 'Not Playing' ? 'data-title="Nothing"' : 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank" data-title="Who else playing '+StreamGame+'"';
-						StreamListUnit +='><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
-						StreamListUnit += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
-					StreamListUnit += '</div>';
-					StreamListUnit += '<div class="information">';
-						StreamListUnit += '<div class="informationTextTitle" id="Title_'+i+'">'+ StreamTitle + '</div>';
-						StreamListUnit += '<div class="streamer">';
-							StreamListUnit += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
-						StreamListUnit += '</div>';
-						StreamListUnit += '<div class="viewers">';
-							StreamListUnit += '<div class="informationTextViewers" id="Viewers_'+i+'">' + StreamVievers + '</div>';
-							StreamListUnit += '<p class="pViewers">viewers</p>';
-						StreamListUnit += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
-							StreamListUnit += '<a class=';
-							if (StreamGame!='Not Playing') StreamListUnit+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							StreamListUnit += '</a>';
-						StreamListUnit += '</div>';
-						StreamListUnit += '<div class="StreamOnChannelPage">';
-							StreamListUnit += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
-								StreamListUnit += '<button type="button" name="Go to a stream page" class="button">Channel page</button></a>';
-								StreamListUnit += '</div>';
-							StreamListUnit += '<div class="StreamDurationDiv">';
-								StreamListUnit += '<a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
-								StreamListUnit += '</div>';
-						StreamListUnit += '</div>';
-					StreamListUnit += '</div>';
-				StreamListUnit += '</div>';
+				SLU = '<div class="content" id="'+i+'">';
+					SLU += '<div class="tumblr">';
+						SLU += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
+						SLU += '<a';
+						if (StreamGame != 'Not Playing') SLU += 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
+						SLU +='><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
+						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
+						SLU += '<img id="zoomIn" scr="/img/zoom.png" />';
+					SLU += '</div>';
+					SLU += '<div class="information">';
+						SLU += '<div class="informationTextTitle" id="Title_'+i+'">'+ StreamTitle + '</div>';
+						SLU += '<div class="streamer">';
+							SLU += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
+						SLU += '</div>';
+						SLU += '<div class="viewers">';
+							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">' + StreamVievers + '</div>';
+							SLU += '<p class="pViewers">viewers</p>';
+						SLU += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
+							SLU += '<a class=';
+							if (StreamGame!='Not Playing') SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
+							SLU += '</a>';
+						SLU += '</div>';
+						SLU += '<div class="StreamOnChannelPage">';
+							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
+								SLU += '<button type="button" name="Go to a stream page" class="button">Channel page</button></a>';
+								SLU += '</div>';
+							SLU += '<div class="StreamDurationDiv">';
+								SLU += '<a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
+								SLU += '</div>';
+						SLU += '</div>';
+					SLU += '</div>';
+				SLU += '</div>';
 
-				doc('insertContentHere').innerHTML += StreamListUnit;
+				doc('insertContentHere').innerHTML += SLU;
 				if (TitleWidth) {
 					doc("Title_"+i).onmouseover = function(call){
 						doc('message').innerHTML = doc(call.target.id).innerHTML;
