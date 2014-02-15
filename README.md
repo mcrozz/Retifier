@@ -1,4 +1,6 @@
-# About
+# Screenshot
+![Screenshot](https://lh5.googleusercontent.com/LiTrxT3oOO0bb7zH0ZdKgy0DT6puszUteFkagvpHOCt45hWdK1uB4wrJlJif8adHBcyJaYVQDQ=s640-h400-e365-rw)
+# In web stores
 -Twitch.tv Notifier for Google Chrome
 
 [In Google Web Store]
