@@ -22,8 +22,9 @@ if (localStorage.Log == undefined) localStorage.Log = clearErrors;
 if (localStorage.Status&&localStorage.Config) {
     function err(msg) {
         try {
+            var log, code, j;
             log = localStorage.Log.split('/');
-            msg[3]=='0' ? code = Math.floor(msg[4]) : code = Math.floor(msg[4]*10);
+            code = msg[3]=='0' ? Math.floor(msg[4]) : Math.floor(msg[4]*10);
             j = ErrorList.indexOf(code);
             if (j != -1) {
                 log[j] = Math.floor(log[j]) + 1;
@@ -32,8 +33,8 @@ if (localStorage.Status&&localStorage.Config) {
                 console.error('[ERROR] ' + msg.substring(7));
                 return true;
             } else {
-                return false;
                 console.error("[ERROR] err() ended with error: Couldn't find error in list");
+                return false;
             }
         } catch (e) {
             localStorage.Log = clearErrors;
@@ -61,6 +62,7 @@ if (localStorage.Status&&localStorage.Config) {
 
     function localJSON(name,type,arrayz) {
         try {
+            var sz, b, h;
             if (name && type == 'c' && arrayz) {
                 sz = arrayz.length;
                 b = JSON.parse(localStorage[name]);
@@ -83,7 +85,7 @@ if (localStorage.Status&&localStorage.Config) {
                 } else {return false;}
             } else if (name&&!type&&!arrayz) {
                 return JSON.parse(localStorage[name]);
-            } else { return false; Error('[ERROR]: Wrong input in localJSON function!') }
+            } else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
         } catch (e) {
             err('[0x02] localJSON() ended with error: ' + e.message);
             console.debug(e.stack);
@@ -94,6 +96,7 @@ if (localStorage.Status&&localStorage.Config) {
     if (localStorage.FollowingList==undefined) localStorage.FollowingList='{}';
     function FollowingList(type,id,name,stream) {
         try {
+            var b, z, x;
             b = JSON.parse(localStorage.FollowingList);
             if (type == 'add') {
                 b[id]={};
@@ -129,6 +132,7 @@ if (localStorage.Status&&localStorage.Config) {
             console.debug(e.stack);
             return false;
         }
+        return Error('Nope');
     }
 
     function doc(id){return document.getElementById(id);}
@@ -146,7 +150,7 @@ if (localStorage.Status&&localStorage.Config) {
 
         function sendNotify(tle, msg, strm, upd) {
             console.debug(TimeNdate(0, 0, '/') + ': ' + tle + ' -  ' + msg);
-            NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
+            var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
             if (upd != 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
             chrome.notifications.create('n'+strm, NotifyConf, function(){});
             delNotify('n'+strm, upd);
@@ -159,7 +163,6 @@ if (localStorage.Status&&localStorage.Config) {
         }
 
         if (localJSON('Config','v',['Notifications','status'])) {
-		    var date = new Date();
 		    if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
 		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
 			    NotificationsCount++;
