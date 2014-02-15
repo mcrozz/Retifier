@@ -18,7 +18,7 @@ if (localStorage.Status != null && localStorage.Config != null) {
 	function firstLaunchUser() {
 		if (doc('SetUpUserNameInp').value != undefined && doc('SetUpUserNameInp').value != ' ' && doc('SetUpUserNameInp').value != ''){ 
 			localJSON('Config','c',['User_Name',doc('SetUpUserNameInp').value]);
-	        localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+14)]);
+	        localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+1209600000)]);
 	        localJSON('Config','c',['Ceneled','true']);
 	        localJSON('Config','c',['Closed','true']);
 	        localJSON('Status','c',['update',0]);
@@ -28,12 +28,11 @@ if (localStorage.Status != null && localStorage.Config != null) {
 		if (localStorage.FirstLaunch == 'true'){
 			localStorage.Following = 0;
 			localJSON('Status','c',['update',7]);
-			localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+14)]);
+			localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+1209600000)]);
 	        localJSON('Config','c',['Ceneled','true']);
 	        localJSON('Config','c',['Closed','true']);
 	        BadgeOnlineCount(' Hi ');
-			
-			doc('NoOneOnline').setAttribute('style', 'display:none');
+
 			doc('FollowedChannelsOnline').innerHTML = "Greetings!";
 
 			WelcomeMsg = '<div class="Welcome" style="animated FadeIn">';
@@ -60,7 +59,6 @@ if (localStorage.Status != null && localStorage.Config != null) {
 					localStorage.FirstLaunch = 'false';
 					doc('insertContentHere').innerHTML = null;
 					localJSON('Status','c',['StopInterval',true]);
-					doc('NoOneOnline').setAttribute('style', 'display:block');
 					doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 					doc('ChgUsr').disabled = false;
 					doc('LstFlwdChnls').disabled = false;
