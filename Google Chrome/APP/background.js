@@ -78,7 +78,7 @@ function checkStatus(url,key) {
             Game = checkStatus.responseJSON.stream.game;
             Status = checkStatus.responseJSON.stream.channel.status;
             Name = FlwLst[0];
-            Time = checkStatus.responseJSON.stream.channel.updated_at;            
+            Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';            
 
             if (Status == null) Status = 'Untitled stream';
             if (Game == null) Game = 'Not playing';

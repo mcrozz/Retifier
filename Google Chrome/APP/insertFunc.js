@@ -238,14 +238,24 @@ setInterval(function(){
 	
 	if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i],
-				StreamDurationTime = 'Stream_Time_'+TimersetToUpdate[i],
-				hs, ms, ss,
-				date = new Date(Math.abs(new Date()) - Math.abs(new Date(FollowingList('v',TimersetToUpdate[i])[4])));
-			hs = date.getHours() < 10 ? '0'+date.getHours() : date.getHours();
-			ms = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
-			ss = date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds();
-            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = hs+'h:'+ms+'m:'+ss+'s';
+			var InsertHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
+			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
+			StreamTime = new Date(FollowingList('v',TimersetToUpdate[i])[4]);
+			Today = new Date();
+			SubtractTimes = Math.floor((Today.getTime() - StreamTime.getTime()) / 1000);
+			Days = Math.floor(SubtractTimes/24/60/60);
+			SubtractTimes -= Days*24*60*60;
+			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+			Hours = Math.floor(SubtractTimes/60/60);
+			SubtractTimes -= Hours*60*60;
+			if (Hours == 0) { Hours = '' } else { Hours = (Hours < 10) ? '0'+Hours+'h:' : Hours+'h:'; }
+			Minutes = Math.floor(SubtractTimes/60);
+			SubtractTimes -= Minutes*60;
+			if (Minutes == 0) { Minutes = '00m:' } else { Minutes = (Minutes < 10) ? '0'+Minutes+'m:' : Minutes+'m:'; }
+			Seconds = Math.floor(SubtractTimes);
+			if (Seconds == 0) { Seconds = '00s' } else { Seconds = (Seconds < 10) ? '0'+Seconds+'s' : Seconds+'s'; }
+			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = Time;
 		}
 	} 
 
