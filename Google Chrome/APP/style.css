@@ -62,8 +62,6 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 #fndAbug:hover {background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0.5)),to(rgba(255, 255, 255, 0.8)))}
 .foundAbug:hover {background:-webkit-gradient(linear,left top,left bottom,from(rgba(1,1,1,0.5)),to(rgba(1,1,1,0.8)))}
 
-#NoOneOnline {width:712px;height:150px;position:absolute;top:116px;left:0;z-index:-1}
-
 .Welcome {background:-webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)),to(rgba(39, 39, 39, 0.5)));width:396px;position:absolute;left:159px;top:143px}
 .pWelcome1 {border:none;font-size:23px;margin:10 0 0 0;text-align:center}
 .pWelcome2 {border:none;font-size:21px;margin:5 0 0 0;text-align:center}
@@ -188,4 +186,12 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 @-webkit-keyframes bounceOut {
     0% { opacity:1;-webkit-transform:scale(1) }
     100% { opacity:0;-webkit-transform:scale(.0) }
+}
+@-webkit-keyframes slideInDown { 
+    0% { opacity:0;-webkit-transform:translateY(-2000px) }
+    100% { -webkit-transform:translateY(0) }
+}
+@-webkit-keyframes slideOutUp { 
+    0% { -webkit-transform:translateY(0) }
+    100% { opacity:0;-webkit-transform:translateY(-2000px) }
 }
