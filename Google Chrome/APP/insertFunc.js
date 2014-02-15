@@ -32,21 +32,23 @@ function InsertOnlineList() {
 		var StreamTitle = FollowList[i].Stream.Title,
 			StreamerName = FollowList[i].Name,
 			StreamGame = FollowList[i].Stream.Game,
-			StreamVievers = FollowList[i].Stream.Viewers;
+			StreamVievers = FollowList[i].Stream.Viewers,
+			TitleWidth = false,
+			GameWidth = false,
+			StreamListUnit, dc;
+
+		if (FollowList[i].Stream) {
+			dc = doc('textWidth')
+			dc.style.fontSize = '16px';
+			dc.innerHTML = StreamTitle;
+			if (dc.offsetWidth > Num) TitleWidth = true;
+			dc.innerHTML = StreamGame;
+			if (dc.offsetWidth > Num6) GameWidth = true;
+		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-		    if (FollowList[i]['Stream']) {
+		    if (FollowList[i].Stream) {
 		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
-
-		        var TitleWidth = false, GameWidth = false, StreamListUnit, dc;
-		
-				dc = doc('textWidth')
-				dc.style.fontSize = '16px';
-				dc.innerHTML = StreamTitle;
-				if (dc.offsetWidth > Num) TitleWidth = true;
-				dc.innerHTML = StreamGame;
-				if (dc.offsetWidth > Num6) GameWidth = true;
-
 				StreamListUnit = '<div class="content" id="'+i+'">';
 					StreamListUnit += '<div class="tumblr">';
 						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -151,17 +153,15 @@ function InsertOnlineList() {
 
 setInterval(function(){
 	/*
-	StatusUpdate : 
-	
-	0 :: Not updating, finished
-	1 :: Timer ended, start update
-	2 :: Update list of followed channels
-	3 :: List of followed channels updated
-	4 :: Checking online channel
-	5 :: Error
-	6 :: Name doesn't set up!
-	7 :: First start
-
+			Status.update
+		0 :: Not updating, finished
+		1 :: Timer ended, start update
+		2 :: Update list of followed channels
+		3 :: List of followed channels updated
+		4 :: Checking online channel
+		5 :: Error
+		6 :: Name doesn't set up!
+		7 :: First start
 	*/
 	InsertHere=doc('FollowedChannelsOnline');
 	Upd = localJSON('Status', 'v', ['update']);
