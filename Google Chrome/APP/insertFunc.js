@@ -118,43 +118,50 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-		    if (FollowingList('v', i)[1] == null && doc(i) != null) doc(i).remove();
-
-			doc('Title_'+i).innerHTML = StreamTitle
-			if (TitleWidth) {
-				doc("Title_"+i).onmouseover = function(call){
-					doc('message').innerHTML = doc(call.target.id).innerHTML;
-					$('#message').show();
-				};
-				doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
-			} else {
-				doc("Title_"+i).onmouseover = null;
+		    if (FollowingList('v', i)[1] == null && doc(i) != null) {
+		    	doc(i).remove();
+		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
+		    	doc("Title_"+i).onmouseover = null;
 				doc('Title_'+i).onmouseout = null;
-			}
-			if (GameWidth) {
-				doc('stream_game_'+i).onmouseover = function(call){
-					doc('message').innerHTML = doc(call.target.id).innerHTML;
-					$('#message').show();
-				};
-				doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
-			} else {
 				doc("stream_game_"+i).onmouseover = null;
 				doc('stream_game_'+i).onmouseout = null;
-			}
+		    } else {
+				doc('Title_'+i).innerHTML = StreamTitle
+				if (TitleWidth) {
+					doc("Title_"+i).onmouseover = function(call){
+						doc('message').innerHTML = doc(call.target.id).innerHTML;
+						$('#message').show();
+					};
+					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
+				} else {
+					doc("Title_"+i).onmouseover = null;
+					doc('Title_'+i).onmouseout = null;
+				}
+				if (GameWidth) {
+					doc('stream_game_'+i).onmouseover = function(call){
+						doc('message').innerHTML = doc(call.target.id).innerHTML;
+						$('#message').show();
+					};
+					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
+				} else {
+					doc("stream_game_"+i).onmouseover = null;
+					doc('stream_game_'+i).onmouseout = null;
+				}
 
-			doc('stream_game_'+i).innerHTML = StreamGame
-			doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
+				doc('stream_game_'+i).innerHTML = StreamGame
+				doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
 
-			if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-				doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
-			
-			if (StreamGame == 'Not playing') {
-				$('#stream_game_' + i).css('cursor', 'default');
-				$('#stream_game_2_' + i).css('cursor', 'default');
-				$('#stream_game_img_'+i).hide();
-				$('#stream_game_2_img_'+i).hide();
-			} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
-				doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
+				if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
+				
+				if (StreamGame == 'Not playing') {
+					$('#stream_game_' + i).css('cursor', 'default');
+					$('#stream_game_2_' + i).css('cursor', 'default');
+					$('#stream_game_img_'+i).hide();
+					$('#stream_game_2_img_'+i).hide();
+				} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
+					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
+				}
 			}
 		}
 
