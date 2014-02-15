@@ -32,7 +32,7 @@ if (localStorage.Config == undefined) localStorage.Config = JSON.stringify(Confi
 if (localStorage.Status == undefined) localStorage.Status = JSON.stringify(Status);
 if (!localStorage.FirstLaunch) {localStorage.FirstLaunch='true'; console.debug('Set up your user name in options')}
 try { JSON.parse(localStorage.App_Version)}
-catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.7", "Got": "v.1.3.7"}' }
+catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.8", "Got": "v.1.3.8"}' }
 $.getJSON('./manifest.json', function (data){ localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
 
 if (localStorage.AfterUPDchange == undefined) localStorage.Following = 0;
