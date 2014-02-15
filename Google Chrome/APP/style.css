@@ -74,32 +74,32 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 
 #AppVersion {position:fixed;right:15px;bottom:-5px;-webkit-border-radius:15px;background:white;padding:4px;color:black;font-size:15px;cursor:help;z-index:15;-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
 #AppChanges {background:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,1)),to(rgba(85,85,85,0.95)));position:fixed;z-index:35;width:400px;height:400px;left:148.5px;bottom:0}
+.AppInfo::selection {background:rgba(0, 0, 0, 0)}
 
-.AppInfo::selection {background:rgba(0, 0, 0, 0.00)}
-button.AppInfo {background:-webkit-gradient(linear,left top,left bottom,from(rgba(165,165,165,0.8)),to(rgba(39,39,39,0.5)));padding:2 9 2 9;font-size:22;color:white}
-button.AppInfo:hover  {background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0.5)),to(rgba(165,165,165,0.8)))}
+button.AppInfo {background:-webkit-gradient(linear,left top,left bottom,from(rgba(165,165,165,0.8)),to(rgba(39,39,39,0.5)));padding:2 0 2 0;margin:0 -5 0 0;width:161px;font-size:22px;color:white;border-right:1px solid black}
+button.AppInfo:last-child {width:80px}
+button.AppInfo:hover {background:-webkit-gradient(linear,left top,left bottom,from(rgba(117, 117, 117, 0.8)),to(rgba(61, 61, 61, 0)))}
 
-.AppVersionContent2 {position:relative;height:335px;padding:15 15 5 15}
+.AppVersionContent2 {position:relative;height:360px;padding:10 15 0 15}
 .AppVersionContent3 {max-height:100%;overflow:auto}
 
 #AppInfoBack {background:rgba(0,0,0,0.65);z-index:5;display:none;position:absolute;width:100%;height:100%;left:0;right:0;top:0;bottom:0}
-.AppInfoNav {margin:11 0 0 11}
 
-.aAppInfo {font-size:18px}
+.AppInfo > a {font-size:18px}
 
-.aAppInfoAbout1 {font-size:17px}
 .AppInfoAbout1 {margin:7 0 2 0}
+.AppInfoAbout1 > a {font-size:17px}
 
 .AppInfoAbout2 {text-align:center}
 
-.aAppInfoAbout3 {cursor:pointer}
 .AppInfoAbout3 {margin:34 0 0 5}
+.AppInfoAbout3 > a {cursor:pointer}
 
-.aAppInfoAbout4 {cursor:pointer}
 .AppInfoAbout4 {margin:0 0 0 16}
+.AppInfoAbout4 > a {cursor:pointer}
 
-.aAppInfoAbout5 {cursor:pointer}
 .AppInfoAbout5 {margin:0 0 0 28}
+.AppInfoAbout5 > a {cursor:pointer}
 
 #CheckingProgress {position:absolute;top:77px;left:150px;width:397px;height:3px}
 

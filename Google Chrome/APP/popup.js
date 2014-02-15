@@ -248,9 +248,13 @@ function FollowedList(c) {
 	}
 }
 
-function openAppVersionChanges() {
-	_gaq.push(['_trackEvent', 'App changes', 'clicked']);
-	if (openCloseVersionVar == 1) {
+function AppVersionChanges(c) {
+    if (c=='c') {
+    	Animation('AppChanges', 'bounceOutDown', true);
+		Animation('AppInfoBack', 'fadeOut', true, function(){$('#FoundAbugText').hide();$('body').css('overflow', 'auto');});
+		Animation('fndAbug', 'fadeOut', true);
+		Animation('AppVersion', 'fadeIn', false);
+	} else if (c=='o') {
 		Animation('AppChanges', 'bounceInUp', false);
 		Animation('AppInfoBack', 'fadeIn', false);
 		doc('fndAbug').setAttribute('style', 'top:190px;right:-68px');
@@ -259,60 +263,32 @@ function openAppVersionChanges() {
 		$('#FoundAbugText').hide();
 		$('body').css('overflow', 'hidden');
 		$('#AppVersion').hide();
-		changeAppContent('AppFirst');
-		openCloseVersionVar = 0
-	} else if (openCloseVersionVar == 0) {
-		Animation('AppChanges', 'bounceOutDown', true);
-		Animation('AppInfoBack', 'fadeOut', true);
-		Animation('fndAbug', 'fadeOut', true);
-		Animation('FoundAbugText', 'fadeOut', true);
-		Animation('AppVersion', 'fadeIn', false);
-		$('body').css('overflow', 'auto');
-		openCloseVersionVar = 1
-	}
-}
-
-function CloseAppVersionChanges() {
-	Animation('AppChanges', 'bounceOutDown', true);
-	Animation('AppInfoBack', 'fadeOut', true, function(){
-		$('#FoundAbugText').hide();
-		$('body').css('overflow', 'auto');
-	});
-	Animation('fndAbug', 'fadeOut', true);
-	Animation('AppVersion', 'fadeIn', false);
-	openCloseVersionVar = 1
-}
-
-function changeAppContent(App) {
-    if (App == 'AppFirst') {
-        var AppFirst = '';
-        for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a class='aAppInfo'> " + changes[i] + " </a></div>";
-		Animation('AppVersionContent', 'fadeIn', false);
-		doc('AppVersionContent').innerHTML = AppFirst;
-		doc('AppFirst').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
-		doc('AppThird').setAttribute('style','border-bottom:2px solid white');
-		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
-	} else if (App == 'AppSecond') {
-		Animation('AppVersionContent', 'fadeIn', false);
-		doc('AppVersionContent').innerHTML = '<div class="AppInfoFuture"><a class="aAppInfoFuture"> For now, nothing...</a></div>';
-		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
-		doc('AppSecond').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-		doc('AppThird').setAttribute('style','border-bottom:2px solid white');
-		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
-	} else if (App == 'AppThird') {
-		var AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
-		AppThird += "<div class='AppInfoAbout2'><a class='aAppInfoAbout2'>Ivan 'MacRozz' Zarudny</a></div>";
-		AppThird += "<div class='AppInfoAbout3'><a class='aAppInfoAbout3' href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
-		AppThird += "<div class='AppInfoAbout4'><a class='aAppInfoAbout4' href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
-		AppThird += "<div class='AppInfoAbout5'><a class='aAppInfoAbout5' href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
-		Animation('AppVersionContent', 'fadeIn', false);
-		doc('AppVersionContent').innerHTML = AppThird;
-		doc('AppFirst').setAttribute('style','border-bottom:2px solid white');
-		doc('AppSecond').setAttribute('style','border-bottom:2px solid white');
-		doc('AppThird').setAttribute('style','border-bottom:2px solid rgb(3,64,223)');
-		doc('AppInfoClose').setAttribute('style','border-bottom:2px solid white');
-	}
+		CURRENT_APP_PAGE = 'About';
+		AppVersionChanges('ch');
+	} else if (c=='ch') {
+		if (CURRENT_APP_PAGE == 'About') {
+			var AppFirst = '';
+			for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a>"+changes[i]+"</a></div>";
+			Animation('AppVersionContent', 'fadeIn', false);
+			doc('AppVersionContent').innerHTML = AppFirst;
+			$('#AppFirst').css('border-bottom', '2px solid rgb(3,64,223)');
+			$('#AppThird').css('border-bottom', '2px solid white');
+			$('#AppInfoClose').css('border-bottom', '2px solid white');
+			CURRENT_APP_PAGE = 'Changes';
+		} else if (CURRENT_APP_PAGE == 'Changes') {
+			var AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
+			AppThird += "<div class='AppInfoAbout2'><a>Ivan 'MacRozz' Zarudny</a></div>";
+			AppThird += "<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
+			AppThird += "<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
+			AppThird += "<div class='AppInfoAbout5'><a href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
+			Animation('AppVersionContent', 'fadeIn', false);
+			doc('AppVersionContent').innerHTML = AppThird;
+			$('#AppFirst').css('border-bottom', '2px solid white');
+			$('#AppThird').css('border-bottom', '2px solid rgb(3,64,223)');
+			$('#AppInfoClose').css('border-bottom', '2px solid white');
+			CURRENT_APP_PAGE = 'About';
+		}
+    }
 }
 
 function progressBar(type) {
@@ -331,10 +307,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	doc('AppVersion').innerHTML = localJSON('App_Version', 'v', ['Ver']) + ' (changes)';
 	ael('ChgUsr', 0, clickChangeUser);
 	ael('ChgUsrSnd', 0, changeScriptStarter);
-	
 	ael('LstFlwdChnls', 0, function(){ FollowedList('o') });
 	ael('ClsFlwdChnlsLst', 0, function(){ FollowedList('c') });
-	
 	ael('Notify_All', 0, function(){ doc('EnNotify').checked = true; doc('DisNotify').checked = false; doc('NotifyStreamer').disabled = false; doc('NotifyStreamerChanged').disabled = false; doc('NotifyUpdate').disabled = false });
 	ael('DisNotify_All', 0, function(){ doc('DisNotify').checked = true; doc('EnNotify').checked = false; doc('NotifyStreamer').disabled = true; doc('NotifyStreamerChanged').disabled = true; doc('NotifyUpdate').disabled = true });
 	ael('Notify_Streamer', 0, function(){ if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
@@ -348,14 +322,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	ael('DurationOfStream', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
 	ael('StreamDurationCheck', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
 	ael('fndAbug', 0, openCloseReportAbug);
-	ael('AppVersion', 0, openAppVersionChanges);
+	ael('AppVersion', 0, function(){ AppVersionChanges('o') });
 	ael('SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
-	ael('AppFirst', 0, function(){ changeAppContent('AppFirst') });
-	ael('AppSecond', 0, function(){ changeAppContent('AppSecond') });
-	ael('AppThird', 0, function(){ changeAppContent('AppThird') });
-	ael('AppInfoClose', 0, CloseAppVersionChanges);
+	ael('AppFirst', 0, function(){ AppVersionChanges('ch') });
+	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
+	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
 	ael('userChangePopup2', 0, clickChangeUserCls);
-	ael('AppInfoBack', 0, CloseAppVersionChanges);
+	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
 	ael('Dashboard', 0, function(){ _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
 	ael('Direct', 0, function(){ _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
