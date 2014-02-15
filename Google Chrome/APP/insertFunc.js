@@ -48,7 +48,7 @@ function InsertOnlineList() {
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (FollowList[i].Stream) {
-		        if (doc('insertContentHere').innerHTML == '<a style="color:black;width:713px;text-align:center">No one online right now :(</a>') doc('insertContentHere').innerHTML = null;
+		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
 				StreamListUnit = '<div class="content" id="'+i+'">';
 					StreamListUnit += '<div class="tumblr">';
 						StreamListUnit += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
@@ -88,6 +88,9 @@ function InsertOnlineList() {
 						$('#message').show();
 					};
 					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
+				} else {
+					doc("Title_"+i).onmouseover = null;
+					doc('Title_'+i).onmouseout = null;
 				}
 				if (GameWidth) {
 					doc('stream_game_'+i).onmouseover = function(call){
@@ -95,6 +98,9 @@ function InsertOnlineList() {
 						$('#message').show();
 					};
 					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
+				} else {
+					doc("stream_game_"+i).onmouseover = null;
+					doc('stream_game_'+i).onmouseout = null;
 				}
 
 				if (FirstLoadInsertFunc != 1) Animation(i, 'animated fadeIn', false);
@@ -105,10 +111,10 @@ function InsertOnlineList() {
 					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
 					doc('stream_game_2_img_'+i).setAttribute('style','background:url("/img/playing.png");background-size:'+Num2+';cursor:pointer')
 				} else {
-					doc('stream_game_'+i).setAttribute('style','cursor:default');
+					$('#stream_game_'+i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
 					$('#stream_game_2_img_'+i).hide();
-					doc('stream_game_2_img_'+i).setAttribute('style','cursor:default');
+					$('#stream_game_2_img_'+i).css('cursor', 'default');
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
@@ -121,6 +127,9 @@ function InsertOnlineList() {
 					$('#message').show();
 				};
 				doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
+			} else {
+				doc("Title_"+i).onmouseover = null;
+				doc('Title_'+i).onmouseout = null;
 			}
 			if (GameWidth) {
 				doc('stream_game_'+i).onmouseover = function(call){
@@ -128,6 +137,9 @@ function InsertOnlineList() {
 					$('#message').show();
 				};
 				doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
+			} else {
+				doc("stream_game_"+i).onmouseover = null;
+				doc('stream_game_'+i).onmouseout = null;
 			}
 
 			doc('stream_game_'+i).innerHTML = StreamGame
@@ -137,8 +149,8 @@ function InsertOnlineList() {
 				doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
 			
 			if (StreamGame == 'Not playing') {
-				doc('stream_game_' + i).style.cursor = 'default';
-				doc('stream_game_2_' + i).style.cursor = 'default';
+				$('#stream_game_' + i).css('cursor', 'default');
+				$('#stream_game_2_' + i).css('cursor', 'default');
 				$('#stream_game_img_'+i).hide();
 				$('#stream_game_2_img_'+i).hide();
 			} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
@@ -147,7 +159,7 @@ function InsertOnlineList() {
 		}
 
 		if (localJSON('Status','v',['online']) == 0 && localJSON('Status','v',['update']) == 0) 
-		    doc('insertContentHere').innerHTML = '<div style="width:100%;text-align:center"><a style="color:black">No one online right now :(</a></div>';
+		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
 	}
 }
 
@@ -163,9 +175,9 @@ setInterval(function(){
 		6 :: Name doesn't set up!
 		7 :: First start
 	*/
-	InsertHere=doc('FollowedChannelsOnline');
-	Upd = localJSON('Status', 'v', ['update']);
-	Onlv = localJSON('Status', 'v', ['online']);
+	var InsertHere = doc('FollowedChannelsOnline'),
+	    Upd = localJSON('Status', 'v', ['update']),
+	    Onlv = localJSON('Status', 'v', ['online']);
 	if (!Onlv) Onlv = 0;
 	if (Upd == 0) {
 	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localJSON('Following');
@@ -211,7 +223,7 @@ setInterval(function(){
 	} 
 
 	function donationUnit() {
-		donationUnit = "<a style='color:black;margin-left:45;font-size:19'>Don't forget support me by a donate ;)</a>";
+		var donationUnit = "<a class='donation1'>Don't forget support me by a donate ;)</a>";
 		donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 		donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 		donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
@@ -219,7 +231,7 @@ setInterval(function(){
 		donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
 		donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
 		donationUnit += '</form></div>';
-		donationUnit += '<a style="color:black;position:absolute;margin:-41 0 0 627;font-size:15" id="CloseNews">[x]Close</a>';
+		donationUnit += '<a id="CloseNews">[x]Close</a>';
 		doc('News').innerHTML=donationUnit;
 		doc('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
 		doc('CloseNews').addEventListener('click',function(){
@@ -230,14 +242,15 @@ setInterval(function(){
 		});
 		doc('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
 	}
-	var timeout = localJSON('Config','v',['Timeout']);
+	var timeout = localJSON('Config','v',['Timeout']),
+        time = new Date();
 	if (timeout) {
-		if (Math.abs(new Date(timeout)) - Math.abs(new Date()) < 0) {
+		if (Math.abs(new Date(timeout)) - Math.abs(time) < 0) {
 			localJSON('Config','c',['Closed', 'false']);
 			donationUnit()
 		} else if (localJSON('Config','v',['Closed']) != 'true') { donationUnit() }
-	} else { localJSON('Config','c',['Timeout',new Date()]) }
+	} else { localJSON('Config','c',['Timeout',time]) }
 
-	if (Math.abs(new Date(timeout)) - Math.abs(new Date()) > Math.abs(new Date())+432000000) localJSON('Config','c',['Timeout', 0]);
+	if (Math.abs(time) - Math.abs(time) > Math.abs(time)+432000000) localJSON('Config','c',['Timeout', 0]);
 	InsertOnlineList()
 },1001)
