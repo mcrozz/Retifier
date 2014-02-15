@@ -52,16 +52,16 @@ function InsertOnlineList() {
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
 						SLU += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
-						SLU += '<a';
+						SLU += '<a ';
 						if (StreamGame != 'Not Playing') SLU += 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
 						SLU +='><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
 						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
-						SLU += '<img id="zoomIn" scr="/img/zoom.png" />';
+						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
 					SLU += '</div>';
 					SLU += '<div class="information">';
 						SLU += '<div class="informationTextTitle" id="Title_'+i+'">'+ StreamTitle + '</div>';
 						SLU += '<div class="streamer">';
-							SLU += '<a class="informationTextStreamer" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
+							SLU += '<a class="informationTextStreamer" id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
 						SLU += '</div>';
 						SLU += '<div class="viewers">';
 							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">' + StreamVievers + '</div>';
@@ -83,6 +83,25 @@ function InsertOnlineList() {
 				SLU += '</div>';
 
 				doc('insertContentHere').innerHTML += SLU;
+
+				doc('zoom_'+i).onclick = function(call) {
+					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat');
+					Animation('zoomContent', 'fadeIn', false);
+					Animation('userChangePopup2', 'fadeIn', false);
+					doc('userChangePopup2').onclick = function() {
+						Animation('zoomContent', 'fadeOut', true);
+						Animation('userChangePopup2', 'fadeOut', true);
+						doc('userChangePopup2').onclick = null;
+						doc('zoomContent').onclick = null;
+					}
+					doc('zoomContent').onclick = function() {
+						Animation('zoomContent', 'fadeOut', true);
+						Animation('userChangePopup2', 'fadeOut', true);
+						doc('userChangePopup2').onclick = null;
+						doc('zoomContent').onclick = null;
+					}
+				};
+
 				if (TitleWidth) {
 					doc("Title_"+i).onmouseover = function(call){
 						doc('message').innerHTML = doc(call.target.id).innerHTML;
@@ -104,7 +123,7 @@ function InsertOnlineList() {
 					doc('stream_game_'+i).onmouseout = null;
 				}
 
-				if (FirstLoadInsertFunc != 1) Animation(i, 'animated fadeIn', false);
+				if (FirstLoadInsertFunc != 1) Animation(i, 'fadeIn', false);
 				TimersetToUpdate.push(i);
 
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
@@ -160,7 +179,7 @@ function InsertOnlineList() {
 					$('#stream_game_2_' + i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
 					$('#stream_game_2_img_'+i).hide();
-				} else if (doc('stream_game_img_'+i).style.background.substring(4, doc('stream_game_img_'+i).style.background.length - 2) != 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURIComponent(StreamGame)+'.jpg') {
+				} else if (doc('stream_game_img_'+i).style.background.match(/rt\/\S+\.jpg/)[0].slice(3) != encodeURIComponent(StreamGame)+'.jpg') {
 					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
 				}
 			}
