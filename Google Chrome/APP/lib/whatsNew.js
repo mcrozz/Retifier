@@ -15,6 +15,7 @@
 */
 
 var changes = [
+    "-1.3.8 Fixed bug with text on hover, added new feature: zoom in",
     "-1.3.7 Deleted 'Live update' script, various style editings",
     "-1.3.6 Cumulative update",
     "-1.3.5 Fixed update script",
@@ -48,9 +49,9 @@ var changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 var messages = {
-    "v.1.3.7": {
-        "msg": "Cumulative update",
-        "contain": "-Deleted 'Live update' script <br /> -Edited hover actions(you should try it) <br /> -Added quick refresh button <br /> -Fixed 'Following list' page <br /> -Edited stlye",
+    "v.1.3.8": {
+        "msg": "Bug fixing",
+        "contain": "-Fixed bug with text on hover event <br /> -Added new feature: zoom in",
         "change": {
             "JSON": [null],
             "STORAGE": [null]
@@ -86,10 +87,9 @@ function versionCheck() {
             doc('WhatsNew').innerHTML = msgUnit;
             Animation('WhatsNew', 'slideInDown', false);
             
-            doc('msgClose').addEventListener('click', function () {
-                delete localStorage['Code'];
-                Animation('WhatsNew', 'slideOutUp', true, function(){ location.reload() });
-            });
+            doc('msgClose').onclick = function () {
+                Animation('WhatsNew', 'slideOutUp', true);
+            };
         }
     }
 }
