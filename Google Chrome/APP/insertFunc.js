@@ -167,6 +167,23 @@ function InsertOnlineList() {
 					doc("stream_game_"+i).onmouseover = null;
 					doc('stream_game_'+i).onmouseout = null;
 				}
+				doc('zoom_'+i).onclick = function(call) {
+					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat');
+					Animation('zoomContent', 'fadeIn', false);
+					Animation('userChangePopup2', 'fadeIn', false);
+					doc('userChangePopup2').onclick = function() {
+						Animation('zoomContent', 'fadeOut', true);
+						Animation('userChangePopup2', 'fadeOut', true);
+						doc('userChangePopup2').onclick = null;
+						doc('zoomContent').onclick = null;
+					}
+					doc('zoomContent').onclick = function() {
+						Animation('zoomContent', 'fadeOut', true);
+						Animation('userChangePopup2', 'fadeOut', true);
+						doc('userChangePopup2').onclick = null;
+						doc('zoomContent').onclick = null;
+					}
+				};
 
 				doc('stream_game_'+i).innerHTML = StreamGame
 				doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
