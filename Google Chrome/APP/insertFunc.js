@@ -21,8 +21,8 @@ refresh = false;
 function InsertOnlineList() {
 	if (localJSON('Status','v',['online']) <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
-	var c = localJSON('Config', 'v', ['Format']),
-		FollowList = localJSON('FollowingList');
+	var c = local.Config.Format,
+		FollowList = local.FollowingList;
 
 	if (c == 'Grid') { var Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; } 
 	else if (c == 'Full') { var Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
@@ -138,7 +138,7 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-		    if (FollowingList('v', i)[1] == null && doc(i) != null) {
+		    if (!local.FollowingList[i].Stream && doc(i) != null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    	doc("Title_"+i).onmouseover = null;
@@ -186,7 +186,7 @@ function InsertOnlineList() {
 				};
 
 				doc('stream_game_'+i).innerHTML = StreamGame
-				doc('Viewers_' + i).innerHTML = FollowingList('v', i)[3];
+				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
 
 				if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
@@ -202,7 +202,7 @@ function InsertOnlineList() {
 			}
 		}
 
-		if (localJSON('Status','v',['online']) == 0 && localJSON('Status','v',['update']) == 0) 
+		if (local.Status.online == 0 && local.Status.update == 0) 
 		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
 	}
 }
@@ -220,11 +220,11 @@ setInterval(function(){
 		7 :: First start
 	*/
 	var InsertHere = doc('FollowedChannelsOnline'),
-	    Upd = localJSON('Status', 'v', ['update']),
-	    Onlv = localJSON('Status', 'v', ['online']);
+	    Upd = local.Status.update,
+	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
 	if (Upd == 0) {
-	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localJSON('Following');
+	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localStorage.Following;
 		progressBar('Disable');
 		refresh = false;
 	} else if (Upd == 1) {
@@ -240,7 +240,7 @@ setInterval(function(){
 		progressBar('Enable');
 		refresh = true;
 	} else if (Upd == 4) { 
-	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localJSON('Following');
+	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localStorage.Following;
 		progressBar('Enable');
 		refresh = true;
 	} else if (Upd == 5) { 
@@ -253,11 +253,11 @@ setInterval(function(){
 setInterval(function(){
 	if (refresh) Animation('refresh', 'spin', false);
 	
-	if (localJSON('Config','v',['Duration_of_stream']) == 'Enable') {
+	if (local.Config.Duration_of_stream == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			var InsertHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
-			StreamTime = new Date(FollowingList('v',TimersetToUpdate[i])[4]);
+			StreamTime = new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time);
 			Today = new Date();
 			SubtractTimes = Math.floor((Today.getTime() - StreamTime.getTime()) / 1000);
 			Days = Math.floor(SubtractTimes/24/60/60);
@@ -302,7 +302,7 @@ setInterval(function(){
 		if (Math.abs(new Date(timeout)) - Math.abs(time) < 0) {
 			localJSON('Config','c',['Closed', 'false']);
 			donationUnit()
-		} else if (localJSON('Config','v',['Closed']) != 'true') { donationUnit() }
+		} else if (local.Config.Closed != 'true') { donationUnit() }
 	} else { localJSON('Config','c',['Timeout',time]) }
 
 	if (Math.abs(time) - Math.abs(time) > Math.abs(time)+432000000) localJSON('Config','c',['Timeout', 0]);

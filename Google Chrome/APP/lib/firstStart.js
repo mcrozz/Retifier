@@ -55,7 +55,7 @@ if (localStorage.Status != null && localStorage.Config != null) {
 			doc('Dashboard').disabled = true;
 		    
 		    d = setInterval(function(){					
-			    if (doc('SetUpUserNameInp').value == localJSON('Config','v',['User_Name'])) {
+			    if (doc('SetUpUserNameInp').value == local.config.User_Name) {
 					localStorage.FirstLaunch = 'false';
 					doc('insertContentHere').innerHTML = null;
 					localJSON('Status','c',['StopInterval',true]);

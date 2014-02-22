@@ -19,6 +19,14 @@ var NotificationsCount = 0,
     ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
 if (localStorage.Log == undefined) localStorage.Log = clearErrors;
 
+var local = {};
+try {
+    local.Config = JSON.parse(localStorage.Config);
+    local.Status = JSON.parse(localStorage.Status);
+    local.FollowingList = JSON.parse(localStorage.FollowingList);
+    local.App_Version = JSON.parse(localStorage.App_Version);
+} catch(e) { console.error(r.stack) }
+
 if (localStorage.Status&&localStorage.Config) {
     function err(msg) {
         try {
@@ -65,24 +73,26 @@ if (localStorage.Status&&localStorage.Config) {
             var sz, b, h;
             if (name && type == 'c' && arrayz) {
                 sz = arrayz.length;
-                b = JSON.parse(localStorage[name]);
+                b = local[name];
                 if (sz == 2) {
                     b[arrayz[0]]=arrayz[1];
-                    if (localStorage[name]=JSON.stringify(b)) return true; else return false;
+                    localStorage[name] = JSON.stringify(b);
+                    return true;
                 } else if (sz == 3) {
                     h = b[arrayz[0]];
                     h[arrayz[1]] = arrayz[2];
                     b[arrayz[0]] = h;
-                    if (localStorage[name]=JSON.stringify(b)) {return true;} else {return false;}		
-                } else {return false;}
+                    localStorage[name] = JSON.stringify(b);
+                    return true;	
+                } else { return false; }
             } else if (name&&type=='v'&&arrayz) {
-                b = JSON.parse(localStorage[name]);
+                b = local[name];
                 if (arrayz.length == 1){			
                     if (b[arrayz[0]]) {return b[arrayz[0]];} else {return false;}
                 } else if (arrayz.length == 2) {
                     f = b[arrayz[0]];
                     if (f[arrayz[1]]) {return f[arrayz[1]];} else {return false;}
-                } else {return false;}
+                } else { return false; }
             } else if (name&&!type&&!arrayz) {
                 return JSON.parse(localStorage[name]);
             } else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
@@ -93,30 +103,30 @@ if (localStorage.Status&&localStorage.Config) {
         }
     }
 
-    if (localStorage.FollowingList==undefined) localStorage.FollowingList='{}';
+    if (!localStorage.FollowingList) localStorage.FollowingList='{}';
     function FollowingList(type,id,name,stream) {
         try {
             var b, z, x;
-            b = JSON.parse(localStorage.FollowingList);
+            b = local.FollowingList;
             if (type == 'add') {
-                b[id]={};
-                z=b[id];
-                z.Name=name;
-                z.Stream=false;
-                if (localStorage.FollowingList=JSON.stringify(b)) {return true;} else {return false;}
+                local.FollowingList[id] = {
+                    Name: name,
+                    Stream: false
+                }
+                if (localStorage.FollowingList=JSON.stringify(local.FollowingList)) {return true;} else {return false;}
             } else if (type == 'c') {
-                z=b[id];
                 if (stream) {
-                    z.Stream={};
-                    x=z.Stream;
-                    x.Title=stream[0];
-                    x.Game=stream[1];
-                    x.Viewers=stream[2];
-                    x.Time = stream[3];
-                    x.GameIMG = stream[4]
-                } else { z.Stream=false }
-                if (localStorage.FollowingList=JSON.stringify(b)) {return true;} else {return false;}
-            } else if (type == 'v') {
+                    local.FollowingList[id].Stream = {
+                        Title: stream[0],
+                        Game: stream[1],
+                        Viewers: stream[2],
+                        Time: stream[3],
+                        GameIMG: stream[4]
+                    };
+                } else { local.FollowingList[id].Stream = false; }
+                if (localStorage.FollowingList=JSON.stringify(local.FollowingList)) { return true; } else { return false; }
+            } 
+            /*else if (type == 'v') {
                 z=b[id];
                 if (!z.Stream) { return [ z.Name ];
                 } else {
@@ -126,7 +136,7 @@ if (localStorage.Status&&localStorage.Config) {
                 x = b[id].Stream;
                 x.GameIMG = name;
                 return true;
-            }
+            }*/
         } catch (e) {
             err('[0x03] FollowingList() ended with error: ' + e.message);
             console.debug(e.stack);
