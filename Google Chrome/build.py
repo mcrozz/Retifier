@@ -19,10 +19,7 @@ with open("versions.config",'r') as f:
 	for line in f.readlines(): config.append(line);
 	
 appver=config[0].replace('\n', '')
-BackgroundJS=config[1].replace('\n', '')
-PopupJS=config[2].replace('\n', '')
-insertFuncJS=config[3].replace('\n', '')
-Build=config[4].replace('\n', '');
+Build=config[1].replace('\n', '');
 
 dirApp=os.path.join(os.getcwd(), "APP")
 dirDebug=os.path.join(os.getcwd(), "debug")
@@ -107,7 +104,7 @@ elif inkey == 3:
 		Build = int(Build) + 1
 		for line in config:
 			needLine+=1
-			if needLine == 5:
+			if needLine == 2:
 				f.write(str(Build))
 			else:
 				f.write(line);
