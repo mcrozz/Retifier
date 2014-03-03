@@ -147,6 +147,18 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     0% { -webkit-transform:translateX(0) }
     100% { -webkit-transform:translateX(108px) }
 }
+@-webkit-keyframes showReport {
+    0% { -webkit-transform:translateX(133px) }
+    100% { -webkit-transform:translateX(108px) }
+}
+@-webkit-keyframes hideReport {
+    0% { -webkit-transform:translateX(108px) }
+    100% { -webkit-transform:translateX(133px) }
+}
+@-webkit-keyframes hideReportA {
+    0% { -webkit-transform:translateX(0) }
+    100% { -webkit-transform:translateX(133px) }
+}
 @-webkit-keyframes openReportBtn {
     0% { -webkit-transform:translateX(0) rotate(-90deg) }
     100% { -webkit-transform:translateX(-106px) rotate(-90deg) }
@@ -155,10 +167,22 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
     0% { -webkit-transform:translateX(-106px) rotate(-90deg) }
     100% { -webkit-transform:translateX(0) rotate(-90deg) }
 }
+@-webkit-keyframes showReportBtn {
+    0% { -webkit-transform:translateX(25px) rotate(-90deg) }
+    100% { -webkit-transform:translateX(0) rotate(-90deg) }
+}
+@-webkit-keyframes hideReportBtn {
+    0% { -webkit-transform:translateX(0) rotate(-90deg) }
+    100% { -webkit-transform:translateX(25px) rotate(-90deg) }
+}
+@-webkit-keyframes hideReportBtnA {
+    0% { -webkit-transform:translateX(-106px) rotate(-90deg) }
+    100% { -webkit-transform:translateX(25px) rotate(-90deg) }
+}
 
 
 /* 
-    based on Animate.css
+      based on Animate.css
     http://daneden.me/animate
 */
 @-webkit-keyframes fadeIn {

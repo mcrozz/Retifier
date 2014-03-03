@@ -14,9 +14,7 @@
 	limitations under the License.
 */
 
-var TimersetToUpdate = [],
-	openCloseVersionVar = 1,
-	openCloseReportVar = 1;
+TimersetToUpdate = [];
 
 function CSScompiler() {
 	var style = document.createElement('style'),
@@ -109,15 +107,32 @@ function CSScompiler() {
 	}
 }
 
+opened = false;
+function ReportAbug() {
+	_gaq.push(['_trackEvent', 'Report a bug', 'clicked']);
+	if (!opened) {
+		Animation('FoundAbugText', ['openReport', false, 0.8]);
+		Animation('fndAbug', ['openReportBtn', false, 0.8]);
+		opened = true;
+	} else {
+		Animation('FoundAbugText', ['closeReport', false, 0.8]);
+		Animation('fndAbug', ['closeReportBtn', false, 0.8]);
+		opened = false;
+	}
+}
+
 function clickChangeUser() {
+	doc('userChangePopup2').onclick = clickChangeUserCls;
 	$('#userChangePopup').show();
 	$('#userChangePopup2').show();
 	$('#AppVersion').hide();
-	Animation('userChangePopup2', 'fadeIn', false);
-	Animation('userChangePopup', 'bounceIn', false);
+	Animation('userChangePopup2', ['fadeIn', false, 0.9]);
+	Animation('userChangePopup', ['bounceIn', false, 0.9]);
 	doc("ChgUsrNam").value = local.Config.User_Name;
 	doc("ChgUsrInt").value = local.Config.Interval_of_Checking;
-	doc('fndAbug').setAttribute("style","display:block;top:190;right:-68");
+	doc('fndAbug').setAttribute("style","top:190;right:-68");
+	Animation('fndAbug', ['showReportBtn', false, 0.8]);
+	Animation('FoundAbugText', ['showReport', false, 0.8]);
 	// Notifications
 	if (local.Config.Notifications.status) {
 		doc('EnNotify').checked = true;
@@ -151,53 +166,47 @@ function clickChangeUser() {
 	_gaq.push(['_trackEvent', 'Options', 'clicked'])
 }
 
-function openCloseReportAbug() {
-	_gaq.push(['_trackEvent', 'Report a bug', 'clicked']);
-	if (openCloseReportVar == 1) {
-		Animation('FoundAbugText', 'openReport', false);
-		Animation('fndAbug', 'openReportBtn', false);
-		openCloseReportVar = 0
-	} else if (openCloseReportVar == 0) {
-		Animation('FoundAbugText', 'closeReport', false);
-		Animation('fndAbug', 'closeReportBtn', false);
-		openCloseReportVar = 1
-	}
-}
-
 function clickChangeUserCls() {
-	Animation('userChangePopup', 'bounceOut', true);
-	Animation('userChangePopup2', 'fadeOut', true);
-	Animation('fndAbug', 'fadeOut', true);
-	Animation('FoundAbugText', 'fadeOut', true);
-	Animation('AppVersion', 'fadeIn', false);
-	openCloseReportVar = 1
+	Animation('userChangePopup', ['bounceOut', true]);
+	Animation('userChangePopup2', ['fadeOut', true, 0.5]);
+	Animation('AppVersion', ['fadeIn', false]);
+	if (opened) {
+		Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
+		Animation('FoundAbugText', ['hideReportA', true, 0.7]);
+	} else {
+		Animation('fndAbug', ['hideReportBtn', true, 0.9]);
+		Animation('FoundAbugText', ['hideReport', true, 0.9]);
+	}
+	opened = false;
 }
 
 function changeScriptStarter() {
 	// User name
-	if (doc("ChgUsrNam").value != local.Config.User_Name) {
-		localStorage['FollowingList']='{}';
-		localStorage['Following']=0;
-		localJSON('Config','c',['User_Name', doc("ChgUsrNam").value]);
+	var z = doc("ChgUsrNam").value,
+		g = doc('ChgUsrInt').value;
+	if (z != local.Config.User_Name) {
+		localStorage.FollowingList='{}';
+		localStorage.Following=0;
+		localJSON('Config','c',['User_Name', z]);
 		localJSON('Status','c',['StopInterval', true]);
 		doc('insertContentHere').innerHTML=null;
 		InsertOnlineList();		
-	} else if (doc("ChgUsrNam").value == '' || doc("ChgUsrNam").value==null || !doc("ChgUsrNam").value || doc("ChgUsrNam").value == 'Guest') {
+	} else if (z == '' || z==null || !z || z == 'Guest') {
 		localJSON('Config','c',['User_Name', 'Guest']);
 		localJSON('Status','c',['update', 6]);
 		doc('insertContentHere').innerHTML = null;
-		localStorage['FollowingList'] = '{}';
-		localStorage['Following'] = 0;
+		localStorage.FollowingList = '{}';
+		localStorage.Following = 0;
 		InsertOnlineList();
 	}
 	// Interval of checking
-	if (!isNaN(doc('ChgUsrInt').value) && local.Config.Interval_of_Checking != doc('ChgUsrInt')) {
-		localJSON('Config','c',['Interval_of_Checking', Math.floor(doc("ChgUsrInt").value)]);
+	if (!isNaN(g) && local.Config.Interval_of_Checking != g) {
+		localJSON('Config','c',['Interval_of_Checking', Math.floor(g)]);
 		localJSON('Status','c',['StopInterval', true])
 	}
 	// Notifications
-	if (doc('EnNotify').checked) { localJSON('Config','c',['Notifications','Status', true]) }
-	else if (doc('DisNotify').checked) { localJSON('Config','c',['Notifications','Status', false]) };
+	if (doc('EnNotify').checked) localJSON('Config','c',['Notifications','status', true]);
+	if (doc('DisNotify').checked) localJSON('Config','c',['Notifications','status', false]);
 	localJSON('Config','c',['Notifications','online',doc('NotifyStreamer').checked]);
 	localJSON('Config','c',['Notifications','update',doc('NotifyStreamerChanged').checked]);
 	localJSON('Config','c',['Notifications','follow',doc('NotifyUpdate').checked]);
@@ -206,13 +215,16 @@ function changeScriptStarter() {
 	localJSON('Config', 'c', ['Notifications','sound', doc("SoundSelect").value])
 	// Duration of stream
 	doc('StreamDurationCheck').checked == true ? localJSON('Config','c',['Duration_of_stream','Enable']) : localJSON('Config','c',['Duration_of_stream','Disable']);
+	// Update style and list of online users
+	if (doc('List_Format_List').value !== local.Config.Format) {
+		localJSON('Config','c',['Format', doc('List_Format_List').value]);
+		document.getElementsByTagName("style")[0].remove();
+		CSScompiler();
+		doc('insertContentHere').innerHTML = '';
+		InsertOnlineList();
+	}
 	// Close options
 	clickChangeUserCls();
-	// Update style and list of online users
-	localJSON('Config','c',['Format',doc('List_Format_List').value]);
-	document.getElementsByTagName("style")[0].parentNode.removeChild(element[0]);	
-	CSScompiler();
-	InsertOnlineList();
 }
 
 function FollowedList(c) {
@@ -234,30 +246,37 @@ function FollowedList(c) {
 		}
 
 		$('#firstScane').hide();
-		Animation('FollowedChannelsList', 'fadeIn', false);
+		Animation('FollowedChannelsList', ['fadeIn', false]);
 
 		_gaq.push(['_trackEvent', 'Following List', 'clicked']);
 		
 		for (var i=0;i<localJSON('Following');i++) FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
 	} else if (c=='c') {
-		Animation('FollowedChannelsList', 'fadeOut', true);
-		Animation('firstScane', 'fadeIn', false, function(){ doc('IFCHc').innerHTML = null; });
+		Animation('FollowedChannelsList', ['fadeOut', true]);
+		Animation('firstScane', ['fadeIn', false], function(){ doc('IFCHc').innerHTML = null; });
 	}
 }
 
 function AppVersionChanges(c) {
     if (c=='c') {
-    	Animation('AppChanges', 'bounceOutDown', true);
-		Animation('AppInfoBack', 'fadeOut', true, function(){$('#FoundAbugText').hide();$('body').css('overflow', 'auto');});
-		Animation('fndAbug', 'fadeOut', true);
-		Animation('AppVersion', 'fadeIn', false);
+    	Animation('AppChanges', ['bounceOutDown', true]);
+		Animation('AppInfoBack', ['fadeOut', true, 0.5], function(){ $('body').css('overflow', 'auto'); });
+		if (opened) {
+			Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
+			Animation('FoundAbugText', ['hideReportA', true, 0.7]);
+		} else {
+			Animation('fndAbug', ['hideReportBtn', true, 0.9]);
+			Animation('FoundAbugText', ['hideReport', true, 0.9]);
+		}
+		opened = false;
+		Animation('AppVersion', ['fadeIn', false]);
 	} else if (c=='o') {
-		Animation('AppChanges', 'bounceInUp', false);
-		Animation('AppInfoBack', 'fadeIn', false);
+		Animation('AppChanges', ['bounceInUp', false]);
+		Animation('AppInfoBack', ['fadeIn', false]);
 		doc('fndAbug').setAttribute('style', 'top:190px;right:-68px');
-		Animation('fndAbug', 'fadeIn', false);
-		Animation('AppVersion', 'fadeOut', true);
-		$('#FoundAbugText').hide();
+		Animation('fndAbug', ['showReportBtn', false]);
+		Animation('FoundAbugText', ['showReport', false]);
+		Animation('AppVersion', ['fadeOut', true]);
 		$('body').css('overflow', 'hidden');
 		$('#AppVersion').hide();
 		CURRENT_APP_PAGE = 'About';
@@ -266,7 +285,7 @@ function AppVersionChanges(c) {
 		if (CURRENT_APP_PAGE == 'About') {
 			var AppFirst = '';
 			for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a>"+changes[i]+"</a></div>";
-			Animation('AppVersionContent', 'fadeIn', false);
+			Animation('AppVersionContent', ['fadeIn', false]);
 			doc('AppVersionContent').innerHTML = AppFirst;
 			$('#AppFirst').css('border-bottom', '2px solid rgb(3,64,223)');
 			$('#AppThird').css('border-bottom', '2px solid white');
@@ -278,7 +297,7 @@ function AppVersionChanges(c) {
 			AppThird += "<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
 			AppThird += "<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
 			AppThird += "<div class='AppInfoAbout5'><a href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
-			Animation('AppVersionContent', 'fadeIn', false);
+			Animation('AppVersionContent', ['fadeIn', false]);
 			doc('AppVersionContent').innerHTML = AppThird;
 			$('#AppFirst').css('border-bottom', '2px solid white');
 			$('#AppThird').css('border-bottom', '2px solid rgb(3,64,223)');
@@ -298,7 +317,7 @@ function progressBar(type) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-	function ael(id, type, func) { var d = ['click', 'change', 'mouseover', 'onmouseout', 'onmousemove']; doc(id).addEventListener(d[type], func) }
+	function ael(id, type, func) { var d = ['click', 'change']; $('#'+id).on(d[type], func) }
 	CSScompiler();
 	versionCheck();
 	doc('AppVersion').innerHTML = local.App_Version.Ver+' (changes)';
@@ -318,22 +337,27 @@ document.addEventListener("DOMContentLoaded", function() {
 	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
 	ael('DurationOfStream', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
 	ael('StreamDurationCheck', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
-	ael('fndAbug', 0, openCloseReportAbug);
+	ael('fndAbug', 0, ReportAbug);
 	ael('AppVersion', 0, function(){ AppVersionChanges('o') });
 	ael('SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
 	ael('AppFirst', 0, function(){ AppVersionChanges('ch') });
 	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
 	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
-	ael('userChangePopup2', 0, clickChangeUserCls);
 	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
 	ael('Dashboard', 0, function(){ _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
 	ael('Direct', 0, function(){ _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
+	ael('zoomContent', 0, function() {
+		Animation('zoomContent', 'fadeOut', true);
+		Animation('userChangePopup2', 'fadeOut', true);
+		doc('userChangePopup2').onclick = null;
+		doc('zoomContent').onclick = null;
+	});
 	document.onmousemove = function(pos){
-		var X = pos.x, Y = pos.y, left = 0, top = 0, offsetX = 15, width = doc('message').offsetWidth, height = doc('message').offsetHeight;
-		697 - width - X < 0 ? left = 697 - width : left = X + offsetX;
-		600 - height - Y < 0 ? top = Y - height - 5 : top = Y - height - 5;
+		var X = pos.x, Y = pos.y, left, top, offsetX = 15, width = doc('message').offsetWidth, height = doc('message').offsetHeight;
+        left = (697 - width - X < 0) ? 697 - width : X + offsetX;
+        top = (600 - height - Y < 0) ? Y - height - 5 : Y - height - 5;
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	};
