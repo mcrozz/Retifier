@@ -88,13 +88,11 @@ function checkStatus(url,key) {
             FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
         } else if (local.FollowingList[key].Stream) {
             localJSON('Status', 'c', ['online', local.Status.online - 1]);
-            BadgeOnlineCount(Onln);
+            BadgeOnlineCount(local.Status.online);
             FollowingList('c', key, '', false)                      
         }
         if (local.Status.checked == localJSON('Following')) {
-            var Onln = local.Status.online;
-            if (!Onln) Onln = 0;
-            BadgeOnlineCount(Onln);
+            BadgeOnlineCount(local.Status.online);
             sessionStorage['First_Notify'] = 1;
             console.log('Every channel checked ('+local.Status.checked+')');
             localJSON('Status', 'c', ['update', 0]);
@@ -119,8 +117,6 @@ function CheckUserStatus() {
     console.log('Checking Status of channels...');
     for (var i = 0; i < localJSON('Following'); i++) checkStatus('https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name, i);
 }
-
-var FirstStart = '1',FirstStart2 = '1';
 
 function CheckFollowingList() {
     checkDonations();
@@ -179,22 +175,3 @@ setInterval(function(){
         localJSON('Status','c',['StopInterval',false])
     }        
 },500);
-
-setInterval(function () {
-    // Send logged errors to my site...
-    if (new Date().getDate() - new Date(localStorage['LogInf']).getDate() >= 14 || new Date(localStorage['LogInf']).getDate() - new Date().getDate() >= 14) {
-        console.debug('Send errors log to my site...');
-        rAjax = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/errors/log.php?errors="+localStorage.Log })
-        .done(function () {
-            if ((rAjax.responseText).indexOf('0x01') != -1) {
-                localStorage.LogInf = TimeNdate(14, 0, ' ');
-                localStorage.Log = clearErrors;
-                console.debug('Success! Thanks for help!)');
-            } else { 
-                console.debug('Server caused error...');
-                console.debug(rAjax);
-            }
-        })
-        .fail(function () { console.debug('Failed to connect...'); });
-    } else if (!localStorage.LogInf) localStorage.LogInf = TimeNdate(0,0,' ');
-}, 15000);
