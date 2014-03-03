@@ -14,9 +14,7 @@
 	limitations under the License.
 */
 var NotificationsCount = 0,
-    NameBuffer = [],
-    clearErrors = "0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
-    ErrorList = [1, "", 2, "", 3, "", 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", 10, "", 11, "", 12, "", 13, "", 14, "", 15, ""];
+    NameBuffer = [];
 if (localStorage.Log == undefined) localStorage.Log = clearErrors;
 
 var local = {};
@@ -25,35 +23,26 @@ try {
     local.Status = JSON.parse(localStorage.Status);
     local.FollowingList = JSON.parse(localStorage.FollowingList);
     local.App_Version = JSON.parse(localStorage.App_Version);
-} catch(e) { console.error(r.stack) }
+} catch(e) { console.error(e.stack) }
+
+setInterval(function(){
+    if (typeof localStorage.Changed !== 'undefined') {
+        try {
+            local.Config = JSON.parse(localStorage.Config);
+            local.Status = JSON.parse(localStorage.Status);
+            local.FollowingList = JSON.parse(localStorage.FollowingList);
+            local.App_Version = JSON.parse(localStorage.App_Version);
+            localStorage.removeItem('Changed');
+        } catch(e) { console.error(e.stack) }
+    }
+},1000);
 
 if (localStorage.Status&&localStorage.Config) {
-    function err(msg) {
-        try {
-            var log, code, j;
-            log = localStorage.Log.split('/');
-            code = msg[3]=='0' ? Math.floor(msg[4]) : Math.floor(msg[4]*10);
-            j = ErrorList.indexOf(code);
-            if (j != -1) {
-                log[j] = Math.floor(log[j]) + 1;
-                if (log[j + 1] == "0") log[j + 1] = Math.abs(new Date());
-                localStorage.Log = log.join('/');
-                console.error('[ERROR] ' + msg.substring(7));
-                return true;
-            } else {
-                console.error("[ERROR] err() ended with error: Couldn't find error in list");
-                return false;
-            }
-        } catch (e) {
-            localStorage.Log = clearErrors;
-            console.error('[ERROR] err() ended with error: ' + e.message);
-            console.debug(e.stack);
-            return false;
-        }
-    }
+    function err(msg) { console.error('[ERROR] ' + msg.substring(7)); }
+    function log(msg) { if (local.Config.Debug) console.log(msg); }
 
     function TimeNdate(d, m, k) {
-        // TODO: do not add years
+        // TODO: will not add years
         var newDate = new Date(),
             time, month, year, day,
             DaysInMonths = [31,28,31,30,31,30,31,31,30,31,30,31];
@@ -71,19 +60,19 @@ if (localStorage.Status&&localStorage.Config) {
     function localJSON(name,type,arrayz) {
         try {
             var sz, b, h;
-            if (name && type == 'c' && arrayz) {
+            if (name&&type=='c'&&arrayz) {
                 sz = arrayz.length;
                 b = local[name];
                 if (sz == 2) {
                     b[arrayz[0]]=arrayz[1];
                     localStorage[name] = JSON.stringify(b);
+                    localStorage.Changed = 'y';
                     return true;
                 } else if (sz == 3) {
-                    h = b[arrayz[0]];
-                    h[arrayz[1]] = arrayz[2];
-                    b[arrayz[0]] = h;
+                    b[arrayz[0]][arrayz[1]] = arrayz[2];
                     localStorage[name] = JSON.stringify(b);
-                    return true;	
+                    localStorage.Changed = 'y';
+                    return true;
                 } else { return false; }
             } else if (name&&type=='v'&&arrayz) {
                 b = local[name];
@@ -112,8 +101,8 @@ if (localStorage.Status&&localStorage.Config) {
                 local.FollowingList[id] = {
                     Name: name,
                     Stream: false
-                }
-                if (localStorage.FollowingList=JSON.stringify(local.FollowingList)) {return true;} else {return false;}
+                };
+                return localStorage.FollowingList = JSON.stringify(local.FollowingList);
             } else if (type == 'c') {
                 if (stream) {
                     local.FollowingList[id].Stream = {
@@ -124,19 +113,8 @@ if (localStorage.Status&&localStorage.Config) {
                         GameIMG: stream[4]
                     };
                 } else { local.FollowingList[id].Stream = false; }
-                if (localStorage.FollowingList=JSON.stringify(local.FollowingList)) { return true; } else { return false; }
-            } 
-            /*else if (type == 'v') {
-                z=b[id];
-                if (!z.Stream) { return [ z.Name ];
-                } else {
-                    return [z.Name, z.Stream.Title, z.Stream.Game, z.Stream.Viewers, z.Stream.Time, z.Stream.GameIMG];
-                }
-            } else if (type == 'GameIMG') {
-                x = b[id].Stream;
-                x.GameIMG = name;
-                return true;
-            }*/
+                return localStorage.FollowingList = JSON.stringify(local.FollowingList);
+            }
         } catch (e) {
             err('[0x03] FollowingList() ended with error: ' + e.message);
             console.debug(e.stack);
@@ -191,15 +169,16 @@ if (localStorage.Status&&localStorage.Config) {
 	    }
     }
 
-    function Animation(id, name, clr, adds) {
+    function Animation(id, n, f) {
         if (doc(id)) {
             var ci = $('#'+id);
-            if (!clr) ci.show();
-            ci.css('-webkit-animation', name+' both 1s');
+            if (!n[1]) ci.show();
+            if (!n[2]) n[2] = 1;
+            ci.css('-webkit-animation', n[0]+' both '+n[2]+'s');
             setTimeout(function(){
-                if (clr) ci.hide();
-                if (adds) adds();
-            }, 1000);
+                if (n[1]) ci.hide();
+                if (typeof f === 'function') f();
+            }, 1000 * n[2]);
         }
     }
 
