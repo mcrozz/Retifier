@@ -19,14 +19,26 @@ TimersetToUpdate = [];
 refresh = false;
 
 function InsertOnlineList() {
+	function zoom() {
+		Animation('zoomContent', ['fadeIn', false]);
+		Animation('userChangePopup2', ['fadeIn', false]);
+		doc('userChangePopup2').onclick = function() {
+			Animation('zoomContent', ['fadeOut', true]);
+			Animation('userChangePopup2', ['fadeOut', true]);
+			doc('userChangePopup2').onclick = null;
+			doc('zoomContent').onclick = null;
+		}
+	}
+
 	if (localJSON('Status','v',['online']) <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
 	var c = local.Config.Format,
-		FollowList = local.FollowingList;
+		FollowList = local.FollowingList,
+        Num, Num2, Num3, Num4, Num6;
 
-	if (c == 'Grid') { var Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; } 
-	else if (c == 'Full') { var Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
-	else { var Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; };
+	if (c == 'Grid') { Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; }
+	else if (c == 'Full') { Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
+	else { Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; };
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
 		var StreamTitle = FollowList[i].Stream.Title,
@@ -39,7 +51,7 @@ function InsertOnlineList() {
 
 		if (FollowList[i].Stream) {
 			dc = doc('textWidth')
-			dc.style.fontSize = '16px';
+			dc.style.fontSize = Num4+'px';
 			dc.innerHTML = StreamTitle;
 			if (dc.offsetWidth > Num) TitleWidth = true;
 			dc.innerHTML = StreamGame;
@@ -86,20 +98,7 @@ function InsertOnlineList() {
 
 				doc('zoom_'+i).onclick = function(call) {
 					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat');
-					Animation('zoomContent', 'fadeIn', false);
-					Animation('userChangePopup2', 'fadeIn', false);
-					doc('userChangePopup2').onclick = function() {
-						Animation('zoomContent', 'fadeOut', true);
-						Animation('userChangePopup2', 'fadeOut', true);
-						doc('userChangePopup2').onclick = null;
-						doc('zoomContent').onclick = null;
-					}
-					doc('zoomContent').onclick = function() {
-						Animation('zoomContent', 'fadeOut', true);
-						Animation('userChangePopup2', 'fadeOut', true);
-						doc('userChangePopup2').onclick = null;
-						doc('zoomContent').onclick = null;
-					}
+					zoom();
 				};
 
 				if (TitleWidth) {
@@ -123,7 +122,7 @@ function InsertOnlineList() {
 					doc('stream_game_'+i).onmouseout = null;
 				}
 
-				if (FirstLoadInsertFunc != 1) Animation(i, 'fadeIn', false);
+				if (FirstLoadInsertFunc != 1) Animation(i, ['fadeIn', false]);
 				TimersetToUpdate.push(i);
 
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
@@ -169,20 +168,7 @@ function InsertOnlineList() {
 				}
 				doc('zoom_'+i).onclick = function(call) {
 					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat');
-					Animation('zoomContent', 'fadeIn', false);
-					Animation('userChangePopup2', 'fadeIn', false);
-					doc('userChangePopup2').onclick = function() {
-						Animation('zoomContent', 'fadeOut', true);
-						Animation('userChangePopup2', 'fadeOut', true);
-						doc('userChangePopup2').onclick = null;
-						doc('zoomContent').onclick = null;
-					}
-					doc('zoomContent').onclick = function() {
-						Animation('zoomContent', 'fadeOut', true);
-						Animation('userChangePopup2', 'fadeOut', true);
-						doc('userChangePopup2').onclick = null;
-						doc('zoomContent').onclick = null;
-					}
+					zoom();
 				};
 
 				doc('stream_game_'+i).innerHTML = StreamGame
@@ -251,11 +237,11 @@ setInterval(function(){
 }, 100);
 
 setInterval(function(){
-	if (refresh) Animation('refresh', 'spin', false);
+	if (refresh) Animation('refresh', ['spin', false, 0.8]);
 	
 	if (local.Config.Duration_of_stream == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var InsertHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
+			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
 			StreamTime = new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time);
 			Today = new Date();
