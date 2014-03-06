@@ -42,90 +42,78 @@ if (!sessionStorage.FirstLoad) {
     for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
 }
 
-function checkDonations() {
-    var GetDonationsList = $.ajax({ url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php" });
-    GetDonationsList.done(function(){
-        try {
-            ParsedResponse = JSON.parse(GetDonationsList.responseText);
-            if (ParsedResponse.indexOf(hex_md5(local.Config.User_Name)) != -1 ) {
+function CheckFollowingList() {
+    function checkStatus(url,key) {
+        var checkStatus = $.getJSON(url)
+            .fail(function () { 
+                err('[0x04] checkStatus() ended with error'); 
+                notifyUser("Update follows list", "Error, can't update", "Update"); 
+                localJSON('Status', 'c', ['update', 5]);
+            });
+
+        checkStatus.complete(function() {
+            localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
+
+            if (checkStatus.responseJSON.stream) {
+                if (!local.FollowingList[key].Stream.Title) localJSON('Status', 'c', ['online', local.Status.online + 1]);
+
+                var Game = checkStatus.responseJSON.stream.game,
+                    Status = checkStatus.responseJSON.stream.channel.status,
+                    Name = local.FollowingList[key].Name,
+                    Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
+
+                if (Status == null) Status = 'Untitled stream';
+                if (Game == null) Game = 'Not playing';
+                if (local.FollowingList[key].Stream.Title == null) notifyUser(Name+' just went live!',Status,'Online',Name);
+                if (local.FollowingList[key].Stream.Title != Status && local.FollowingList[key].Stream.Title != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+                if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
+                else { Time2 = local.FollowingList[key].Stream.Time }
+
+                FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
+            } else if (local.FollowingList[key].Stream) {
+                localJSON('Status', 'c', ['online', local.Status.online - 1]);
+                BadgeOnlineCount(local.Status.online);
+                FollowingList('c', key, '', false)                      
+            }
+            if (local.Status.checked == localJSON('Following') || key == localJSON('Following')) {
+                BadgeOnlineCount(local.Status.online);
+                sessionStorage.First_Notify = 1;
+                console.log('Every channel checked ('+local.Status.checked+')');
+                localJSON('Status', 'c', ['update', 0]);
+
+                if (local.Status.online > 1) {
+                    notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update')
+                } else if (local.Status.online == 1) {
+                    notifyUser('Update finished!', 'Now online one channel', 'Update')
+                } else if (local.Status.online == 0) {
+                    notifyUser('Update finished!', 'No one online right now :(', 'Update')
+                }
+            }
+        });
+    }
+
+    // Get donation list
+    $.ajax({
+        url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php",
+        complete: function(data) {
+            try {
+                var rsp = JSON.parse(data.responseText)
+            } catch (e) {console.debug(e.stack)}
+            if (rsp.indexOf(hex_md5(local.Config.User_Name)) != -1 ) {
                 localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+30)]);
                 localJSON('Config','c',['Ceneled','true']);
                 localJSON('Config','c',['Closed','true']);
             }
-        } catch (e) {
-            err('[0x05] Failed to parse donations list... ' + e.message);
-        }
+        },
+        error: function() { err('[0x06] Failed to get donations list... '); }
     });
-    GetDonationsList.error(function () { err('[0x06] Failed to get donations list... '); });
-}
 
-function checkStatus(url,key) {
-    var checkStatus = $.getJSON(url)
-        .fail(function () { 
-            err('[0x04] checkStatus() ended with error'); 
-            notifyUser("Update follows list", "Error, can't update", "Update"); 
-            localJSON('Status', 'c', ['update', 5]);
-        });
-
-    checkStatus.complete(function() {
-        localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
-
-        if (checkStatus.responseJSON.stream) {
-            if (!local.FollowingList[key].Stream.Title) localJSON('Status', 'c', ['online', local.Status.online + 1]);
-
-            var Game = checkStatus.responseJSON.stream.game,
-                Status = checkStatus.responseJSON.stream.channel.status,
-                Name = local.FollowingList[key].Name,
-                Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
-
-            if (Status == null) Status = 'Untitled stream';
-            if (Game == null) Game = 'Not playing';
-            if (local.FollowingList[key].Stream.Title == null) notifyUser(Name+' just went live!',Status,'Online',Name);
-            if (local.FollowingList[key].Stream.Title != Status && local.FollowingList[key].Stream.Title != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
-            if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
-            else { Time2 = local.FollowingList[key].Stream.Time }
-
-            FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
-        } else if (local.FollowingList[key].Stream) {
-            localJSON('Status', 'c', ['online', local.Status.online - 1]);
-            BadgeOnlineCount(local.Status.online);
-            FollowingList('c', key, '', false)                      
-        }
-        if (local.Status.checked == localJSON('Following')) {
-            BadgeOnlineCount(local.Status.online);
-            sessionStorage['First_Notify'] = 1;
-            console.log('Every channel checked ('+local.Status.checked+')');
-            localJSON('Status', 'c', ['update', 0]);
-
-            if (local.Status.online > 1) {
-                textANDchannel = 'Now online '+local.Status.online+' channels';
-                notifyUser('Update finished!', textANDchannel, 'Update')
-            } else if (local.Status.online == 1) {
-                textANDchannel = 'Now online one channel';
-                notifyUser('Update finished!', textANDchannel, 'Update')
-            } else if (local.Status.online == 0) {
-                textANDchannel = 'No one online right now :(';
-                notifyUser('Update finished!', textANDchannel, 'Update')
-            }
-        }
-    });
-}
-
-function CheckUserStatus() {
-    localJSON('Status','c',['checked', 0]);
-    localJSON('Status','c',['update', 4]);
-    console.log('Checking Status of channels...');
-    for (var i = 0; i < localJSON('Following'); i++) checkStatus('https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name, i);
-}
-
-function CheckFollowingList() {
-    checkDonations();
     if (!localStorage.Following) localStorage.Following = 0;
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=116&offset=0';
     localJSON('Status', 'c', ['update', 1]);
 
-    if (local.Config.User_Name == 'Guest') {
+    if (local.Config.User_Name == 'Guest' || typeof local.Config.User_Name === 'undefined') {
         localJSON('Status', 'c', ['update', 6]);
         console.log('Change user name!')
     } else {
@@ -133,45 +121,37 @@ function CheckFollowingList() {
         notifyUser('Behold! Update!', 'Starting update...', 'Update');
         localJSON('Status', 'c', ['update', 2]);
 
-        var updateFollowingListAndCheck = $.getJSON(urlToJSON);
-        updateFollowingListAndCheck.fail(function () {
+        var FLG = $.getJSON(urlToJSON);
+        FLG.fail(function () {
             err("[0x07] Can't get following list");
             localJSON('Status', 'c', ['update', 5]);
             notifyUser("Update follows list", "Error, can't update", "Update");
         });
-        updateFollowingListAndCheck.done(function (data) {
+        FLG.done(function (data) {
             var twitch = data;
             if (Math.floor(localStorage.Following) != twitch._total) {
                 console.log('Update list of following channels');
                 localStorage.Following = twitch._total;
                 localJSON('Status', 'c', ['online', 0]);
 
-                for (var i = 0; i < Math.floor(localStorage['Following']) ; i++) {
-                    if (updateFollowingListAndCheck.responseJSON.follows[i]) {
-                        FollowingList('add', i, updateFollowingListAndCheck.responseJSON.follows[i].channel.name)
-                    } else { console.debug(updateFollowingListAndCheck.responseJSON); console.error('Get name of ' + i + ' ended with error') }
-                }
+                for (var i=0; i<localJSON('Following'); i++) FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : console.debug(FLG.responseJSON);
             }
-            CheckUserStatus()
+            localJSON('Status','c',['checked', 0]);
+            localJSON('Status','c',['update', 4]);
+            console.log('Checking Status of channels...');
+            for (var i = 0; i < localJSON('Following'); i++) checkStatus('https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name, i);
         });
     }
 }
 
 CheckFollowingList();
-CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
+CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
 localJSON('Status','c',['StopInterval',false]);
-IntervalSetted=1;
 setInterval(function(){
-    if (!local.Status.StopInterval && IntervalSetted==0){
-        CheckFollowingList();
-        CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * localJSON('Config','v',['Interval_of_Checking']));
-        IntervalSetted=1
-    } else if (local.Status.StopInterval && IntervalSetted==1){
+    if (local.Status.StopInterval) {
         clearInterval(CheckTwitch);
-        IntervalSetted=0;
-        localJSON('Status','c',['StopInterval',false])
-    } else if (local.Status.StopInterval){
-        IntervalSetted=0;
-        localJSON('Status','c',['StopInterval',false])
-    }        
+        CheckFollowingList();
+        CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
+        localJSON('Status','c',['StopInterval', false])
+    }
 },500);
