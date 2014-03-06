@@ -15,31 +15,28 @@
 */
 var NotificationsCount = 0,
     NameBuffer = [];
-if (localStorage.Log == undefined) localStorage.Log = clearErrors;
 
-var local = {};
-try {
+local = {};
+
+function loc() {
     local.Config = JSON.parse(localStorage.Config);
     local.Status = JSON.parse(localStorage.Status);
     local.FollowingList = JSON.parse(localStorage.FollowingList);
     local.App_Version = JSON.parse(localStorage.App_Version);
-} catch(e) { console.error(e.stack) }
+}
+
+try { loc() } catch(e) { console.error(e.stack) }
 
 setInterval(function(){
-    if (typeof localStorage.Changed !== 'undefined') {
-        try {
-            local.Config = JSON.parse(localStorage.Config);
-            local.Status = JSON.parse(localStorage.Status);
-            local.FollowingList = JSON.parse(localStorage.FollowingList);
-            local.App_Version = JSON.parse(localStorage.App_Version);
-            localStorage.removeItem('Changed');
-        } catch(e) { console.error(e.stack) }
+    if (typeof localStorage.ChangedBG !== 'undefined' && window.location.pathname === '/background.html') {
+        try { loc(); localStorage.removeItem('ChangedBG') } catch(e) { console.error(e.stack) }
+    } else if (typeof localStorage.ChangedPP !== 'undefined' && window.location.pathname === '/popup.html') {
+        try { loc(); localStorage.removeItem('ChangedPP') } catch(e) { console.error(e.stack) }
     }
-},1000);
+}, 100);
 
 if (localStorage.Status&&localStorage.Config) {
     function err(msg) { console.error('[ERROR] ' + msg.substring(7)); }
-    function log(msg) { if (local.Config.Debug) console.log(msg); }
 
     function TimeNdate(d, m, k) {
         // TODO: will not add years
@@ -58,6 +55,10 @@ if (localStorage.Status&&localStorage.Config) {
     }
 
     function localJSON(name,type,arrayz) {
+        function chd() {
+            localStorage.ChangedBG = 'y';
+            localStorage.ChangedPP = 'y'
+        }
         try {
             var sz, b, h;
             if (name&&type=='c'&&arrayz) {
@@ -66,14 +67,16 @@ if (localStorage.Status&&localStorage.Config) {
                 if (sz == 2) {
                     b[arrayz[0]]=arrayz[1];
                     localStorage[name] = JSON.stringify(b);
-                    localStorage.Changed = 'y';
+                    chd();
                     return true;
                 } else if (sz == 3) {
                     b[arrayz[0]][arrayz[1]] = arrayz[2];
                     localStorage[name] = JSON.stringify(b);
-                    localStorage.Changed = 'y';
+                    chd();
                     return true;
-                } else { return false; }
+                } else {
+                    return false;
+                }
             } else if (name&&type=='v'&&arrayz) {
                 b = local[name];
                 if (arrayz.length == 1){			
