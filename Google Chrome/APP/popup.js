@@ -18,7 +18,8 @@ TimersetToUpdate = [];
 
 function CSScompiler() {
 	var style = document.createElement('style'),
-		format = local.Config.Format;
+		format = local.Config.Format,
+		AddAnyways, css;
 	if (!format) {
 		localJSON('Config', 'c', ['Format', 'Grid']);
 		CSScompiler()
@@ -103,7 +104,8 @@ function CSScompiler() {
 			css += 'button.button {font-size:22px;width:150px;height:30px}';
 		}
 		css += AddAnyways;
-		if (style.styleSheet){style.styleSheet.cssText=css}else{style.appendChild(document.createTextNode(css));document.getElementsByTagName('head')[0].appendChild(style)}
+		style.appendChild(document.createTextNode(css));
+		document.getElementsByTagName('head')[0].appendChild(style);
 	}
 }
 
@@ -305,15 +307,6 @@ function AppVersionChanges(c) {
 			CURRENT_APP_PAGE = 'About';
 		}
     }
-}
-
-function progressBar(type) {
-	if (type == 'Enable') {
-		$('#CheckingProgress').show();
-		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
-	} else if (type == 'Disable') {
-		setTimeout(function(){ $('#CheckingProgress').hide() },800);
-	}
 }
 
 document.addEventListener("DOMContentLoaded", function() {

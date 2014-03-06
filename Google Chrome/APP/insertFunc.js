@@ -20,11 +20,11 @@ refresh = false;
 
 function InsertOnlineList() {
 	function zoom() {
-		Animation('zoomContent', ['fadeIn', false]);
-		Animation('userChangePopup2', ['fadeIn', false]);
+		Animation('zoomContent', ['fadeIn', false, 0.8]);
+		Animation('userChangePopup2', ['fadeIn', false, 0.8]);
 		doc('userChangePopup2').onclick = function() {
-			Animation('zoomContent', ['fadeOut', true]);
-			Animation('userChangePopup2', ['fadeOut', true]);
+			Animation('zoomContent', ['fadeOut', true, 0.7]);
+			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
 			doc('userChangePopup2').onclick = null;
 			doc('zoomContent').onclick = null;
 		}
@@ -182,7 +182,7 @@ function InsertOnlineList() {
 					$('#stream_game_2_' + i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
 					$('#stream_game_2_img_'+i).hide();
-				} else if (doc('stream_game_img_'+i).style.background.match(/rt\/\S+\.jpg/)[0].slice(3) != encodeURIComponent(StreamGame)+'.jpg') {
+				} else if (doc('stream_game_img_'+i).style.background.match(/rt\/\S+\.jpg/)[0].slice(3) != encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
 					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
 				}
 			}
@@ -205,40 +205,46 @@ setInterval(function(){
 		6 :: Name doesn't set up!
 		7 :: First start
 	*/
+	function progressBar(t) {
+		if (typeof t === 'undefined') {
+			$('#CheckingProgress').show();
+			doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
+		} else { Animation('CheckingProgress', ['fadeOut', true, 0.5]); }
+	}
+	function spin() { if (secthr) Animation('refresh', ['spin', false, 0.8]); }
 	var InsertHere = doc('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
 	if (Upd == 0) {
 	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localStorage.Following;
-		progressBar('Disable');
-		refresh = false;
+		progressBar(' ');
 	} else if (Upd == 1) {
 		InsertHere.innerHTML='Behold! Update!';
-		progressBar('Enable');
-		refresh = true;
+		progressBar();
+		spin();
 	} else if (Upd == 2) { 
 		InsertHere.innerHTML='Updating list of followed channels...';
-		progressBar('Enable');
-		refresh = true;
+		progressBar();
+		spin();
 	} else if (Upd == 3) { 
 		InsertHere.innerHTML='List of followed channels updated.';
-		progressBar('Enable');
-		refresh = true;
+		progressBar();
+		spin();
 	} else if (Upd == 4) { 
 	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localStorage.Following;
-		progressBar('Enable');
-		refresh = true;
+		progressBar();
+		spin();
 	} else if (Upd == 5) { 
 		InsertHere.innerHTML='App have a problem with update'
 	} else if (Upd == 6) { 
 		InsertHere.innerHTML="Name doesn't set up yet!"
 	}
 }, 100);
+secthr = false;
+setInterval(function(){ secthr = secthr ? false : true; },800);
 
 setInterval(function(){
-	if (refresh) Animation('refresh', ['spin', false, 0.8]);
-	
 	if (local.Config.Duration_of_stream == 'Enable') {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
@@ -293,4 +299,4 @@ setInterval(function(){
 
 	if (Math.abs(time) - Math.abs(time) > Math.abs(time)+432000000) localJSON('Config','c',['Timeout', 0]);
 	InsertOnlineList()
-},1001)
+},1000);
