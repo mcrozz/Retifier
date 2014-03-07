@@ -14,7 +14,8 @@
 	limitations under the License.
 */
 
-var changes = [
+changes = [
+    "-1.3.9 Edited some animation, edited design, stability improvements",
     "-1.3.8 Fixed bug with text on hover, added new feature: zoom in",
     "-1.3.7 Deleted 'Live update' script, various style editings",
     "-1.3.6 Cumulative update",
@@ -48,31 +49,29 @@ var changes = [
     "-1.0.1 Bug fixes",
     "-1.0.0 First publish in Google Web Store"
 ];
-var messages = {
-    "v.1.3.8": {
-        "msg": "Bug fixing",
-        "contain": "-Fixed bug with text on hover event <br /> -Added new feature: zoom in",
-        "change": {
-            "JSON": [null],
-            "STORAGE": [null]
-        }
+messages = {
+    "v.1.3.9": {
+        "msg": "Stability improvements",
+        "contain": "-Edited some animation <br /> -Edited design <br /> -Stability improvements"
     }
 };
 
 function versionCheck() {
-    if (localStorage['FirstLaunch'] != 'true') {
-        versions = localJSON('App_Version');
+    if (localStorage.FirstLaunch != 'true') {
+        var versions = local.App_Version;
 
         if (versions.Got != versions.Ver) {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
+            localStorage.removeItem('Log');
+            localStorage.removeItem('LogInf');
 
             var msgUnit;
             msgUnit = '<div class="msgTitle">';
-                msgUnit += messages[versions.Got]["msg"];
+                msgUnit += messages[versions.Got].msg;
             msgUnit += '</div>';
             msgUnit += '<div class="msgContain">';
-                msgUnit += messages[versions.Got]["contain"];
+                msgUnit += messages[versions.Got].contain;
             msgUnit += '</div>';
 
             /*
@@ -85,10 +84,10 @@ function versionCheck() {
             msgUnit += '<button id="msgClose">Okay</button>';
             
             doc('WhatsNew').innerHTML = msgUnit;
-            Animation('WhatsNew', 'slideInDown', false);
+            Animation('WhatsNew', ['slideInDown', false]);
             
             doc('msgClose').onclick = function () {
-                Animation('WhatsNew', 'slideOutUp', true);
+                Animation('WhatsNew', ['slideOutUp', true]);
             };
         }
     }

@@ -64,7 +64,7 @@ elif inkey == 1:
 		Build = int(Build) + 1
 		for line in config:
 			needLine+=1
-			if needLine == 5:
+			if needLine == 2:
 				f.write(str(Build))
 			else:
 				f.write(line);
