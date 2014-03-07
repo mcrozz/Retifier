@@ -90,9 +90,9 @@ function CheckFollowingList() {
                 var rsp = JSON.parse(data.responseText)
             } catch (e) {console.debug(e.stack)}
             if (rsp.indexOf(hex_md5(local.Config.User_Name)) != -1 ) {
-                localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+30)]);
-                localJSON('Config','c',['Ceneled','true']);
-                localJSON('Config','c',['Closed','true']);
+                localJSON('Config','c',['Timeout', 1337]);
+                localJSON('Config','c',['Ceneled', true]);
+                localJSON('Config','c',['Closed', true]);
             }
         },
         error: function() { err('[0x06] Failed to get donations list... '); }

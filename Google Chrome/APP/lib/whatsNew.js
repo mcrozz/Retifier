@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.1 Bug fix",
     "-1.3.9 Edited some animation, edited design, stability improvements",
     "-1.3.8 Fixed bug with text on hover, added new feature: zoom in",
     "-1.3.7 Deleted 'Live update' script, various style editings",
@@ -63,7 +64,7 @@ function versionCheck() {
         if (versions.Got != versions.Ver) {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
-            localStorage.removeItem('Log');
+            /*localStorage.removeItem('Log');
             localStorage.removeItem('LogInf');
 
             var msgUnit;
@@ -81,14 +82,14 @@ function versionCheck() {
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
             msgUnit += '</input></div>';
             */
-            msgUnit += '<button id="msgClose">Okay</button>';
+            /*msgUnit += '<button id="msgClose">Okay</button>';
             
             doc('WhatsNew').innerHTML = msgUnit;
             Animation('WhatsNew', ['slideInDown', false]);
             
             doc('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
-            };
+            };*/
         }
     }
 }
