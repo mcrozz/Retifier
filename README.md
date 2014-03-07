@@ -1,5 +1,5 @@
 # Screenshot
-![Screenshot](/Google Chrome/screenshots/Screenshot1.png)
+![Screenshot](/Google Chrome/screenshots/general.png)
 # In web stores
 -Twitch.tv Notifier for Google Chrome
 
