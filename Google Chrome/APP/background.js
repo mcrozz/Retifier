@@ -25,18 +25,8 @@
     6 :: Name doesn't set up!
     7 :: First start
 */
-$.ajaxSetup ({cache:false,crossDomain:true});
-Config = {"User_Name": "Guest","Notifications": {"Status": true,"online": true,"update": false,"sound_Status": true,"sound": "DinDon"},"Duration_of_stream": true,"Interval_of_Checking": 3,"Format": "Grid"};
-Status = {"update": 0,"online": 0,"checked": 0,"StopInterval": true};
-if (!localStorage.Config) localStorage.Config = JSON.stringify(Config);
-if (!localStorage.Status) localStorage.Status = JSON.stringify(Status);
-if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
-try { JSON.parse(localStorage.App_Version)}
-catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.8", "Got": "v.1.3.8"}' }
-$.getJSON('./manifest.json', function (data){ localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
-
 if (!sessionStorage.FirstLoad) {
-    sessionStorage['FirstLoad'] = 'true';
+    sessionStorage.FirstLoad = 'true';
     BadgeOnlineCount(0);
     localJSON('Status', 'c', ['online', 0]);
     for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
