@@ -260,7 +260,7 @@ setInterval(function(){
 	} 
 
 	function donationUnit() {
-		var donationUnit = "<a class='donation1'>Don't forget support me by a donate ;)</a>";
+		var donationUnit = "<a class='donation1'>Don't forget support me by donation ;)</a>";
 		donationUnit += '<div style="text-align:right;margin:-23 184 0 0">';
 		donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 		donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
@@ -271,23 +271,21 @@ setInterval(function(){
 		donationUnit += '<a id="CloseNews">[x]Close</a>';
 		doc('News').innerHTML=donationUnit;
 		doc('News').setAttribute('style','display:block;background:rgba(0,0,0,0.08);border-radius:25;margin:4 0 -19 0');
-		doc('CloseNews').addEventListener('click',function(){
+		doc('CloseNews').onclick = function(){
 			$('#News').hide();
-			localJSON('Config','c',['Timeout',Math.abs(new Date())+432000000]);
+			localJSON('Config','c',['Timeout', TimeNdate(14,0,'-')]);
 			_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-			localJSON('Config','c',['Closed','true'])
-		});
-		doc('PayPalCheckOut').addEventListener('click',function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) })
+			localJSON('Config','c',['Closed', true])
+		};
+		doc('PayPalCheckOut').onclick = function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) };
 	}
-	var timeout = localJSON('Config','v',['Timeout']),
-        time = new Date();
-	if (timeout) {
-		if (Math.abs(new Date(timeout)) - Math.abs(time) < 0) {
-			localJSON('Config','c',['Closed', 'false']);
+	if (typeof local.Config.Timeout !== 'undefined') {
+		var dif = Math.abs(new Date(local.Config.Timeout)) - Math.abs(new Date());
+		if (dif <= 0) {
+			localJSON('Config','c',['Closed', false]);
 			donationUnit()
-		} else if (local.Config.Closed != 'true') { donationUnit() }
-	} else { localJSON('Config','c',['Timeout',time]) }
-
-	if (Math.abs(time) - Math.abs(time) > Math.abs(time)+432000000) localJSON('Config','c',['Timeout', 0]);
+		} else if (dif > 1209600000) { localJSON('Config','c',['Timeout', 0])
+		} else if (!local.Config.Closed) { donationUnit() }
+	} else { localJSON('Config','c',['Timeout', TimeNdate(14,0,'-')]) }
 	InsertOnlineList()
 },1000);
