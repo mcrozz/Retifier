@@ -63,36 +63,27 @@ function InsertOnlineList() {
 		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
-						SLU += '<a href="http://www.twitch.tv/'+StreamerName+'" target="_blank"><img class="TumbStream" id="stream_img_'+i+'" /></a>';
-						SLU += '<a ';
-						if (StreamGame != 'Not Playing') SLU += 'href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-						SLU +='><img class="GameTumb1" id="stream_game_img_'+i+'" /></a>';
+						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
+						SLU += '<img class="TumbStream" id="stream_img_'+i+'" />';
+						SLU += '<img class="GameTumb1" id="stream_game_img_'+i+'" />';
 						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
-					SLU += '</div>';
-					SLU += '<div class="information">';
-						SLU += '<div class="informationTextTitle" id="Title_'+i+'">'+ StreamTitle + '</div>';
+					SLU += '</div><div class="information">';
+						SLU += '<div class="informationTextTitle" id="Title_'+i+'">'+StreamTitle+'</div>';
 						SLU += '<div class="streamer">';
 							SLU += '<a class="informationTextStreamer" id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
-						SLU += '</div>';
-						SLU += '<div class="viewers">';
-							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">' + StreamVievers + '</div>';
-							SLU += '<p class="pViewers">viewers</p>';
+						SLU += '</div><div class="viewers">';
+							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
+							SLU += '<p>viewers</p>';
 						SLU += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
 							SLU += '<a class=';
 							if (StreamGame!='Not Playing') SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
 							SLU += '</a>';
-						SLU += '</div>';
-						SLU += '<div class="StreamOnChannelPage">';
+						SLU += '</div><div class="StreamOnChannelPage">';
 							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
-								SLU += '<button type="button" name="Go to a stream page" class="button">Channel page</button></a>';
-								SLU += '</div>';
-							SLU += '<div class="StreamDurationDiv">';
-								SLU += '<a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
-								SLU += '</div>';
-						SLU += '</div>';
-					SLU += '</div>';
-				SLU += '</div>';
+								SLU += '<button type="button" class="button">Channel page</button></a></div>';
+							SLU += '<div class="StreamDurationDiv"><a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
+				SLU += '</div></div></div></div>';
 
 				doc('insertContentHere').innerHTML += SLU;
 
