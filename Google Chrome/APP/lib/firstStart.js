@@ -18,19 +18,23 @@ if (localStorage.Status != null && localStorage.Config != null) {
 	function firstLaunchUser() {
 		if (doc('SetUpUserNameInp').value != undefined && doc('SetUpUserNameInp').value != ' ' && doc('SetUpUserNameInp').value != ''){ 
 			localJSON('Config','c',['User_Name',doc('SetUpUserNameInp').value]);
-	        localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+1209600000)]);
-	        localJSON('Config','c',['Ceneled','true']);
-	        localJSON('Config','c',['Closed','true']);
 	        localJSON('Status','c',['update',0]);
+	        localStorage.FirstLaunch = 'false';
+			doc('insertContentHere').innerHTML = null;
+			localJSON('Status','c',['StopInterval',true]);
+			doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
+			doc('ChgUsr').disabled = false;
+			doc('LstFlwdChnls').disabled = false;
+			doc('Direct').disabled = false;
+			doc('Dashboard').disabled = false;
+			doc('SetUpUserNameInp').onkeyup = null;
+			doc("SetUpUserName").onclick = null;
 		} else { doc('FollowedChannelsOnline').innerHTML = 'Invalid name!' }
 	}
 	document.addEventListener("DOMContentLoaded",function (){
 		if (localStorage.FirstLaunch == 'true'){
 			localStorage.Following = 0;
 			localJSON('Status','c',['update',7]);
-			localJSON('Config','c',['Timeout',new Date().setDate(new Date().getDate()+1209600000)]);
-	        localJSON('Config','c',['Ceneled','true']);
-	        localJSON('Config','c',['Closed','true']);
 	        BadgeOnlineCount(' Hi ');
 
 			doc('FollowedChannelsOnline').innerHTML = "Greetings!";
@@ -53,21 +57,6 @@ if (localStorage.Status != null && localStorage.Config != null) {
 			doc('LstFlwdChnls').disabled = true;
 			doc('Direct').disabled = true;
 			doc('Dashboard').disabled = true;
-		    
-		    d = setInterval(function(){					
-			    if (doc('SetUpUserNameInp').value == local.config.User_Name) {
-					localStorage.FirstLaunch = 'false';
-					doc('insertContentHere').innerHTML = null;
-					localJSON('Status','c',['StopInterval',true]);
-					doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
-					doc('ChgUsr').disabled = false;
-					doc('LstFlwdChnls').disabled = false;
-					doc('Direct').disabled = false;
-					doc('Dashboard').disabled = false;
-				}
-
-				if (localStorage.FirstLaunch == 'false') clearInterval(d);
-			},10);
 		}
 	});
 }
