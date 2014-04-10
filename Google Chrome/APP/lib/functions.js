@@ -146,8 +146,21 @@ if (localStorage.Status&&localStorage.Config) {
     function doc(id){return document.getElementById(id);}
     function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
 
+    function Animation(id, n, f) {
+        if (doc(id)) {
+            var ci = $('#'+id);
+            if (!n[1]) ci.show();
+            if (!n[2]) n[2] = 1;
+            ci.css('-webkit-animation', n[0]+' both '+n[2]+'s');
+            setTimeout(function(){
+                if (n[1]) ci.hide();
+                if (typeof f === 'function') f();
+            }, 1000 * n[2]);
+        }
+    }
+
     function notifyUser(streamerName, titleOfStream, type, streamer) {
-	    
+        if (window.location.pathname !== '/background.html') return;
         function delNotify(id, types) {
             var idToDel = id, times;
             if (types == 'Online') { times = 1000*15 }
@@ -162,49 +175,34 @@ if (localStorage.Status&&localStorage.Config) {
             if (upd != 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
             chrome.notifications.create('n'+strm, NotifyConf, function(){});
             delNotify('n'+strm, upd);
-            if (localJSON('Config','v',['Notifications','sound_status']) == 'Enable') {
+            if (local.Config.Notifications.status) {
                 var Audio = document.createElement('audio');
                 Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
                 Audio.autoplay = 'autoplay';
-                Audio.play()
+                $('body').appendTo(Audio);
+                //setTimeout(function(){$('audio')[0].remove();},1000*10);
+                //Audio.play()
             }
         }
 
-        if (localJSON('Config','v',['Notifications','status'])) {
-		    if (type == 'Online' && localJSON('Config','v',['Notifications','online'])) {
-		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-			    NotificationsCount++;
+        if (local.Config.Notifications.status) {
+            if (type === 'Online' && local.Config.Notifications.online) {
+                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
+                NotificationsCount++;
                 NameBuffer.push(streamer);
-		    } else if (type == 'Changed' && localJSON('Config','v',['Notifications','update'])) {
-		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-			    NotificationsCount++;
+            } else if (type === 'Changed' && local.Config.Notifications.update) {
+                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
+                NotificationsCount++;
                 NameBuffer.push(streamer);
-		    } else if (type == 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
-		        sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-			    NotificationsCount++;
+            } else if (type === 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
+                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
+                NotificationsCount++;
                 NameBuffer.push(' ');
-		    } else {
-		        console.debug(TimeNdate(0, 0, '/') + ': ' + streamerName + ' ' + titleOfStream + '   [Was not displayed]')
-		    }
-	    }
-    }
-
-    function Animation(id, n, f) {
-        if (doc(id)) {
-            var ci = $('#'+id);
-            if (!n[1]) ci.show();
-            if (!n[2]) n[2] = 1;
-            ci.css('-webkit-animation', n[0]+' both '+n[2]+'s');
-            setTimeout(function(){
-                if (n[1]) ci.hide();
-                if (typeof f === 'function') f();
-            }, 1000 * n[2]);
+            } else {
+                console.debug(TimeNdate(0, 0, '/') + ': ' + streamerName + ' ' + titleOfStream + '   [Was not displayed]')
+            }
         }
     }
-
-    chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
-    chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
-    chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25472862-3']);
