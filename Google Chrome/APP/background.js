@@ -25,12 +25,10 @@
     6 :: Name doesn't set up!
     7 :: First start
 */
-if (!sessionStorage.FirstLoad) {
-    sessionStorage.FirstLoad = 'true';
-    BadgeOnlineCount(0);
-    localJSON('Status', 'c', ['online', 0]);
-    for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
-}
+
+BadgeOnlineCount(0);
+localJSON('Status', 'c', ['online', 0]);
+for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
 
 function CheckFollowingList() {
     function checkStatus(url,key) {
