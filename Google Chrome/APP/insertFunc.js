@@ -236,7 +236,7 @@ secthr = false;
 setInterval(function(){ secthr = secthr ? false : true; },800);
 
 setInterval(function(){
-	if (local.Config.Duration_of_stream == 'Enable') {
+	if (local.Config.Duration_of_stream) {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
 			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];

@@ -150,7 +150,7 @@ function clickChangeUser() {
 	doc('NotifyStreamer').checked = local.Config.Notifications.online;
 	doc('NotifyUpdate').checked = local.Config.Notifications.follow;
 	// Sound
-	if (local.Config.Notifications.sound_status == 'Enable') {
+	if (local.Config.Notifications.sound_status) {
 		doc('SoundCheck').checked = true;
 		doc('SoundSelect').disabled = false
 	} else {
@@ -158,7 +158,7 @@ function clickChangeUser() {
 		doc('SoundSelect').disabled = true
 	}
 	// Duration of stream
-	doc('StreamDurationCheck').checked = local.Config.Duration_of_stream == 'Enable' ? true : false;
+	doc('StreamDurationCheck').checked = local.Config.Duration_of_stream;
 	
 	doc('List_Format_List').value = local.Config.Format;
 
@@ -199,7 +199,7 @@ function changeScriptStarter() {
 		InsertOnlineList();
 	}
 	// Interval of checking
-	if (!isNaN(g) && local.Config.Interval_of_Checking != g) {
+	if (!isNaN(g) && local.Config.Interval_of_Checking != g && Math.floor(g) > 1) {
 		localJSON('Config','c',['Interval_of_Checking', Math.floor(g)]);
 		localJSON('Status','c',['StopInterval', true])
 	}
@@ -210,10 +210,10 @@ function changeScriptStarter() {
 	localJSON('Config','c',['Notifications','update',doc('NotifyStreamerChanged').checked]);
 	localJSON('Config','c',['Notifications','follow',doc('NotifyUpdate').checked]);
 	// Sound
-	doc('SoundCheck').checked == true ? localJSON('Config','c',['Notifications','sound_Status','Enable']) : localJSON('Config','c',['Notifications','sound_Status','Disable']);
-	localJSON('Config', 'c', ['Notifications','sound', doc("SoundSelect").value])
+	localJSON('Config','c',['Notifications','sound_status',doc('SoundCheck').checked]);
+	localJSON('Config','c',['Notifications','sound', doc("SoundSelect").value]);
 	// Duration of stream
-	doc('StreamDurationCheck').checked == true ? localJSON('Config','c',['Duration_of_stream','Enable']) : localJSON('Config','c',['Duration_of_stream','Disable']);
+	localJSON('Config','c',['Duration_of_stream',doc('StreamDurationCheck').checked]);
 	// Update style and list of online users
 	if (doc('List_Format_List').value !== local.Config.Format) {
 		localJSON('Config','c',['Format', doc('List_Format_List').value]);
@@ -339,13 +339,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	ael('Direct', 0, function(){ _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
-	ael('zoomContent', 0, function() {
-		Animation('zoomContent', 'fadeOut', true);
-		Animation('userChangePopup2', 'fadeOut', true);
-		doc('userChangePopup2').onclick = null;
-		doc('zoomContent').onclick = null;
-	});
+	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
 	document.onmousemove = function(pos){
+		// FIXME: invalid occolusion
 		var X = pos.x, Y = pos.y, left, top, offsetX = 15, width = doc('message').offsetWidth, height = doc('message').offsetHeight;
         left = (697 - width - X < 0) ? 697 - width : X + offsetX;
         top = (600 - height - Y < 0) ? Y - height - 5 : Y - height - 5;

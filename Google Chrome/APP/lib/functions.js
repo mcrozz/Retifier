@@ -15,7 +15,7 @@
 */
 if (window.location.pathname === '/background.html') {
     $.ajaxSetup ({cache:false,crossDomain:true});
-    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":"Enable","sound":"DinDon","status":true,"follow":false},"Duration_of_stream":"Enable","Interval_of_Checking":3,"Format":"Grid","Ceneled":"true","Closed":true}';
+    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":"Enable","Interval_of_Checking":3,"Format":"Grid","Ceneled":"true","Closed":true}';
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
     try { JSON.parse(localStorage.App_Version) }
