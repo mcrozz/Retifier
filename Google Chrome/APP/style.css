@@ -69,6 +69,59 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 .pWelcome5 {border:none;font-size:21px;margin:0 0 5 0;text-align:center}
 .inSetUpUserName {margin:0 0 5 73;width:250px;height:30px;font-size:23px;text-align:center}
 
+.fs1 {
+    -webkit-animation:fadeIn 2s both;
+    display:block;
+    z-index:99;
+}
+.fs1>a, #TwitchName, #TwitchAccount {
+    display:block;
+    position:absolute;
+    color:black;
+}
+.fs1>a:first-child {
+    left:146px;
+    top:40px;
+    font-size:35px;
+    -webkit-animation:slideInLeft 1s both;
+}
+.fs1>a:nth-child(2) {
+    left:165px;
+    top:67px;
+    font-size:30px;
+    -webkit-animation:slideInRight 1s both;
+}
+
+#TwitchName, #TwitchAccount {
+    background:-webkit-gradient(linear,left top,left bottom,from(rgba(165, 68, 255, 1)),to(rgba(42, 0, 173, 0.95)));
+    width:160px;
+    height:150px;
+    color:rgba(255, 255, 255, 0.97);
+    -webkit-border-radius:62px;
+    transition:color .3s;
+}
+#TwitchName:hover, #TwitchAccount:hover {
+    background:-webkit-gradient(linear,left top,left bottom,from(rgba(110, 50, 165, 1)),to(rgba(40, 0, 163, 0.95)));
+    color:rgba(255, 255, 255, 0.5);
+}
+
+#TwitchAccount {
+    left:140px;
+    top:200px;
+}
+#TwitchName {
+    left:430px;
+    top:200px;
+}
+
+#TwitchAccount>a, #TwitchName>a {
+    display:block;
+    padding:20px 5px 0 5px;
+    text-align:center;
+    font-size:28px;
+    color:inherit;
+}
+
 #AppVersion {position:fixed;right:15px;bottom:-5px;-webkit-border-radius:15px;background:white;padding:4px;color:black;font-size:15px;cursor:help;z-index:15;-webkit-animation-name:fadeIn;-webkit-animation-duration:1s}
 #AppChanges {background:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,1)),to(rgba(85,85,85,0.95)));position:fixed;z-index:35;width:400px;height:400px;left:148.5px;bottom:0}
 .AppInfo::selection {background:rgba(0, 0, 0, 0)}
@@ -220,4 +273,20 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 @-webkit-keyframes slideOutUp { 
     0% { -webkit-transform:translateY(0) }
     100% { opacity:0;-webkit-transform:translateY(-2000px) }
+}
+@-webkit-keyframes slideInLeft { 
+    0% { opacity:0;-webkit-transform:translateX(-2000px) }
+    100% { -webkit-transform:translateX(0) }
+}
+@-webkit-keyframes slideOutLeft { 
+    0% { -webkit-transform:translateX(0) }
+    100% { opacity:0;-webkit-transform:translateX(-2000px) }
+}
+@-webkit-keyframes slideInRight { 
+    0% { opacity:0;-webkit-transform:translateX(2000px) }
+    100% { -webkit-transform:translateX(0) }
+}
+@-webkit-keyframes slideOutRight { 
+    0% { -webkit-transform:translateX(0) }
+    100% { opacity:0;-webkit-transform:translateX(2000px) }
 }

@@ -15,12 +15,12 @@
 */
 if (window.location.pathname === '/background.html') {
     $.ajaxSetup ({cache:false,crossDomain:true});
-    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":"Enable","Interval_of_Checking":3,"Format":"Grid","Ceneled":"true","Closed":true}';
+    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":"Enable","Interval_of_Checking":3,"Format":"Grid","Ceneled":"true","Closed":true}';
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
     try { JSON.parse(localStorage.App_Version) }
-    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9", "Got": "v.1.3.9"}' }
-    $.getJSON('./manifest.json', function (data){ localJSON('App_Version', 'c', ['Got', 'v.'+data.version]) });
+    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.2", "Got": "v.1.3.9.2"}' }
+    $.getJSON('./manifest.json', function (d){ localJSON('App_Version', 'c', ['Got', 'v.'+d.version]) });
 }
 
 var NotificationsCount = 0,

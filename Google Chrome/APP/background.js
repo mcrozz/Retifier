@@ -30,6 +30,12 @@ BadgeOnlineCount(0);
 localJSON('Status', 'c', ['online', 0]);
 for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
 
+if (localStorage.FirstLaunch === 'true') {
+    localStorage.Following = 0;
+    localJSON('Status','c',['update',7]);
+    BadgeOnlineCount(' Hi ');
+}
+
 function CheckFollowingList() {
     function checkStatus(url,key) {
         var checkStatus = $.getJSON(url)
@@ -99,9 +105,10 @@ function CheckFollowingList() {
     if (!localStorage.Following) localStorage.Following = 0;
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=116&offset=0';
+    if (local.Config.token !== "") urlToJSON += '&oauth_token='+local.Config.token;
     localJSON('Status', 'c', ['update', 1]);
 
-    if (local.Config.User_Name == 'Guest' || typeof local.Config.User_Name === 'undefined') {
+    if (local.Config.User_Name === 'Guest' || typeof local.Config.User_Name === 'undefined') {
         localJSON('Status', 'c', ['update', 6]);
         console.log('Change user name!')
     } else {
@@ -127,7 +134,11 @@ function CheckFollowingList() {
             localJSON('Status','c',['checked', 0]);
             localJSON('Status','c',['update', 4]);
             console.log('Checking Status of channels...');
-            for (var i = 0; i < localJSON('Following'); i++) checkStatus('https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name, i);
+            for (var i = 0; i < localJSON('Following'); i++) {
+                var k = 'https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name;
+                if (local.Config.token !== "") k += '&oauth_token='+local.Config.token;
+                checkStatus(k, i);
+            }
         });
     }
 }
