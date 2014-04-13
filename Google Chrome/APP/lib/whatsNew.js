@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.2 Added auth by TwitchTV account, fixed sound in notifications",
     "-1.3.9.1 Bug fix",
     "-1.3.9 Edited some animation, edited design, stability improvements",
     "-1.3.8 Fixed bug with text on hover, added new feature: zoom in",
@@ -51,9 +52,9 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9": {
-        "msg": "Stability improvements",
-        "contain": "-Edited some animation <br /> -Edited design <br /> -Stability improvements"
+    "v.1.3.9.2": {
+        "msg": "Improvements",
+        "contain": "-Added authification by Twitct.TV account <br /> -Fixed bug with audio in notifications <br /> -Fixed settings <br />In next update: control your following list in app"
     }
 };
 
@@ -64,32 +65,27 @@ function versionCheck() {
         if (versions.Got != versions.Ver) {
             notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
-            /*localStorage.removeItem('Log');
-            localStorage.removeItem('LogInf');
+            
+            if (local.Config.Duration_of_stream === 'Enable') localJSON('Config','c',['Duration_of_stream', true]);
+            if (local.Config.Duration_of_stream === 'Disable') localJSON('Config','c',['Duration_of_stream', false]);
 
-            var msgUnit;
-            msgUnit = '<div class="msgTitle">';
-                msgUnit += messages[versions.Got].msg;
-            msgUnit += '</div>';
-            msgUnit += '<div class="msgContain">';
-                msgUnit += messages[versions.Got].contain;
-            msgUnit += '</div>';
+            doc('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
+                '<div class="msgContain">'+messages[versions.Got].contain+'</div>';
 
             /*
             msgUnit += '<div class="msgChange">Please disable or enable option below</div>';
-
             msgUnit += '<div class="msgCheckbox"><input type="checkbox" id="msgDisSmth_1" checked="false">';
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
-            msgUnit += '</input></div>';
-            */
-            /*msgUnit += '<button id="msgClose">Okay</button>';
+            msgUnit += '</input></div>';*/
+
+            msgUnit += '<button id="msgClose">Okay</button>';
             
             doc('WhatsNew').innerHTML = msgUnit;
             Animation('WhatsNew', ['slideInDown', false]);
             
             doc('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
-            };*/
+            };
         }
     }
 }
