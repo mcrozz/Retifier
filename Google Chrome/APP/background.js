@@ -136,7 +136,7 @@ function CheckFollowingList() {
             console.log('Checking Status of channels...');
             for (var i = 0; i < localJSON('Following'); i++) {
                 var k = 'https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name;
-                if (local.Config.token !== "") k += '&oauth_token='+local.Config.token;
+                if (local.Config.token !== "") k += '?oauth_token='+local.Config.token;
                 checkStatus(k, i);
             }
         });
