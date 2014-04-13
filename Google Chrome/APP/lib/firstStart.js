@@ -15,7 +15,28 @@
 */
 
 if (localStorage.Status != null && localStorage.Config != null) {
-	$(document).on("DOMContentLoaded", function (){
+	function reLogin() {
+		Animation('userChangePopup', ['bounceOut', true]);
+		Animation('userChangePopup2', ['fadeOut', true, 0.5]);
+		Animation('AppVersion', ['fadeIn', false]);
+		if (opened) {
+			Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
+			Animation('FoundAbugText', ['hideReportA', true, 0.7]);
+		} else {
+			Animation('fndAbug', ['hideReportBtn', true, 0.9]);
+			Animation('FoundAbugText', ['hideReport', true, 0.9]);
+		}
+		opened = false;
+		localJSON('Config','c',['User_Name', 'Guest']);
+		localJSON('Config','c',['token', '']);
+		localStorage.FollowingList={};
+		localStorage.Following=0;
+		localStorage.FirstLaunch='true';
+		TimersetToUpdate=[];
+		setTimeout(lgin, 1000);
+	}
+
+	function lgin() {
 		if (localStorage.FirstLaunch === 'true'){
 			doc('FollowedChannelsOnline').innerHTML = "Greetings!";
 			doc('ChgUsr').disabled = true;
@@ -118,5 +139,7 @@ if (localStorage.Status != null && localStorage.Config != null) {
 				doc('SetUpUserNameInp').onkeyup = function (evt) { if (evt.keyCode == 13) firstLaunchUserByName() }
 			});
 		}
-	});
+	}
+
+	$(document).on("DOMContentLoaded", lgin);
 }

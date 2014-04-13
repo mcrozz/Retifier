@@ -24,81 +24,81 @@ function CSScompiler() {
 		localJSON('Config', 'c', ['Format', 'Grid']);
 		CSScompiler()
 	} else {
-		AddAnyways = '::-webkit-scrollbar {width:12px}';
-		AddAnyways += '::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}';
-		AddAnyways += '::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}';
-		AddAnyways += '.GameTumb1 {z-index:2}';
-		AddAnyways += '.GameTumb2 {z-index:1}';
-		AddAnyways += '.LaunchStream {width:318px;height:49px;z-index:3;position:absolute;left:1;text-align:center;color:white;font-size:23;padding:75 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(95,29,194,0.66)),to(rgba(0,0,0,0.85)));cursor:pointer;transition:opacity 0.8s;opacity:0}';
-		AddAnyways += '.LaunchStream:hover {opacity:1}';
+		AddAnyways = '::-webkit-scrollbar {width:12px}'+
+			'::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}'+
+			'::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}'+
+			'.GameTumb1 {z-index:2}'+
+			'.GameTumb2 {z-index:1}'+
+			'.LaunchStream {width:318px;height:49px;z-index:3;position:absolute;left:1;text-align:center;color:white;font-size:23;padding:75 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(95,29,194,0.66)),to(rgba(0,0,0,0.85)));cursor:pointer;transition:opacity 0.8s;opacity:0}'+
+			'.LaunchStream:hover {opacity:1}';
 		if (format == 'Full') {
-			css = '.StreamDuration {color:black;margin:0 0 0 17;display:inline-block}';
-			css += 'button:focus {outline-color:rgba(255,255,255,0)}';
-			css += '.streamer {width:170px;height:20px;display:inline-block;padding-left:3;padding-bottom:5}';
-			css += '.viewers {width:160px;height:20px;display:inline-block;text-align:right}';
-			css += '.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}';
-			css += '.content {height:200px;width:685px;padding:2;position:relative;font-size:17}';
-			css += '#insertContentHere {max-height:100%;overflow:auto}';
-			css += '.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}';
-			css += '.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}';
-			css += '.informationTextTitle {width:337px;height:20px;display:block;border-bottom:1px solid black;margin-bottom:5px;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3}';
-			css += '.informationTextStreamer {cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}';
-			css += '.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}';
-			css += '.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;padding-top:5px}';
-			css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}';
-			css += '.TumbStream {width:320px;height:200px}';
-			css += '.StreamOnChannelPage {width:340px;height:28px;padding-top:2px}';
-			css += '.StreamDurationDiv {width:170;height:20;position:absolute;right:16;top:90;text-align:right}';
-			css += '.ChannelPageDiv {width:150;height:40;display:inline}';
-			css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
-			css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
-			css += 'button.button {font-size:22px;width:150px;height:30px}';
+			css = '.StreamDuration {color:black;margin:0 0 0 17;display:inline-block}'+
+				'button:focus {outline-color:rgba(255,255,255,0)}'+
+				'.streamer {width:170px;height:20px;display:inline-block;padding-left:3;padding-bottom:5}'+
+				'.viewers {width:160px;height:20px;display:inline-block;text-align:right}'+
+				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
+				'.content {height:200px;width:685px;padding:2;position:relative;font-size:17}'+
+				'#insertContentHere {max-height:100%;overflow:auto}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}'+
+				'.informationTextTitle {width:337px;height:20px;display:block;border-bottom:1px solid black;margin-bottom:5px;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3}'+
+				'.informationTextStreamer {cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}'+
+				'.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}'+
+				'.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;padding-top:5px}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}'+
+				'.TumbStream {width:320px;height:200px}'+
+				'.StreamOnChannelPage {width:340px;height:28px;padding-top:2px}'+
+				'.StreamDurationDiv {width:170;height:20;position:absolute;right:16;top:90;text-align:right}'+
+				'.ChannelPageDiv {width:150;height:40;display:inline}'+
+				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
+				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
+				'button.button {font-size:22px;width:150px;height:30px}';
 		} else if (format == 'Mini') {
-			css = '.StreamDuration {color:black;margin:0 0 0 17;font-size:19}';
-			css += '.streamer {width:180px;height:20px;display:inline-block}';
-			css += 'button:focus {outline-color:rgba(255,255,255,0)}';
-			css += '.viewers {width:150px;height:20px;position:absolute;right:12;text-align:right;top:20}';
-			css += '.viewers>p {cursor:default;width:75px;padding-left:5px;display:inline;border:none}';
-			css += '.content {height:90px;width:685px;padding:2;position:relative}';
-			css += '#insertContentHere {max-height:100%;overflow:auto}';
-			css += '.information {width:535px;height:80px;display:inline;position:absolute;right:0;top:6}';
-			css += '.informationTextTitle {cursor:default;display:-webkit-inline-flex;z-index:1;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:525px;border-bottom:1px black solid}';
-			css += '.informationTextStreamer {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}';
-			css += '.informationTextViewers {cursor:default;display:inline;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}';
-			css += '.informationTextGame {cursor:pointer;font-size:16;color:black;display:inline-block;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:195px;left:145px;text-align:center}';
-			css += '.tumblr {background:url("/img/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}';
-			css += '.LaunchStream {display:none!important}';
-			css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1}';
-			css += '.TumbStream {width:90px;height:60px}';
-			css += '.StreamOnChannelPage {width:530px;height:23px}';
-			css += '.StreamDurationDiv {width:160;height:23;text-align:right;display:inline-block}';
-			css += '.ChannelPageDiv {width:110;height:23;display:inline-block;margin-right:260px}';
-	        css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
-	        css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
-			css += 'button.button {font-size:18px;width:110px;height:22px}';
+			css = '.StreamDuration {color:black;margin:0 0 0 17;font-size:19}'+
+				'.streamer {width:180px;height:20px;display:inline-block}'+
+				'button:focus {outline-color:rgba(255,255,255,0)}'+
+				'.viewers {width:150px;height:20px;position:absolute;right:12;text-align:right;top:20}'+
+				'.viewers>p {cursor:default;width:75px;padding-left:5px;display:inline;border:none}'+
+				'.content {height:90px;width:685px;padding:2;position:relative}'+
+				'#insertContentHere {max-height:100%;overflow:auto}'+
+				'.information {width:535px;height:80px;display:inline;position:absolute;right:0;top:6}'+
+				'.informationTextTitle {cursor:default;display:-webkit-inline-flex;z-index:1;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:525px;border-bottom:1px black solid}'+
+				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
+				'.informationTextViewers {cursor:default;display:inline;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
+				'.informationTextGame {cursor:pointer;font-size:16;color:black;display:inline-block;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:195px;left:145px;text-align:center}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}'+
+				'.LaunchStream {display:none!important}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1}'+
+				'.TumbStream {width:90px;height:60px}'+
+				'.StreamOnChannelPage {width:530px;height:23px}'+
+				'.StreamDurationDiv {width:160;height:23;text-align:right;display:inline-block}'+
+				'.ChannelPageDiv {width:110;height:23;display:inline-block;margin-right:260px}'+
+		        '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
+		        '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
+				'button.button {font-size:18px;width:110px;height:22px}';
 		} else if (format == 'Grid') {
-			css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17}';
-			css += 'button:focus {outline-color:rgba(0,0,0,0)}';
-			css += '.streamer {width:165px;height:20px;display:inline-table;padding-top:6px}';
-			css += '.viewers {width:150px;height:20px;display:inline-block;text-align:right}';
-			css += '.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}';
-			css += '.content {height:290px;width:330px;padding:2;position:relative;display:inline-block;margin-left:7}';
-			css += '#insertContentHere {max-height:100%;overflow:auto}';
-			css += '.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}';
-			css += '.information {width:315px;height:90px;display:inline;position:absolute;left:15;top:200}';
-			css += '.informationTextTitle {height:20px;display:inline-block;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;border-bottom:1px black solid}';
-			css += '.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3}';
-			css += '.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}';
-			css += '.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;display:block;padding-top:5px}';
-			css += '.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}';
-			css += '.GamaTumb1:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation:fadeInDown 0.2s both;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}';
-			css += '.TumbStream {width:320px;height:200px}';
-			css += '.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}';
-			css += '.StreamDurationDiv {width:170;height:40;display:inline}';
-			css += '.ChannelPageDiv {display:none}';
-			css += '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}';
-			css += '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}';
-			css += 'button.button {font-size:22px;width:150px;height:30px}';
+			css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17}'+
+				'button:focus {outline-color:rgba(0,0,0,0)}'+
+				'.streamer {width:165px;height:20px;display:inline-table;padding-top:6px}'+
+				'.viewers {width:150px;height:20px;display:inline-block;text-align:right}'+
+				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
+				'.content {height:290px;width:330px;padding:2;position:relative;display:inline-block;margin-left:7}'+
+				'#insertContentHere {max-height:100%;overflow:auto}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.information {width:315px;height:90px;display:inline;position:absolute;left:15;top:200}'+
+				'.informationTextTitle {height:20px;display:inline-block;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;border-bottom:1px black solid}'+
+				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3}'+
+				'.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}'+
+				'.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;display:block;padding-top:5px}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}'+
+				'.GamaTumb1:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation:fadeInDown 0.2s both;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}'+
+				'.TumbStream {width:320px;height:200px}'+
+				'.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}'+
+				'.StreamDurationDiv {width:170;height:40;display:inline}'+
+				'.ChannelPageDiv {display:none}'+
+				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
+				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
+				'button.button {font-size:22px;width:150px;height:30px}';
 		}
 		css += AddAnyways;
 		style.appendChild(document.createTextNode(css));
@@ -125,9 +125,10 @@ function clickChangeUser() {
 	$('#userChangePopup').show();
 	$('#userChangePopup2').show();
 	$('#AppVersion').hide();
+	doc('UserName').innerHTML = "You're loggin as "+local.Config.User_Name+'<button id="log_out">Log out</button>';
+	$('#log_out').on('click', reLogin);
 	Animation('userChangePopup2', ['fadeIn', false, 0.9]);
 	Animation('userChangePopup', ['bounceIn', false, 0.9]);
-	doc("ChgUsrNam").value = local.Config.User_Name;
 	doc("ChgUsrInt").value = local.Config.Interval_of_Checking;
 	doc('fndAbug').setAttribute("style","top:190;right:-68");
 	Animation('fndAbug', ['showReportBtn', false, 0.8]);
@@ -180,25 +181,8 @@ function clickChangeUserCls() {
 }
 
 function changeScriptStarter() {
-	// User name
-	var z = doc("ChgUsrNam").value,
-		g = doc('ChgUsrInt').value;
-	if (z != local.Config.User_Name) {
-		localStorage.FollowingList='{}';
-		localStorage.Following=0;
-		localJSON('Config','c',['User_Name', z]);
-		localJSON('Status','c',['StopInterval', true]);
-		doc('insertContentHere').innerHTML=null;
-		InsertOnlineList();		
-	} else if (z == '' || z==null || !z || z == 'Guest') {
-		localJSON('Config','c',['User_Name', 'Guest']);
-		localJSON('Status','c',['update', 6]);
-		doc('insertContentHere').innerHTML = null;
-		localStorage.FollowingList = '{}';
-		localStorage.Following = 0;
-		InsertOnlineList();
-	}
 	// Interval of checking
+	var g = doc('ChgUsrInt').value;
 	if (!isNaN(g) && local.Config.Interval_of_Checking != g && Math.floor(g) > 1) {
 		localJSON('Config','c',['Interval_of_Checking', Math.floor(g)]);
 		localJSON('Status','c',['StopInterval', true])
