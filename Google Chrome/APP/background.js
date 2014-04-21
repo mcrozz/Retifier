@@ -86,22 +86,6 @@ function CheckFollowingList() {
         });
     }
 
-    // Get donation list
-    $.ajax({
-        url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php",
-        complete: function(data) {
-            try {
-                var rsp = JSON.parse(data.responseText)
-            } catch (e) {console.debug(e.stack)}
-            if (rsp.indexOf(hex_md5(local.Config.User_Name)) != -1 ) {
-                localJSON('Config','c',['Timeout', 1337]);
-                localJSON('Config','c',['Ceneled', true]);
-                localJSON('Config','c',['Closed', true]);
-            }
-        },
-        error: function() { err('[0x06] Failed to get donations list... '); }
-    });
-
     if (!localStorage.Following) localStorage.Following = 0;
     var twitch = 'Not loaded yet!',
         urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=116&offset=0';
@@ -154,3 +138,11 @@ setInterval(function(){
         localJSON('Status','c',['StopInterval', false])
     }
 },500);
+setInterval(function(){
+    // Get donation list
+    $.ajax({
+        url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php",
+        complete: function(data) { try {var rsp = JSON.parse(data.responseText)} catch (e) {console.debug(e.stack)} if (rsp.indexOf(hex_md5(local.Config.User_Name)) != -1 ) localJSON('Config','c',['Timeout', 1337]); },
+        error: function() { err('[0x06] Failed to get donations list... '); }
+    });
+},3600000);
