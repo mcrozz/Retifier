@@ -14,7 +14,7 @@
 	limitations under the License.
 */
 
-TimersetToUpdate = [];
+var TimersetToUpdate = [];
 
 function CSScompiler() {
 	var style = document.createElement('style'),
@@ -273,13 +273,12 @@ function AppVersionChanges(c) {
 			$('#AppInfoClose').css('border-bottom', '2px solid white');
 			CURRENT_APP_PAGE = 'Changes';
 		} else if (CURRENT_APP_PAGE == 'Changes') {
-			var AppThird = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>';
-			AppThird += "<div class='AppInfoAbout2'><a>Ivan 'MacRozz' Zarudny</a></div>";
-			AppThird += "<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>";
-			AppThird += "<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>";
-			AppThird += "<div class='AppInfoAbout5'><a href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
+			doc('AppVersionContent').innerHTML = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>'+
+				"<div class='AppInfoAbout2'><a>Ivan 'MacRozz' Zarudny</a></div>"+
+				"<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>"+
+				"<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>"+
+				"<div class='AppInfoAbout5'><a href='https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews' target='_blank'>Don't forget to rate my app ;)</a></div>";
 			Animation('AppVersionContent', ['fadeIn', false]);
-			doc('AppVersionContent').innerHTML = AppThird;
 			$('#AppFirst').css('border-bottom', '2px solid white');
 			$('#AppThird').css('border-bottom', '2px solid rgb(3,64,223)');
 			$('#AppInfoClose').css('border-bottom', '2px solid white');
@@ -288,7 +287,7 @@ function AppVersionChanges(c) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+$(window).on('load',function() {
 	function ael(id, type, func) { var d = ['click', 'change']; $('#'+id).on(d[type], func) }
 	CSScompiler();
 	versionCheck();
@@ -329,4 +328,4 @@ document.addEventListener("DOMContentLoaded", function() {
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	};
-} );
+});

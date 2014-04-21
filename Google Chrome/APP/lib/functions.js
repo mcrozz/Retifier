@@ -48,11 +48,8 @@ if (localStorage.Status&&localStorage.Config) {
     function err(msg) { console.error('[ERROR] ' + msg.substring(7)); }
 
     function TimeNdate(d,m) {
-        var f = (new Date()).getTime(),
-            j = [31,28,31,30,31,30,31,31,30,31,30,31];
-        f += Math.abs(d)*1000*3600*24;
-        f += Math.abs(m)*1000*3600*24*j[(new Date()).getMonth()];
-        return f;
+        var j = [31,28,31,30,31,30,31,31,30,31,30,31];
+        return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]);
     }
 
     function localJSON(name,type,arrayz) {

@@ -14,9 +14,9 @@
 	limitations under the License.
 */
 
-FirstLoadInsertFunc = 1;
-TimersetToUpdate = [];
-refresh = false;
+var FirstLoadInsertFunc = 1,
+	TimersetToUpdate = [],
+	refresh = false;
 
 function InsertOnlineList() {
 	function zoom() {
@@ -203,34 +203,17 @@ setInterval(function(){
 		} else { Animation('CheckingProgress', ['fadeOut', true, 0.5]); }
 	}
 	function spin() { if (secthr) Animation('refresh', ['spin', false, 0.8]); }
-	var InsertHere = doc('FollowedChannelsOnline'),
+	var j = doc('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
-	if (Upd == 0) {
-	    InsertHere.innerHTML = 'Now online ' + Onlv + ' from ' + localStorage.Following;
-		progressBar(' ');
-	} else if (Upd == 1) {
-		InsertHere.innerHTML='Behold! Update!';
-		progressBar();
-		spin();
-	} else if (Upd == 2) { 
-		InsertHere.innerHTML='Updating list of followed channels...';
-		progressBar();
-		spin();
-	} else if (Upd == 3) { 
-		InsertHere.innerHTML='List of followed channels updated.';
-		progressBar();
-		spin();
-	} else if (Upd == 4) { 
-	    InsertHere.innerHTML = 'Checking, online ' + Onlv + ' from ' + localStorage.Following;
-		progressBar();
-		spin();
-	} else if (Upd == 5) { 
-		InsertHere.innerHTML='App have a problem with update'
-	} else if (Upd == 6) { 
-		InsertHere.innerHTML="Name doesn't set up yet!"
-	}
+	if (Upd === 0) {j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');}
+	else if (Upd === 1) {j.innerHTML='Behold! Update!'; progressBar(); spin(); }
+	else if (Upd === 2) {j.innerHTML='Updating list of followed channels...'; progressBar(); spin();}
+	else if (Upd === 3) {j.innerHTML='List of followed channels updated.'; progressBar(); spin();}
+	else if (Upd === 4) {j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();}
+	else if (Upd === 5) {j.innerHTML='App have a problem with update'}
+	else if (Upd === 6) {j.innerHTML="Name doesn't set up yet!"}
 }, 100);
 secthr = false;
 setInterval(function(){ secthr = secthr ? false : true; },800);
