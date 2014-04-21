@@ -19,7 +19,7 @@ if (window.location.pathname === '/background.html') {
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
     try { JSON.parse(localStorage.App_Version); $.getJSON('./manifest.json', function (d){ localJSON('App_Version', 'c', ['Got', 'v.'+d.version]) });}
-    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.2", "Got": "v.1.3.9.2"}' }
+    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.3", "Got": "v.1.3.9.3"}' }
 }
 
 var NotificationsCount = 0,

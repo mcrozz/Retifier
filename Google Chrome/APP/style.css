@@ -6,9 +6,9 @@ p {color: black;border-right:1px dotted black;text-shadow:0px -1px 0px rgba(000,
 b {border: 2px dotted #d6d4d4}
 button {border:none;cursor:default}
 
-#header {background:-webkit-gradient(linear,left top,left bottom,from(rgba(94, 3, 255, 0.5)),to(rgba(82, 82, 82, 0.26)));height:80px;display:block}
+#header {background:rgb(230,230,230);height:80px;display:block}
 
-#controls {height:80px;display:block}
+#controls {background:-webkit-gradient(linear,left top,left bottom,from(rgba(92, 0, 255, 0.4)),to(rgba(214, 214, 214, 0.26)));height:80px;display:block}
 
 #nowONline {height:30px;position:absolute;top:33;text-align:center;width:397px;margin:0 0 0 150}
 

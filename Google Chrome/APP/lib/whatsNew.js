@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.3 Fixed Donation tab, various improvements",
     "-1.3.9.2 Added auth by TwitchTV account, fixed sound in notifications",
     "-1.3.9.1 Bug fix",
     "-1.3.9 Edited some animation, edited design, stability improvements",
@@ -52,9 +53,9 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.2": {
+    "v.1.3.9.3": {
         "msg": "Improvements",
-        "contain": "-Added authification by Twitct.TV account <br /> -Fixed bug with audio in notifications <br /> -Fixed settings <br />In next update: control your following list in app"
+        "contain": "-Now minimal interval of checking is 1 min <br />-Fixed Donation tab <br />In next update: control your following list in app"
     }
 };
 
