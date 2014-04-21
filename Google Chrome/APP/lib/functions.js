@@ -15,12 +15,11 @@
 */
 if (window.location.pathname === '/background.html') {
     $.ajaxSetup ({cache:false,crossDomain:true});
-    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":"Enable","Interval_of_Checking":3,"Format":"Grid","Ceneled":"true","Closed":true}';
+    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
-    try { JSON.parse(localStorage.App_Version) }
+    try { JSON.parse(localStorage.App_Version); $.getJSON('./manifest.json', function (d){ localJSON('App_Version', 'c', ['Got', 'v.'+d.version]) });}
     catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.2", "Got": "v.1.3.9.2"}' }
-    $.getJSON('./manifest.json', function (d){ localJSON('App_Version', 'c', ['Got', 'v.'+d.version]) });
 }
 
 var NotificationsCount = 0,
@@ -48,34 +47,16 @@ setInterval(function(){
 if (localStorage.Status&&localStorage.Config) {
     function err(msg) { console.error('[ERROR] ' + msg.substring(7)); }
 
-    function TimeNdate(d, m, k) {
-        var newDate = new Date(),
-            time, month, year, day,
-            DaysInMonths = [31,28,31,30,31,30,31,31,30,31,30,31];
-        month = newDate.getMonth()+1+m;
-        day = newDate.getDate()+d;
-        year = ((new Date()).getYear()-100);
-        if (day > DaysInMonths[newDate.getMonth()]) {
-            for (var i=0; i<12; i++) {
-                day -= DaysInMonths[newDate.getMonth()+i];
-                month++;
-                if (day < 0) { day *= -1; month --; break; }
-            }
-        } else { day = newDate.getDate()+d; }
-        if (month > 12) { month -= 12; year++ }
-        if (month < 10) month = '0'+month;
-        if (day < 10) day = '0'+day;
-        if (year < 10) year = '0'+year;
-        time = newDate.getHours()+':';
-        time +=newDate.getMinutes() < 10 ? '0'+newDate.getMinutes() : newDate.getMinutes();
-        return month+''+k+''+day+''+k+''+year+' '+time;
+    function TimeNdate(d,m) {
+        var f = (new Date()).getTime(),
+            j = [31,28,31,30,31,30,31,31,30,31,30,31];
+        f += Math.abs(d)*1000*3600*24;
+        f += Math.abs(m)*1000*3600*24*j[(new Date()).getMonth()];
+        return f;
     }
 
     function localJSON(name,type,arrayz) {
-        function chd() {
-            localStorage.ChangedBG = 'y';
-            localStorage.ChangedPP = 'y'
-        }
+        function chd() {localStorage.ChangedBG = 'y'; localStorage.ChangedPP = 'y'}
         try {
             var sz, b, h;
             if (name&&type=='c'&&arrayz) {
@@ -204,11 +185,11 @@ if (localStorage.Status&&localStorage.Config) {
         }
     }
 
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-25472862-3']);
-    _gaq.push(['_setCustomVar', 3, 'App_Version', local.App_Version.Ver, 1]);
+    var _gaq=_gaq||[];
+    _gaq.push(['_setAccount','UA-25472862-3']);
+    _gaq.push(['_setCustomVar',3,'App_Version',local.App_Version.Ver,1]);
     _gaq.push(['_trackPageview']);
 
-    (function () { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = 'https://ssl.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s) })()
+    (function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src='https://ssl.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s)})()
 
 }
