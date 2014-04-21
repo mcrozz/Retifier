@@ -260,29 +260,28 @@ setInterval(function(){
 	} 
 
 	function donationUnit() {
-		var donationUnit = "<div id='donate'>";
-		donationUnit += "<a>Don't forget support me by donation ;)</a>";
-		donationUnit += '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-		donationUnit += '<input type="hidden" name="cmd" value="_s-xclick">';
-		donationUnit += '<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">';
-		donationUnit += '<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">';
-		donationUnit += '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">';
-		donationUnit += '</form>';
-		donationUnit += '<a id="CloseNews">[x]Close</a></div>';
-		if(!doc('donate')) doc('insertContentHere').innerHTML = donationUnit+doc('insertContentHere').innerHTML;
-		doc('CloseNews').onclick = function(){
-			doc('donate').remove();
+		if (typeof local.Config.Timeout !== 'undefined') {
+			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
+			dif/=86400000;
+			if (local.Config.Timeout === 1337) return true;
+			if (dif <= 0 || dif > 14) localJSON('Config','c',['Timeout', 0]);
+			if (dif > 0) return true;
+		} else {
 			localJSON('Config','c',['Timeout', TimeNdate(14,0,'-')]);
-			_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'false', 1]);
-			localJSON('Config','c',['Closed', true])
-		};
-		doc('PayPalCheckOut').onclick = function(){ _gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1]) };
+			return false;
+		}
+		if(!doc('donate')) {
+			$('#insertContentHere').prepend("<div id='donate'><a>Don't forget support me by donation ;)</a>"+
+				'<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">'+
+				'<input type="hidden" name="cmd" value="_s-xclick">'+
+				'<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">'+
+				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
+				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
+				'</form><a id="CloseNews">Close</a></div>');
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);_gaq.push(['_setCustomVar',4,'PayPalButton','false',1])});
+			$('#PayPalCheckOut').on('click', function(){_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1])});},100);
+		}
 	}
-	if (typeof local.Config.Timeout !== 'undefined') {
-		var dif = Math.abs(new Date(local.Config.Timeout)) - Math.abs(new Date());
-		if (dif <= 0 && local.Config.Timeout != 1337) { localJSON('Config','c',['Closed', false]); donationUnit() } 
-		else if (dif > 1209600000 && local.Config.Timeout != 1337) { localJSON('Config','c',['Timeout', 0]) } 
-		else if (!local.Config.Closed) { donationUnit() }
-	} else { localJSON('Config','c',['Timeout', TimeNdate(14,0,'-')]) }
+	donationUnit();
 	InsertOnlineList()
 },1000);
