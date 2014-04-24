@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.4 Fixed zoomed prewiew ratio",
     "-1.3.9.3 Fixed Donation tab, various improvements",
     "-1.3.9.2 Added auth by TwitchTV account, fixed sound in notifications",
     "-1.3.9.1 Bug fix",
@@ -53,25 +54,29 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.3": {
+    "v.1.3.9.4": {
         "msg": "Improvements",
-        "contain": "-Now minimal interval of checking is 1 min <br />-Fixed Donation tab <br />In next update: control your following list in app"
+        "contain": "-Fixed zoomed preview ratio <br /> -I'm out of ideas how to improve style of this extension. If you got any wishes/desire or an idea, please contact me at <a href='https://twitter.com/iZarudny' target='_blank'>my Twitter @iZarudny</a> or <a href='https://chrome.google.com/webstore/support/mmemeoejijknklekkdacacimmkmmokbn?hl=en&gl=RU#bug' target='_blank'>Chrome Web Store support of mine extension</a>"
     }
 };
 
 function versionCheck() {
-    if (localStorage.FirstLaunch != 'true') {
-        var versions = local.App_Version;
+    if (localStorage.FirstLaunch !== 'true') {
+        var versions = local.App_Version,
+            trys = Math.floor(localStorage.App_Version_Try);
+        if (trys === 'NaN') localStorage.App_Version_Try = 1;
+        if (trys >= 3 || localStorage.App_Version_Update === 'false') return false;
 
-        if (versions.Got != versions.Ver) {
-            notifyUser("Extension has been updated", "From " + versions.Ver + " to " + versions.Got, "ScriptUpdate", 'Upd' + Math.floor(Math.random(100) * 100));
+        if (localStorage.App_Version_Update === 'true') {
+            localStorage.App_Version_Try = trys+1;
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
             
             if (local.Config.Duration_of_stream === 'Enable') localJSON('Config','c',['Duration_of_stream', true]);
             if (local.Config.Duration_of_stream === 'Disable') localJSON('Config','c',['Duration_of_stream', false]);
 
             doc('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
-                '<div class="msgContain">'+messages[versions.Got].contain+'</div>';
+                '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
+                '<button id="msgClose">Okay</button>';
 
             /*
             msgUnit += '<div class="msgChange">Please disable or enable option below</div>';
@@ -79,13 +84,11 @@ function versionCheck() {
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
             msgUnit += '</input></div>';*/
 
-            msgUnit += '<button id="msgClose">Okay</button>';
-            
-            doc('WhatsNew').innerHTML = msgUnit;
             Animation('WhatsNew', ['slideInDown', false]);
             
             doc('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
+                localStorage.App_Version_Update=false;
             };
         }
     }

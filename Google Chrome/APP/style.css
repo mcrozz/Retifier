@@ -132,12 +132,13 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 
 #content3 {height:515px;width:703px;position:relative;display:block;padding:5px;padding-bottom:0;margin-left:-12px}
 
-#WhatsNew {display:none;background:rgb(185, 185, 185);position:fixed;z-index:99;width:397px;height:430px;left:150px;padding:3px}
+#WhatsNew {display:none;background:rgb(185, 185, 185);position:fixed;z-index:99;width:367px;height:430px;left:150px;padding:15px}
+.msgContain>a {color:darkblue;font-size:inherit}
 .msgTitle {text-align:center;font-size:23px;padding-bottom:5px}
 .msgContain {font-size:19px}
 .msgCheckbox {font-size:19px}
 .msgChange {font-size:20px;text-align:center;padding:15px 0 5px 0}
-#msgClose {font-size:25px;width:397px;position:absolute;bottom:0}
+#msgClose {font-size:25px;width:390px;position:absolute;bottom:0;left:3}
 
 #SoundSelect, #List_Format_List {width:90}
 

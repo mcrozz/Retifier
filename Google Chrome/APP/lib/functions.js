@@ -18,8 +18,18 @@ if (window.location.pathname === '/background.html') {
     if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
-    try { JSON.parse(localStorage.App_Version); $.getJSON('./manifest.json', function (d){ localJSON('App_Version', 'c', ['Got', 'v.'+d.version]) });}
-    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.3", "Got": "v.1.3.9.3"}' }
+    try { 
+        JSON.parse(localStorage.App_Version); 
+        $.getJSON('./manifest.json', function (d){
+            localJSON('App_Version', 'c', ['Got', 'v.'+d.version]);
+            if (local.App_Version.Ver !== d.version) {
+                notifyUser("Extension has been updated", "From "+local.App_Version.Ver+" to "+d.version, "ScriptUpdate", 'Upd'+Math.floor(Math.random(100)*100));
+                localStorage.App_Version_Update=true;
+                localStorage.App_Version_Try=0
+            }
+        });
+    }
+    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.4", "Got": "v.1.3.9.4"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
 }
 
 var NotificationsCount = 0,
@@ -150,7 +160,7 @@ if (localStorage.Status&&localStorage.Config) {
         function sendNotify(tle, msg, strm, upd) {
             console.debug(TimeNdate(0, 0, '/') + ': ' + tle + ' -  ' + msg);
             var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
-            if (upd != 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
+            if (upd !== 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
             chrome.notifications.create('n'+strm, NotifyConf, function(){});
             delNotify('n'+strm, upd);
             if (local.Config.Notifications.status) {
@@ -181,6 +191,10 @@ if (localStorage.Status&&localStorage.Config) {
             }
         }
     }
+
+    chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
+    chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
+    chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
     var _gaq=_gaq||[];
     _gaq.push(['_setAccount','UA-25472862-3']);
