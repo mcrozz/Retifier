@@ -8,7 +8,7 @@ button {border:none;cursor:default}
 
 #header {background:rgb(230,230,230);height:80px;display:block}
 
-#controls {background:-webkit-gradient(linear,left top,left bottom,from(rgba(92, 0, 255, 0.4)),to(rgba(214, 214, 214, 0.26)));height:80px;display:block}
+#controls {background:-webkit-gradient(linear,left top,left bottom,from(rgba(66, 66, 66, 0.4)),to(rgba(143, 143, 143, 0.26)));height:80px;display:block}
 
 #nowONline {height:30px;position:absolute;top:33;text-align:center;width:397px;margin:0 0 0 150}
 
@@ -160,7 +160,7 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 .NOO>a {color:black}
 .zoom {background:url(/img/zoom.png);background-size:32;display:block;position:absolute;width:32px;height:32px;top:5;left:5;z-index:4;cursor:pointer}
 #zoomContent {display:none;position:fixed;background:rgba(0,0,0,0.90);width:100%;height:400px;top:150px;z-index:99}
-#zoomIMG {display:block;position:absolute;top:0;left:28.5px;width:640px;height:400px;z-index:100}
+#zoomIMG {display:block;position:absolute;top:0;width:696px;height:400px;z-index:100;}
 .Welcome>p {cursor:default}
 .Welcome>p::selection {background:none}
 
