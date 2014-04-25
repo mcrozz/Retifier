@@ -22,7 +22,8 @@ if (window.location.pathname === '/background.html') {
         JSON.parse(localStorage.App_Version); 
         $.getJSON('./manifest.json', function (d){
             localJSON('App_Version', 'c', ['Got', 'v.'+d.version]);
-            if (local.App_Version.Ver !== d.version) {
+            localJSON('App_Version', 'c', ['Ver', 'v.'+d.version]);
+            if (local.App_Version.Ver !== 'v.'+d.version) {
                 notifyUser("Extension has been updated", "From "+local.App_Version.Ver+" to "+d.version, "ScriptUpdate", 'Upd'+Math.floor(Math.random(100)*100));
                 localStorage.App_Version_Update=true;
                 localStorage.App_Version_Try=0
