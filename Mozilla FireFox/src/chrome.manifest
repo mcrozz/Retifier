@@ -1,4 +1,0 @@
-content TwitchTVnotifier chrome/content/
-overlay chrome://browser/content/browser.xul chrome://TwitchTVnotifier/content/toolbar.xul
-skin TwitchTVnotifier classic/1.0 skin/
-style chrome://TwitchTVnotifier/skin/style.css
