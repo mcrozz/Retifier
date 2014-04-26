@@ -15,7 +15,7 @@
 */
 if (window.location.pathname === '/background.html') {
     $.ajaxSetup ({cache:false,crossDomain:true});
-    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"Status":true,"online":true,"update":false,"sound_Status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
+    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
     if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
     try { 
@@ -31,11 +31,29 @@ if (window.location.pathname === '/background.html') {
         });
     }
     catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.4", "Got": "v.1.3.9.4"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
+    chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
+    //chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
+    //chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
+}
+function err(msg) { var d = (new Date()); console.error('['+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+']: '+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
+function log(msg) { var d = (new Date()); console.log('['+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+']: '+msg); }
+function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
+function doc(id){return document.getElementById(id);}
+function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
+function Animation(id, n, f) {
+    if (doc(id)) {
+        var ci = $('#'+id);
+        if (!n[1]) ci.show();
+        if (!n[2]) n[2]=1;
+        ci.css('-webkit-animation', n[0]+' both '+n[2]+'s');
+        setTimeout(function(){
+            if (n[1]) ci.hide();
+            if (typeof f === 'function') f();
+        }, 1000*n[2]);
+    }
 }
 
-var NotificationsCount = 0,
-    NameBuffer = [];
-
+var ncnt = 0, NameBuffer = [];
 local = {};
 
 function loc() {
@@ -45,24 +63,17 @@ function loc() {
     local.App_Version = JSON.parse(localStorage.App_Version);
 }
 
-try { loc() } catch(e) { console.error(e.stack) }
+try { loc() } catch(e) { err(e) }
 
 setInterval(function(){
     if (typeof localStorage.ChangedBG !== 'undefined' && window.location.pathname === '/background.html') {
-        try { loc(); localStorage.removeItem('ChangedBG') } catch(e) { console.error(e.stack) }
+        try { loc(); localStorage.removeItem('ChangedBG') } catch(e) { err(e) }
     } else if (typeof localStorage.ChangedPP !== 'undefined' && window.location.pathname === '/popup.html') {
-        try { loc(); localStorage.removeItem('ChangedPP') } catch(e) { console.error(e.stack) }
+        try { loc(); localStorage.removeItem('ChangedPP') } catch(e) { err(e) }
     }
 }, 100);
 
 if (localStorage.Status&&localStorage.Config) {
-    function err(msg) { console.error('[ERROR] ' + msg.substring(7)); }
-
-    function TimeNdate(d,m) {
-        var j = [31,28,31,30,31,30,31,31,30,31,30,31];
-        return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]);
-    }
-
     function localJSON(name,type,arrayz) {
         function chd() {localStorage.ChangedBG = 'y'; localStorage.ChangedPP = 'y'}
         try {
@@ -95,8 +106,7 @@ if (localStorage.Status&&localStorage.Config) {
                 return JSON.parse(localStorage[name]);
             } else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
         } catch (e) {
-            err('[0x02] localJSON() ended with error: ' + e.message);
-            console.debug(e.stack);
+            err(e);
             return "ERROR";
         }
     }
@@ -124,32 +134,12 @@ if (localStorage.Status&&localStorage.Config) {
                 } else { local.FollowingList[id].Stream = false; }
                 return localStorage.FollowingList = JSON.stringify(local.FollowingList);
             }
-        } catch (e) {
-            err('[0x03] FollowingList() ended with error: ' + e.message);
-            console.debug(e.stack);
-            return false;
-        }
+        } catch (e) { err(e); return false; }
         return Error('Nope');
     }
 
-    function doc(id){return document.getElementById(id);}
-    function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
-
-    function Animation(id, n, f) {
-        if (doc(id)) {
-            var ci = $('#'+id);
-            if (!n[1]) ci.show();
-            if (!n[2]) n[2] = 1;
-            ci.css('-webkit-animation', n[0]+' both '+n[2]+'s');
-            setTimeout(function(){
-                if (n[1]) ci.hide();
-                if (typeof f === 'function') f();
-            }, 1000 * n[2]);
-        }
-    }
-
     function notifyUser(streamerName, titleOfStream, type, streamer) {
-        if (window.location.pathname !== '/background.html') return;
+        if (window.location.pathname !== '/background.html') return false;
         function delNotify(id, types) {
             var idToDel = id, times;
             if (types == 'Online') { times = 1000*15 }
@@ -159,12 +149,12 @@ if (localStorage.Status&&localStorage.Config) {
         }
 
         function sendNotify(tle, msg, strm, upd) {
-            console.debug(TimeNdate(0, 0, '/') + ': ' + tle + ' -  ' + msg);
+            log(tle+' - '+msg);
             var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
             if (upd !== 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
             chrome.notifications.create('n'+strm, NotifyConf, function(){});
             delNotify('n'+strm, upd);
-            if (local.Config.Notifications.status) {
+            if (local.Config.Notifications.sound_status) {
                 var Audio = document.createElement('audio');
                 Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
                 Audio.autoplay = 'autoplay';
@@ -176,26 +166,17 @@ if (localStorage.Status&&localStorage.Config) {
 
         if (local.Config.Notifications.status) {
             if (type === 'Online' && local.Config.Notifications.online) {
-                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-                NotificationsCount++;
-                NameBuffer.push(streamer);
+                sendNotify(streamerName, titleOfStream, ncnt, type);
+                ncnt++; NameBuffer.push(streamer);
             } else if (type === 'Changed' && local.Config.Notifications.update) {
-                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-                NotificationsCount++;
-                NameBuffer.push(streamer);
+                sendNotify(streamerName, titleOfStream, ncnt, type);
+                ncnt++; NameBuffer.push(streamer);
             } else if (type === 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
-                sendNotify(streamerName, titleOfStream, NotificationsCount, type);
-                NotificationsCount++;
-                NameBuffer.push(' ');
-            } else {
-                console.debug(TimeNdate(0, 0, '/') + ': ' + streamerName + ' ' + titleOfStream + '   [Was not displayed]')
-            }
+                sendNotify(streamerName, titleOfStream, ncnt, type);
+                ncnt++; NameBuffer.push(' ');
+            } else { log(streamerName+' '+titleOfStream+' :: [Was not displayed]'); }
         }
     }
-
-    chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
-    chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
-    chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
 
     var _gaq=_gaq||[];
     _gaq.push(['_setAccount','UA-25472862-3']);

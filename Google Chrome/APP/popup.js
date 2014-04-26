@@ -24,13 +24,6 @@ function CSScompiler() {
 		localJSON('Config', 'c', ['Format', 'Grid']);
 		CSScompiler()
 	} else {
-		AddAnyways = '::-webkit-scrollbar {width:12px}'+
-			'::-webkit-scrollbar-track {-webkit-box-shadow:inset 0 0 6px white,inset 0 0 6px black;border-radius:10px}'+
-			'::-webkit-scrollbar-thumb {-webkit-box-shadow:inset 0 0 6px rgba(0, 0, 0, 1);border-radius:10px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(158, 158, 158, 0.73)),to(rgba(77, 77, 77, 0.64)))}'+
-			'.GameTumb1 {z-index:2}'+
-			'.GameTumb2 {z-index:1}'+
-			'.LaunchStream {width:318px;height:49px;z-index:3;position:absolute;left:1;text-align:center;color:white;font-size:23;padding:75 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(95,29,194,0.66)),to(rgba(0,0,0,0.85)));cursor:pointer;transition:opacity 0.8s;opacity:0}'+
-			'.LaunchStream:hover {opacity:1}';
 		if (format == 'Full') {
 			css = '.StreamDuration {color:black;margin:0 0 0 17;display:inline-block}'+
 				'button:focus {outline-color:rgba(255,255,255,0)}'+
@@ -97,9 +90,7 @@ function CSScompiler() {
 				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
 				'button.button {font-size:22px;width:150px;height:30px}';
 		}
-		css += AddAnyways;
-		style.appendChild(document.createTextNode(css));
-		document.getElementsByTagName('head')[0].appendChild(style);
+		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
 	}
 }
 

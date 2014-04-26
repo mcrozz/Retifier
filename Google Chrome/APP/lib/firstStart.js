@@ -73,10 +73,7 @@ if (localStorage.Status != null && localStorage.Config != null) {
 								doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 							}
 						});
-					} catch(e) {
-						console.error(e.stack);
-						doc('FollowedChannelsOnline').innerHTML = "Error :(, please, restart extension";
-					}
+					} catch(e) { err(e); doc('FollowedChannelsOnline').innerHTML = "Error :(, please, restart extension"; }
 				});
 			});
 
