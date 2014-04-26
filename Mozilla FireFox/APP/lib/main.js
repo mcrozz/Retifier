@@ -14,6 +14,14 @@ var button = ToggleButton({
 		"32": self.data.url("img/icon.png"),
 		"64": self.data.url("img/icon.png")
 	},
+	contentScriptFile: [
+		self.data.url("lib/jquery-1.10.2.min.js"),
+		self.data.url("lib/functions.js"),
+		self.data.url("lib/firstStart.js"),
+		self.data.url("lib/whatsNew.js"),
+		self.data.url("insertFunc.js"),
+		self.data.url("popup.js")
+	],
 	onChange: handleChange
 });
 
