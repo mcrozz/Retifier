@@ -1,13 +1,17 @@
 # Screenshot
 ![Screenshot](/Google Chrome/screenshots/general.png)
 # In web stores
--Twitch.tv Notifier for Google Chrome
+-For Google Chrome:
+	[In Google Web Store]
 
-[In Google Web Store]
-
--Twitch.tv Notifier for Mozilla FireFox
-
-Coming soon...
+-For Mozilla FireFox:
+	Coming soon...
+	
+-For Safari:
+	Coming soon...
+	
+-For Opera:
+	Coming soon...
 
 # Installation
 Copy this repo in any folder
