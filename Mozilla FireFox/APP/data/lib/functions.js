@@ -55,6 +55,7 @@ function Animation(id, n, f) {
 
 var ncnt = 0, NameBuffer = [];
 window.local = {};
+var notifications = require("sdk/notifications");
 
 function loc() {
     local.Config = JSON.parse(localStorage.Config);
@@ -151,9 +152,14 @@ if (localStorage.Status&&localStorage.Config) {
         function sendNotify(tle, msg, strm, upd) {
             log(tle+' - '+msg);
             var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
-            if (upd !== 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
-            chrome.notifications.create('n'+strm, NotifyConf, function(){});
-            delNotify('n'+strm, upd);
+            notifications.notify({
+                title: tle,
+                text: msg,
+                iconURL: "/img/icon.png",
+                onClick: function (data) {
+                    log(data);
+                }
+            });
             if (local.Config.Notifications.sound_status) {
                 var Audio = document.createElement('audio');
                 Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
