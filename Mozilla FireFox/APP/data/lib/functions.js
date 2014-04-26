@@ -151,15 +151,7 @@ if (localStorage.Status&&localStorage.Config) {
 
         function sendNotify(tle, msg, strm, upd) {
             log(tle+' - '+msg);
-            var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
-            notifications.notify({
-                title: tle,
-                text: msg,
-                iconURL: "/img/icon.png",
-                onClick: function (data) {
-                    log(data);
-                }
-            });
+            var g = Notification(title, {body:msg, icon:"/img/icon.png"});
             if (local.Config.Notifications.sound_status) {
                 var Audio = document.createElement('audio');
                 Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
