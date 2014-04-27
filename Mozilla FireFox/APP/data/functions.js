@@ -13,33 +13,33 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-if (window.location.pathname === '/background.html') {
-    $.ajaxSetup ({cache:false,crossDomain:true});
-    if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
-    if (!localStorage.Status) localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
-    if (!localStorage.FirstLaunch) localStorage.FirstLaunch='true';
-    try { 
-        JSON.parse(localStorage.App_Version); 
-        $.getJSON('./manifest.json', function (d){
-            localJSON('App_Version', 'c', ['Got', 'v.'+d.version]);
-            localJSON('App_Version', 'c', ['Ver', 'v.'+d.version]);
-            if (local.App_Version.Ver !== 'v.'+d.version) {
-                notifyUser("Extension has been updated", "From "+local.App_Version.Ver+" to "+d.version, "ScriptUpdate", 'Upd'+Math.floor(Math.random(100)*100));
-                localStorage.App_Version_Update=true;
-                localStorage.App_Version_Try=0
-            }
-        });
+try { 
+    JSON.parse(localStorage.App_Version); 
+    localJSON('App_Version', 'c', ['Got', 'v.'+items.version]);
+    localJSON('App_Version', 'c', ['Ver', 'v.1.0.0.0']);
+    if (local.App_Version.Ver !== 'v.1.0.0.0') {
+        //notifyUser("Extension has been updated", "From "+local.App_Version.Ver+" to "+d.version, "ScriptUpdate", 'Upd'+Math.floor(Math.random(100)*100));
+        localStorage.App_Version_Update=true;
+        localStorage.App_Version_Try=0
     }
-    catch(e) { localStorage.App_Version = '{"Ver": "v.1.3.9.4", "Got": "v.1.3.9.4"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
-    //chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
-    //chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
-    //chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
+} catch(e) { localStorage.App_Version = '{"Ver": "v.1.0.0.0", "Got": "v.1.0.0.0"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
+
+if (!localStorage.Config) localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
+if (!localStorage.Status) localStorage.Status = '{"update":7,"online":0,"checked":0,"StopInterval":false}';
+if (!localStorage.FirstLaunch) {
+    localStorage.FirstLaunch='true';
+    localStorage.Following = 0;
+    //localJSON('Status','c',['update',7]);
+    BadgeOnlineCount(' Hi ');
 }
+if (!localStorage.Following) localStorage.Following = 0;
+
+$.ajaxSetup ({cache:false,crossDomain:true});
 function err(msg) { var d = (new Date()); console.error('['+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+']: '+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
 function log(msg) { var d = (new Date()); console.log('['+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+']: '+msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
 function doc(id){return document.getElementById(id);}
-function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
+function BadgeOnlineCount(count) { /*chrome.browserAction.setBadgeText({ text: String(count) })*/ }
 function Animation(id, n, f) {
     if (doc(id)) {
         var ci = $('#'+id);
@@ -55,7 +55,6 @@ function Animation(id, n, f) {
 
 var ncnt = 0, NameBuffer = [];
 window.local = {};
-var notifications = require("sdk/notifications");
 
 function loc() {
     local.Config = JSON.parse(localStorage.Config);
@@ -66,17 +65,8 @@ function loc() {
 
 try { loc() } catch(e) { err(e) }
 
-setInterval(function(){
-    if (typeof localStorage.ChangedBG !== 'undefined' && window.location.pathname === '/background.html') {
-        try { loc(); localStorage.removeItem('ChangedBG') } catch(e) { err(e) }
-    } else if (typeof localStorage.ChangedPP !== 'undefined' && window.location.pathname === '/popup.html') {
-        try { loc(); localStorage.removeItem('ChangedPP') } catch(e) { err(e) }
-    }
-}, 100);
-
 if (localStorage.Status&&localStorage.Config) {
     function localJSON(name,type,arrayz) {
-        function chd() {localStorage.ChangedBG = 'y'; localStorage.ChangedPP = 'y'}
         try {
             var sz, b, h;
             if (name&&type=='c'&&arrayz) {
@@ -85,12 +75,12 @@ if (localStorage.Status&&localStorage.Config) {
                 if (sz == 2) {
                     b[arrayz[0]]=arrayz[1];
                     localStorage[name] = JSON.stringify(b);
-                    chd();
+                    loc();
                     return true;
                 } else if (sz == 3) {
                     b[arrayz[0]][arrayz[1]] = arrayz[2];
                     localStorage[name] = JSON.stringify(b);
-                    chd();
+                    loc();
                     return true;
                 } else {
                     return false;
@@ -140,7 +130,7 @@ if (localStorage.Status&&localStorage.Config) {
     }
 
     function notifyUser(streamerName, titleOfStream, type, streamer) {
-        if (window.location.pathname !== '/background.html') return false;
+        if (window.location.pathname.indexOf('/background.html') === -1) return false;
         function delNotify(id, types) {
             var idToDel = id, times;
             if (types == 'Online') { times = 1000*15 }
