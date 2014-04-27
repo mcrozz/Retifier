@@ -1,41 +1,33 @@
 var { ToggleButton } = require('sdk/ui/button/toggle');
 var panels = require("sdk/panel");
 var self = require("sdk/self");
+var data = self.data;
 
-pageWorker = require("sdk/page-worker").Page({
-	contentURL: self.data.url("background.html")
-});
+var tabs = require("sdk/tabs");
+
+//pageWorker = require("sdk/page-worker").Page({ contentURL: data.url("background.html") });
 
 var button = ToggleButton({
-	id: "my-button",
-	label: "my button",
+	id: "twitchtv_notifier",
+	label: "Who's online?",
 	icon: {
-		"16": self.data.url("img/icon.png"),
-		"32": self.data.url("img/icon.png"),
-		"64": self.data.url("img/icon.png")
+		"16": data.url("icon.png"),
+		"32": data.url("icon.png"),
+		"64": data.url("icon.png")
 	},
-	contentScriptFile: [
-		self.data.url("lib/jquery-1.10.2.min.js"),
-		self.data.url("lib/functions.js"),
-		self.data.url("lib/firstStart.js"),
-		self.data.url("lib/whatsNew.js"),
-		self.data.url("insertFunc.js"),
-		self.data.url("popup.js")
-	],
 	onChange: handleChange
 });
 
 var panel = panels.Panel({
 	width: 697,
 	height: 584,
-	contentURL: self.data.url("popup.html"),
+	contentURL: data.url("popup.html"),
 	onHide: handleHide
 });
 
 function handleChange(state) {
-	if (state.checked) {
-		panel.show({ position: { right: 15, top: 0 } });
-	}
+	//if (state.checked) { panel.show({ position: { right: 15, top: 0 } }); }
+	tabs.open(data.url("popup.html"));
 }
 
 function handleHide() {
