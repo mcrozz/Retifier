@@ -30,12 +30,6 @@ BadgeOnlineCount(0);
 localJSON('Status', 'c', ['online', 0]);
 for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
 
-if (localStorage.FirstLaunch === 'true') {
-    localStorage.Following = 0;
-    localJSON('Status','c',['update',7]);
-    BadgeOnlineCount(' Hi ');
-}
-
 function CheckFollowingList() {
     function checkStatus(url,key) {
         var checkStatus = $.getJSON(url)

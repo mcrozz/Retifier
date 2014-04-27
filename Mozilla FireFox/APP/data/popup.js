@@ -31,7 +31,7 @@ function CSScompiler() {
 				'.viewers {width:160px;height:20px;display:inline-block;text-align:right}'+
 				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
 				'.content {height:200px;width:685px;padding:2;position:relative;font-size:17}'+
-				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.tumblr {background:url("/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
 				'.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}'+
 				'.informationTextTitle {width:337px;height:20px;display:block;border-bottom:1px solid black;margin-bottom:5px;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3}'+
 				'.informationTextStreamer {cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}'+
@@ -57,7 +57,7 @@ function CSScompiler() {
 				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
 				'.informationTextViewers {cursor:default;display:inline;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
 				'.informationTextGame {cursor:pointer;font-size:16;color:black;display:inline-block;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:195px;left:145px;text-align:center}'+
-				'.tumblr {background:url("/img/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}'+
+				'.tumblr {background:url("/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}'+
 				'.LaunchStream {display:none!important}'+
 				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1}'+
 				'.TumbStream {width:90px;height:60px}'+
@@ -74,7 +74,7 @@ function CSScompiler() {
 				'.viewers {width:150px;height:20px;display:inline-block;text-align:right}'+
 				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
 				'.content {height:290px;width:330px;padding:2;position:relative;display:inline-block;margin-left:7}'+
-				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.tumblr {background:url("/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
 				'.information {width:315px;height:90px;display:inline;position:absolute;left:15;top:200}'+
 				'.informationTextTitle {height:20px;display:inline-block;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;border-bottom:1px black solid}'+
 				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3}'+

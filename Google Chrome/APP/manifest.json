@@ -9,10 +9,10 @@
 	"page": "background.html"
   },
   "icons": {
-	"16": "/img/icon.png",
-	"48": "/img/icon.png",
-	"128": "/img/icon.png",
-	"256": "/img/icon.png",
+  	"16": "/img/icon.png",
+  	"48": "/img/icon.png",
+  	"128": "/img/icon.png",
+  	"256": "/img/icon.png",
     "512": "/img/icon.png"
   },
   "permissions": ["http://*.twitch.tv/", "https://*.twitch.tv/", "https://*.mcrozz.net/", "http://*.jtvnw.net/ttv-boxart/*", "notifications", "cookies", "storage"],
