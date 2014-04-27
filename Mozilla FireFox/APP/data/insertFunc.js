@@ -30,7 +30,7 @@ function InsertOnlineList() {
 		}
 	}
 
-	if (localJSON('Status','v',['online']) <= 2) doc('insertContentHere').style.overflow='hidden'
+	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
 	var c = local.Config.Format,
 		FollowList = local.FollowingList,
@@ -119,7 +119,7 @@ function InsertOnlineList() {
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
 				if (StreamGame != 'Not playing') {
 					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
-					doc('stream_game_2_img_'+i).setAttribute('style','background:url("/img/playing.png");background-size:'+Num2+';cursor:pointer')
+					doc('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:'+Num2+';cursor:pointer')
 				} else {
 					$('#stream_game_'+i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
