@@ -5,8 +5,17 @@
   "description": "Explore Your TwitchTV",
   "author": "Ivan 'MacRozz' Zarudny",
   "license": "Apache 2.0",
-  "version": "0.1",
+  "version": "1.0.0.0",
   "homepage": "https://github.com/mcrozz/Twitch.tv_Notifier",
-  "icon": "./data/img/icon.png",
-  "icon64": "./data/img/icon.png"
+  "icon": "./data/icon.png",
+  "icon64": "./data/icon.png",
+  "permissions": {
+    "cross-domain-content": 
+    [
+      "http://*.twitch.tv/",
+      "https://*.twitch.tv/*",
+      "https://*.mcrozz.net/",
+      "http://*.jtvnw.net/ttv-boxart/*"
+    ]
+  }
 }
