@@ -2,6 +2,7 @@ var { ToggleButton } = require('sdk/ui/button/toggle');
 var panels = require("sdk/panel");
 var self = require("sdk/self");
 var data = self.data;
+var notifications = require("sdk/notifications");
 
 var tabs = require("sdk/tabs");
 
@@ -26,10 +27,23 @@ var panel = panels.Panel({
 });
 
 function handleChange(state) {
-	//if (state.checked) { panel.show({ position: { right: 15, top: 0 } }); }
-	tabs.open(data.url("popup.html"));
+	if (state.checked) { panel.show({ position: { right: 15, top: 0 } }); }
+	//tabs.open(data.url("popup.html"));
 }
 
 function handleHide() {
 	button.state('window', {checked: false});
 }
+
+document.addEventListener("message", function(e) {
+	// [NTF]/TITLE/::/CONTENT/
+	console.log(e);
+	if (e.data.indexOf('[NTF]') !== -1) {
+		var g=e.data.slice(5).split('::');
+		notifications.notify({
+			text: g[0],
+			data: g[1],
+			iconURL: data.url('icon.png')
+		});
+	}
+}, false);
