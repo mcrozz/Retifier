@@ -130,21 +130,12 @@ if (localStorage.Status&&localStorage.Config) {
     }
 
     function notifyUser(streamerName, titleOfStream, type, streamer) {
-        if (window.location.pathname.indexOf('/background.html') === -1) return false;
-        function delNotify(id, types) {
-            var idToDel = id, times;
-            if (types == 'Online') { times = 1000*15 }
-            else if (types == 'Changed') { times = 1000*10 }
-            else { times = 1000*20 }
-            setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
-        }
-
         function sendNotify(tle, msg, strm, upd) {
             log(tle+' - '+msg);
-            var g = Notification(title, {body:msg, icon:"/img/icon.png"});
+            window.postMessage('[NTF]'+tle+'::'+msg, '*');
             if (local.Config.Notifications.sound_status) {
                 var Audio = document.createElement('audio');
-                Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
+                Audio.src = '/Music/'+local.Config.Notifications.sound+'.mp3';
                 Audio.autoplay = 'autoplay';
                 $('body').appendTo(Audio);
                 //setTimeout(function(){$('audio')[0].remove();},1000*10);

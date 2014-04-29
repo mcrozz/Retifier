@@ -60,26 +60,21 @@ function lgin() {
 					log('Got message');
 					if (f === undefined || f === 'ERROR') throw Error();
 					localJSON('Config','c',['token', f]);
-					$.ajax({
-						url: 'https://api.twitch.tv/kraken/user?oauth_token='+f,
-						type: 'GET',
-						dataType: 'jsonp',
-						complete: function(e){
-							log('Got user');
-							if (e.name !== undefined) {
-								localJSON('Config','c',['User_Name', e.name]);
-								doc('ChgUsr').disabled = false;
-								doc('LstFlwdChnls').disabled = false;
-								doc('Direct').disabled = false;
-								doc('Dashboard').disabled = false;
-								localJSON('Status','c',['update',0]);
-						        localStorage.FirstLaunch = 'false';
-								doc('insertContentHere').innerHTML = null;
-								localJSON('Status','c',['StopInterval',true]);
-								doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
-							}
-						}
-					});
+					$.ajax({url:'https://api.twitch.tv/kraken/user?oauth_token='+f,dataType:'JSONP',complete:function(e){
+						log('Got user');
+						if (e.responseJSON.name !== undefined) {
+							localJSON('Config','c',['User_Name', e.responseJSON.name]);
+							doc('ChgUsr').disabled = false;
+							doc('LstFlwdChnls').disabled = false;
+							doc('Direct').disabled = false;
+							doc('Dashboard').disabled = false;
+							localJSON('Status','c',['update',0]);
+					        localStorage.FirstLaunch = 'false';
+							doc('insertContentHere').innerHTML = null;
+							localJSON('Status','c',['StopInterval',true]);
+							doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
+						} else { err({message:'Cannot get user name from response',stack:e}); }
+					}});
 				} catch(e) { err(e); doc('FollowedChannelsOnline').innerHTML = "Error :(, please, restart extension"; }
 			});
 		});

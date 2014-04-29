@@ -116,10 +116,10 @@ function InsertOnlineList() {
 				if (FirstLoadInsertFunc != 1) Animation(i, ['fadeIn', false]);
 				TimersetToUpdate.push(i);
 
-				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer');
+				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
 				if (StreamGame != 'Not playing') {
-					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+';cursor:pointer')
-					doc('stream_game_2_img_'+i).setAttribute('style','background:url("/playing.png");background-size:'+Num2+';cursor:pointer')
+					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
+					doc('stream_game_2_img_'+i).setAttribute('style','background:url("playing.png");background-size:'+Num2+'px;cursor:pointer')
 				} else {
 					$('#stream_game_'+i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
@@ -166,15 +166,15 @@ function InsertOnlineList() {
 				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
 
 				if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+';cursor:pointer;z-index:0');
+					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
 				
 				if (StreamGame == 'Not playing') {
 					$('#stream_game_' + i).css('cursor', 'default');
 					$('#stream_game_2_' + i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
 					$('#stream_game_2_img_'+i).hide();
-				} else if (doc('stream_game_img_'+i).style.background.match(/rt\/\S+\.jpg/)[0].slice(3) != encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
-					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/' + StreamGame + '.jpg");background-size:' + Num2 + ';cursor:pointer')
+				} else if (doc('stream_game_img_'+i).style.background.match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
+					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
 				}
 			}
 		}
