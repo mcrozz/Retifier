@@ -12,10 +12,11 @@
   "permissions": {
     "cross-domain-content": 
     [
-      "http://*.twitch.tv/",
-      "https://*.twitch.tv/*",
-      "https://*.mcrozz.net/",
-      "http://*.jtvnw.net/ttv-boxart/*"
+      "http://www.twitch.tv/",
+      "https://api.twitch.tv/",
+      "https://www.twitch.tv/",
+      "https://www.mcrozz.net/",
+      "http://static-cdn.jtvnw.net/ttv-boxart/"
     ]
   }
 }
