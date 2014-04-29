@@ -5,7 +5,7 @@
 	[In Google Web Store]
 
 -For Mozilla FireFox:
-	Coming soon...
+	[In Mozilla Add-Ons]
 	
 -For Safari:
 	Coming soon...
@@ -38,3 +38,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 [In Google Web Store]: <http://bit.ly/TwitchNotifer>
+[In Mozilla Add-Ons]: <http://bit.ly/TwitchTVfox>
