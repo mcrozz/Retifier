@@ -141,10 +141,12 @@ if (localStorage.Status&&localStorage.Config) {
     function notifyUser(streamerName, titleOfStream, type, streamer) {
         if (window.location.pathname !== '/background.html') return false;
         function delNotify(id, types) {
-            var idToDel = id, times;
-            if (types == 'Online') { times = 1000*15 }
-            else if (types == 'Changed') { times = 1000*10 }
-            else { times = 1000*20 }
+            var idToDel = id, times = 1000;
+            switch (types) {
+                case 'Online': times *= 120; break;
+                case 'Changed': times *= 60; break;
+                default: times *= 60; break;
+            }
             setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
         }
 
@@ -156,11 +158,8 @@ if (localStorage.Status&&localStorage.Config) {
             delNotify('n'+strm, upd);
             if (local.Config.Notifications.sound_status) {
                 var Audio = document.createElement('audio');
-                Audio.src = '/Music/' + localJSON('Config', 'v', ['Notifications', 'sound']) + '.mp3';
+                Audio.src = '/Music/'+local.Config.Notifications.sound+'.mp3';
                 Audio.autoplay = 'autoplay';
-                $('body').appendTo(Audio);
-                //setTimeout(function(){$('audio')[0].remove();},1000*10);
-                //Audio.play()
             }
         }
 
