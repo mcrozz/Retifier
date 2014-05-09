@@ -5,7 +5,7 @@
 	[In Google Web Store]
 
 -For Mozilla FireFox:
-	[In Mozilla Add-Ons] (currently disabled)
+	[In Mozilla Add-Ons]
 	
 -For Safari:
 	Coming soon...
