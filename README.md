@@ -1,5 +1,5 @@
 # Screenshot
-![Screenshot](/Google Chrome/screenshots/general.png)
+![Screenshot](/screenshots/general.png)
 # In web stores
 -For Google Chrome:
 	[In Google Web Store]
