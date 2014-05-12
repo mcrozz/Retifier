@@ -1,26 +1,19 @@
 # Screenshot
 ![Screenshot](/screenshots/general.png)
-# In web stores
--For Google Chrome:
-	[In Google Web Store]
 
--For Mozilla FireFox:
-	[In Mozilla Add-Ons]
-	
--For Safari:
-	Coming soon...
-	
--For Opera:
-	Coming soon...
+# In web stores
+
+* For Google Chrome: [In Google Web Store](http://bit.ly/TwitchNotifer)
+* For Mozilla FireFox: [In Mozilla Add-Ons](http://bit.ly/TwitchTVfox)
+* For Safari:	Coming soon...
+* For Opera: [In Opera Add-Ons](http://bit.ly/TwitchOpera)
 
 # Installation
-Copy this repo in any folder
 
-Start build.py or build.cmd (Located in folder "Google Chrome")
-
-Choose debug
-
-In Google Chrome: Tools -> Extensions -> Load unpacked extension, now choose "debug" folder, which located in folder "Google Chrome"
+* Clone https://github.com/mcrozz/Twitch.tv_Notifier
+* Start build.py or build.cmd
+* Enable developer mode in browser
+* Load as unpacked extension
 
 # License
 Copyright 2014 Ivan 'MacRozz' Zarudny
@@ -36,6 +29,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-[In Google Web Store]: <http://bit.ly/TwitchNotifer>
-[In Mozilla Add-Ons]: <http://bit.ly/TwitchTVfox>
