@@ -36,9 +36,17 @@ function InsertOnlineList() {
 		FollowList = local.FollowingList,
         Num, Num2, Num3, Num4, Num6;
 
-	if (c == 'Grid') { Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; }
-	else if (c == 'Full') { Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
-	else { Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; };
+	switch (c) {
+		case 'Grid':
+			Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315;
+			break;
+		case 'Full':
+			Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340;
+			break;
+		default:
+			Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180;
+			break;
+	}
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
 		var StreamTitle = FollowList[i].Stream.Title,
@@ -50,7 +58,7 @@ function InsertOnlineList() {
 			SLU, dc;
 
 		if (FollowList[i].Stream) {
-			dc = doc('textWidth')
+			dc = doc('textWidth');
 			dc.style.fontSize = Num4+'px';
 			dc.innerHTML = StreamTitle;
 			if (dc.offsetWidth > Num) TitleWidth = true;
@@ -207,18 +215,34 @@ setInterval(function(){
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
-	if (Upd === 0) {j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');}
-	else if (Upd === 1) {j.innerHTML='Behold! Update!'; progressBar(); spin(); }
-	else if (Upd === 2) {j.innerHTML='Updating list of followed channels...'; progressBar(); spin();}
-	else if (Upd === 3) {j.innerHTML='List of followed channels updated.'; progressBar(); spin();}
-	else if (Upd === 4) {j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();}
-	else if (Upd === 5) {j.innerHTML='App have a problem with update'}
-	else if (Upd === 6) {j.innerHTML="Name doesn't set up yet!"}
+	switch (Upd) {
+		case 0:
+			j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');
+			break;
+		case 1:
+			j.innerHTML='Behold! Update!'; progressBar(); spin();
+			break;
+		case 2:
+			j.innerHTML='Updating list of followed channels...'; progressBar(); spin();
+			break;
+		case 3:
+			j.innerHTML='List of followed channels updated.'; progressBar(); spin();
+			break;
+		case 4:
+			j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();
+			break;
+		case 5:
+			j.innerHTML='App have a problem with update';
+			break;
+		case 6:
+			j.innerHTML="Name doesn't set up yet!";
+			break;
+	}
 }, 100);
 secthr = false;
 setInterval(function(){ secthr = secthr ? false : true; },800);
 
-setInterval(function(){
+var run = function() {
 	if (local.Config.Duration_of_stream) {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
@@ -242,7 +266,7 @@ setInterval(function(){
 		}
 	} 
 
-	function donationUnit() {
+	(function() {
 		if (typeof local.Config.Timeout !== 'undefined') {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
 			dif/=86400000;
@@ -261,10 +285,10 @@ setInterval(function(){
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);_gaq.push(['_setCustomVar',4,'PayPalButton','false',1])});
-			$('#PayPalCheckOut').on('click', function(){_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1])});},100);
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);ga('set','PayPalButton','false')});
+			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});},100);
 		}
-	}
-	donationUnit();
+	})();
 	InsertOnlineList()
-},1000);
+};
+setInterval(run, 1000);

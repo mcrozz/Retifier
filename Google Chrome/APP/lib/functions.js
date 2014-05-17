@@ -177,11 +177,33 @@ if (localStorage.Status&&localStorage.Config) {
         }
     }
 
-    var _gaq=_gaq||[];
-    _gaq.push(['_setAccount','UA-25472862-3']);
-    _gaq.push(['_setCustomVar',3,'App_Version',local.App_Version.Ver,1]);
-    _gaq.push(['_trackPageview']);
+    // https://www.google-analytics.com
+    (function(i,s,o,g,r,a,m){
+        i['GoogleAnalyticsObject']=r;
+        i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
+        i[r].l=1*new Date();
+        a=s.createElement(o), m=s.getElementsByTagName(o)[0];
+        a.async=1; a.src=g;
+        m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    (function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src='https://ssl.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s)})()
+    ga('create', 'UA-25472862-3', 'mcrozz.ru');
+    ga('send', 'pageview');
+    ga('set', 'App_Version', local.App_Version.Ver);
 
+    // https://www.parsecdn.com
+    if (window.location.pathname === '/background.html') {
+        (function(){
+            var p=document.createElement('script'),
+                s=document.getElementsByTagName('script')[0];
+            p.type='text/javascript';p.async=true;
+            p.src='https://www.parsecdn.com/js/parse-1.2.18.min.js';
+            p.onload = function() {
+                Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE", "h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
+                var sj = new Parse.Query(Parse.Object.extend('Donators'));
+                sj.each(function(e){ if (e.attributes.User === local.Config.User_Name) localJSON('Config','c',['Timeout', 1337]); });
+            };
+            s.parentNode.insertBefore(p,s);
+        })();
+    }
 }

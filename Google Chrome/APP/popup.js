@@ -151,7 +151,7 @@ function clickChangeUser() {
 	
 	doc('List_Format_List').value = local.Config.Format;
 
-	_gaq.push(['_trackEvent', 'Options', 'clicked'])
+	ga('set', 'Options', 'clicked');
 }
 
 function clickChangeUserCls() {
@@ -306,8 +306,8 @@ $(window).on('load',function() {
 	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
 	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
 	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
-	ael('Dashboard', 0, function(){ _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
-	ael('Direct', 0, function(){ _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
+	ael('Dashboard', 0, function(){ ga('set', 'Dashboard', 'clicked'); window.open('http://www.twitch.tv/broadcast/dashboard') });
+	ael('Direct', 0, function(){ ga('set', 'Direct', 'clicked'); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
