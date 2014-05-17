@@ -1,5 +1,5 @@
 # Screenshot
-![Screenshot](/screenshots/general.png)
+![Screenshot](/screenshots/ScreenShot_1.png)
 
 # In web stores
 
