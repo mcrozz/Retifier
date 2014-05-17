@@ -210,20 +210,13 @@ setInterval(function(){
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
 	switch (Upd) {
- 		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');
- 			break;
- 		case 1: j.innerHTML='Behold! Update!'; progressBar(); spin();
- 			break;
- 		case 2: j.innerHTML='Updating list of followed channels...'; progressBar(); spin();
- 			break;
- 		case 3: j.innerHTML='List of followed channels updated.'; progressBar(); spin();
- 			break;
- 		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();
- 			break;
- 		case 5: j.innerHTML='App have a problem with update';
- 			break;
- 		case 6: j.innerHTML="Name doesn't set up yet!";
- 			break;
+ 		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' '); break;
+ 		case 1: j.innerHTML='Behold! Update!'; progressBar(); spin(); break;
+ 		case 2: j.innerHTML='Updating list of followed channels...'; progressBar(); spin(); break;
+ 		case 3: j.innerHTML='List of followed channels updated.'; progressBar(); spin(); break;
+ 		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin(); break;
+ 		case 5: j.innerHTML='App have a problem with update'; break;
+ 		case 6: j.innerHTML="Name doesn't set up yet!"; break;
 	}
 }, 100);
 secthr = false;
@@ -272,11 +265,11 @@ var run = function() {
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);_gaq.push(['_setCustomVar',4,'PayPalButton','false',1])});
-			$('#PayPalCheckOut').on('click', function(){_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1])});},100);
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);ga('set', 'PayPalButton','false')});
+			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});},100);
 		}
 	})();
-	donationUnit();
 	InsertOnlineList()
 };
+setTimeout(run, 100);
 setInterval(run, 1000);
