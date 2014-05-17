@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.6 Bugfix",
     "-1.3.9.5 Hotfix",
     "-1.3.9.4 Fixed zoomed prewiew ratio",
     "-1.3.9.3 Fixed Donation tab, various improvements",
@@ -55,9 +56,9 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.5": {
-        "msg": "Improvements",
-        "contain": "-Fixed zoomed preview ratio <br /> -I'm out of ideas how to improve style of this extension. If you got any wishes/desire or an idea, please contact me at <a href='https://twitter.com/iZarudny' target='_blank'>my Twitter @iZarudny</a> or <a href='https://chrome.google.com/webstore/support/mmemeoejijknklekkdacacimmkmmokbn?hl=en&gl=RU#bug' target='_blank'>Chrome Web Store support of mine extension</a>"
+    "v.1.3.9.6": {
+        "msg": "Bugfix",
+        "contain": "-Fixed increasing online string"
     }
 };
 
@@ -71,9 +72,6 @@ function versionCheck() {
         if (localStorage.App_Version_Update === 'true') {
             localStorage.App_Version_Try = trys+1;
             localJSON('App_Version', 'c', ['Ver', versions.Got]);
-            
-            if (local.Config.Duration_of_stream === 'Enable') localJSON('Config','c',['Duration_of_stream', true]);
-            if (local.Config.Duration_of_stream === 'Disable') localJSON('Config','c',['Duration_of_stream', false]);
 
             /*doc('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
                 '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
