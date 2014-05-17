@@ -49,7 +49,7 @@ function CheckFollowingList() {
             localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
 
             if (checkStatus.responseJSON.stream) {
-                if (!local.FollowingList[key].Stream.Title) localJSON('Status', 'c', ['online', local.Status.online + 1]);
+                if (!local.FollowingList[key].Stream.Title && !local.FollowingList[key].Stream.Game) localJSON('Status', 'c', ['online', local.Status.online + 1]);
 
                 var Game = checkStatus.responseJSON.stream.game,
                     Status = checkStatus.responseJSON.stream.channel.status,
@@ -58,7 +58,7 @@ function CheckFollowingList() {
 
                 if (Status == null) Status = 'Untitled stream';
                 if (Game == null) Game = 'Not playing';
-                if (local.FollowingList[key].Stream.Title == null) notifyUser(Name+' just went live!',Status,'Online',Name);
+                if (local.FollowingList[key].Stream.Title === null && local.FollowingList[key].Stream.Game === null) notifyUser(Name+' just went live!',Status,'Online',Name);
                 if (local.FollowingList[key].Stream.Title != Status && local.FollowingList[key].Stream.Title != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
                 if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
                 else { Time2 = local.FollowingList[key].Stream.Time }
@@ -138,11 +138,3 @@ setInterval(function(){
         localJSON('Status','c',['StopInterval', false])
     }
 },500);
-setInterval(function(){
-    // Get donation list
-    $.ajax({
-        url: "https://www.mcrozz.net/app/Twitch.tv_Notifier/DonationsList.php",
-        complete: function(data) { try {var rsp = JSON.parse(data.responseText)} catch (e) {log(e.stack)} if (rsp.indexOf(hex_md5(local.Config.User_Name)) != -1 ) localJSON('Config','c',['Timeout', 1337]); },
-        error: function() { err('Failed to get donations list...'); }
-    });
-},3600000);

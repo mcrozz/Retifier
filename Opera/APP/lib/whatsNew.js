@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-0.9.0.1 Bugfix",
     "-0.9.0.0 First publish in Opera Web Store"
 ];
 messages = {
