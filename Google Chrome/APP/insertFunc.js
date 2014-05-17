@@ -37,15 +37,9 @@ function InsertOnlineList() {
         Num, Num2, Num3, Num4, Num6;
 
 	switch (c) {
-		case 'Grid':
-			Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315;
-			break;
-		case 'Full':
-			Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340;
-			break;
-		default:
-			Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180;
-			break;
+		case 'Grid': Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
+		case 'Full': Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
+		default: Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; break;
 	}
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
@@ -216,27 +210,13 @@ setInterval(function(){
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
 	switch (Upd) {
-		case 0:
-			j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');
-			break;
-		case 1:
-			j.innerHTML='Behold! Update!'; progressBar(); spin();
-			break;
-		case 2:
-			j.innerHTML='Updating list of followed channels...'; progressBar(); spin();
-			break;
-		case 3:
-			j.innerHTML='List of followed channels updated.'; progressBar(); spin();
-			break;
-		case 4:
-			j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();
-			break;
-		case 5:
-			j.innerHTML='App have a problem with update';
-			break;
-		case 6:
-			j.innerHTML="Name doesn't set up yet!";
-			break;
+		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' '); break;
+		case 1: j.innerHTML='Behold! Update!'; progressBar(); spin(); break;
+		case 2: j.innerHTML='Updating list of followed channels...'; progressBar(); spin(); break;
+		case 3: j.innerHTML='List of followed channels updated.'; progressBar(); spin(); break;
+		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin(); break;
+		case 5: j.innerHTML='App have a problem with update'; break;
+		case 6: j.innerHTML="Name doesn't set up yet!"; break;
 	}
 }, 100);
 secthr = false;
