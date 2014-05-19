@@ -198,11 +198,7 @@ if (localStorage.Status&&localStorage.Config) {
                 s=document.getElementsByTagName('script')[0];
             p.type='text/javascript';p.async=true;
             p.src='https://www.parsecdn.com/js/parse-1.2.18.min.js';
-            p.onload = function() {
-                Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE", "h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-                var sj = new Parse.Query(Parse.Object.extend('Donators'));
-                sj.each(function(e){ if (e.attributes.User === local.Config.User_Name) localJSON('Config','c',['Timeout', 1337]); });
-            };
+            p.onload = function(){Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");var sj=new Parse.Query(Parse.Object.extend('Donators')),f;sj.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);}
             s.parentNode.insertBefore(p,s);
         })();
     }
