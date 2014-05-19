@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.7 Fixed notifications",
     "-1.3.9.6 Bugfix",
     "-1.3.9.5 Hotfix",
     "-1.3.9.4 Fixed zoomed prewiew ratio",
@@ -56,7 +57,7 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.6": {
+    "v.1.3.9.7": {
         "msg": "Bugfix",
         "contain": "-Fixed increasing online string"
     }
