@@ -36,6 +36,8 @@ if (localStorage.FirstLaunch === 'true') {
     BadgeOnlineCount(' Hi ');
 }
 
+var NowOnline = [];
+
 function CheckFollowingList() {
     function checkStatus(url,key) {
         var checkStatus = $.getJSON(url)
@@ -49,17 +51,23 @@ function CheckFollowingList() {
             localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
 
             if (checkStatus.responseJSON.stream) {
-                if (!local.FollowingList[key].Stream.Title && !local.FollowingList[key].Stream.Game) localJSON('Status', 'c', ['online', local.Status.online + 1]);
-
                 var Game = checkStatus.responseJSON.stream.game,
                     Status = checkStatus.responseJSON.stream.channel.status,
                     Name = local.FollowingList[key].Name,
                     Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
 
-                if (Status == null) Status = 'Untitled stream';
-                if (Game == null) Game = 'Not playing';
-                if (local.FollowingList[key].Stream.Title === null && local.FollowingList[key].Stream.Game === null) notifyUser(Name+' just went live!',Status,'Online',Name);
-                if (local.FollowingList[key].Stream.Title != Status && local.FollowingList[key].Stream.Title != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+                if (Status === null) Status = 'Untitled stream';
+                if (Game === null) Game = 'Not playing';
+                if (!local.FollowingList[key].Stream.Title &&
+                    !local.FollowingList[key].Stream.Game &&
+                    NowOnline.indexOf(Name) === -1)
+                {
+                    notifyUser(Name+' just went live!',Status,'Online',Name);
+                    localJSON('Status', 'c', ['online', local.Status.online + 1]);
+                    NowOnline.push(Name);
+                }
+                if (local.FollowingList[key].Stream.Title != Status &&
+                    local.FollowingList[key].Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
                 if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
                 else { Time2 = local.FollowingList[key].Stream.Time }
 
