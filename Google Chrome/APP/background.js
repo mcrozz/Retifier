@@ -36,6 +36,8 @@ if (localStorage.FirstLaunch === 'true') {
     BadgeOnlineCount(' Hi ');
 }
 
+var NowOnline = [];
+
 function CheckFollowingList() {
     function checkStatus(url,key) {
         var checkStatus = $.getJSON(url)
@@ -49,17 +51,23 @@ function CheckFollowingList() {
             localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
 
             if (checkStatus.responseJSON.stream) {
-                if (!local.FollowingList[key].Stream.Title && !local.FollowingList[key].Stream.Game) localJSON('Status', 'c', ['online', local.Status.online + 1]);
-
                 var Game = checkStatus.responseJSON.stream.game,
                     Status = checkStatus.responseJSON.stream.channel.status,
                     Name = local.FollowingList[key].Name,
                     Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
 
-                if (Status == null) Status = 'Untitled stream';
-                if (Game == null) Game = 'Not playing';
-                if (local.FollowingList[key].Stream.Title === null && local.FollowingList[key].Stream.Game === null) notifyUser(Name+' just went live!',Status,'Online',Name);
-                if (local.FollowingList[key].Stream.Title != Status && local.FollowingList[key].Stream.Title != undefined)notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+                if (Status === null) Status = 'Untitled stream';
+                if (Game === null) Game = 'Not playing';
+                if (!local.FollowingList[key].Stream.Title &&
+                    !local.FollowingList[key].Stream.Game &&
+                    NowOnline.indexOf(Name) === -1)
+                {
+                    notifyUser(Name+' just went live!',Status,'Online',Name);
+                    localJSON('Status', 'c', ['online', local.Status.online + 1]);
+                    NowOnline.push(Name);
+                }
+                if (local.FollowingList[key].Stream.Title != Status &&
+                    local.FollowingList[key].Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
                 if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
                 else { Time2 = local.FollowingList[key].Stream.Time }
 
@@ -69,18 +77,16 @@ function CheckFollowingList() {
                 BadgeOnlineCount(local.Status.online);
                 FollowingList('c', key, '', false)                      
             }
-            if (local.Status.checked == localJSON('Following') || key == localJSON('Following')) {
+            if (local.Status.checked == localJSON('Following') || key === localJSON('Following')) {
                 BadgeOnlineCount(local.Status.online);
                 sessionStorage.First_Notify = 1;
                 log('Every channel checked ('+local.Status.checked+')');
                 localJSON('Status', 'c', ['update', 0]);
 
-                if (local.Status.online > 1) {
-                    notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update')
-                } else if (local.Status.online == 1) {
-                    notifyUser('Update finished!', 'Now online one channel', 'Update')
-                } else if (local.Status.online == 0) {
-                    notifyUser('Update finished!', 'No one online right now :(', 'Update')
+                switch (local.Status.online) {
+                    case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
+                    case 1: notifyUser('Update finished!', 'Now online one channel', 'Update'); break;
+                    default: notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update');
                 }
             }
         });
@@ -107,13 +113,13 @@ function CheckFollowingList() {
             notifyUser("Update follows list", "Error, can't update", "Update");
         });
         FLG.done(function (data) {
-            var twitch = data;
-            if (Math.floor(localStorage.Following) != twitch._total) {
+            if (Math.floor(localStorage.Following) != data._total) {
                 log('Update list of following channels');
-                localStorage.Following = twitch._total;
+                localStorage.Following = data._total;
                 localJSON('Status', 'c', ['online', 0]);
 
-                for (var i=0; i<localJSON('Following'); i++) FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : log(FLG.responseJSON);
+                for (var i=0; i<localJSON('Following'); i++)
+                    FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : log(FLG.responseJSON);
             }
             localJSON('Status','c',['checked', 0]);
             localJSON('Status','c',['update', 4]);
