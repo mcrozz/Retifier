@@ -305,11 +305,10 @@ $(window).on('load',function() {
 	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
-	document.onmousemove = function(pos){
-		// FIXME: invalid occolusion
-		var X = pos.x, Y = pos.y, left, top, offsetX = 15, width = doc('message').offsetWidth, height = doc('message').offsetHeight;
-        left = (697-width-X < 0) ? 697-width : X+offsetX;
-        top = (600-height-Y < 0) ? Y-height-5 : Y-height-5;
+	document.onmousemove = function(p){
+		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
+        left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
+        top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	};
