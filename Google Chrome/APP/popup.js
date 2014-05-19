@@ -279,7 +279,7 @@ function AppVersionChanges(c) {
 }
 
 $(window).on('load',function() {
-	function ael(id, type, func) { var d = ['click', 'change']; $('#'+id).on(d[type], func) }
+	function ael(id, type, func) {var d = ['click', 'change'], j = ''; if ($.isArray(id)) {for (var i=0; i<id.length; i++) { if (i !== 0) j += ', '; j += '#'+id[i]; }} else { j = '#'+id; } $(j).on(d[type], func);}
 	CSScompiler();
 	versionCheck();
 	doc('AppVersion').innerHTML = local.App_Version.Ver+' (changes)';
@@ -287,18 +287,12 @@ $(window).on('load',function() {
 	ael('ChgUsrSnd', 0, changeScriptStarter);
 	ael('LstFlwdChnls', 0, function(){ FollowedList('o') });
 	ael('ClsFlwdChnlsLst', 0, function(){ FollowedList('c') });
-	ael('Notify_All', 0, function(){ doc('EnNotify').checked = true; doc('DisNotify').checked = false; doc('NotifyStreamer').disabled = false; doc('NotifyStreamerChanged').disabled = false; doc('NotifyUpdate').disabled = false });
-	ael('DisNotify_All', 0, function(){ doc('DisNotify').checked = true; doc('EnNotify').checked = false; doc('NotifyStreamer').disabled = true; doc('NotifyStreamerChanged').disabled = true; doc('NotifyUpdate').disabled = true });
-	ael('Notify_Streamer', 0, function(){ if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
-	ael('NotifyStreamer', 0, function(){ if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
-	ael('Notify_Streamer_Changed', 0, function(){ if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
-	ael('NotifyStreamerChanged', 0, function(){ if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
-	ael('Notify_Upd', 0, function(){ if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
-	ael('NotifyUpdate', 0, function(){ if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
-	ael('Notify_Sound', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
-	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
-	ael('DurationOfStream', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
-	ael('StreamDurationCheck', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
+	ael(['Notify_All', 'DisNotify_All'], 0, function(){ doc('EnNotify').checked = !(this.id === 'DisNotify_All'); doc('DisNotify').checked = (this.id === 'DisNotify_All'); $('[name=ntf]').each(function(){this.disabled = doc('DisNotify').checked}); });
+	ael(['Notify_Streamer', 'NotifyStreamer'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamer').checked = !doc('NotifyStreamer').checked; });
+	ael(['Notify_Streamer_Changed', 'NotifyStreamerChanged'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamerChanged').checked = !doc('NotifyStreamerChanged').checked; });
+	ael(['Notify_Upd', 'NotifyUpdate'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyUpdate').checked = !doc('NotifyUpdate').checked; });
+	ael(['Notify_Sound', 'SoundCheck'], 0, function(){ if (doc('EnNotify').checked) { doc('SoundCheck').checked = !doc('SoundCheck').checked; doc('SoundSelect').disabled = !doc('SoundCheck').checked; } });
+	ael(['DurationOfStream', 'StreamDurationCheck'], 0, function(){ doc('StreamDurationCheck').checked = !doc('StreamDurationCheck').checked; });
 	ael('fndAbug', 0, ReportAbug);
 	ael('AppVersion', 0, function(){ AppVersionChanges('o') });
 	ael('SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
@@ -308,7 +302,7 @@ $(window).on('load',function() {
 	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
 	ael('Dashboard', 0, function(){ ga('set', 'Dashboard', 'clicked'); window.open('http://www.twitch.tv/broadcast/dashboard') });
 	ael('Direct', 0, function(){ ga('set', 'Direct', 'clicked'); window.open('http://www.twitch.tv/directory/following') });
-	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
+	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
 	document.onmousemove = function(pos){
