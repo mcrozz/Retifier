@@ -30,7 +30,7 @@ if (window.location.pathname === '/background.html') {
             }
         });
     }
-    catch(e) { localStorage.App_Version = '{"Ver": "v.0.9.0.1", "Got": "v.0.9.0.1"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
+    catch(e) { localStorage.App_Version = '{"Ver": "v.0.9.0.2", "Got": "v.0.9.0.2"}'; localStorage.App_Version_Update=false; localStorage.App_Version_Try=0 }
     //chrome.notifications.onButtonClicked.addListener(function(id){ window.open('http://www.twitch.tv/'+NameBuffer[id.match(/\d+/)[0]]) });
     //chrome.notifications.onClosed.addListener(function(id){ chrome.notifications.clear(id,function(){})});
     //chrome.notifications.onClicked.addListener(function(id){ chrome.notifications.clear(id,function(){})});
