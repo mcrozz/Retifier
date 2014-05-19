@@ -220,7 +220,7 @@ function FollowedList(c) {
 		$('#firstScane').hide();
 		Animation('FollowedChannelsList', ['fadeIn', false]);
 
-		_gaq.push(['_trackEvent', 'Following List', 'clicked']);
+		ga('send', 'event', 'Following List', 'clicked');
 		
 		for (var i=0;i<localJSON('Following');i++) FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
 	} else if (c=='c') {
