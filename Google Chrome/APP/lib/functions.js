@@ -184,12 +184,17 @@ if (localStorage.Status&&localStorage.Config) {
         i[r].l=1*new Date();
         a=s.createElement(o), m=s.getElementsByTagName(o)[0];
         a.async=1; a.src=g;
+        a.onload=function(){
+            ga('create', 'UA-25472862-3', 'auto');
+            ga('set', 'forceSSL', true);
+            ga('send', {
+                'hitType':'pageview',
+                'page': window.location.pathname,
+                'title': window.location.pathname==='/background.html'?'Background page':'Popup page'
+            });
+            ga('set', 'appVersion', local.App_Version.Ver.replace('v.','')); };
         m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-25472862-3', 'mcrozz.ru');
-    ga('send', 'pageview');
-    ga('set', 'App_Version', local.App_Version.Ver);
 
     // https://www.parsecdn.com
     if (window.location.pathname === '/background.html') {

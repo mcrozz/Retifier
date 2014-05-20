@@ -96,7 +96,7 @@ function CSScompiler() {
 
 opened = false;
 function ReportAbug() {
-	_gaq.push(['_trackEvent', 'Report a bug', 'clicked']);
+	ga('send', 'event', 'button', 'click', 'Report a bug');
 	if (!opened) {
 		Animation('FoundAbugText', ['openReport', false, 0.8]);
 		Animation('fndAbug', ['openReportBtn', false, 0.8]);
@@ -151,7 +151,7 @@ function clickChangeUser() {
 	
 	doc('List_Format_List').value = local.Config.Format;
 
-	ga('set', 'event', 'Options', 'clicked');
+	ga('send', 'event', 'button', 'click', 'Options');
 }
 
 function clickChangeUserCls() {
@@ -220,7 +220,7 @@ function FollowedList(c) {
 		$('#firstScane').hide();
 		Animation('FollowedChannelsList', ['fadeIn', false]);
 
-		ga('send', 'event', 'Following List', 'clicked');
+		ga('send', 'event', 'button', 'click', 'Following List');
 		
 		for (var i=0;i<localJSON('Following');i++) FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
 	} else if (c=='c') {
@@ -300,8 +300,8 @@ $(window).on('load',function() {
 	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
 	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
 	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
-	ael('Dashboard', 0, function(){ ga('set', 'event', 'Dashboard', 'clicked'); window.open('http://www.twitch.tv/broadcast/dashboard') });
-	ael('Direct', 0, function(){ ga('set', 'event', 'Direct', 'clicked'); window.open('http://www.twitch.tv/directory/following') });
+	ael('Dashboard', 0, function(){ ga('send', 'event', 'button', 'click', 'Dashboard'); window.open('http://www.twitch.tv/broadcast/dashboard') });
+	ael('Direct', 0, function(){ ga('send', 'event', 'button', 'click', 'Direct'); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
