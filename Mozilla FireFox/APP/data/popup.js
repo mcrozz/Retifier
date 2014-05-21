@@ -25,69 +25,69 @@ function CSScompiler() {
 		CSScompiler()
 	} else {
 		if (format == 'Full') {
-			css = '.StreamDuration {color:black;margin:0 0 0 17px;display:inline-block}'+
+			css = '.StreamDuration {color:black;margin:0 0 0 17;display:inline-block}'+
 				'button:focus {outline-color:rgba(255,255,255,0)}'+
-				'.streamer {width:170px;height:20px;display:inline-block;padding:0 0 5px 3px}'+
+				'.streamer {width:170px;height:20px;display:inline-block;padding-left:3;padding-bottom:5}'+
 				'.viewers {width:160px;height:20px;display:inline-block;text-align:right}'+
 				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
-				'.content {height:200px;width:685px;padding:2px;position:relative;font-size:17px}'+
-				'.tumblr {background:url("StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
-				'.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15px}'+
-				'.informationTextTitle {width:337px;height:20px;display:block;border-bottom:1px solid black;margin-bottom:5px;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 0 0 3px}'+
-				'.informationTextStreamer {cursor:pointer;font-size:17px;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}'+
+				'.content {height:200px;width:685px;padding:2;position:relative;font-size:17}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.information {width:345px;height:130px;display:inline;position:absolute;right:0;top:15}'+
+				'.informationTextTitle {width:337px;height:20px;display:block;border-bottom:1px solid black;margin-bottom:5px;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3}'+
+				'.informationTextStreamer {cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}'+
 				'.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}'+
-				'.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:17px;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;padding-top:5px}'+
-				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139px 0 0 -44px}'+
+				'.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:17;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:340px;display:block;padding-top:5px}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}'+
 				'.TumbStream {width:320px;height:200px}'+
 				'.StreamOnChannelPage {width:340px;height:28px;padding-top:2px}'+
-				'.StreamDurationDiv {width:170px;height:20px;position:absolute;right:16px;top:90px;text-align:right}'+
-				'.ChannelPageDiv {width:150px;height:40px;display:inline}'+
+				'.StreamDurationDiv {width:170;height:20;position:absolute;right:16;top:90;text-align:right}'+
+				'.ChannelPageDiv {width:150;height:40;display:inline}'+
 				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-				'.foundAbug {z-index:19;padding:37px 5px 13px 5px;position:absolute;width:98px;height:113px;background:linear-gradient(to left bottom, rgba(1,1,1,0.8), rgba(1,1,1,0.5))}'+
-				'button.button {font-size:21px;width:150px;height:30px}';
+				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
+				'button.button {font-size:22px;width:150px;height:30px}';
 		} else if (format == 'Mini') {
-			css = '.StreamDuration {color:black;margin:0 0 0 17px;font-size:19px}'+
+			css = '.StreamDuration {color:black;margin:0 0 0 17;font-size:19}'+
 				'.streamer {width:180px;height:20px;display:inline-block}'+
 				'button:focus {outline-color:rgba(255,255,255,0)}'+
-				'.viewers {width:150px;height:20px;position:absolute;right:12px;text-align:right;top:20px}'+
+				'.viewers {width:150px;height:20px;position:absolute;right:12;text-align:right;top:20}'+
 				'.viewers>p {cursor:default;width:75px;padding-left:5px;display:inline;border:none}'+
-				'.content {height:90px;width:685px;padding:2px;position:relative}'+
-				'.information {width:535px;height:80px;display:inline;position:absolute;right:0;top:6px}'+
-				'.informationTextTitle {cursor:default;display:inline-flex;z-index:1;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:525px;border-bottom:1px black solid}'+
-				'.informationTextStreamer {cursor:pointer;font-size:16px;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5px}'+
-				'.informationTextViewers {cursor:default;display:inline;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5px}'+
-				'.informationTextGame {cursor:pointer;font-size:16px;color:black;display:inline-block;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:195px;left:145px;text-align:center}'+
-				'.tumblr {background:url("StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5px 0 0 10px}'+
+				'.content {height:90px;width:685px;padding:2;position:relative}'+
+				'.information {width:535px;height:80px;display:inline;position:absolute;right:0;top:6}'+
+				'.informationTextTitle {cursor:default;display:-webkit-inline-flex;z-index:1;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:525px;border-bottom:1px black solid}'+
+				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;display:inline;padding-left:5px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
+				'.informationTextViewers {cursor:default;display:inline;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-left:5}'+
+				'.informationTextGame {cursor:pointer;font-size:16;color:black;display:inline-block;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:195px;left:145px;text-align:center}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:60px;width:90px;display:inline;position:absolute;margin:5 0 0 10}'+
 				'.LaunchStream {display:none!important}'+
-				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1px}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:0 0 0 1}'+
 				'.TumbStream {width:90px;height:60px}'+
 				'.StreamOnChannelPage {width:530px;height:23px}'+
-				'.StreamDurationDiv {width:160px;height:23px;text-align:right;display:inline-block}'+
-				'.ChannelPageDiv {width:110px;height:23px;display:inline-block;margin-right:260px}'+
+				'.StreamDurationDiv {width:160;height:23;text-align:right;display:inline-block}'+
+				'.ChannelPageDiv {width:110;height:23;display:inline-block;margin-right:260px}'+
 		        '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-		        '.foundAbug {z-index:19;padding:37px 5px 13px 5px;position:absolute;width:98px;height:113px;background:linear-gradient(to left bottom, rgba(1,1,1,0.8), rgba(1,1,1,0.5))}'+
-				'button.button {font-size:15px;width:110px;height:22px}';
+		        '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
+				'button.button {font-size:18px;width:110px;height:22px}';
 		} else if (format == 'Grid') {
-			css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17px}'+
+			css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17}'+
 				'button:focus {outline-color:rgba(0,0,0,0)}'+
 				'.streamer {width:165px;height:20px;display:inline-table;padding-top:6px}'+
 				'.viewers {width:150px;height:20px;display:inline-block;text-align:right}'+
 				'.viewers>p {cursor:default;width:75px;display:inline;text-transform:lowercase;padding-left:5px;border:none}'+
-				'.content {height:290px;width:330px;padding:2px;position:relative;display:inline-block;margin-left:7px}'+
-				'.tumblr {background:url("StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
-				'.information {width:315px;height:90px;display:inline;position:absolute;left:15px;top:200px}'+
-				'.informationTextTitle {height:20px;display:inline-block;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;border-bottom:1px black solid}'+
-				'.informationTextStreamer {cursor:pointer;font-size:16px;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3px}'+
+				'.content {height:290px;width:330px;padding:2;position:relative;display:inline-block;margin-left:7}'+
+				'.tumblr {background:url("/img/StillDownloading.gif");height:200px;width:320px;display:inline;position:absolute;margin-left:10px}'+
+				'.information {width:315px;height:90px;display:inline;position:absolute;left:15;top:200}'+
+				'.informationTextTitle {height:20px;display:inline-block;cursor:default;z-index:1;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);padding-top:6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;border-bottom:1px black solid}'+
+				'.informationTextStreamer {cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);margin-left:3}'+
 				'.informationTextViewers {cursor:default;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);width:75px;display:inline}'+
 				'.informationTextGame {text-align:center;border-top:1px solid black;height:20px;cursor:pointer;font-size:16;color:black;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:315px;display:block;padding-top:5px}'+
-				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139px 0 0 -44px}'+
-				'.GamaTumb1:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7px 10px;border:1px solid rgba(51, 51, 51, 0.34);-moz-animation:fadeInDown 0.2s both;white-space:normal;display:block;position:absolute;font-size:17px;z-index:1}'+
+				'.GameTumb1, .GameTumb2{width:43px;height:60px;position:absolute;margin:139 0 0 -44}'+
+				'.GamaTumb1:hover::after {content:attr(data-title);left:-2%;top:0%;width:305px;background:rgba(255,255,255,0.95);font-size:14px;padding:7 10;border:1px solid rgba(51, 51, 51, 0.34);-webkit-animation:fadeInDown 0.2s both;white-space:normal;display:block;position:absolute;font-size:17;z-index:1}'+
 				'.TumbStream {width:320px;height:200px}'+
-				'.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197px;left:-2px;text-align:center}'+
-				'.StreamDurationDiv {width:170px;height:40px;display:inline}'+
+				'.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}'+
+				'.StreamDurationDiv {width:170;height:40;display:inline}'+
 				'.ChannelPageDiv {display:none}'+
 				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-				'.foundAbug {z-index:19;padding:37px 5px 13px 5px;position:absolute;width:98px;height:113px;background:linear-gradient(to left bottom, rgba(1,1,1,0.8), rgba(1,1,1,0.5))}'+
+				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
 				'button.button {font-size:22px;width:150px;height:30px}';
 		}
 		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
@@ -96,7 +96,7 @@ function CSScompiler() {
 
 opened = false;
 function ReportAbug() {
-	_gaq.push(['_trackEvent', 'Report a bug', 'clicked']);
+	ga('send', 'event', 'button', 'click', 'Report a bug');
 	if (!opened) {
 		Animation('FoundAbugText', ['openReport', false, 0.8]);
 		Animation('fndAbug', ['openReportBtn', false, 0.8]);
@@ -151,7 +151,7 @@ function clickChangeUser() {
 	
 	doc('List_Format_List').value = local.Config.Format;
 
-	_gaq.push(['_trackEvent', 'Options', 'clicked'])
+	ga('send', 'event', 'button', 'click', 'Options');
 }
 
 function clickChangeUserCls() {
@@ -192,6 +192,7 @@ function changeScriptStarter() {
 		document.getElementsByTagName("style")[0].remove();
 		CSScompiler();
 		doc('insertContentHere').innerHTML = '';
+		snum();
 		TimersetToUpdate = [];
 		InsertOnlineList();
 	}
@@ -220,7 +221,7 @@ function FollowedList(c) {
 		$('#firstScane').hide();
 		Animation('FollowedChannelsList', ['fadeIn', false]);
 
-		_gaq.push(['_trackEvent', 'Following List', 'clicked']);
+		ga('send', 'event', 'button', 'click', 'Following List');
 		
 		for (var i=0;i<localJSON('Following');i++) FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
 	} else if (c=='c') {
@@ -279,7 +280,7 @@ function AppVersionChanges(c) {
 }
 
 $(window).on('load',function() {
-	function ael(id, type, func) { var d = ['click', 'change']; $('#'+id).on(d[type], func) }
+	function ael(id, type, func) {var d = ['click', 'change'], j = ''; if ($.isArray(id)) {for (var i=0; i<id.length; i++) { if (i !== 0) j += ', '; j += '#'+id[i]; }} else { j = '#'+id; } $(j).on(d[type], func);}
 	CSScompiler();
 	versionCheck();
 	doc('AppVersion').innerHTML = local.App_Version.Ver+' (changes)';
@@ -287,18 +288,12 @@ $(window).on('load',function() {
 	ael('ChgUsrSnd', 0, changeScriptStarter);
 	ael('LstFlwdChnls', 0, function(){ FollowedList('o') });
 	ael('ClsFlwdChnlsLst', 0, function(){ FollowedList('c') });
-	ael('Notify_All', 0, function(){ doc('EnNotify').checked = true; doc('DisNotify').checked = false; doc('NotifyStreamer').disabled = false; doc('NotifyStreamerChanged').disabled = false; doc('NotifyUpdate').disabled = false });
-	ael('DisNotify_All', 0, function(){ doc('DisNotify').checked = true; doc('EnNotify').checked = false; doc('NotifyStreamer').disabled = true; doc('NotifyStreamerChanged').disabled = true; doc('NotifyUpdate').disabled = true });
-	ael('Notify_Streamer', 0, function(){ if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
-	ael('NotifyStreamer', 0, function(){ if (doc('NotifyStreamer').checked && !doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = false; else if (!doc('NotifyStreamer').disabled) doc('NotifyStreamer').checked = true });
-	ael('Notify_Streamer_Changed', 0, function(){ if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
-	ael('NotifyStreamerChanged', 0, function(){ if (doc('NotifyStreamerChanged').checked && !doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = false; else if (!doc('NotifyStreamerChanged').disabled) doc('NotifyStreamerChanged').checked = true });
-	ael('Notify_Upd', 0, function(){ if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
-	ael('NotifyUpdate', 0, function(){ if (doc('NotifyUpdate').checked && !doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = false; else if (!doc('NotifyUpdate').disabled) doc('NotifyUpdate').checked = true });
-	ael('Notify_Sound', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
-	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundCheck').checked = false; doc('SoundSelect').disabled = true } else { doc('SoundCheck').checked = true; doc('SoundSelect').disabled = false } });
-	ael('DurationOfStream', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
-	ael('StreamDurationCheck', 0, function(){ doc('StreamDurationCheck').checked ? doc('StreamDurationCheck').checked = false : doc('StreamDurationCheck').checked = true; });
+	ael(['Notify_All', 'DisNotify_All'], 0, function(){ doc('EnNotify').checked = !(this.id === 'DisNotify_All'); doc('DisNotify').checked = (this.id === 'DisNotify_All'); $('[name=ntf]').each(function(){this.disabled = doc('DisNotify').checked}); });
+	ael(['Notify_Streamer', 'NotifyStreamer'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamer').checked = !doc('NotifyStreamer').checked; });
+	ael(['Notify_Streamer_Changed', 'NotifyStreamerChanged'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamerChanged').checked = !doc('NotifyStreamerChanged').checked; });
+	ael(['Notify_Upd', 'NotifyUpdate'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyUpdate').checked = !doc('NotifyUpdate').checked; });
+	ael(['Notify_Sound', 'SoundCheck'], 0, function(){ if (doc('EnNotify').checked) { doc('SoundCheck').checked = !doc('SoundCheck').checked; doc('SoundSelect').disabled = !doc('SoundCheck').checked; } });
+	ael(['DurationOfStream', 'StreamDurationCheck'], 0, function(){ doc('StreamDurationCheck').checked = !doc('StreamDurationCheck').checked; });
 	ael('fndAbug', 0, ReportAbug);
 	ael('AppVersion', 0, function(){ AppVersionChanges('o') });
 	ael('SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
@@ -306,21 +301,15 @@ $(window).on('load',function() {
 	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
 	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
 	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
-	ael('Dashboard', 0, function(){ _gaq.push(['_trackEvent', 'Dashboard', 'clicked']); window.open('http://www.twitch.tv/broadcast/dashboard') });
-	ael('Direct', 0, function(){ _gaq.push(['_trackEvent', 'Direct', 'clicked']); window.open('http://www.twitch.tv/directory/following') });
-	ael('SoundCheck', 0, function(){ if (doc('SoundCheck').checked) { doc('SoundSelect').disabled = false } else { doc('SoundSelect').disabled = true } })
+	ael('Dashboard', 0, function(){ ga('send', 'event', 'button', 'click', 'Dashboard'); window.open('http://www.twitch.tv/broadcast/dashboard') });
+	ael('Direct', 0, function(){ ga('send', 'event', 'button', 'click', 'Direct'); window.open('http://www.twitch.tv/directory/following') });
+	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
-	document.onmousemove = function(pos){
-		// FIXME: invalid occolusion
-		var X=pos.clientX,
-			Y=pos.clientY,
-			left, top,
-			offsetX=15,
-			width=doc('message').offsetWidth,
-			height=doc('message').offsetHeight;
-        left = (697-width-X < 0) ? 697-width : X+offsetX;
-        top = (600-height-Y < 0) ? Y-height-5 : Y-height-5;
+	document.onmousemove = function(p){
+		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
+        left = (697-width-p.pageX-10 < 0) ? 697-width : p.pageX+offsetX;
+        top = (600-height-p.pageY < 0) ? p.pageY-height-5 : p.pageY-height-5;
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	};

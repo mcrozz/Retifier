@@ -1,12 +1,11 @@
 ﻿<meta charset='utf-8'> 
 <link rel="stylesheet" href="style.css" type="text/css" />
-<script src="jquery-1.11.0.min.js"></script>
-<script src="md5.js"></script>
-<script src="functions.js"></script>
+<script src="./libs/jquery-1.11.0.min.js"></script>
+<script src="./libs/functions.js"></script>
 <script src="background.js"></script>
-<script src="firstStart.js"></script>
-<script src="whatsNew.js"></script>
-<script src="insertFunc.js"></script>
+<script src="./libs/firstStart.js"></script>
+<script src="./libs/whatsNew.js"></script>
+<script src="./libs/insertFunc.js"></script>
 <script src="popup.js"></script>
 <body id="body">
 
@@ -38,12 +37,12 @@
 		<div id="CheckInterval"><input type="text" id="ChgUsrInt">(min) Check interval</div>
 		<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
 		<div id="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
-		<div id="Notify_Streamer"><input type="checkbox" id="NotifyStreamer">When streamer goes online</div>
-		<div id="Notify_Streamer_Changed"><input type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
-		<div id="Notify_Upd"><input type="checkbox" id="NotifyUpdate">When updating following list</div>
-		<div id="Notify_Sound"><input type="checkbox" id="SoundCheck">Enable sound in notifications</div>
+		<div id="Notify_Streamer"><input name="ntf" type="checkbox" id="NotifyStreamer">When streamer goes online</div>
+		<div id="Notify_Streamer_Changed"><input name="ntf" type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
+		<div id="Notify_Upd"><input name="ntf" type="checkbox" id="NotifyUpdate">When updating following list</div>
+		<div id="Notify_Sound"><input name="ntf" type="checkbox" id="SoundCheck">Enable sound in notifications</div>
 		<div id="Notify_Sound_Select">
-			<select id="SoundSelect">
+			<select id="SoundSelect" name="ntf">
 				<option value="DinDon">Din-Don</option>
 				<option value="DinDon">More comin' soon</option>
 				<option value="DinDon">[:D</option>

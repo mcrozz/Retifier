@@ -2,14 +2,15 @@
   "name": "twitchtv",
   "title": "TwitchTV Notifier",
   "id": "jid1-xxgYtyggO8a5hg",
-  "description": "Explore Your TwitchTV",
+  "description": "Be aware of all the streams",
   "author": "Ivan 'MacRozz' Zarudny",
   "license": "Apache 2.0",
-  "version": "1.0.0.0",
+  "version": "0.9.1.1",
   "homepage": "https://github.com/mcrozz/Twitch.tv_Notifier",
   "icon": "./data/icon.png",
   "icon64": "./data/icon.png",
   "permissions": {
+    "desktop-notification": {},
     "cross-domain-content": 
     [
       "http://www.twitch.tv/",

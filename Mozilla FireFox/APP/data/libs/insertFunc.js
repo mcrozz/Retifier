@@ -16,7 +16,16 @@
 
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
-	refresh = false;
+	refresh = false,
+	texts = { t:[], r:[], d:new Date() };
+
+(function snum(){
+	switch (local.Config.Format) {
+		case 'Grid': Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
+		case 'Full': Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
+		default: Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; break;
+	}
+})();
 
 function InsertOnlineList() {
 	function zoom() {
@@ -32,13 +41,8 @@ function InsertOnlineList() {
 
 	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
-	var c = local.Config.Format,
-		FollowList = local.FollowingList,
-        Num, Num2, Num3, Num4, Num6;
 
-	if (c == 'Grid') { Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; }
-	else if (c == 'Full') { Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; }
-	else { Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; };
+	var FollowList = local.FollowingList;
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
 		var StreamTitle = FollowList[i].Stream.Title,
@@ -50,12 +54,22 @@ function InsertOnlineList() {
 			SLU, dc;
 
 		if (FollowList[i].Stream) {
-			dc = doc('textWidth')
-			dc.style.fontSize = Num4+'px';
-			dc.innerHTML = StreamTitle;
-			if (dc.offsetWidth > Num) TitleWidth = true;
-			dc.innerHTML = StreamGame;
-			if (dc.offsetWidth > Num6) GameWidth = true;
+			dc = doc('textWidth');
+			if (texts.t.indexOf(StreamTitle) === -1) {
+				dc.style.fontSize = Num4+'px';
+				dc.innerHTML = StreamTitle;
+				texts.t.push(StreamTitle);
+				if (dc.offsetWidth > Num) TitleWidth = true;
+				texts.r.push(textWidth ? true : false);
+			} else { TitleWidth = texts.r[texts.t.indexOf(StreamTitle)]; }
+			
+			if (texts.t.indexOf(StreamGame) === -1) {
+				dc.innerHTML = StreamGame;
+				dc.style.fontSize = Num4+'px';
+				texts.t.push(StreamGame);
+				if (dc.offsetWidth > Num6) GameWidth = true;
+				texts.r.push(GameWidth ? true : false);
+			} else { GameWidth = texts.r[texts.t.indexOf(StreamGame)]; }
 		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
@@ -119,7 +133,7 @@ function InsertOnlineList() {
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
 				if (StreamGame != 'Not playing') {
 					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
-					doc('stream_game_2_img_'+i).setAttribute('style','background:url("playing.png");background-size:'+Num2+'px;cursor:pointer')
+					doc('stream_game_2_img_'+i).setAttribute('style','background:url("./img/playing.png");background-size:'+Num2+'px;cursor:pointer')
 				} else {
 					$('#stream_game_'+i).css('cursor', 'default');
 					$('#stream_game_img_'+i).hide();
@@ -184,6 +198,8 @@ function InsertOnlineList() {
 	}
 }
 
+var pg = false,
+	st = 1;
 setInterval(function(){
 	/*
 			Status.update
@@ -196,29 +212,28 @@ setInterval(function(){
 		6 :: Name doesn't set up!
 		7 :: First start
 	*/
-	function progressBar(t) {
-		if (typeof t === 'undefined') {
-			$('#CheckingProgress').show();
-			doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
-		} else { Animation('CheckingProgress', ['fadeOut', true, 0.5]); }
-	}
-	function spin() { if (secthr) Animation('refresh', ['spin', false, 0.8]); }
 	var j = doc('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
-	if (Upd === 0) {j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; progressBar(' ');}
-	else if (Upd === 1) {j.innerHTML='Behold! Update!'; progressBar(); spin(); }
-	else if (Upd === 2) {j.innerHTML='Updating list of followed channels...'; progressBar(); spin();}
-	else if (Upd === 3) {j.innerHTML='List of followed channels updated.'; progressBar(); spin();}
-	else if (Upd === 4) {j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; progressBar(); spin();}
-	else if (Upd === 5) {j.innerHTML='App have a problem with update'}
-	else if (Upd === 6) {j.innerHTML="Name doesn't set up yet!"}
+	switch (Upd) {
+		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; pg=false; break;
+		case 1: j.innerHTML='Behold! Update!'; pg=true; break;
+		case 2: j.innerHTML='Updating list of followed channels...'; pg=true; break;
+		case 3: j.innerHTML='List of followed channels updated.'; pg=true; break;
+		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; pg=true; break;
+		case 5: j.innerHTML='App have a problem with update'; break;
+		case 6: j.innerHTML="Name doesn't set up yet!"; break;
+	}
+	if (pg) {
+		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
+		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
+		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
+		else { st+=1 }
+	} else if (!doc('CheckingProgress').hidden) { $('#CheckingProgress').hide(); doc('CheckingProgress').hidden=true; }
 }, 100);
-secthr = false;
-setInterval(function(){ secthr = secthr ? false : true; },800);
 
-setInterval(function(){
+var run = function() {
 	if (local.Config.Duration_of_stream) {
 		for (var i=0;i<TimersetToUpdate.length;i++) {
 			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
@@ -242,7 +257,7 @@ setInterval(function(){
 		}
 	} 
 
-	function donationUnit() {
+	(function() {
 		if (typeof local.Config.Timeout !== 'undefined') {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
 			dif/=86400000;
@@ -261,10 +276,10 @@ setInterval(function(){
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);_gaq.push(['_setCustomVar',4,'PayPalButton','false',1])});
-			$('#PayPalCheckOut').on('click', function(){_gaq.push(['_setCustomVar', 4, 'PayPalButton', 'true', 1])});},100);
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config','c',['Timeout',TimeNdate(14,0)]);ga('set','PayPalButton','false')});
+			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});},100);
 		}
-	}
-	donationUnit();
+	})();
 	InsertOnlineList()
-},1000);
+};
+setInterval(run, 1000);
