@@ -75,6 +75,7 @@ function CheckFollowingList() {
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status', 'c', ['online', local.Status.online - 1]);
                 BadgeOnlineCount(local.Status.online);
+                NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name });
                 FollowingList('c', key, '', false)                      
             }
             if (local.Status.checked == localJSON('Following') || key === localJSON('Following')) {

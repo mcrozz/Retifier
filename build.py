@@ -15,9 +15,7 @@
 import os, json, shutil, sys;
 
 os.system('title Builder for TwitchTV Notifier')
-
 tld = "====================================================="
-
 if sys.platform == 'win32':
 	clr = 'cls'
 else:
