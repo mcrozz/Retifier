@@ -262,13 +262,13 @@ var run = function() {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
 			dif/=86400000;
 			if (local.Config.Timeout === 1337) return true;
-			if (dif <= 0 || dif > 14) localJSON('Config','c',['Timeout', 0]);
 			if (dif > 0) return true;
+			if (dif <= 0 || dif > 14) localJSON('Config','c',['Timeout', 0]);
 		} else {
 			localJSON('Config','c',['Timeout', TimeNdate(14,0,'-')]);
 			return false;
 		}
-		if(!doc('donate')) {
+		if (!doc('donate')) {
 			$('#insertContentHere').prepend("<div id='donate'><a>Don't forget support me by donation ;)</a>"+
 				'<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">'+
 				'<input type="hidden" name="cmd" value="_s-xclick">'+
