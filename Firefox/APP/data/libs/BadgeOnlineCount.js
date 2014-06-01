@@ -1,0 +1,1 @@
+function BadgeOnlineCount(count) { return true; }

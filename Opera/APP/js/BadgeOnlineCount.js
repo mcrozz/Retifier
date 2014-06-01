@@ -1,0 +1,1 @@
+function BadgeOnlineCount(count) { chrome.browserAction.setBadgeText({ text: String(count) })}
