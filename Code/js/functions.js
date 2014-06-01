@@ -132,6 +132,7 @@ function FollowingList(type,id,name,stream) {
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 // https://www.parsecdn.com
+{{IF_BACKGROUND_BEGIN}}
 (function(){
     var p=document.createElement('script'),
         s=document.getElementsByTagName('script')[0];
@@ -153,3 +154,4 @@ setInterval(function(){
         var sj=new Parse.Query(Parse.Object.extend('Donators')),f;sj.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
     }
 }, 1000*60*10);
+{{IF_BACKGROUND_END}}

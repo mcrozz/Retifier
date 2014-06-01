@@ -107,6 +107,12 @@ def build(b):
 	# Replace LINK_REVIEW
 	print "	Replace LINK_REVIEW on <link>"
 	rp("{{LINK_REVIEW}}", config[browser]['Review'], pj(dbDir, "popup.js"))
+	# Replace IF_BACKGROUND_BEGIN
+	print "	Replace IF_BACKGROUND_BEGIN on "+config[browser]['IfBackA']
+	rp("{{IF_BACKGROUND_BEGIN}}", config[browser]['IfBackA'], pj(dbDir, "js\\functions.js"))
+	# Replace IF_BACKGROUND_END
+	print "	Replace IF_BACKGROUND_END on "+config[browser]['IfBackB']
+	rp("{{IF_BACKGROUND_END}}", config[browser]['IfBackB'], pj(dbDir, "js\\functions.js"))
 	# Replace Platform
 	print "	Replace PLATFORM on "+config[browser]['Platform']
 	rp("{{PLATFORM}}", config[browser]['Platform'], pj(dbDir, "js\\functions.js"))
