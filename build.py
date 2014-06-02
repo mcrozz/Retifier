@@ -17,7 +17,6 @@ from functions import *
 if os.path.exists(os.path.join(os.getcwd(), 'publisher.py')):
 	from publisher import *
 	ENABLE_PUBLISHER = True
-	print "PUBLISHER LOADED";
 
 os.system('title Builder for TwitchTV Notifier')
 tld = "====================================================="
