@@ -36,17 +36,24 @@ def loopbuild(b):
 		print "            TwitchTV Notifier for "+b
 		print "           Version: "+v+" ("+bl+" build)"
 		print tld
-		print "    Press [ENTER] for build, Type [0] for exit"
+		print ">  Press [ENTER] for build"
+		print ">  Type [2] for changing version"
 		if ENABLE_PUBLISHER:
-			print "    Type [1] for publishing"
+			print ">  Type [1] for publishing"
+		print ">  Type [0] for exit"
 		k = ink('>>> ')
 		print tld
-		if k == 'ENTER':
+		if k == '':
 			build(b)
 			ink('[DONE]')
-		elif k == 1 and ENABLE_PUBLISHER:
+		elif k == '1' and ENABLE_PUBLISHER:
 			publish_app(b)
 			ink('Press any key to continue');
+		elif k == '2':
+			print "Change version from "+v
+			g = ink('>>> ')
+			c[b]['Ver'] = g
+			sc(c)
 		else:
 			return returnt()
 
@@ -55,7 +62,7 @@ def returnt():
 	print "    [1] Yes"
 	print "    [0] No"
 	k = ink('>>> ')
-	if k == 1:
+	if k == '1':
 		init()
 	else:
 		exit()
@@ -72,13 +79,13 @@ def init():
 	print "    [0]: Exit"
 	print tld
 	inkey = ink(">>> ")
-	if inkey == 1:
+	if inkey == '1':
 		loopbuild('Chrome')
-	elif inkey == 2:
+	elif inkey == '2':
 		loopbuild('Opera')
-	elif inkey == 3:
+	elif inkey == '3':
 		loopbuild('Firefox')
-	elif inkey == 4:
+	elif inkey == '4':
 		loopbuild('Safari')
 	else:
 		exit()
