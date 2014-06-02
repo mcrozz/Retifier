@@ -1,5 +1,5 @@
 # Screenshot
-![Screenshot](/screenshots/ScreenShot_1.png)
+![Screenshot](https://raw.githubusercontent.com/mcrozz/Twitch.tv_Notifier/master/screenshots/ScreenShot_1.png)
 
 # In web stores
 
