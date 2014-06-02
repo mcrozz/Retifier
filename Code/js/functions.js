@@ -119,16 +119,12 @@ function FollowingList(type,id,name,stream) {
     i[r].l=1*new Date();
     a=s.createElement(o), m=s.getElementsByTagName(o)[0];
     a.async=1; a.src=g;
-    a.onload=function(){
-        ga('create', 'UA-25472862-3', 'auto');
-        ga('set', 'forceSSL', true);
-        ga('send', {
-            'hitType':'pageview',
-            'page': window.location.pathname,
-            'title': 'Popup page'
-        });
-        ga('set', 'appVersion', local.App_Version.Ver.replace('v.','')); };
-    m.parentNode.insertBefore(a,m)
+    m.parentNode.insertBefore(a,m);
+    ga('create', 'UA-25472862-3', 'none');
+    ga('set', 'checkProtocolTask', function(){});
+    ga('set', 'forceSSL', true);
+    ga('send', 'pageview');
+    ga('set', 'appVersion', local.App_Version.Ver.replace('v.',''));
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 // https://www.parsecdn.com
@@ -139,19 +135,17 @@ function FollowingList(type,id,name,stream) {
     p.type='text/javascript';p.async=true;
     p.src='https://www.parsecdn.com/js/parse-1.2.18.min.js';
     p.onload = function(){
-        parse=true;
-        Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-        var sj=new Parse.Query(Parse.Object.extend('Donators')),f;sj.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
-        var usr = new Parse.User(); if (local.Config.User_Name!=='Guest'||local.Config.User_Name!==''){usr.set('username', local.Config.User_Name);usr.set('password', local.Config.User_Name);usr.signUp(null,{success:function(){log('Parse.com :: authorized')},error:function(u,e){error({message:e,stack:u})}})};
-        var sj = new Parse.Query(Parse.Object.extend('Ads')), t = []; sj.each(function(e){ t.push(e.attributes.TwitchName); }).done(function(){localStorage.Ads = JSON.stringify(t);});
+        parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
+        var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
     }
     s.parentNode.insertBefore(p,s);
 })();
 
 setInterval(function(){
     if (parse) {
-        var sj = new Parse.Query(Parse.Object.extend('Ads')), t = []; sj.each(function(e){ t.push(e.attributes.TwitchName); }).done(function(){localStorage.Ads = JSON.stringify(t);});
-        var sj=new Parse.Query(Parse.Object.extend('Donators')),f;sj.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
+        var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
     }
 }, 1000*60*10);
 {{IF_BACKGROUND_END}}
