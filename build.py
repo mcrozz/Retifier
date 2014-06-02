@@ -165,10 +165,10 @@ def loopbuild(b):
 
 def returnt():
 	print "         Back to main menu?"
-	print "    [Y]es"
-	print "    [N]o"
+	print "    [1] Yes"
+	print "    [0] No"
 	k = ink('>>> ')
-	if k == 'Y':
+	if k == 1:
 		init()
 	else:
 		exit();
