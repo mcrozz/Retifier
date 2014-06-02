@@ -120,12 +120,15 @@ function FollowingList(type,id,name,stream) {
     a=s.createElement(o), m=s.getElementsByTagName(o)[0];
     a.async=1; a.src=g;
     m.parentNode.insertBefore(a,m);
-    ga('create', 'UA-25472862-3', 'none');
-    ga('set', 'checkProtocolTask', function(){});
-    ga('set', 'forceSSL', true);
-    ga('send', 'pageview');
-    ga('set', 'appVersion', local.App_Version.Ver.replace('v.',''));
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-25472862-3', {'cookieDomain': 'none'});
+    ga('set', 'checkProtocolTask', function(){});
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview', {
+        'page': location.pathname,
+        'title': location.pathname
+    });
+    ga('set', 'appVersion', local.App_Version.Ver.replace('v.',''));
 
 // https://www.parsecdn.com
 {{IF_BACKGROUND_BEGIN}}
