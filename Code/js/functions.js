@@ -139,7 +139,7 @@ function FollowingList(type,id,name,stream) {
     p.src='https://www.parsecdn.com/js/parse-1.2.18.min.js';
     p.onload = function(){
         parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0])});
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
     }
     s.parentNode.insertBefore(p,s);
@@ -148,7 +148,7 @@ function FollowingList(type,id,name,stream) {
 setInterval(function(){
     if (parse) {
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
-        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}});if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0]);
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0])});
     }
 }, 1000*60*10);
 {{IF_BACKGROUND_END}}
