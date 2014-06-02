@@ -37,7 +37,7 @@ def cf():
 
 def rf(f):
 	with open(f, 'r') as o:
-		return o.read();
+		return o.read()
 
 def int(f):
 	if os.path.exists(f):
@@ -48,15 +48,10 @@ def int(f):
 	else:
 		os.makedirs(f)
 		print "	Folder created";
-	os.chmod(f, 436);
+	os.chmod(f, 436)
 
 def ink(f):
-	try:
-		return input(f)
-	except SyntaxError as e:
-		return "ENTER"
-	except Exception, e:
-		return e;
+	return raw_input(f)
 
 def build(b):
 	config = cf()
