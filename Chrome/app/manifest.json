@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' https://www.parsecdn.com https://www.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://www.parsecdn.com https://www.google-analytics.com https://api.twitch.tv; object-src 'self'",
   "name": "Twitch.tv Notifier",
   "version": "{{APP_VERSION_CURRENT}}",
   "description": "Get notified when your following channel going online",
