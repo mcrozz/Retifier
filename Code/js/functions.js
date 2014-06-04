@@ -49,6 +49,7 @@ try { loc() } catch(e) { err(e) }
 
 function localJSON(name,type,arrayz) {
     try {
+        {{UPDATE_LOCAL_VAR_FUNC}}
         var sz, b, h;
         if (name&&type=='c'&&arrayz) {
             sz = arrayz.length;
@@ -56,12 +57,12 @@ function localJSON(name,type,arrayz) {
             if (sz == 2) {
                 b[arrayz[0]]=arrayz[1];
                 localStorage[name] = JSON.stringify(b);
-                loc();
+                loc(); {{UPDATE_LOCAL_VAR_CALL}}
                 return true;
             } else if (sz == 3) {
                 b[arrayz[0]][arrayz[1]] = arrayz[2];
                 localStorage[name] = JSON.stringify(b);
-                loc();
+                loc(); {{UPDATE_LOCAL_VAR_CALL}}
                 return true;
             } else {
                 return false;
