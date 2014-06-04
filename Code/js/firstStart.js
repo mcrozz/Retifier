@@ -70,7 +70,6 @@ function lgin() {
 							doc('LstFlwdChnls').disabled = false;
 							doc('Direct').disabled = false;
 							doc('Dashboard').disabled = false;
-							//localJSON('Status','c',['update',0]);
 					        localStorage.FirstLaunch = 'false';
 							doc('insertContentHere').innerHTML = null;
 							localJSON('Status','c',['StopInterval',true]);
