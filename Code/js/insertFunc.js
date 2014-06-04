@@ -17,7 +17,7 @@
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
 	refresh = false,
-	texts = { t:[], r:[], d:new Date() };
+	texts = { d:new Date() };
 
 (function snum(){
 	switch (local.Config.Format) {
@@ -55,21 +55,17 @@ function InsertOnlineList() {
 
 		if (FollowList[i].Stream) {
 			dc = doc('textWidth');
-			if (texts.t.indexOf(StreamTitle) === -1) {
+			if (typeof texts[StreamTitle] === 'undefined') {
 				dc.style.fontSize = Num4+'px';
 				dc.innerHTML = StreamTitle;
-				texts.t.push(StreamTitle);
-				if (dc.offsetWidth > Num) TitleWidth = true;
-				texts.r.push(textWidth ? true : false);
-			} else { TitleWidth = texts.r[texts.t.indexOf(StreamTitle)]; }
+				texts[StreamTitle] = (dc.offsetWidth > Num) ? true : false;
+			} else { TitleWidth = texts[StreamTitle] }
 			
-			if (texts.t.indexOf(StreamGame) === -1) {
+			if (typeof texts[StreamGame] === 'undefined') {
 				dc.innerHTML = StreamGame;
 				dc.style.fontSize = Num4+'px';
-				texts.t.push(StreamGame);
-				if (dc.offsetWidth > Num6) GameWidth = true;
-				texts.r.push(GameWidth ? true : false);
-			} else { GameWidth = texts.r[texts.t.indexOf(StreamGame)]; }
+				texts[StreamGame] = (dc.offsetWidth > Num6) ? true : false;
+			} else { GameWidth = texts[StreamGame] }
 		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
