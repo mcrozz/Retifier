@@ -104,6 +104,20 @@ def build(b):
 	# Replace IF_BACKGROUND_BEGIN
 	print "	Replace IF_BACKGROUND_BEGIN on "+config[browser]['IfBackA']
 	rp("{{IF_BACKGROUND_BEGIN}}", config[browser]['IfBackA'], pj([dbDir, "js", "functions.js"]))
+	if config[browser]['UpdateLocal'] == 'true':
+		# Replace UPDATE_LOCAL_VAR_FUNC
+		print "	Replace UPDATE_LOCAL_VAR_FUNC on updateLocalVar.js"
+		rp("{{UPDATE_LOCAL_VAR_FUNC}}", rf(pj([currDir, browser, 'app', 'js', 'updateLocalVar.js'])), pj([dbDir, "js", "functions.js"]))
+		# Replace UPDATE_LOCAL_VAR_CALL
+		print "	Replace UPDATE_LOCAL_VAR_CALL on ch()"
+		rp("{{UPDATE_LOCAL_VAR_CALL}}", 'ch()', pj([dbDir, "js", "functions.js"]))
+	else:
+		# Replace UPDATE_LOCAL_VAR_FUNC
+		print "	Replace UPDATE_LOCAL_VAR_FUNC on <nothing>"
+		rp("{{UPDATE_LOCAL_VAR_FUNC}}", '', pj([dbDir, "js", "functions.js"]))
+		# Replace UPDATE_LOCAL_VAR_CALL
+		print "	Replace UPDATE_LOCAL_VAR_CALL on <nothing>"
+		rp("{{UPDATE_LOCAL_VAR_CALL}}", '', pj([dbDir, "js", "functions.js"]))
 	# Replace IF_BACKGROUND_END
 	print "	Replace IF_BACKGROUND_END on "+config[browser]['IfBackB']
 	rp("{{IF_BACKGROUND_END}}", config[browser]['IfBackB'], pj([dbDir, "js", "functions.js"]))
