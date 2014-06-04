@@ -54,7 +54,9 @@ function lgin() {
 		$('#TwitchAccount, #TwitchAccount>a').on('click', function(){
 			doc('insertContentHere').innerHTML = '<iframe src="https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=http://twitchtvnotifier.host-ed.me/auth.php&scope=user_follows_edit+user_read" width="696" height="520" style="position:absolute;top:0;left:13" frameborder="0"></iframe>';
 			doc('FollowedChannelsOnline').innerHTML = "Sign in by Twicth Account";
+			t = 0;
 			$(window).on('message', function(e){
+				if (t !== 0) return false; t++;
 				try {
 					var f = e.originalEvent.data.split(':')[1];
 					log('Got message');
@@ -68,13 +70,13 @@ function lgin() {
 							doc('LstFlwdChnls').disabled = false;
 							doc('Direct').disabled = false;
 							doc('Dashboard').disabled = false;
-							localJSON('Status','c',['update',0]);
+							//localJSON('Status','c',['update',0]);
 					        localStorage.FirstLaunch = 'false';
 							doc('insertContentHere').innerHTML = null;
 							localJSON('Status','c',['StopInterval',true]);
 							doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
-						} else { err({message:'Cannot get user name from response',stack:e}); }
-					}});
+						} else { err({message:'Cannot get user name from response',stack:e}) }
+					}, error:function(e){err({message:'Tried to get username',stack:e})}});
 				} catch(e) { err(e); doc('FollowedChannelsOnline').innerHTML = "Error :(, please, restart extension"; }
 			});
 		});
