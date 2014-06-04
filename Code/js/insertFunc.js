@@ -23,7 +23,7 @@ var FirstLoadInsertFunc = 1,
 	switch (local.Config.Format) {
 		case 'Grid': Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
 		case 'Full': Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
-		default: Num = 525, Num2 = 43, Num3 = 90, Num4 = 16, Num6 = 180; break;
+		default:     Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
 	}
 })();
 
