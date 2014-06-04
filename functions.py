@@ -95,6 +95,9 @@ def build(b):
 	# Replace NOTIFY_USER_FUNCTION
 	print "	Replace NOTIFY_USER_FUNCTION on notifications.js"
 	rp("{{NOTIFY_USER_FUNCTION}}", rf(pj([currDir, browser, "app", "js", "notifications.js"])), pj([dbDir, "js", "functions.js"]))
+	# Replace AUDIO_FORMAT
+	print "	Replace AUDIO_FORMAT on "+config[browser]['Music']
+	rp("{{AUDIO_FORMAT}}", config[browser]['Music'], pj([dbDir, 'js', 'functions.js']))
 	# Replace CSS_COMPILER
 	print "	Replace CSS_COMPILER on CSScompiler.js"
 	rp("{{CSS_COMPILER}}", rf(pj([currDir, browser, "app", "js", "CSScompiler.js"])), pj([dbDir, "popup.js"]))
@@ -145,6 +148,15 @@ def build(b):
 	# Replace BADGE_ONLINE_COUNT
 	print "	Replace BADGE_ONLINE_COUNT on BadgeOnlineCount.js"
 	rp("{{BADGE_ONLINE_COUNT}}", rf(pj([currDir, browser, "app", "js", "BadgeOnlineCount.js"])), pj([dbDir, "js", "functions.js"]))
+	# Replace PARSE_COM_SRC
+	if config[browser]['Parse'] == 'site':
+		print "	Replace PARSE_COM_SRC on <site>"
+		rp("{{PARSE_COM_SRC}}", "https://www.parsecdn.com/js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
+	else:
+		print "	Replace PARSE_COM_SRC on <local_url>"
+		rp("{{PARSE_COM_SRC}}", "./js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
+		print "	Copy parse.js"
+		shutil.copy2(pj([currDir, 'Code', 'js', 'parse-1.2.18.min.js']), pj([dbDir, 'js', 'parse-1.2.18.min.js']))
 	# Inserting config file 'n' replace version
 	print "	Inserting "+config[browser]['Config']
 	shutil.copy2(pj([currDir, browser, 'app', config[browser]['Config']]), pj([dbDir, config[browser]['Config']]))
