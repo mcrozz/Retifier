@@ -192,6 +192,29 @@ function InsertOnlineList() {
 		if (local.Status.online == 0 && local.Status.update == 0) 
 		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
 	}
+	
+	if (local.Config.Duration_of_stream) {
+		for (var i=0;i<TimersetToUpdate.length;i++) {
+			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
+			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
+			StreamTime = new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time);
+			Today = new Date();
+			SubtractTimes = Math.floor((Today.getTime() - StreamTime.getTime()) / 1000);
+			Days = Math.floor(SubtractTimes/24/60/60);
+			SubtractTimes -= Days*24*60*60;
+			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+			Hours = Math.floor(SubtractTimes/60/60);
+			SubtractTimes -= Hours*60*60;
+			if (Hours == 0) { Hours = '' } else { Hours = (Hours < 10) ? '0'+Hours+'h:' : Hours+'h:'; }
+			Minutes = Math.floor(SubtractTimes/60);
+			SubtractTimes -= Minutes*60;
+			if (Minutes == 0) { Minutes = '00m:' } else { Minutes = (Minutes < 10) ? '0'+Minutes+'m:' : Minutes+'m:'; }
+			Seconds = Math.floor(SubtractTimes);
+			if (Seconds == 0) { Seconds = '00s' } else { Seconds = (Seconds < 10) ? '0'+Seconds+'s' : Seconds+'s'; }
+			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = Time;
+		}
+	}
 }
 
 var pg = false,
@@ -230,29 +253,6 @@ setInterval(function(){
 }, 100);
 
 var run = function() {
-	if (local.Config.Duration_of_stream) {
-		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
-			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
-			StreamTime = new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time);
-			Today = new Date();
-			SubtractTimes = Math.floor((Today.getTime() - StreamTime.getTime()) / 1000);
-			Days = Math.floor(SubtractTimes/24/60/60);
-			SubtractTimes -= Days*24*60*60;
-			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-			Hours = Math.floor(SubtractTimes/60/60);
-			SubtractTimes -= Hours*60*60;
-			if (Hours == 0) { Hours = '' } else { Hours = (Hours < 10) ? '0'+Hours+'h:' : Hours+'h:'; }
-			Minutes = Math.floor(SubtractTimes/60);
-			SubtractTimes -= Minutes*60;
-			if (Minutes == 0) { Minutes = '00m:' } else { Minutes = (Minutes < 10) ? '0'+Minutes+'m:' : Minutes+'m:'; }
-			Seconds = Math.floor(SubtractTimes);
-			if (Seconds == 0) { Seconds = '00s' } else { Seconds = (Seconds < 10) ? '0'+Seconds+'s' : Seconds+'s'; }
-			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = Time;
-		}
-	} 
-
 	(function() {
 		if (typeof local.Config.Timeout !== 'undefined') {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
