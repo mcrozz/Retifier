@@ -148,7 +148,9 @@ function FollowingList(type,id,name,stream) {
 
 setInterval(function(){
     if (parse) {
+        // Getting usernames from 'Ads' table on parse.com and pasting them in localStorage
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+        // Getting usernames from 'Donators' table and disabling 'Please, support...'
         var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0])});
     }
 }, 1000*60*10);
