@@ -15,12 +15,14 @@
 */
 
 changes = [
+    "-0.9.0.3 Code optimization"
+    "-0.9.0.2 Fixed sound"
     "-0.9.0.1 Bugfix",
     "-0.9.0.0 First publish in Opera Web Store"
 ];
 messages = {
-    "v.0.9.0.1": {
-        "msg": "",
+    "v.0.9.0.3": {
+        "msg": "Code optimization",
         "contain": ""
     }
 };
