@@ -40,7 +40,7 @@ const { notifyObservers } = Cc['@mozilla.org/observer-service;1'].
                         getService(Ci.nsIObserverService);
 const { NetUtil } = Cu.import("resource://gre/modules/NetUtil.jsm", {});
 const { Reflect } = Cu.import("resource://gre/modules/reflect.jsm", {});
-const { console } = Cu.import("resource://gre/modules/devtools/Console.jsm");
+const { ConsoleAPI } = Cu.import("resource://gre/modules/devtools/Console.jsm");
 const { join: pathJoin, normalize, dirname } = Cu.import("resource://gre/modules/osfile/ospath_unix.jsm");
 
 // Define some shortcuts.
@@ -56,7 +56,7 @@ const NODE_MODULES = ["assert", "buffer_ieee754", "buffer", "child_process", "cl
 
 const COMPONENT_ERROR = '`Components` is not available in this context.\n' +
   'Functionality provided by Components may be available in an SDK\n' +
-  'module: https://jetpack.mozillalabs.com/sdk/latest/docs/ \n\n' +
+  'module: https://developer.mozilla.org/en-US/Add-ons/SDK \n\n' +
   'However, if you still need to import Components, you may use the\n' +
   '`chrome` module\'s properties for shortcuts to Component properties:\n\n' +
   'Shortcuts: \n' +
@@ -107,7 +107,9 @@ freeze(String.prototype);
 // functions so that untrusted code won't be able to use them a message
 // passing channel.
 function iced(f) {
-  f.prototype = undefined;
+  if (!Object.isFrozen(f)) {
+    f.prototype = undefined;
+  }
   return freeze(f);
 }
 
@@ -131,35 +133,42 @@ exports.sourceURI = iced(sourceURI);
 
 function isntLoaderFrame(frame) { return frame.fileName !== module.uri }
 
-var parseStack = iced(function parseStack(stack) {
+function parseURI(uri) { return String(uri).split(" -> ").pop(); }
+exports.parseURI = parseURI;
+
+function parseStack(stack) {
   let lines = String(stack).split("\n");
   return lines.reduce(function(frames, line) {
     if (line) {
       let atIndex = line.indexOf("@");
       let columnIndex = line.lastIndexOf(":");
-      let fileName = sourceURI(line.slice(atIndex + 1, columnIndex));
-      let lineNumber = parseInt(line.slice(columnIndex + 1));
+      let lineIndex = line.lastIndexOf(":", columnIndex - 1);
+      let fileName = parseURI(line.slice(atIndex + 1, lineIndex));
+      let lineNumber = parseInt(line.slice(lineIndex + 1, columnIndex));
+      let columnNumber = parseInt(line.slice(columnIndex + 1));
       let name = line.slice(0, atIndex).split("(").shift();
       frames.unshift({
         fileName: fileName,
         name: name,
-        lineNumber: lineNumber
+        lineNumber: lineNumber,
+        columnNumber: columnNumber
       });
     }
     return frames;
   }, []);
-})
-exports.parseStack = parseStack
+}
+exports.parseStack = parseStack;
 
-var serializeStack = iced(function serializeStack(frames) {
+function serializeStack(frames) {
   return frames.reduce(function(stack, frame) {
     return frame.name + "@" +
            frame.fileName + ":" +
-           frame.lineNumber + "\n" +
+           frame.lineNumber + ":" +
+           frame.columnNumber + "\n" +
            stack;
   }, "");
-})
-exports.serializeStack = serializeStack
+}
+exports.serializeStack = serializeStack;
 
 function readURI(uri) {
   let stream = NetUtil.newChannel(uri, 'UTF-8', null).open();
@@ -215,16 +224,10 @@ const Sandbox = iced(function Sandbox(options) {
     wantGlobalProperties: 'wantGlobalProperties' in options ?
                           options.wantGlobalProperties : [],
     sandboxPrototype: 'prototype' in options ? options.prototype : {},
-    sameGroupAs: 'sandbox' in options ? options.sandbox : null,
     invisibleToDebugger: 'invisibleToDebugger' in options ?
                          options.invisibleToDebugger : false,
     metadata: 'metadata' in options ? options.metadata : {}
   };
-
-  // Make `options.sameGroupAs` only if `sandbox` property is passed,
-  // otherwise `Cu.Sandbox` will throw.
-  if (!options.sameGroupAs)
-    delete options.sameGroupAs;
 
   let sandbox = Cu.Sandbox(options.principal, options);
 
@@ -282,9 +285,6 @@ const load = iced(function load(loader, module) {
 
   let sandbox = sandboxes[module.uri] = Sandbox({
     name: module.uri,
-    // Get an existing module sandbox, if any, so we can reuse its compartment
-    // when creating the new one to reduce memory consumption.
-    sandbox: sandboxes[keys(sandboxes).shift()],
     prototype: create(globals, descriptors),
     wantXrays: false,
     wantGlobalProperties: module.id == "sdk/indexed-db" ? ["indexedDB"] : [],
@@ -384,13 +384,12 @@ exports.resolve = resolve;
 // algorithm.
 // `id` should already be resolved relatively at this point.
 // http://nodejs.org/api/modules.html#modules_all_together
-const nodeResolve = iced(function nodeResolve(id, requirer, { manifest, rootURI }) {
+const nodeResolve = iced(function nodeResolve(id, requirer, { rootURI }) {
   // Resolve again
   id = exports.resolve(id, requirer);
 
   // we assume that extensions are correct, i.e., a directory doesnt't have '.js'
   // and a js file isn't named 'file.json.js'
-
   let fullId = join(rootURI, id);
 
   let resolvedPath;
@@ -400,7 +399,7 @@ const nodeResolve = iced(function nodeResolve(id, requirer, { manifest, rootURI 
     return stripBase(rootURI, resolvedPath);
   // If manifest has dependencies, attempt to look up node modules
   // in the `dependencies` list
-  else if (manifest.dependencies) {
+  else {
     let dirs = getNodeModulePaths(dirname(join(rootURI, requirer))).map(dir => join(dir, id));
     for (let i = 0; i < dirs.length; i++) {
       if (resolvedPath = loadAsFile(dirs[i]))
@@ -533,7 +532,6 @@ const Require = iced(function Require(loader, requirer) {
 
     // TODO should get native Firefox modules before doing node-style lookups
     // to save on loading time
-
     if (isNative) {
       // If a requireMap is available from `generateMap`, use that to
       // immediately resolve the node-style mapping.
@@ -614,7 +612,7 @@ const Require = iced(function Require(loader, requirer) {
     // at runtime.
     if (!(uri in modules)) {
       // Many of the loader's functionalities are dependent
-      // on modules[uri] being set before loading, so we set it and 
+      // on modules[uri] being set before loading, so we set it and
       // remove it if we have any errors.
       module = modules[uri] = Module(requirement, uri);
       try {
@@ -688,8 +686,13 @@ exports.unload = unload;
 //   If `resolve` does not returns `uri` string exception will be thrown by
 //   an associated `require` call.
 const Loader = iced(function Loader(options) {
+  let console = new ConsoleAPI({
+    consoleID: options.id ? "addon/" + options.id : ""
+  });
+
   let {
-    modules, globals, resolve, paths, rootURI, manifest, requireMap, isNative
+    modules, globals, resolve, paths, rootURI,
+    manifest, requireMap, isNative, metadata
   } = override({
     paths: {},
     modules: {},
@@ -744,6 +747,7 @@ const Loader = iced(function Loader(options) {
     mapping: { enumerable: false, value: mapping },
     // Map of module objects indexed by module URIs.
     modules: { enumerable: false, value: modules },
+    metadata: { enumerable: false, value: metadata },
     // Map of module sandboxes indexed by module URIs.
     sandboxes: { enumerable: false, value: {} },
     resolve: { enumerable: false, value: resolve },
