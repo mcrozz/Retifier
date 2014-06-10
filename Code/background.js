@@ -75,7 +75,10 @@ function CheckFollowingList() {
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status', 'c', ['online', local.Status.online - 1]);
                 BadgeOnlineCount(local.Status.online);
-                NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name });
+                NowOnline = NowOnline.filter(function(e){
+                    (e !== local.FollowingList[key].Name) ? deb('Delete '+e) : deb('Still '+e);
+                    return e !== local.FollowingList[key].Name;
+                });
                 FollowingList('c', key, '', false)                      
             }
             if (local.Status.checked == localJSON('Following') || key === localJSON('Following')) {
@@ -95,7 +98,7 @@ function CheckFollowingList() {
 
     if (!localStorage.Following) localStorage.Following = 0;
     var twitch = 'Not loaded yet!',
-        urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=116&offset=0';
+        urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
     if (local.Config.token !== "") urlToJSON += '&oauth_token='+local.Config.token;
     localJSON('Status', 'c', ['update', 1]);
 
@@ -114,11 +117,9 @@ function CheckFollowingList() {
             notifyUser("Update follows list", "Error, can't update", "Update");
         });
         FLG.done(function (data) {
-            if (Math.floor(localStorage.Following) != data._total) {
+            if (Math.floor(localStorage.Following) !== data._total) {
                 log('Update list of following channels');
                 localStorage.Following = data._total;
-                localJSON('Status', 'c', ['online', 0]);
-
                 for (var i=0; i<localJSON('Following'); i++)
                     FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : log(FLG.responseJSON);
             }

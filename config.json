@@ -1,1 +1,88 @@
-{"Firefox": {"Ver": "0.9.1.1", "IfBackB": "", "IfBackA": "", "Review": "", "Parse": "local", "Platform": "moz", "CopyBackgound": "false", "Music": "wav", "Build": 40, "UpdateLocal": "false"}, "Chrome": {"Ver": "1.3.9.8", "IfBackB": "}", "IfBackA": "if(window.location.pathname==='/background.html'){", "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews", "Parse": "site", "Platform": "webkit", "CopyBackgound": "true", "Music": "mp3", "Build": 509, "UpdateLocal": "true", "Config": "manifest.json"}, "Create": ["img", "js", "music"], "Opera": {"Ver": "0.9.0.3", "IfBackB": "}", "IfBackA": "if(window.location.pathname==='/background.html'){", "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/", "Parse": "local", "Platform": "webkit", "CopyBackgound": "true", "Music": "wav", "Build": 33, "UpdateLocal": "true", "Config": "manifest.json"}, "ScriptsBack": ["./js/jquery-1.11.0.min.js", "./js/functions.js", "background.js"], "Music": ["DinDon"], "Safari": {"Music": "wav", "Review": "", "Ver": "0.9.0.0", "Build": 0, "Platform": "webkit"}, "Scripts": ["./js/jquery-1.11.0.min.js", "./js/functions.js", "background.js", "./js/firstStart.js", "./js/whatsNew.js", "./js/insertFunc.js", "popup.js"], "Copy": ["DejaVuSans.ttf", "LICENSE", "style.css", "popup.html", "popup.js", "background.js", "img\\icon.png", "img\\img.png", "img\\playing.png", "img\\PrevievNotAvailable.png", "img\\refresh.png", "img\\StillDownloading.gif", "img\\zoom.png", "js\\jquery-1.11.0.min.js", "js\\insertFunc.js", "js\\firstStart.js", "js\\functions.js"]}
+{
+  "Firefox": {
+    "Ver": "0.9.1.1",
+    "IfBackB": "",
+    "IfBackA": "",
+    "Review": "",
+    "Parse": "local",
+    "Platform": "moz",
+    "CopyBackgound": "false",
+    "Music": "wav",
+    "Build": 40,
+    "UpdateLocal": "false"
+  },
+  "Chrome": {
+    "Ver": "1.3.9.8",
+    "IfBackB": "}",
+    "IfBackA": "if(window.location.pathname==='/background.html'){",
+    "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
+    "Parse": "site",
+    "Platform": "webkit",
+    "CopyBackgound": "true",
+    "Music": "mp3",
+    "Build": 512,
+    "UpdateLocal": "true",
+    "Config": "manifest.json"
+  },
+  "Create": [
+    "img",
+    "js",
+    "music"
+  ],
+  "Opera": {
+    "Ver": "0.9.0.3",
+    "IfBackB": "}",
+    "IfBackA": "if(window.location.pathname==='/background.html'){",
+    "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
+    "Parse": "local",
+    "Platform": "webkit",
+    "CopyBackgound": "true",
+    "Music": "wav",
+    "Build": 33,
+    "UpdateLocal": "true",
+    "Config": "manifest.json"
+  },
+  "ScriptsBack": [
+    "./js/jquery-1.11.0.min.js",
+    "./js/functions.js",
+    "background.js"
+  ],
+  "Music": [
+    "DinDon"
+  ],
+  "Safari": {
+    "Ver": "0.9.0.0",
+    "Review": "",
+    "Music": "wav",
+    "Build": 0,
+    "Platform": "webkit"
+  },
+  "Scripts": [
+    "./js/jquery-1.11.0.min.js",
+    "./js/functions.js",
+    "background.js",
+    "./js/firstStart.js",
+    "./js/whatsNew.js",
+    "./js/insertFunc.js",
+    "popup.js"
+  ],
+  "Copy": [
+    "DejaVuSans.ttf",
+    "LICENSE",
+    "style.css",
+    "popup.html",
+    "popup.js",
+    "background.js",
+    "img\\icon.png",
+    "img\\img.png",
+    "img\\playing.png",
+    "img\\PrevievNotAvailable.png",
+    "img\\refresh.png",
+    "img\\StillDownloading.gif",
+    "img\\zoom.png",
+    "js\\jquery-1.11.0.min.js",
+    "js\\insertFunc.js",
+    "js\\firstStart.js",
+    "js\\functions.js"
+  ]
+}
