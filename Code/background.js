@@ -118,12 +118,12 @@ function CheckFollowingList() {
         var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
         if (local.Config.token !== "") uri += '&oauth_token='+local.Config.token;
         $.getJSON(uri)
-        .fail(function () {
-            err("Can't get following list");
+        .fail(function(j) {
+            err({message:"Can't get following list",stack:j});
             localJSON('Status', 'c', ['update', 5]);
             notifyUser("Update follows list", "Error, can't update", "Update");
         })
-        .done(function (j) {
+        .done(function(j) {
             var chg;
             if (Math.floor(localStorage.Following) !== j._total) {
                 log('Update list of following channels');
