@@ -92,7 +92,7 @@ function CheckFollowingList() {
                 log('Every channel checked ('+local.Status.checked+')');
                 localJSON('Status', 'c', ['update', 0]);
 
-                if (local.Config.notifications.update) {
+                if (local.Config.Notifications.update) {
                     switch (local.Status.online) {
                         case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
                         case 1: notifyUser('Update finished!', 'Now online one channel', 'Update'); break;
@@ -106,7 +106,7 @@ function CheckFollowingList() {
     if (!localStorage.Following) localStorage.Following = 0;
     localJSON('Status', 'c', ['update', 1]);
 
-    if (['','Guest',undefined].typeof(local.Config.User_Name) !== -1) {
+    if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
         if (localStorage.FirstLaunch !== 'true')
             localJSON('Status', 'c', ['update', 6]);
         log('Change user name!')
