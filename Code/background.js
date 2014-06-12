@@ -40,21 +40,20 @@ var NowOnline = [];
 
 function CheckFollowingList() {
     function checkStatus(url,key,ch) {
-        var checkStatus = $.getJSON(url)
-            .fail(function () { 
-                err('checkStatus() ended with error'); 
-                notifyUser("Update follows list", "Error, can't update", "Update"); 
-                localJSON('Status', 'c', ['update', 5]);
-            });
-
-        checkStatus.complete(function() {
+        $.getJSON(url)
+        .fail(function(j) { 
+            err({message:'checkStatus() ended with error',stack:j});
+            notifyUser("Update follows list", "Error, can't update", "Update"); 
+            localJSON('Status', 'c', ['update', 5]);
+        })
+        .done(function(j) {
             localJSON('Status', 'c', ['checked', local.Status.checked + 1]);
 
-            if (checkStatus.responseJSON.stream) {
-                var Game = checkStatus.responseJSON.stream.game,
-                    Status = checkStatus.responseJSON.stream.channel.status,
+            if (j.stream) {
+                var Game = j.stream.game,
+                    Status = j.stream.channel.status,
                     Name = local.FollowingList[key].Name,
-                    Time = checkStatus.responseJSON.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
+                    Time = j.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
 
                 if (Status === null) Status = 'Untitled stream';
                 if (Game === null) Game = 'Not playing';
@@ -71,7 +70,7 @@ function CheckFollowingList() {
                 if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
                 else { Time2 = local.FollowingList[key].Stream.Time }
 
-                FollowingList('c',key,'',[Status, Game, checkStatus.responseJSON.stream.viewers, Time2, "NotYet"])
+                FollowingList('c',key,'',[Status, Game, j.stream.viewers, Time2, "NotYet"])
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status', 'c', ['online', local.Status.online - 1]);
                 BadgeOnlineCount(local.Status.online);
@@ -105,33 +104,33 @@ function CheckFollowingList() {
     }
 
     if (!localStorage.Following) localStorage.Following = 0;
-    var twitch = 'Not loaded yet!',
-        urlToJSON = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
-    if (local.Config.token !== "") urlToJSON += '&oauth_token='+local.Config.token;
     localJSON('Status', 'c', ['update', 1]);
 
-    if (local.Config.User_Name === 'Guest' || typeof local.Config.User_Name === 'undefined') {
-        localJSON('Status', 'c', ['update', 6]);
+    if (['','Guest',undefined].typeof(local.Config.User_Name) !== -1) {
+        if (localStorage.FirstLaunch !== 'true')
+            localJSON('Status', 'c', ['update', 6]);
         log('Change user name!')
     } else {
         log("Behold! Update is comin'");
         notifyUser('Behold! Update!', 'Starting update...', 'Update');
         localJSON('Status', 'c', ['update', 2]);
 
-        var FLG = $.getJSON(urlToJSON);
-        FLG.fail(function () {
+        var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
+        if (local.Config.token !== "") uri += '&oauth_token='+local.Config.token;
+        $.getJSON(uri)
+        .fail(function () {
             err("Can't get following list");
             localJSON('Status', 'c', ['update', 5]);
             notifyUser("Update follows list", "Error, can't update", "Update");
-        });
-        FLG.done(function (data) {
+        })
+        .done(function (j) {
             var chg;
-            if (Math.floor(localStorage.Following) !== data._total) {
+            if (Math.floor(localStorage.Following) !== j._total) {
                 log('Update list of following channels');
-                localStorage.Following = data._total;
+                localStorage.Following = j._total;
                 chg = true;
                 for (var i=0; i<localJSON('Following'); i++)
-                    FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : log(FLG.responseJSON);
+                    j.follows[i] ? FollowingList('add', i, J.follows[i].channel.name) : log(j);
             } else {
                 chg = false;
             }
