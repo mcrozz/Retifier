@@ -28,7 +28,7 @@
 
 BadgeOnlineCount(0);
 localJSON('Status', 'c', ['online', 0]);
-for (var i = 0; i < localJSON('Following'); i++) { FollowingList('c', i, '', false) }
+for (var i = 0; i < localJSON('Following'); i++) FollowingList('c', i, '', false);
 
 if (localStorage.FirstLaunch === 'true') {
     localStorage.Following = 0;
@@ -39,7 +39,7 @@ if (localStorage.FirstLaunch === 'true') {
 var NowOnline = [];
 
 function CheckFollowingList() {
-    function checkStatus(url,key) {
+    function checkStatus(url,key,ch) {
         var checkStatus = $.getJSON(url)
             .fail(function () { 
                 err('checkStatus() ended with error'); 
@@ -82,15 +82,23 @@ function CheckFollowingList() {
                 FollowingList('c', key, '', false)                      
             }
             if (local.Status.checked == localJSON('Following') || key === localJSON('Following')) {
+                if (ch) {
+                    localJSON('Status','c',['online', 0]);
+                    for (var i=0; i<local.FollowingList.lenght; i++)
+                        if (local.FollowingList[i].Stream) { local.Status.online++; };
+                    localJSON('Status','c',['online', local.Status.online]);
+                }
                 BadgeOnlineCount(local.Status.online);
                 sessionStorage.First_Notify = 1;
                 log('Every channel checked ('+local.Status.checked+')');
                 localJSON('Status', 'c', ['update', 0]);
 
-                switch (local.Status.online) {
-                    case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
-                    case 1: notifyUser('Update finished!', 'Now online one channel', 'Update'); break;
-                    default: notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update');
+                if (local.Config.notifications.update) {
+                    switch (local.Status.online) {
+                        case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
+                        case 1: notifyUser('Update finished!', 'Now online one channel', 'Update'); break;
+                        default: notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update');
+                    }
                 }
             }
         });
@@ -117,32 +125,38 @@ function CheckFollowingList() {
             notifyUser("Update follows list", "Error, can't update", "Update");
         });
         FLG.done(function (data) {
+            var chg;
             if (Math.floor(localStorage.Following) !== data._total) {
                 log('Update list of following channels');
                 localStorage.Following = data._total;
+                chg = true;
                 for (var i=0; i<localJSON('Following'); i++)
                     FLG.responseJSON.follows[i] ? FollowingList('add', i, FLG.responseJSON.follows[i].channel.name) : log(FLG.responseJSON);
+            } else {
+                chg = false;
             }
             localJSON('Status','c',['checked', 0]);
             localJSON('Status','c',['update', 4]);
             log('Checking Status of channels...');
-            for (var i = 0; i < localJSON('Following'); i++) {
+            for (var i=0; i<localJSON('Following'); i++) {
                 var k = 'https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name;
                 if (local.Config.token !== "") k += '?oauth_token='+local.Config.token;
-                checkStatus(k, i);
+                checkStatus(k, i, chg);
             }
         });
     }
 }
 
-CheckFollowingList();
-CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
-localJSON('Status','c',['StopInterval',false]);
-setInterval(function(){
-    if (local.Status.StopInterval) {
-        clearInterval(CheckTwitch);
-        CheckFollowingList();
-        CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
-        localJSON('Status','c',['StopInterval', false])
-    }
-},500);
+(function(){
+    CheckFollowingList();
+    CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
+    localJSON('Status','c',['StopInterval',false]);
+    setInterval(function(){
+        if (local.Status.StopInterval) {
+            clearInterval(CheckTwitch);
+            CheckFollowingList();
+            CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000 * local.Config.Interval_of_Checking);
+            localJSON('Status','c',['StopInterval', false])
+        }
+    },500);
+})();
