@@ -1,11 +1,11 @@
 function notifyUser(streamerName, titleOfStream, type, streamer) {
 	if (window.location.pathname !== '/background.html') return false;
 	function delNotify(id, types) {
-		var idToDel = id, times = 1000;
+		var idToDel = id, times = 60000;
 		switch (types) {
-			case 'Online': times *= 120; break;
-			case 'Changed': times *= 60; break;
-			default: times *= 60; break;
+			case 'Online': times *= 15; break;
+			case 'Changed': times *= 5; break;
+			default: times *= 5; break;
 		}
 		setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
 	}
