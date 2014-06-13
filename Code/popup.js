@@ -96,23 +96,23 @@ function changeScriptStarter() {
 	// Interval of checking
 	var g = Math.floor(doc('ChgUsrInt').value);
 	if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g > 0) {
-		localJSON('Config','c',['Interval_of_Checking', g]);
-		localJSON('Status','c',['StopInterval', true])
+		localJSON('Config',['Interval_of_Checking', g]);
+		localJSON('Status',['StopInterval', true])
 	}
 	// Notifications
-	if (doc('EnNotify').checked) localJSON('Config','c',['Notifications','status', true]);
-	if (doc('DisNotify').checked) localJSON('Config','c',['Notifications','status', false]);
-	localJSON('Config','c',['Notifications','online',doc('NotifyStreamer').checked]);
-	localJSON('Config','c',['Notifications','update',doc('NotifyStreamerChanged').checked]);
-	localJSON('Config','c',['Notifications','follow',doc('NotifyUpdate').checked]);
+	if (doc('EnNotify').checked) localJSON('Config',['Notifications','status', true]);
+	if (doc('DisNotify').checked) localJSON('Config',['Notifications','status', false]);
+	localJSON('Config',['Notifications','online',doc('NotifyStreamer').checked]);
+	localJSON('Config',['Notifications','update',doc('NotifyStreamerChanged').checked]);
+	localJSON('Config',['Notifications','follow',doc('NotifyUpdate').checked]);
 	// Sound
-	localJSON('Config','c',['Notifications','sound_status',doc('SoundCheck').checked]);
-	localJSON('Config','c',['Notifications','sound', doc("SoundSelect").value]);
+	localJSON('Config',['Notifications','sound_status',doc('SoundCheck').checked]);
+	localJSON('Config',['Notifications','sound', doc("SoundSelect").value]);
 	// Duration of stream
-	localJSON('Config','c',['Duration_of_stream',doc('StreamDurationCheck').checked]);
+	localJSON('Config',['Duration_of_stream',doc('StreamDurationCheck').checked]);
 	// Update style and list of online users
 	if (doc('List_Format_List').value !== local.Config.Format) {
-		localJSON('Config','c',['Format', doc('List_Format_List').value]);
+		localJSON('Config',['Format', doc('List_Format_List').value]);
 		document.getElementsByTagName("style")[0].remove();
 		CSScompiler();
 		doc('insertContentHere').innerHTML = '';
@@ -146,7 +146,8 @@ function FollowedList(c) {
 
 		ga('send', 'event', 'button', 'click', 'Following List');
 		
-		for (var i=0;i<localJSON('Following');i++) FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
+		for (var i=0;i<localJSON('Following');i++)
+			FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
 	} else if (c=='c') {
 		Animation('FollowedChannelsList', ['fadeOut', true]);
 		Animation('firstScane', ['fadeIn', false], function(){ doc('IFCHc').innerHTML = null; });
@@ -227,7 +228,7 @@ $(window).on('load',function() {
 	ael('Dashboard', 0, function(){ ga('send', 'event', 'button', 'click', 'Dashboard'); window.open('http://www.twitch.tv/broadcast/dashboard') });
 	ael('Direct', 0, function(){ ga('send', 'event', 'button', 'click', 'Direct'); window.open('http://www.twitch.tv/directory/following') });
 	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
-	ael('refresh', 0, function(){ localJSON('Status', 'c', ['StopInterval', true]) });
+	ael('refresh', 0, function(){ localJSON('Status', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
 	document.onmousemove = function(p){
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;

@@ -26,8 +26,8 @@ function reLogin() {
 		Animation('FoundAbugText', ['hideReport', true, 0.9]);
 	}
 	opened = false;
-	localJSON('Config','c',['User_Name', 'Guest']);
-	localJSON('Config','c',['token', '']);
+	localJSON('Config',['User_Name', 'Guest']);
+	localJSON('Config',['token', '']);
 	localStorage.FollowingList={};
 	localStorage.Following=0;
 	localStorage.FirstLaunch='true';
@@ -61,18 +61,18 @@ function lgin() {
 					var f = e.originalEvent.data.split(':')[1];
 					log('Got message');
 					if (f === undefined || f === 'ERROR') throw Error();
-					localJSON('Config','c',['token', f]);
+					localJSON('Config',['token', f]);
 					$.ajax({url:'https://api.twitch.tv/kraken/user?oauth_token='+f,dataType:'JSONP',complete:function(e){
 						log('Got user');
 						if (e.responseJSON.name !== undefined) {
-							localJSON('Config','c',['User_Name', e.responseJSON.name]);
+							localJSON('Config',['User_Name', e.responseJSON.name]);
 							doc('ChgUsr').disabled = false;
 							doc('LstFlwdChnls').disabled = false;
 							doc('Direct').disabled = false;
 							doc('Dashboard').disabled = false;
 					        localStorage.FirstLaunch = 'false';
 							doc('insertContentHere').innerHTML = null;
-							localJSON('Status','c',['StopInterval',true]);
+							localJSON('Status',['StopInterval',true]);
 							doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 						} else { err({message:'Cannot get user name from response',stack:e}) }
 					}, error:function(e){err({message:'Tried to get username',stack:e})}});
@@ -84,10 +84,10 @@ function lgin() {
 		$('#TwitchName, #TwitchName>a').on('click', function(){
 			function firstLaunchUserByName() {
 				if (doc('SetUpUserNameInp').value !== undefined && doc('SetUpUserNameInp').value != ' ' && doc('SetUpUserNameInp').value != ''){ 
-					localJSON('Config','c',['User_Name',doc('SetUpUserNameInp').value]);
-			        localJSON('Status','c',['update',0]);
+					localJSON('Config',['User_Name',doc('SetUpUserNameInp').value]);
+			        localJSON('Status',['update',0]);
 			        localStorage.FirstLaunch = 'false';
-					localJSON('Status','c',['StopInterval',true]);
+					localJSON('Status',['StopInterval',true]);
 					doc('FollowedChannelsOnline').innerHTML = "Please wait a moment";
 					doc('ChgUsr').disabled = false;
 					doc('LstFlwdChnls').disabled = false;

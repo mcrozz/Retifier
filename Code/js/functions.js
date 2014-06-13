@@ -49,7 +49,7 @@ try { loc() } catch(e) { err(e) }
 
 {{INTERVAL_STORAGE_CHANGE}}
 
-function localJSON(name,type,arrayz) {
+function localJSON(name,arrayz) {
     try {
         {{UPDATE_LOCAL_VAR_FUNC}}
         var sz, b, h;
@@ -69,15 +69,7 @@ function localJSON(name,type,arrayz) {
             } else {
                 return false;
             }
-        } else if (name&&type=='v'&&arrayz) {
-            b = local[name];
-            if (arrayz.length == 1){            
-                if (b[arrayz[0]]) {return b[arrayz[0]];} else {return false;}
-            } else if (arrayz.length == 2) {
-                f = b[arrayz[0]];
-                if (f[arrayz[1]]) {return f[arrayz[1]];} else {return false;}
-            } else { return false; }
-        } else if (name&&!type&&!arrayz) {
+        } else if (name&&!arrayz) {
             return JSON.parse(localStorage[name]);
         } else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
     } catch (e) {
@@ -142,7 +134,7 @@ function FollowingList(type,id,name,stream) {
     p.src='{{PARSE_COM_SRC}}';
     p.onload = function(){
         parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0])});
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config',['Timeout',0])});
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
     }
     s.parentNode.insertBefore(p,s);
@@ -153,7 +145,7 @@ setInterval(function(){
         // Getting usernames from 'Ads' table on parse.com and pasting them in localStorage
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
         // Getting usernames from 'Donators' table and disabling 'Please, support...'
-        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config','c',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config','c',['Timeout',0])});
+        var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config',['Timeout',1337]);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config',['Timeout',0])});
     }
-}, 1000*60*10);
+}, 600000);
 {{IF_BACKGROUND_END}}
