@@ -52,30 +52,23 @@ try { loc() } catch(e) { err(e) }
 function localJSON(name,arrayz) {
     try {
         {{UPDATE_LOCAL_VAR_FUNC}}
-        var sz, b, h;
-        if (name&&type=='c'&&arrayz) {
-            sz = arrayz.length;
-            b = local[name];
+        if (name&&arrayz) {
+            var sz = arrayz.length,
+                b = local[name];
             if (sz == 2) {
                 b[arrayz[0]]=arrayz[1];
                 localStorage[name] = JSON.stringify(b);
                 loc(); {{UPDATE_LOCAL_VAR_CALL}}
-                return true;
-            } else if (sz == 3) {
+                return true; }
+            else if (sz == 3) {
                 b[arrayz[0]][arrayz[1]] = arrayz[2];
                 localStorage[name] = JSON.stringify(b);
                 loc(); {{UPDATE_LOCAL_VAR_CALL}}
-                return true;
-            } else {
-                return false;
-            }
-        } else if (name&&!arrayz) {
-            return JSON.parse(localStorage[name]);
-        } else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
-    } catch (e) {
-        err(e);
-        return "ERROR";
-    }
+                return true; }
+            else { return false; } }
+        else if (name&&!arrayz) { return JSON.parse(localStorage[name]); }
+        else { Error('[ERROR]: Wrong input in localJSON function!'); return false; }
+    } catch (e) { err(e); return false; }
 }
 
 if (!localStorage.FollowingList) localStorage.FollowingList='{}';
