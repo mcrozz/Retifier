@@ -207,7 +207,7 @@ $(window).on('load',function() {
 	function ael(id, type, func) {var d = ['click', 'change'], j = ''; if ($.isArray(id)) {for (var i=0; i<id.length; i++) { if (i !== 0) j += ', '; j += '#'+id[i]; }} else { j = '#'+id; } $(j).on(d[type], func);}
 	CSScompiler();
 	versionCheck();
-	doc('AppVersion').innerHTML = local.App_Version.Ver+' (changes)';
+	$('#AppVersion').html(local.App_Version.Ver);
 	ael('ChgUsr', 0, clickChangeUser);
 	ael('ChgUsrSnd', 0, changeScriptStarter);
 	ael('LstFlwdChnls', 0, function(){ FollowedList('o') });
