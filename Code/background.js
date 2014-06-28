@@ -130,7 +130,7 @@ function CheckFollowingList() {
                 localStorage.Following = j._total;
                 chg = true;
                 for (var i=0; i<localJSON('Following'); i++)
-                    j.follows[i] ? FollowingList('add', i, J.follows[i].channel.name) : log(j);
+                    j.follows[i] ? FollowingList('add', i, j.follows[i].channel.name) : log(j);
             } else {
                 chg = false;
             }
