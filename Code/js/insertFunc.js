@@ -194,25 +194,27 @@ function InsertOnlineList() {
 	}
 	
 	if (local.Config.Duration_of_stream) {
+		function h(b,j) {
+			if (b === 0) { return '00'+j; }
+			else if (b < 10) { return '0'+b+j; }
+			else { return b.toString()+j; }
+		}
 		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var InsertTimeHere, StreamTime, SubtractTimes, Days, Hours, Minutes, Seconds, Time, Today;
-			InsertTimeHere = 'Stream_Duration_'+TimersetToUpdate[i];
-			StreamTime = new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time);
-			Today = new Date();
-			SubtractTimes = Math.floor((Today.getTime() - StreamTime.getTime()) / 1000);
+			var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+			SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time)).getTime()) / 1000);
 			Days = Math.floor(SubtractTimes/24/60/60);
 			SubtractTimes -= Days*24*60*60;
 			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
 			Hours = Math.floor(SubtractTimes/60/60);
 			SubtractTimes -= Hours*60*60;
-			if (Hours == 0) { Hours = '' } else { Hours = (Hours < 10) ? '0'+Hours+'h:' : Hours+'h:'; }
+			Hours = h(Hours, 'h:');
 			Minutes = Math.floor(SubtractTimes/60);
 			SubtractTimes -= Minutes*60;
-			if (Minutes == 0) { Minutes = '00m:' } else { Minutes = (Minutes < 10) ? '0'+Minutes+'m:' : Minutes+'m:'; }
+			Minutes = h(Minutes, 'm:')
 			Seconds = Math.floor(SubtractTimes);
-			if (Seconds == 0) { Seconds = '00s' } else { Seconds = (Seconds < 10) ? '0'+Seconds+'s' : Seconds+'s'; }
+			Seconds = h(Seconds, 's');
 			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-            if (doc(InsertTimeHere)) doc(InsertTimeHere).innerHTML = Time;
+            if (doc('Stream_Duration_'+TimersetToUpdate[i])) doc('Stream_Duration_'+TimersetToUpdate[i]).innerHTML = Time;
 		}
 	}
 }
@@ -236,14 +238,15 @@ setInterval(function(){
 	    Onlv = local.Status.online;
 	if (!Onlv) Onlv = 0;
 	switch (Upd) {
-		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; pg=false; break;
-		case 1: j.innerHTML='Behold! Update!'; pg=true; break;
-		case 2: j.innerHTML='Updating list of followed channels...'; pg=true; break;
-		case 3: j.innerHTML='List of followed channels updated.'; pg=true; break;
-		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; pg=true; break;
+		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; break;
+		case 1: j.innerHTML='Behold! Update!'; break;
+		case 2: j.innerHTML='Updating list of followed channels...'; break;
+		case 3: j.innerHTML='List of followed channels updated.'; break;
+		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; break;
 		case 5: j.innerHTML='App have a problem with update'; break;
 		case 6: j.innerHTML="Name doesn't set up yet!"; break;
 	}
+	pg = Upd!==0;
 	if (pg) {
 		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
 		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
@@ -273,7 +276,7 @@ var run = function() {
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
 			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config',['Timeout',TimeNdate(14,0)]);ga('set','PayPalButton','false')});
-			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});},100);
+			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
 		}
 	})();
 	InsertOnlineList()
