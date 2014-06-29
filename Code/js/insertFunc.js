@@ -48,6 +48,7 @@ function InsertOnlineList() {
 	for (var i = 0; i < localJSON('Following') ; i++) {
 		var StreamTitle = FollowList[i].Stream.Title,
 			StreamerName = FollowList[i].Name,
+			ShortStrmName = (StreamerName === 'speeddemosarchivesda')?'SDA':StreamerName,
 			StreamGame = FollowList[i].Stream.Game,
 			StreamVievers = FollowList[i].Stream.Viewers,
 			TitleWidth = false,
@@ -80,9 +81,9 @@ function InsertOnlineList() {
 						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
 					SLU += '</div><div class="information">';
-						SLU += '<div class="informationTextTitle" id="Title_'+i+'">'+StreamTitle+'</div>';
+						SLU += '<div id="Title_'+i+'">'+StreamTitle+'</div>';
 						SLU += '<div class="streamer">';
-							SLU += '<a class="informationTextStreamer" id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">' + StreamerName+'</a>';
+							SLU += '<a id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">'+ShortStrmName+'</a>';
 						SLU += '</div><div class="viewers">';
 							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
 							SLU += '<p>viewers</p>';

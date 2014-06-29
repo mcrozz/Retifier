@@ -20,7 +20,7 @@
     "Platform": "webkit",
     "CopyBackgound": "true",
     "Music": "mp3",
-    "Build": 521,
+    "Build": 523,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
