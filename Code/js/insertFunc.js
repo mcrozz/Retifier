@@ -58,13 +58,13 @@ function InsertOnlineList() {
 			if (typeof texts[StreamTitle] === 'undefined') {
 				dc.style.fontSize = Num4+'px';
 				dc.innerHTML = StreamTitle;
-				texts[StreamTitle] = (dc.offsetWidth > Num) ? true : false;
+				texts[StreamTitle] = (dc.offsetWidth > Num);
 			} else { TitleWidth = texts[StreamTitle] }
 			
 			if (typeof texts[StreamGame] === 'undefined') {
 				dc.innerHTML = StreamGame;
 				dc.style.fontSize = Num4+'px';
-				texts[StreamGame] = (dc.offsetWidth > Num6) ? true : false;
+				texts[StreamGame] = (dc.offsetWidth > Num6);
 			} else { GameWidth = texts[StreamGame] }
 		}
 
