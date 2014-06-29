@@ -112,6 +112,7 @@ function FollowingList(type,id,name,stream) {
     ga('create', 'UA-25472862-3', {'cookieDomain': 'none'});
     ga('set', 'checkProtocolTask', function(){});
     ga('set', 'anonymizeIp', true);
+    ga('require', 'displayfeatures');
     ga('send', 'pageview', {
         'page': location.pathname,
         'title': location.pathname
