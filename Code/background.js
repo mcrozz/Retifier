@@ -26,14 +26,14 @@
     7 :: First start
 */
 
-BadgeOnlineCount(0);
-localJSON('Status', ['online', 0]);
-for (var i = 0; i < localJSON('Following'); i++) FollowingList('c', i, '', false);
-
 if (localStorage.FirstLaunch === 'true') {
     localStorage.Following = 0;
     localJSON('Status',['update',7]);
     BadgeOnlineCount(' Hi ');
+} else {
+    BadgeOnlineCount(0);
+    localJSON('Status', ['online', 0]);
+    for (var i = 0; i < localJSON('Following'); i++) FollowingList('c', i, '', false);
 }
 
 var NowOnline = [];
@@ -47,7 +47,7 @@ function CheckFollowingList() {
             localJSON('Status', ['update', 5]);
         })
         .done(function(j) {
-            localJSON('Status', ['checked', local.Status.checked + 1]);
+            localJSON('Status', ['checked', local.Status.checked+1]);
 
             if (j.stream) {
                 var Game = j.stream.game,
@@ -67,17 +67,15 @@ function CheckFollowingList() {
                 }
                 if (local.FollowingList[key].Stream.Title != Status &&
                     local.FollowingList[key].Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
-                if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null) { Time2 = Time }
-                else { Time2 = local.FollowingList[key].Stream.Time }
+                if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null)
+                    { Time2 = Time }
+                else{ Time2 = local.FollowingList[key].Stream.Time }
 
                 FollowingList('c',key,'',[Status, Game, j.stream.viewers, Time2, "NotYet"])
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status', ['online', local.Status.online - 1]);
                 BadgeOnlineCount(local.Status.online);
-                NowOnline = NowOnline.filter(function(e){
-                    (e !== local.FollowingList[key].Name) ? deb('Delete '+e) : deb('Still '+e);
-                    return e !== local.FollowingList[key].Name;
-                });
+                NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
                 FollowingList('c', key, '', false)                      
             }
             if (local.Status.checked == localJSON('Following') || key === localJSON('Following')) {
@@ -88,10 +86,8 @@ function CheckFollowingList() {
                     localJSON('Status',['online', local.Status.online]);
                 }
                 BadgeOnlineCount(local.Status.online);
-                sessionStorage.First_Notify = 1;
                 log('Every channel checked ('+local.Status.checked+')');
                 localJSON('Status', ['update', 0]);
-
                 if (local.Config.Notifications.update) {
                     switch (local.Status.online) {
                         case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
