@@ -12,7 +12,7 @@
     "UpdateLocal": "false"
   },
   "Chrome": {
-    "Ver": "1.3.9.8",
+    "Ver": "1.3.9.9",
     "IfBackB": "}",
     "IfBackA": "if(window.location.pathname==='/background.html'){",
     "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
@@ -20,7 +20,7 @@
     "Platform": "webkit",
     "CopyBackgound": "true",
     "Music": "mp3",
-    "Build": 524,
+    "Build": 528,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -51,9 +51,9 @@
     "DinDon"
   ],
   "Safari": {
-    "Ver": "0.9.0.0",
-    "Review": "",
     "Music": "wav",
+    "Review": "",
+    "Ver": "0.9.0.0",
     "Build": 0,
     "Platform": "webkit"
   },

@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.3.9.9 Bug fixing",
     "-1.3.9.8 Code optimization",
     "-1.3.9.7 Fixed notifications",
     "-1.3.9.6 Bugfix",
@@ -58,7 +59,7 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.8": {
+    "v.1.3.9.9": {
         "msg": "Code optimization",
         "contain": "-Fixed increasing online string"
     }
@@ -73,7 +74,6 @@ function versionCheck() {
 
         if (localStorage.App_Version_Update === 'true') {
             localStorage.App_Version_Try = trys+1;
-            localJSON('App_Version', 'c', ['Ver', versions.Got]);
 
             /*doc('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
                 '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
