@@ -20,7 +20,7 @@
     "Platform": "webkit",
     "CopyBackgound": "true",
     "Music": "mp3",
-    "Build": 523,
+    "Build": 524,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -51,9 +51,9 @@
     "DinDon"
   ],
   "Safari": {
-    "Music": "wav",
-    "Review": "",
     "Ver": "0.9.0.0",
+    "Review": "",
+    "Music": "wav",
     "Build": 0,
     "Platform": "webkit"
   },

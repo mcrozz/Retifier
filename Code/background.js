@@ -50,20 +50,19 @@ function CheckFollowingList() {
             localJSON('Status', ['checked', local.Status.checked+1]);
 
             if (j.stream) {
-                var Game = j.stream.game,
+                var FoLi = local.FollowingList[key],
+                    Game = j.stream.game,
                     Status = j.stream.channel.status,
-                    Name = local.FollowingList[key].Name,
+                    Name = FoLi.Name,
                     Time = j.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
 
                 if (Status === null) Status = 'Untitled stream';
                 if (Game === null) Game = 'Not playing';
-                if (!local.FollowingList[key].Stream.Title &&
-                    !local.FollowingList[key].Stream.Game &&
-                    NowOnline.indexOf(Name) === -1)
-                {
+                if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
                     notifyUser(Name+' just went live!',Status,'Online',Name);
-                    localJSON('Status', ['online', local.Status.online + 1]);
+                    localJSON('Status', ['online', local.Status.online+1]);
                     NowOnline.push(Name);
+                    BadgeOnlineCount(local.Status.online);
                 }
                 if (local.FollowingList[key].Stream.Title != Status &&
                     local.FollowingList[key].Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
@@ -85,6 +84,7 @@ function CheckFollowingList() {
                         if (local.FollowingList[i].Stream) { local.Status.online++; };
                     localJSON('Status',['online', local.Status.online]);
                 }
+                if (local.Status.online === 0 && NowOnline.length !== 0) localJSON('Status', ['online', NowOnline.length]);
                 BadgeOnlineCount(local.Status.online);
                 log('Every channel checked ('+local.Status.checked+')');
                 localJSON('Status', ['update', 0]);
