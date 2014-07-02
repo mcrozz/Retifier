@@ -64,11 +64,10 @@ function CheckFollowingList() {
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
-                if (local.FollowingList[key].Stream.Title != Status &&
-                    local.FollowingList[key].Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
-                if (Math.abs(new Date() - new Date(Time)) > Math.abs(new Date() - new Date(local.FollowingList[key].Stream.Time)) || local.FollowingList[key].Stream.Time == null)
-                    { Time2 = Time }
-                else{ Time2 = local.FollowingList[key].Stream.Time }
+                if (FoLi.Stream.Title != Status &&
+                    FoLi.Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+                if (Math.abs(new Date()-new Date(Time)) > Math.abs(new Date()-new Date(FoLi.Stream.Time)) || !FoLi.Stream) { Time2 = Time }
+                else { Time2 = FoLi.Stream.Time }
 
                 FollowingList('c',key,'',[Status, Game, j.stream.viewers, Time2, "NotYet"])
             } else if (local.FollowingList[key].Stream) {

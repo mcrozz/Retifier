@@ -30,7 +30,7 @@
     "music"
   ],
   "Opera": {
-    "Ver": "0.9.0.3",
+    "Ver": "0.9.0.4",
     "IfBackB": "}",
     "IfBackA": "if(window.location.pathname==='/background.html'){",
     "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
@@ -38,7 +38,7 @@
     "Platform": "webkit",
     "CopyBackgound": "true",
     "Music": "wav",
-    "Build": 33,
+    "Build": 37,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -51,9 +51,9 @@
     "DinDon"
   ],
   "Safari": {
-    "Music": "wav",
-    "Review": "",
     "Ver": "0.9.0.0",
+    "Review": "",
+    "Music": "wav",
     "Build": 0,
     "Platform": "webkit"
   },
