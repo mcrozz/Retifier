@@ -231,6 +231,7 @@ $(window).on('load',function() {
 	ael('refresh', 0, function(){ localJSON('Status', ['StopInterval', true]) });
 	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
 	document.onmousemove = function(p){
+		if (p.target.parentNode.className !== 'information') return false;
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
