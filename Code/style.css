@@ -14,9 +14,9 @@ button {border:none;cursor:default}
 .LaunchStream {width:318px;height:49px;z-index:3;position:absolute;left:1;text-align:center;color:white;font-size:23;padding:75 0;background:-webkit-gradient(linear,left top,left bottom,from(rgba(95,29,194,0.66)),to(rgba(0,0,0,0.85)));cursor:pointer;transition:opacity 0.8s;opacity:0}
 .LaunchStream:hover {opacity:1}
 
-#header {background:rgb(230,230,230);height:80px;display:block}
+#header {background:rgb(189,189,189);height:80px;display:block}
 
-#controls {background:-webkit-gradient(linear,left top,left bottom,from(rgba(66, 66, 66, 0.4)),to(rgba(143, 143, 143, 0.26)));height:80px;display:block}
+#controls {height:80px;display:block}
 
 #nowONline {height:30px;position:absolute;top:33;text-align:center;width:397px;margin:0 0 0 150}
 
