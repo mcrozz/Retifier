@@ -24,8 +24,6 @@ function CSScompiler() {
 				'.StreamOnChannelPage {width:340px;height:28px;padding-top:2px}'+
 				'.StreamDurationDiv {width:170;height:20;position:absolute;right:16;top:90;text-align:right}'+
 				'.ChannelPageDiv {width:150;height:40;display:inline}'+
-				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
 				'button.button {font-size:22px;width:150px;height:30px}';
 		} else if (format == 'Mini') {
 			css = '.StreamDuration {color:black;margin:0 0 0 17;font-size:19}'+
@@ -46,8 +44,6 @@ function CSScompiler() {
 				'.StreamOnChannelPage {width:530px;height:23px}'+
 				'.StreamDurationDiv {width:160;height:23;text-align:right;display:inline-block}'+
 				'.ChannelPageDiv {width:110;height:23;display:inline-block;margin-right:260px}'+
-		        '.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-		        '.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
 				'button.button {font-size:18px;width:110px;height:22px}';
 		} else if (format == 'Grid') {
 			css = '.StreamDuration {color:white;text-shadow: 1px 2px 3px black;margin:0 0 0 17}'+
@@ -68,8 +64,6 @@ function CSScompiler() {
 				'.StreamOnChannelPage {width:315px;height:40px;position:absolute;top:-197;left:-2;text-align:center}'+
 				'.StreamDurationDiv {width:170;height:40;display:inline}'+
 				'.ChannelPageDiv {display:none}'+
-				'.aFoundAbug {z-index:20;text-align:justify;font-size:21px;width:100%;display:block}'+
-				'.foundAbug {z-index:19;padding:37 5 13 5;position:absolute;width:98px;height:113px;background:-webkit-gradient(linear, left top, left bottom, from(rgba(1,1,1,0.8)),to(rgba(1,1,1,0.5)))}'+
 				'button.button {font-size:22px;width:150px;height:30px}';
 		}
 		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);

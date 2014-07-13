@@ -124,33 +124,28 @@ function changeScriptStarter() {
 }
 
 function FollowedList(c) {
-	var NumberId = 1,
-		Lines = 0,
-		FollowList = localJSON('FollowingList'),
-        StatusColor;
-	if (c=='o') {
-		doc('IFCHc').innerHTML = '<div class="IFCH" id="IFCH_'+NumberId+'"></div>';
-		function FollowedChannelsList(content, Status) {
-			if (Lines == 21) {
-				NumberId++;
-				doc('IFCHc').innerHTML += '<div class="IFCH" id="IFCH_'+NumberId+'"></div>';
-				Lines = 0;
+	function append(i,v) {
+		var j = (v.Stream)?"rgb(0, 194, 40)":"black";
+		$('#FollowingList').append('<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>');
+	}
+	if (c.id === 'ClsFlwdChnlsLst') {
+		clearInterval(flw);
+		$('#FollowedChannelsList').fadeOut(250, function(){ $('#firstScane').fadeIn(250, function(){$('#FollowingList').html('');}) });
+	} else {
+		$.each(local.FollowingList, append);
+		var curr = local.FollowingList.length;
+		flw = setInterval(function(){
+			if (curr !== local.FollowingList.length) {
+				$('#FollowingList').html('');
+				$.each(local.FollowingList, append);
+				curr = local.FollowingList.length;
+			} else {
+				$.each($('#FollowingList>.user'), function(i,v){
+					v.style.color = (local.FollowingList[i].Stream)?'rgb(0, 194, 40)':'black';
+				});
 			}
-			StatusColor = (Status == 'Online') ? 'rgb(0, 194, 40)' : 'black';
-			doc('IFCH_'+NumberId).innerHTML += '<div><a href="http://www.twitch.tv/'+content+'/profile" style="color:'+StatusColor+';border-bottom:1px black dotted" target="_blank">'+content+'</a><br></div>';
-			Lines++;
-		}
-
-		$('#firstScane').hide();
-		Animation('FollowedChannelsList', ['fadeIn', false]);
-
-		ga('send', 'event', 'button', 'click', 'Following List');
-		
-		for (var i=0;i<localJSON('Following');i++)
-			FollowedChannelsList(FollowList[i].Name, (FollowList[i].Stream) ? 'Online' : 'Offline');
-	} else if (c=='c') {
-		Animation('FollowedChannelsList', ['fadeOut', true]);
-		Animation('firstScane', ['fadeIn', false], function(){ doc('IFCHc').innerHTML = null; });
+		}, 1000);
+		$('#firstScane').fadeOut(250, function(){ $('#FollowedChannelsList').fadeIn(250); });
 	}
 }
 
@@ -204,32 +199,34 @@ function AppVersionChanges(c) {
 }
 
 $(window).on('load',function() {
-	function ael(id, type, func) {var d = ['click', 'change'], j = ''; if ($.isArray(id)) {for (var i=0; i<id.length; i++) { if (i !== 0) j += ', '; j += '#'+id[i]; }} else { j = '#'+id; } $(j).on(d[type], func);}
+	function ael(id, type, func) {
+		var d = ['click', 'change'];
+		$(id).on(d[type], func);
+	}
 	CSScompiler();
 	versionCheck();
 	$('#AppVersion').html(local.App_Version.Ver);
-	ael('ChgUsr', 0, clickChangeUser);
-	ael('ChgUsrSnd', 0, changeScriptStarter);
-	ael('LstFlwdChnls', 0, function(){ FollowedList('o') });
-	ael('ClsFlwdChnlsLst', 0, function(){ FollowedList('c') });
-	ael(['Notify_All', 'DisNotify_All'], 0, function(){ doc('EnNotify').checked = !(this.id === 'DisNotify_All'); doc('DisNotify').checked = (this.id === 'DisNotify_All'); $('[name=ntf]').each(function(){this.disabled = doc('DisNotify').checked}); });
-	ael(['Notify_Streamer', 'NotifyStreamer'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamer').checked = !doc('NotifyStreamer').checked; });
-	ael(['Notify_Streamer_Changed', 'NotifyStreamerChanged'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamerChanged').checked = !doc('NotifyStreamerChanged').checked; });
-	ael(['Notify_Upd', 'NotifyUpdate'], 0, function(){ if (doc('EnNotify').checked) doc('NotifyUpdate').checked = !doc('NotifyUpdate').checked; });
-	ael(['Notify_Sound', 'SoundCheck'], 0, function(){ if (doc('EnNotify').checked) { doc('SoundCheck').checked = !doc('SoundCheck').checked; doc('SoundSelect').disabled = !doc('SoundCheck').checked; } });
-	ael(['DurationOfStream', 'StreamDurationCheck'], 0, function(){ doc('StreamDurationCheck').checked = !doc('StreamDurationCheck').checked; });
-	ael('fndAbug', 0, ReportAbug);
-	ael('AppVersion', 0, function(){ AppVersionChanges('o') });
-	ael('SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
-	ael('AppFirst', 0, function(){ AppVersionChanges('ch') });
-	ael('AppThird', 0, function(){ AppVersionChanges('ch') });
-	ael('AppInfoClose', 0, function(){ AppVersionChanges('c') });
-	ael('AppInfoBack', 0, function(){ AppVersionChanges('c') });
-	ael('Dashboard', 0, function(){ ga('send', 'event', 'button', 'click', 'Dashboard'); window.open('http://www.twitch.tv/broadcast/dashboard') });
-	ael('Direct', 0, function(){ ga('send', 'event', 'button', 'click', 'Direct'); window.open('http://www.twitch.tv/directory/following') });
-	ael('SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
-	ael('refresh', 0, function(){ localJSON('Status', ['StopInterval', true]) });
-	ael('zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
+	ael('#ChgUsr', 0, clickChangeUser);
+	ael('#ChgUsrSnd', 0, changeScriptStarter);
+	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', 0, function(){ FollowedList(this) });
+	ael('#Notify_All, #DisNotify_All', 0, function(){ doc('EnNotify').checked = !(this.id === 'DisNotify_All'); doc('DisNotify').checked = (this.id === 'DisNotify_All'); $('[name=ntf]').each(function(){this.disabled = doc('DisNotify').checked}); });
+	ael('#Notify_Streamer, #NotifyStreamer', 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamer').checked = !doc('NotifyStreamer').checked; });
+	ael('#Notify_Streamer_Changed, #NotifyStreamerChanged', 0, function(){ if (doc('EnNotify').checked) doc('NotifyStreamerChanged').checked = !doc('NotifyStreamerChanged').checked; });
+	ael('#Notify_Upd, #NotifyUpdate', 0, function(){ if (doc('EnNotify').checked) doc('NotifyUpdate').checked = !doc('NotifyUpdate').checked; });
+	ael('#Notify_Sound, #SoundCheck', 0, function(){ if (doc('EnNotify').checked) { doc('SoundCheck').checked = !doc('SoundCheck').checked; doc('SoundSelect').disabled = !doc('SoundCheck').checked; } });
+	ael('#DurationOfStream, #StreamDurationCheck', 0, function(){ doc('StreamDurationCheck').checked = !doc('StreamDurationCheck').checked; });
+	ael('#fndAbug', 0, ReportAbug);
+	ael('#AppVersion', 0, function(){ AppVersionChanges('o') });
+	ael('#SoundSelect', 1, function(){ var Audio = document.createElement('audio'); MusicName = '/Music/'+doc("SoundSelect").value+'.mp3'; Audio.setAttribute('src', MusicName); Audio.setAttribute('autoplay', 'autoplay'); Audio.play() });
+	ael('#AppFirst', 0, function(){ AppVersionChanges('ch') });
+	ael('#AppThird', 0, function(){ AppVersionChanges('ch') });
+	ael('#AppInfoClose', 0, function(){ AppVersionChanges('c') });
+	ael('#AppInfoBack', 0, function(){ AppVersionChanges('c') });
+	ael('#Dashboard', 0, function(){ ga('send', 'event', 'button', 'click', 'Dashboard'); window.open('http://www.twitch.tv/broadcast/dashboard') });
+	ael('#Direct', 0, function(){ ga('send', 'event', 'button', 'click', 'Direct'); window.open('http://www.twitch.tv/directory/following') });
+	ael('#SoundCheck', 0, function(){ doc('SoundSelect').disabled = !doc('SoundCheck').checked });
+	ael('#refresh', 0, function(){ localJSON('Status', ['StopInterval', true]) });
+	ael('#zoomContent', 0, function() {Animation('zoomContent', 'fadeOut', true); Animation('userChangePopup2', 'fadeOut', true); doc('userChangePopup2').onclick = null; doc('zoomContent').onclick = null;});
 	document.onmousemove = function(p){
 		if (p.target.parentNode.className !== 'information') return false;
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
