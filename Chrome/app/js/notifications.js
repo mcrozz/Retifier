@@ -12,15 +12,12 @@ function notifyUser(streamerName, titleOfStream, type, streamer) {
 
 	function sendNotify(tle, msg, strm, upd) {
 		log(tle+' - '+msg);
-		var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/icon.png"};
+		var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/notification_icon.png"};
 		if (upd !== 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
 		chrome.notifications.create('n'+strm, NotifyConf, function(){});
 		delNotify('n'+strm, upd);
-		if (local.Config.Notifications.sound_status) {
-			var Audio = document.createElement('audio');
-			Audio.src = '/Music/'+local.Config.Notifications.sound+'.mp3';
-			Audio.autoplay = 'autoplay';
-		}
+		if (local.Config.Notifications.sound_status)
+			new Audio('/Music/'+local.Config.Notifications.sound+'.mp3').play();
 	}
 
 	if (local.Config.Notifications.status) {
