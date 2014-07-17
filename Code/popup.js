@@ -16,7 +16,7 @@
 
 $(window).on('load',function() {
 	{{CSS_COMPILER}}
-	
+
 	var opened = false,
 		TimersetToUpdate = [];
 
@@ -36,11 +36,9 @@ $(window).on('load',function() {
 
 	function clickChangeUser() {
 		doc('userChangePopup2').onclick = clickChangeUserCls;
-		$('#userChangePopup').show();
-		$('#userChangePopup2').show();
+		$('#userChangePopup, #userChangePopup2').show();
 		$('#AppVersion').hide();
-		doc('UserName').innerHTML = "You're loggin as "+local.Config.User_Name+'<button id="log_out">Log out</button>';
-		$('#log_out').on('click', reLogin);
+		$('#UserName>a').html(local.Config.User_Name)
 		Animation('userChangePopup2', ['fadeIn', false, 0.9]);
 		Animation('userChangePopup', ['bounceIn', false, 0.9]);
 		doc("ChgUsrInt").value = local.Config.Interval_of_Checking;
@@ -249,7 +247,8 @@ $(window).on('load',function() {
 		Animation('zoomContent', 'fadeOut', true);
 		Animation('userChangePopup2', 'fadeOut', true);
 		doc('userChangePopup2').onclick = null;
-		doc('zoomContent').onclick = null;});
+		doc('zoomContent').onclick = null; });
+	ael('#UserName>p', 0, reLogin);
 	document.onmousemove = function(p){
 		if (p.target.parentNode.className !== 'information') return false;
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
