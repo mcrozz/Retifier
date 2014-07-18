@@ -1,4 +1,4 @@
-@font-face {font-family:ExtFont;src:url('DejaVuSans.ttf')}
+@font-face {font-family:ExtFont;src:url(DejaVuSans.ttf)}
 html {background:rgba(141,141,141,0.22);width:697px;height:584px;font-family:ExtFont,sans-serif;overflow:hidden;margin:0}
 body {margin:0}
 a {color: white;text-decoration:none;font-size:22px;cursor:default}
@@ -29,7 +29,7 @@ button {border:none;cursor:default}
 #userChangePopup {display:none;z-index:10;width:300px;position:fixed;left:173.5px;top:80px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,1)),to(rgba(87,87,87,1)));position:fixed;top:100px;padding:15px 15px 0 15px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);-webkit-border-radius:14px;border-radius:14px}
 #userChangePopup2 {display:none;z-index:5;width:100%;height:100%;position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.65)}
 
-button.dash {background:url('/img/img.png') no-repeat -603px 0;color:white;text-decoration:none;font-size:22px;width:150px;height:40px}
+button.dash {background:url(/img/img.png) no-repeat -603px 0;color:white;text-decoration:none;font-size:22px;width:150px;height:40px}
 button.dash:hover {background-position:-453px 0}
 
 button.first {color:white;text-decoration:none;font-size:22px;padding: 5px 20px;background:-webkit-gradient(linear, left top, left bottom, from(#6441a5),to(#2a1b47));-moz-border-radius: 14px;-webkit-border-radius: 14px;border-radius: 14px;text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)}
@@ -44,7 +44,7 @@ button.button:hover {color:white;background:-webkit-gradient(linear,left top,lef
 .aAppInfoAbout1::selection,.aAppInfoAbout2::selection,.aAppInfoAbout3::selection,.aAppInfoAbout4::selection,.aAppInfoAbout5::selection,.AppInfoAbout1::selection,.AppInfoAbout2::selection,.AppInfoAbout3::selection,.AppInfoAbout4::selection,.AppInfoAbout5::selection,.aAppInfo::selection,.aAppInfoFuture::selection,#AppVersion::selection,#FollowedChannelsOnline::selection,#CheckInterval::selection,#UserName::selection,#Notify_All::selection,#DisNotify_All::selection,#Notify_Streamer::selection,#Notify_Streamer_Changed::selection,#Notify_Upd::selection,#Notify_Sound::selection,#Notify_Sound_Select::selection,#DurationOfStream::selection,#List_Format::selection,#AppVersionContent::selection
     {background:rgba(0, 0, 0, 0)}
 
-.TwitchLogo {background:url('/img/img.png') no-repeat -302px 0;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
+.TwitchLogo {background:url(/img/img.png) no-repeat -302px 0;margin-left:273px;width:151px;height:50px;text-indent:-9999px;overflow:hidden;position:absolute;cursor:auto}
 
 .LoginORoutButton  {margin-left:547px;position:absolute}
 
@@ -144,7 +144,7 @@ button.AppInfo:hover {background:-webkit-gradient(linear,left top,left bottom,fr
 button.WelcomOK {left:0;margin-top:5px;color:white;text-decoration:none;font-size:22px;width:396px;height:36px;background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0)),to(rgba(87,87,87,0.78)))}
 button.WelcomOK:hover {color:rgb(207, 207, 207);background:-webkit-gradient(linear,left top,left bottom,from(rgba(39,39,39,0)),to(rgba(182,182,182,0.78)))}
 
-button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);-webkit-animation-name:fadeIn;-webkit-animation-duration:1s;font-size:21px}
+button.INfoundAbug {background:url(/img/img.png);background-position:0px -25px;position:fixed;z-index:20;width:163px;height:25px;-webkit-transform:rotate(-90deg);-webkit-animation-name:fadeIn;-webkit-animation-duration:1s;font-size:21px}
 
 #content3 {height:515px;width:703px;position:relative;display:block;padding:5px;padding-bottom:0;margin-left:-12px}
 
@@ -158,7 +158,7 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 
 #SoundSelect, #List_Format_List {width:90}
 
-#refresh {background:url('/img/refresh.png');display:block;position:absolute;width:32px;height:32px;right:150px}
+#refresh {background:url(/img/img.png) no-repeat -864px 0;background-size:895px;display:block;position:absolute;width:32px;height:32px;right:150px}
 #refresh:hover { -{{PLATFORM}}-animation:spinh 0.2s both }
 .spin { -{{PLATFORM}}-animation-name:spin }
 @-{{PLATFORM}}-keyframes spin {
@@ -178,7 +178,7 @@ button.INfoundAbug {background:url("/img/img.png");background-position:0px -25px
 
 .NOO {width:100%;text-align:center}
 .NOO>a {color:black}
-.zoom {background:url(/img/zoom.png);background-size:32;display:block;position:absolute;width:32px;height:32px;top:5;left:5;z-index:4;cursor:pointer}
+.zoom {background:url(/img/img.png) no-repeat 0 0;background-size:395px;display:block;position:absolute;width:32px;height:32px;top:5;left:5;z-index:4;cursor:pointer}
 #zoomContent {display:none;position:fixed;background:rgba(0,0,0,0.90);width:100%;height:400px;top:150px;z-index:99}
 #zoomIMG {display:block;position:absolute;top:0;width:696px;height:400px;z-index:100;}
 .Welcome>p {cursor:default}
