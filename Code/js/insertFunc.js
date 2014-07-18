@@ -43,44 +43,44 @@ function InsertOnlineList() {
 		if (local.Config.Format === 'Mini')
 			return n;
 		var nm = {
+			// TODO
 			'speeddemosarchivesda': 'SDA'
 		};
 		if ($.inArray(n, nm)!==-1) { return nm[n]; }
 		else { return n; }
 	}
+	function offSet(s,n,w) {
+		var d = doc('textWidth');
+		d.style.fontSize = s+'px';
+		d.innerHTML = n;
+		return (d.offsetWidth>w);
+	}
 
 	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
 
-	var FollowList = local.FollowingList;
-
-	for (var i = 0; i < localJSON('Following') ; i++) {
-		var StreamTitle   = FollowList[i].Stream.Title,
-			StreamerName  = FollowList[i].Name,
+	$.each(local.FollowingList, function(i,v) {
+		var StreamTitle   = v.Stream.Title,
+			StreamerName  = v.Name,
 			ShortStrmName = name(StreamerName),
-			StreamGame    = FollowList[i].Stream.Game,
-			StreamVievers = FollowList[i].Stream.Viewers,
+			StreamGame    = v.Stream.Game,
+			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,
 			SLU, dc;
 
-		if (FollowList[i].Stream) {
-			dc = doc('textWidth');
+		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
-				dc.style.fontSize = Num4+'px';
-				dc.innerHTML = StreamTitle;
-				texts[StreamTitle] = (dc.offsetWidth > Num);
+				texts[StreamTitle] = offSet(Num4, StreamTitle, Num);
 			} else { TitleWidth = texts[StreamTitle] }
 			
 			if (typeof texts[StreamGame] === 'undefined') {
-				dc.innerHTML = StreamGame;
-				dc.style.fontSize = Num4+'px';
-				texts[StreamGame] = (dc.offsetWidth > Num6);
+				texts[StreamGame] = offSet(Num4, StreamGame, Num6);
 			} else { GameWidth = texts[StreamGame] }
 		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-		    if (FollowList[i].Stream) {
+		    if (v.Stream) {
 		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
@@ -202,7 +202,7 @@ function InsertOnlineList() {
 
 		if (local.Status.online == 0 && local.Status.update == 0) 
 		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
-	}
+	});
 	
 	if (local.Config.Duration_of_stream) {
 		function h(b,j) {
