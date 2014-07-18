@@ -39,6 +39,15 @@ function InsertOnlineList() {
 			doc('zoomContent').onclick = null;
 		}
 	}
+	function name(n){
+		if (local.Config.Format === 'Mini')
+			return n;
+		var nm = {
+			'speeddemosarchivesda': 'SDA'
+		};
+		if ($.inArray(n, nm)!==-1) { return nm[n]; }
+		else { return n; }
+	}
 
 	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
 	else doc('insertContentHere').style.overflow='auto';
@@ -46,13 +55,13 @@ function InsertOnlineList() {
 	var FollowList = local.FollowingList;
 
 	for (var i = 0; i < localJSON('Following') ; i++) {
-		var StreamTitle = FollowList[i].Stream.Title,
-			StreamerName = FollowList[i].Name,
-			ShortStrmName = (StreamerName === 'speeddemosarchivesda')?'SDA':StreamerName,
-			StreamGame = FollowList[i].Stream.Game,
+		var StreamTitle   = FollowList[i].Stream.Title,
+			StreamerName  = FollowList[i].Name,
+			ShortStrmName = name(StreamerName),
+			StreamGame    = FollowList[i].Stream.Game,
 			StreamVievers = FollowList[i].Stream.Viewers,
-			TitleWidth = false,
-			GameWidth = false,
+			TitleWidth    = false,
+			GameWidth     = false,
 			SLU, dc;
 
 		if (FollowList[i].Stream) {
