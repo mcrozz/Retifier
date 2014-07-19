@@ -43,7 +43,7 @@ function CheckFollowingList() {
         $.getJSON(url)
         .fail(function(j) { 
             err({message:'checkStatus() ended with error',stack:j});
-            notifyUser("Update follows list", "Error, can't update", "Update"); 
+            Notify({title:"Update follows list", msg:"Error, can't update", type:"follow", context:"time"});
             localJSON('Status', ['update', 5]);
         })
         .done(function(j) {
@@ -59,13 +59,14 @@ function CheckFollowingList() {
                 if (Status === null) Status = 'Untitled stream';
                 if (Game === null) Game = 'Not playing';
                 if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
-                    notifyUser(Name+' just went live!',Status,'Online',Name);
+                    Notify({name:Name, title:Name+' just went live!', msg:Status, type:'online', button:true});
                     localJSON('Status', ['online', local.Status.online+1]);
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
                 if (FoLi.Stream.Title != Status &&
-                    FoLi.Stream.Title != undefined) notifyUser(Name+' changed stream title on',Status,'Changed',Name);
+                    FoLi.Stream.Title != undefined)
+                        Notify({name:Name, title:Name+' changed stream title on', msg:Status, type:'follow'});
                 if (Math.abs(new Date()-new Date(Time)) > Math.abs(new Date()-new Date(FoLi.Stream.Time)) || !FoLi.Stream) { Time2 = Time }
                 else { Time2 = FoLi.Stream.Time }
 
@@ -89,9 +90,9 @@ function CheckFollowingList() {
                 localJSON('Status', ['update', 0]);
                 if (local.Config.Notifications.update) {
                     switch (local.Status.online) {
-                        case 0: notifyUser('Update finished!', 'No one online right now :(', 'Update'); break;
-                        case 1: notifyUser('Update finished!', 'Now online one channel', 'Update'); break;
-                        default: notifyUser('Update finished!', 'Now online '+local.Status.online+' channels', 'Update');
+                        case 0:  Notify({title:'Update finished!', msg:'No one online right now :(', type:'update'}); break;
+                        case 1:  Notify({title:'Update finished!', msg:'Now online one channel', type:'update'}); break;
+                        default: Notify({title:'Update finished!', msg:'Now online '+local.Status.online+' channels', type:'update'}); break;
                     }
                 }
             }
@@ -107,7 +108,7 @@ function CheckFollowingList() {
         log('Change user name!')
     } else {
         log("Behold! Update is comin'");
-        notifyUser('Behold! Update!', 'Starting update...', 'Update');
+        Notify({title:'Behold! Update!', msg:'Starting update...', type:'update'});
         localJSON('Status', ['update', 2]);
 
         var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
@@ -116,7 +117,7 @@ function CheckFollowingList() {
         .fail(function(j) {
             err({message:"Can't get following list",stack:j});
             localJSON('Status', ['update', 5]);
-            notifyUser("Update follows list", "Error, can't update", "Update");
+            Notify({title:"Update follows list", msg:"Error, can't update", type:"update"});
         })
         .done(function(j) {
             var chg;
