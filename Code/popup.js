@@ -223,8 +223,6 @@ $(window).on('load',function() {
 	ael('#fndAbug', 0, ReportAbug);
 	ael('#AppVersion', 0, function(){
 		AppVersionChanges('o') });
-	ael('#SoundSelect', 1, function(){
-		new Audio('/Music/'+doc("SoundSelect").value+'.mp3').play(); });
 	ael('#AppFirst', 0, function(){
 		AppVersionChanges('ch') });
 	ael('#AppThird', 0, function(){

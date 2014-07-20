@@ -7,7 +7,6 @@
     "Parse": "local",
     "Platform": "moz",
     "CopyBackgound": "false",
-    "Music": "wav",
     "Build": 40,
     "UpdateLocal": "false"
   },
@@ -19,8 +18,7 @@
     "Parse": "site",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Music": "mp3",
-    "Build": 561,
+    "Build": 562,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -37,7 +35,6 @@
     "Parse": "local",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Music": "wav",
     "Build": 37,
     "UpdateLocal": "true",
     "Config": "manifest.json"
@@ -47,15 +44,11 @@
     "./js/functions.js",
     "background.js"
   ],
-  "Music": [
-    "DinDon"
-  ],
   "Safari": {
-    "Music": "wav",
+    "Platform": "webkit",
     "Review": "",
     "Ver": "0.9.0.0",
-    "Build": 0,
-    "Platform": "webkit"
+    "Build": 0
   },
   "Scripts": [
     "./js/jquery-1.11.0.min.js",
@@ -67,6 +60,7 @@
     "popup.js"
   ],
   "Copy": [
+    "DinDon.ogg",
     "DejaVuSans.ttf",
     "LICENSE",
     "style.css",

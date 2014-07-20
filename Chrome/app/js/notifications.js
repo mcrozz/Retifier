@@ -54,7 +54,7 @@ function Notify(d) {
 			ncnt+=1;
 		});
 		if (local.Config.Notifications.sound_status)
-			new Audio('/Music/'+local.Config.Notifications.sound+'.mp3').play();
+			new Audio('DinDon.ogg').play();
 	}
 
 	if (local.Config.Notifications.status) {

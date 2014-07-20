@@ -75,11 +75,6 @@ def build(b):
 	for t in config['Copy']:
 		shutil.copy2(pj([currDir, 'Code', t]), pj([dbDir, t]))
 		print "	Copy "+t;
-	# Copy music
-	print "	Copy music"
-	for d in config['Music']:
-		ftc = d+'.'+config[browser]['Music']
-		shutil.copy2(pj([currDir, "Code", "music", ftc]), pj([dbDir, "music", ftc]))
 	# Copy whatsNew.js
 	shutil.copy2(pj([currDir, browser, 'app', 'js', 'whatsNew.js']), pj([dbDir, 'js', 'whatsNew.js']))
 	# Copy background.html
@@ -97,9 +92,6 @@ def build(b):
 	# Replace NOTIFY_USER_FUNCTION
 	print "	Replace NOTIFY_USER_FUNCTION on notifications.js"
 	rp("{{NOTIFY_USER_FUNCTION}}", rf(pj([currDir, browser, "app", "js", "notifications.js"])), pj([dbDir, "js", "functions.js"]))
-	# Replace AUDIO_FORMAT
-	print "	Replace AUDIO_FORMAT on "+config[browser]['Music']
-	rp("{{AUDIO_FORMAT}}", config[browser]['Music'], pj([dbDir, 'js', 'functions.js']))
 	# Replace CSS_COMPILER
 	print "	Replace CSS_COMPILER on CSScompiler.js"
 	rp("{{CSS_COMPILER}}", rf(pj([currDir, browser, "app", "js", "CSScompiler.js"])), pj([dbDir, "popup.js"]))
