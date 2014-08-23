@@ -1,21 +1,21 @@
-/*
-	Copyright 2014 Ivan 'MacRozz' Zarudny
-
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-		http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-*/
-
+{{LICENSE_HEADER}}
 $(window).on('load',function() {
-	{{CSS_COMPILER}}
+	(function(){
+		var style = document.createElement('style'),
+			format = local.Config.Format,
+			AddAnyways, css;
+		if (!format)
+			localJSON('Config', ['Format', 'Grid']);
+		switch (format) {
+			case 'Full':
+				css = {{CSS_FULL}}; break;
+			case 'Mini':
+				css = {{CSS_MINI}}; break;
+			case 'Grid':
+				css = {{CSS_GRID}}; break;
+		}
+		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
+	})();
 
 	var opened = false,
 		TimersetToUpdate = [];

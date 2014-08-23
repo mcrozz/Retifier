@@ -1,0 +1,125 @@
+.StreamDuration {
+	color:black;margin:0 0 0 17;display:inline-block
+}
+button:focus {
+	outline-color:rgba(255,255,255,0)
+}
+.streamer {
+	width:170px;
+	height:20px;
+	display:inline-block;
+	padding-left:3;
+	padding-bottom:5
+}
+.streamer>a {
+	cursor:pointer;
+	font-size:17;
+	color:black;
+	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)
+}
+.viewers {
+	width:160px;
+	height:20px;
+	display:inline-block;
+	text-align:right
+}
+.viewers>p {
+	cursor:default;
+	width:75px;
+	display:inline;
+	text-transform:lowercase;
+	padding-left:5px;
+	border:none
+}
+.content {
+	height:200px;
+	width:685px;
+	padding:2;
+	position:relative;
+	font-size:17
+}
+.tumblr {
+	background:url("/img/StillDownloading.gif");
+	height:200px;
+	width:320px;
+	display:inline;
+	position:absolute;
+	margin-left:10px
+}
+.information {
+	width:345px;
+	height:130px;
+	display:inline;
+	position:absolute;
+	right:0;
+	top:15
+}
+.information>div:first-child {
+	width:337px;
+	height:20px;
+	display:block;
+	border-bottom:1px solid black;
+	margin-bottom:5px;
+	cursor:default;
+	z-index:1;
+	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	padding-top:6;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	padding-left:3
+}
+.informationTextViewers {
+	cursor:default;
+	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	width:75px;
+	display:inline
+}
+.informationTextGame {
+	text-align:center;
+	border-top:1px solid black;
+	height:20px;
+	cursor:pointer;
+	font-size:17;
+	color:black;
+	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	width:340px;
+	display:block;
+	padding-top:5px
+}
+.GameTumb1, .GameTumb2{
+	width:43px;
+	height:60px;
+	position:absolute;
+	margin:139 0 0 -44
+}
+.TumbStream {
+	width:320px;
+	height:200px
+}
+.StreamOnChannelPage {
+	width:340px;
+	height:28px;
+	padding-top:2px
+}
+.StreamDurationDiv {
+	width:170;
+	height:20;
+	position:absolute;
+	right:16;
+	top:90;
+	text-align:right
+}
+.ChannelPageDiv {
+	width:150;
+	height:40;
+	display:inline
+}
+button.button {
+	font-size:22px;
+	width:150px;
+	height:30px
+}
