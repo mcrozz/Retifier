@@ -1,6 +1,9 @@
 {{LICENSE_HEADER}}
 $(window).on('load',function() {
-	(function(){
+	var opened = false,
+		TimersetToUpdate = [];
+
+	function reloadStyle(){
 		var style = document.createElement('style'),
 			format = local.Config.Format,
 			AddAnyways, css;
@@ -15,10 +18,7 @@ $(window).on('load',function() {
 				css = '{{CSS_GRID}}'; break;
 		}
 		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
-	})();
-
-	var opened = false,
-		TimersetToUpdate = [];
+	}
 
 	function clickChangeUserCls() {
 		Animation('userChangePopup', ['bounceOut', true]);
@@ -198,13 +198,13 @@ $(window).on('load',function() {
 	}
 
 	function ael(id, type, func) { $(id).on(['click', 'change'][type], func); }
-	CSScompiler();
+	reloadStyle();
 	versionCheck();
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('#ChgUsr', 0, clickChangeUser);
 	ael('#ChgUsrSnd', 0, changeScriptStarter);
 	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', 0, function(){
-		FollowedList(this) });
+		FollowedList(this); });
 	ael('#Notify_All, #DisNotify_All', 0, function(){
 		doc('EnNotify').checked = !(this.id === 'DisNotify_All');
 		doc('DisNotify').checked = (this.id === 'DisNotify_All');
