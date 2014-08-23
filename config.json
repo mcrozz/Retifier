@@ -35,7 +35,7 @@
     "Parse": "local",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Build": 37,
+    "Build": 38,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
