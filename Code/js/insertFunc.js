@@ -1,19 +1,4 @@
-/*
-	Copyright 2014 Ivan 'MacRozz' Zarudny
-
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-		http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-*/
-
+{{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
 	refresh = false,
@@ -81,7 +66,8 @@ function InsertOnlineList() {
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (v.Stream) {
-		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
+		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>')
+		        	doc('insertContentHere').innerHTML = null;
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
 						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
@@ -96,10 +82,11 @@ function InsertOnlineList() {
 						SLU += '</div><div class="viewers">';
 							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
 							SLU += '<p>viewers</p>';
-						SLU += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
-							SLU += '<a class=';
-							if (StreamGame!='Not Playing') SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							SLU += '</a>';
+						SLU += '</div><div class="informationTextGame">';
+							SLU += '<a id="stream_game_'+i+'" class=""';
+							if (StreamGame!=='Not Playing')
+								SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
+							SLU += StreamGame+'</a>';
 						SLU += '</div><div class="StreamOnChannelPage">';
 							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
 								SLU += '<button type="button" class="button">Channel page</button></a></div>';
