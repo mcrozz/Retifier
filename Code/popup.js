@@ -8,11 +8,11 @@ $(window).on('load',function() {
 			localJSON('Config', ['Format', 'Grid']);
 		switch (format) {
 			case 'Full':
-				css = {{CSS_FULL}}; break;
+				css = '{{CSS_FULL}}'; break;
 			case 'Mini':
-				css = {{CSS_MINI}}; break;
+				css = '{{CSS_MINI}}'; break;
 			case 'Grid':
-				css = {{CSS_GRID}}; break;
+				css = '{{CSS_GRID}}'; break;
 		}
 		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
 	})();
