@@ -18,7 +18,7 @@
     "Parse": "site",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Build": 562,
+    "Build": 574,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -63,7 +63,6 @@
     "DinDon.ogg",
     "DejaVuSans.ttf",
     "LICENSE",
-    "style.css",
     "popup.html",
     "popup.js",
     "background.js",
