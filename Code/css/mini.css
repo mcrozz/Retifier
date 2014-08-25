@@ -69,16 +69,18 @@ button:focus  {
 }
 .informationTextGame  {
     cursor: pointer;
-    font-size: 16;
-    color: black;
     display: inline-block;
-    text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     width: 195px;
     left: 145px;
     text-align: center;
+}
+.informationTextGame>a {
+	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: black;
+    font-size: 16px;
 }
 .tumblr  {
     background: url("/img/StillDownloading.gif");
