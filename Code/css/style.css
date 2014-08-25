@@ -148,7 +148,7 @@ button {
 }
 
 button.dash {
-	background: url(/img/img.png) no-repeat -603px 0;
+	background: url(/img/img.png) no-repeat -100px -138px;
 	color: white;
 	text-decoration: none;
 	font-size: 22px;
@@ -156,18 +156,18 @@ button.dash {
 	height: 40px;
 }
 button.dash:hover {
-	background-position: -453px 0;
+	background-position: 0 -200px;
 }
 
 button.first {
 	color: white;
 	text-decoration: none;
 	font-size: 22px;
-	padding:	5px 20px;
-	background: -webkit-gradient(linear,	left top,	left bottom,	from(#6441a5), to(#2a1b47));
+	padding: 5px 20px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#6441a5), to(#2a1b47));
 	-moz-border-radius:	14px;
-	-webkit-border-radius:	14px;
-	border-radius:	14px;
+	-webkit-border-radius: 14px;
+	border-radius: 14px;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 }
 
@@ -197,7 +197,7 @@ button.button:hover {
 }
 
 .TwitchLogo {
-	background: url(/img/img.png) no-repeat -302px 0;
+	background: url(/img/img.png) no-repeat -100px -88px;
 	margin-left: 273px;
 	width: 151px;
 	height: 50px;
@@ -207,7 +207,7 @@ button.button:hover {
 	cursor: auto;
 }
 
-.LoginORoutButton	 {
+.LoginORoutButton {
 	margin-left: 547px;
 	position: absolute;
 }
@@ -250,23 +250,24 @@ button.button:hover {
 
 
 #userChangePopup>div {
-	
 	display: block;
-	
 	width: 340px;
-	
+}
+
+.style {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+}
+
+.Logout {
+    display: inline;
 }
 
 .popHead {
-	
-	color: white;
-	
 	font-size: 18px;
-	
 	border-bottom: 1px solid grey;
-	
 }
-
 
 .pGreetings {
 	color: white;
@@ -277,14 +278,13 @@ button.button:hover {
 	text-align: center;
 }
 #ChgUsrInt {
-	width: 130px;
+	max-width: 45px;
+    min-width: 15px;
 	font-size: 21px;
-	margin-top: -5px;
-	border: 2px rgb(105, 105, 105) inset;
+	border-color: rgba(0, 0, 0, 0);
 	color: white;
 	background: none;
 	padding: 0 8 0 8;
-	margin-right: 15px;
 }
 
 #insertContentHere {
@@ -292,31 +292,47 @@ button.button:hover {
 	overflow: auto;
 }
 
-#log_out {
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110,	44,	182,	0.37)), to(rgba(88,	0,	201,	0.75)));
-	
-	font-size: 18px;
-	
-	color: white;
-	
-	padding: 2px 8px;
-	
-	margin-left: 5px;
-	
-	transition: color .4s;
-	
+.Check_Box, .Check_Box_2 {
+    height: 22px;
+    -webkit-appearance: none;
+    outline: none;
 }
-#log_out: hover {
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(91,	53,	133,	0.37)), to(rgba(112,	0,	255,	0.75)));
-	
-	color: rgb(209,	209,	209);
-	
+
+.Check_Box {
+    background: url(/img/img.png) no-repeat -74px -22px;
+    background-size: 124!important;
+    width: 50px;
+}
+
+.Check_Box:checked {
+    background: url(/img/img.png) no-repeat -74px 0;
+}
+
+.Check_Box_2 {
+    background: url(/img/img.png) no-repeat 0 -22px;
+    background-size: 55!important;
+    width: 22px;
+}
+
+.Check_Box_2:checked {
+    background: url(/img/img.png) no-repeat 0 0;
+}
+
+#log_out {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110, 44, 182, 0.37)), to(rgba(88, 0, 201, 0.75)));
+	font-size: 18px;
+	color: white;
+	padding: 2px 8px;
+	margin-left: 5px;
+	transition: color .4s;
+}
+#log_out:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(91, 53, 133, 0.37)), to(rgba(112, 0, 255, 0.75)));
+	color: rgb(209, 209, 209);
 }
 
 #fndAbug {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,	0,	0,	0.37)), to(rgba(255,	5,	5,	0.75)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.37)), to(rgba(255, 5, 5, 0.75)));
 	position: fixed;
 	z-index: 20;
 	width: 163px;
@@ -326,14 +342,14 @@ button.button:hover {
 	font-size: 23;
 }
 #fndAbug:hover {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0.5)), to(rgba(255,	255,	255,	0.8)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0.5)), to(rgba(255, 255, 255, 0.8)));
 }
 .foundAbug:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(1, 1, 1, 0.5)), to(rgba(1, 1, 1, 0.8)));
 }
 
 .Welcome {
-	background: -webkit-gradient(linear,	left top,	left bottom,	from(rgba(165,	165,	165,	0.8)), to(rgba(39,	39,	39,	0.5)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)), to(rgba(39, 39, 39, 0.5)));
 	width: 396px;
 	position: absolute;
 	left: 159px;
@@ -396,13 +412,13 @@ button.button:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165,	68,	255,	1)), to(rgba(42,	0,	173,	0.95)));
 	width: 160px;
 	height: 150px;
-	color: rgba(255,	255,	255,	0.97);
+	color: rgba(255, 255, 255, 0.97);
 	-webkit-border-radius: 62px;
 	transition: color .3s;
 }
 #TwitchName:hover,	#TwitchAccount:hover {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110,	50,	165,	1)), to(rgba(40,	0,	163,	0.95)));
-	color: rgba(255,	255,	255,	0.5);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110, 50, 165, 1)), to(rgba(40, 0, 163, 0.95)));
+	color: rgba(255, 255, 255, 0.5);
 }
 
 #TwitchAccount {
@@ -553,6 +569,9 @@ button.WelcomOK:hover {
 }
 
 button.INfoundAbug {
+    /*
+        FIXIT: WTF?
+    */
 	background: url(/img/img.png);
 	background-position: 0px -25px;
 	position: fixed;
@@ -618,8 +637,8 @@ button.INfoundAbug {
 }
 
 #refresh {
-	background: url(/img/img.png) no-repeat -864px 0;
-	background-size: 895px;
+	background: url(/img/img.png) no-repeat -100px 0;
+	background-size: 250;
 	display: block;
 	position: absolute;
 	width: 32px;
@@ -686,8 +705,8 @@ button.INfoundAbug {
 	color: black;
 }
 .zoom {
-	background: url(/img/img.png) no-repeat 0 0;
-	background-size: 395px;
+	background: url(/img/img.png) no-repeat -75px -88px;
+	background-size: 125;
 	display: block;
 	position: absolute;
 	width: 32px;
