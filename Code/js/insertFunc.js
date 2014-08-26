@@ -1,14 +1,14 @@
 {{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
-	refresh = false,
-	texts = { d:new Date() };
+	refresh = false;
+texts = { d:new Date() };
 
 function snum(){
 	switch (local.Config.Format) {
-		case 'Grid': Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
-		case 'Full': Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
-		default:     Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
+		case 'Grid' : Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
+		case 'Full' : Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
+		case 'Light': Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
 	}
 };
 snum();
@@ -68,14 +68,14 @@ function InsertOnlineList() {
 						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
 					SLU += '</div><div class="information">';
-						SLU += '<div id="Title_'+i+'">'+StreamTitle+'</div>';
+						SLU += '<div id="Title_'+i+'" type="inf">'+StreamTitle+'</div>';
 						SLU += '<div class="streamer">';
 							SLU += '<a id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">'+ShortStrmName+'</a>';
 						SLU += '</div><div class="viewers">';
 							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
 							SLU += '<p>viewers</p>';
 						SLU += '</div><div class="informationTextGame">';
-							SLU += '<a id="stream_game_'+i+'" class=""';
+							SLU += '<a id="stream_game_'+i+'" type="inf"';
 							if (StreamGame!=='Not Playing')
 								SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
 							SLU += StreamGame+'</a>';
