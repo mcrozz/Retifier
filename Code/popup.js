@@ -23,7 +23,7 @@ $(window).on('load',function() {
 	}
 
 	function clickChangeUserCls(e) {
-		if (e.target.id !== 'options_bg')
+		if (e && e.target.id !== 'options_bg')
 			return false;
 		Animation('options', ['bounceOut', true]);
 		Animation('options_bg', ['fadeOut', true, 0.5]);
@@ -77,7 +77,7 @@ $(window).on('load',function() {
 			localJSON('Status',['StopInterval', true])
 		}
 		
-		localJSON('Config',['Notifications', 'status', doc('.EnNotifyn').checked]);
+		localJSON('Config',['Notifications', 'status', doc('.EnNotify').checked]);
 
 		localJSON('Config',['Notifications', 'online', doc('.NotifyStreamer').checked]);
 		localJSON('Config',['Notifications', 'update', doc('.NotifyStreamerChanged').checked]);
