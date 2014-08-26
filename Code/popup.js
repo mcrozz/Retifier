@@ -215,7 +215,6 @@ $(window).on('load',function() {
 		if (doc('zoomContent')) {
 			Animation('zoomContent', ['fadeOut', true, 0.7]);
 			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
-			doc('userChangePopup2').onclick = null
 		} });
 	ael('#fndAbug', 0, ReportAbug);
 	ael('#AppVersion', 0, function(){
@@ -238,16 +237,31 @@ $(window).on('load',function() {
 		doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('#refresh', 0, function(){
 		localJSON('Status', ['StopInterval', true]) });
-	ael('#zoomContent', 0, function() {
-		Animation('zoomContent', 'fadeOut', true);
-		doc('zoomContent').onclick = null; });
 	ael('#UserName>p', 0, reLogin);
+	ael('#zoomContent', 0, function() {
+		Animation('zoomContent', 'fadeOut', true) });
+	window.onclick = function(e) {
+		var e = e.target;
+		if (e.className === 'zoom') {
+			var n = local.FollowingList[e.id.match(/\d+/)[0]].Name;
+			$('#zoomIMG').css({
+				'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
+				'background-size': '696 400'
+			});
+			Animation('zoomContent', ['fadeIn', false, 0.8]);
+			Animation('options_bg', ['fadeIn', false, 0.8]);
+			doc('options_bg').onclick = function() {
+				Animation('zoomContent', ['fadeOut', true, 0.7]);
+			}
+		}
+	}
 	document.onmousemove = function(p){
-		if (p.target.parentNode.className !== 'information') return false;
+		if (p.target.parentNode.className !== 'information')
+			return false;
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
-	};
+	}
 });

@@ -294,8 +294,26 @@ button.button:hover {
     background-size: 460;
 }
 
+#UserName {
+    text-align: center;
+}
+#UserName>a {
+    display: block;
+}
+
 .Logout {
-    display: inline;
+    display: inline-block;
+    color: inherit;
+    background: rgb(94, 94, 94);
+    border: 2px rgb(114, 114, 114) solid;
+    border-radius: 5px;
+    padding: 2px 6px;
+    margin: 4px 0 0 0;
+}
+.Logout:hover {
+    background: rgb(175, 175, 175);
+    border-color: rgb(71, 71, 71);
+    cursor: default;
 }
 
 .popHead {
@@ -303,14 +321,6 @@ button.button:hover {
 	border-bottom: 1px solid grey;
 }
 
-.pGreetings {
-	color: white;
-	font-size: 18px;
-	border: none;
-	cursor: default;
-	margin-top: -10px;
-	text-align: center;
-}
 #ChgUsrInt {
 	max-width: 45px;
     min-width: 15px;
@@ -353,19 +363,6 @@ button.button:hover {
 
 .Check_Box_2:checked {
     background: url(/img/img.png) no-repeat -91px 0;
-}
-
-#log_out {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110, 44, 182, 0.37)), to(rgba(88, 0, 201, 0.75)));
-	font-size: 18px;
-	color: white;
-	padding: 2px 8px;
-	margin-left: 5px;
-	transition: color .4s;
-}
-#log_out:hover {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(91, 53, 133, 0.37)), to(rgba(112, 0, 255, 0.75)));
-	color: rgb(209, 209, 209);
 }
 
 #fndAbug {
@@ -579,8 +576,8 @@ button.AppInfo:hover {
 	color: white;
 	text-decoration: none;
 	font-size: 22px;
-	border-radius: 12px;
-	width: 350px;
+	border-radius: 0 0 12px 12px;
+	width: 280px;
 	height: 36px;
 	margin-left: -15px;
 	background: -webkit-gradient(linear,	left top,	left bottom,	from(rgba(39,	39,	39,	0)), to(rgba(87,	87,	87,	0.78)));

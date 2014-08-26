@@ -95,11 +95,6 @@ function InsertOnlineList() {
 
 				doc('insertContentHere').innerHTML += SLU;
 
-				doc('zoom_'+i).onclick = function(call) {
-					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat;background-size:696 400');
-					zoom();
-				};
-
 				if (TitleWidth) {
 					doc("Title_"+i).onmouseover = function(call){
 						doc('message').innerHTML = doc(call.target.id).innerHTML;
@@ -165,10 +160,6 @@ function InsertOnlineList() {
 					doc("stream_game_"+i).onmouseover = null;
 					doc('stream_game_'+i).onmouseout = null;
 				}
-				doc('zoom_'+i).onclick = function(call) {
-					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat;background-size:696 400');
-					zoom();
-				};
 
 				doc('stream_game_'+i).innerHTML = StreamGame
 				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
