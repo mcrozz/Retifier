@@ -87,17 +87,13 @@ $(window).on('load',function() {
 		
 		localJSON('Config',['Duration_of_stream', doc('.StreamDurationCheck').checked]);
 		
-		localJSON('Config',['Format', doc('.selected').className.split(' ')[1]]);
-		reloadStyle(true);
+		var a = doc('.selected').className.split(' ')[1];
+		if (local.Config.Format !== a) {
+			localJSON('Config',['Format', a]);
+			reloadStyle(true);
+			texts = { d:new Date() };
+		}
 
-		// if (doc('List_Format_List').value !== local.Config.Format) {
-		// 	localJSON('Config',['Format', doc('List_Format_List').value]);
-		// 	document.getElementsByTagName("style")[0].remove();
-		// 	reloadStyle();
-		// 	doc('insertContentHere').innerHTML = '';
-		// 	TimersetToUpdate = [];
-		// 	InsertOnlineList();
-		// }
 		clickChangeUserCls();
 	}
 
