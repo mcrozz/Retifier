@@ -3,7 +3,9 @@ $(window).on('load',function() {
 	var opened = false,
 		TimersetToUpdate = [];
 
-	function reloadStyle(){
+	function reloadStyle(l){
+		if (l)
+			document.getElementsByTagName("style")[0].remove();
 		var style = document.createElement('style'),
 			format = local.Config.Format,
 			AddAnyways, css;
@@ -12,7 +14,7 @@ $(window).on('load',function() {
 		switch (format) {
 			case 'Full':
 				css = '{{CSS_FULL}}'; break;
-			case 'Mini':
+			case 'Light':
 				css = '{{CSS_MINI}}'; break;
 			case 'Grid':
 				css = '{{CSS_GRID}}'; break;
@@ -20,9 +22,11 @@ $(window).on('load',function() {
 		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
 	}
 
-	function clickChangeUserCls() {
-		Animation('userChangePopup', ['bounceOut', true]);
-		Animation('userChangePopup2', ['fadeOut', true, 0.5]);
+	function clickChangeUserCls(e) {
+		if (e.target.id !== 'options_bg')
+			return false;
+		Animation('options', ['bounceOut', true]);
+		Animation('options_bg', ['fadeOut', true, 0.5]);
 		Animation('AppVersion', ['fadeIn', false]);
 		if (opened) {
 			Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
@@ -35,77 +39,65 @@ $(window).on('load',function() {
 	}
 
 	function clickChangeUser() {
-		doc('userChangePopup2').onclick = clickChangeUserCls;
-		$('#userChangePopup, #userChangePopup2').show();
+		$('#options, #options_bg').show();
 		$('#AppVersion').hide();
-		$('#UserName>a').html(local.Config.User_Name)
-		Animation('userChangePopup2', ['fadeIn', false, 0.9]);
-		Animation('userChangePopup', ['bounceIn', false, 0.9]);
-		doc("ChgUsrInt").value = local.Config.Interval_of_Checking;
+		$('#UserName>a').html(local.Config.User_Name);
+		doc('ChgUsrInt').value = local.Config.Interval_of_Checking;
+		
+		var a = !local.Config.Notifications.status;
+		doc('.EnNotify').checked = !a;
+		
+		doc('.NotifyStreamerChanged').disabled = a;
+		doc('.NotifyStreamer').disabled = a;
+		doc('.NotifyUpdate').disabled = a;
+
+		doc('.NotifyStreamerChanged').checked = local.Config.Notifications.update;
+		doc('.NotifyStreamer').checked = local.Config.Notifications.online;
+		doc('.NotifyUpdate').checked = local.Config.Notifications.follow;
+	
+		doc('.SoundCheck').checked = local.Config.Notifications.sound_status
+		
+		doc('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
+
+		doc('.List_Format>.'+local.Config.Format).className += ' selected';
+
+		Animation('options_bg', ['fadeIn', false, 0.9]);
+		Animation('options', ['bounceIn', false, 0.9]);
 		doc('fndAbug').setAttribute("style","top:190;right:-68");
 		Animation('fndAbug', ['showReportBtn', false, 0.8]);
 		Animation('FoundAbugText', ['showReport', false, 0.8]);
-		// Notifications
-		if (local.Config.Notifications.status) {
-			doc('EnNotify').checked = true;
-			doc('DisNotify').checked = false;
-			doc('NotifyStreamerChanged').disabled = false;
-			doc('NotifyStreamer').disabled = false;
-			doc('NotifyUpdate').disabled = false
-		} else {
-			doc('EnNotify').checked = false;
-			doc('DisNotify').checked = true;
-			doc('NotifyStreamerChanged').disabled = true;
-			doc('NotifyStreamer').disabled = true;
-			doc('NotifyUpdate').disabled = true
-		} 
-		doc('NotifyStreamerChanged').checked = local.Config.Notifications.update;
-		doc('NotifyStreamer').checked = local.Config.Notifications.online;
-		doc('NotifyUpdate').checked = local.Config.Notifications.follow;
-		// Sound
-		if (local.Config.Notifications.sound_status) {
-			doc('SoundCheck').checked = true;
-			doc('SoundSelect').disabled = false
-		} else {
-			doc('SoundCheck').checked = false;
-			doc('SoundSelect').disabled = true
-		}
-		// Duration of stream
-		doc('StreamDurationCheck').checked = local.Config.Duration_of_stream;
-		
-		doc('List_Format_List').value = local.Config.Format;
 
 		ga('send', 'event', 'button', 'click', 'Options');
 	}
 
 	function changeScriptStarter() {
-		// Interval of checking
 		var g = Math.floor(doc('ChgUsrInt').value);
-		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g > 0) {
+		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
 			localJSON('Config',['Interval_of_Checking', g]);
 			localJSON('Status',['StopInterval', true])
 		}
-		// Notifications
-		if (doc('EnNotify').checked) localJSON('Config',['Notifications','status', true]);
-		if (doc('DisNotify').checked) localJSON('Config',['Notifications','status', false]);
-		localJSON('Config',['Notifications','online',doc('NotifyStreamer').checked]);
-		localJSON('Config',['Notifications','update',doc('NotifyStreamerChanged').checked]);
-		localJSON('Config',['Notifications','follow',doc('NotifyUpdate').checked]);
-		// Sound
-		localJSON('Config',['Notifications','sound_status',doc('SoundCheck').checked]);
-		localJSON('Config',['Notifications','sound', doc("SoundSelect").value]);
-		// Duration of stream
-		localJSON('Config',['Duration_of_stream',doc('StreamDurationCheck').checked]);
-		// Update style and list of online users
-		if (doc('List_Format_List').value !== local.Config.Format) {
-			localJSON('Config',['Format', doc('List_Format_List').value]);
-			document.getElementsByTagName("style")[0].remove();
-			CSScompiler();
-			doc('insertContentHere').innerHTML = '';
-			TimersetToUpdate = [];
-			InsertOnlineList();
-		}
-		// Close options
+		
+		localJSON('Config',['Notifications', 'status', doc('.EnNotifyn').checked]);
+
+		localJSON('Config',['Notifications', 'online', doc('.NotifyStreamer').checked]);
+		localJSON('Config',['Notifications', 'update', doc('.NotifyStreamerChanged').checked]);
+		localJSON('Config',['Notifications', 'follow', doc('.NotifyUpdate').checked]);
+		
+		localJSON('Config',['Notifications', 'sound_status', doc('.SoundCheck').checked]);
+		
+		localJSON('Config',['Duration_of_stream', doc('.StreamDurationCheck').checked]);
+		
+		localJSON('Config',['Format', doc('.selected').className.split(' ')[1]]);
+		reloadStyle(true);
+
+		// if (doc('List_Format_List').value !== local.Config.Format) {
+		// 	localJSON('Config',['Format', doc('List_Format_List').value]);
+		// 	document.getElementsByTagName("style")[0].remove();
+		// 	reloadStyle();
+		// 	doc('insertContentHere').innerHTML = '';
+		// 	TimersetToUpdate = [];
+		// 	InsertOnlineList();
+		// }
 		clickChangeUserCls();
 	}
 
@@ -205,21 +197,26 @@ $(window).on('load',function() {
 	ael('#ChgUsrSnd', 0, changeScriptStarter);
 	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', 0, function(){
 		FollowedList(this); });
-	ael('#Notify_All, #DisNotify_All', 0, function(){
-		doc('EnNotify').checked = !(this.id === 'DisNotify_All');
-		doc('DisNotify').checked = (this.id === 'DisNotify_All');
-		$('[name=ntf]').each(function(){this.disabled = doc('DisNotify').checked}); });
-	ael('#Notify_Streamer, #NotifyStreamer', 0, function(){
-		if (doc('EnNotify').checked) doc('NotifyStreamer').checked = !doc('NotifyStreamer').checked; });
-	ael('#Notify_Streamer_Changed, #NotifyStreamerChanged', 0, function(){
-		if (doc('EnNotify').checked) doc('NotifyStreamerChanged').checked = !doc('NotifyStreamerChanged').checked; });
-	ael('#Notify_Upd, #NotifyUpdate', 0, function(){
-		if (doc('EnNotify').checked) doc('NotifyUpdate').checked = !doc('NotifyUpdate').checked; });
-	ael('#Notify_Sound, #SoundCheck', 0, function(){
-		if (doc('EnNotify').checked) { doc('SoundCheck').checked = !doc('SoundCheck').checked;
-		doc('SoundSelect').disabled = !doc('SoundCheck').checked; } });
-	ael('#DurationOfStream, #StreamDurationCheck', 0, function(){
-		doc('StreamDurationCheck').checked = !doc('StreamDurationCheck').checked; });
+	ael('.style', 0, function(t){
+		var a = t.target.className.split(' ')[1],
+			b = doc('.selected').className.split(' ')[1];
+		doc('.selected').className = 'style '+b;
+		doc('.'+a).className += ' selected'; });
+	ael('.EnNotify', 0, function(t){
+		if (t.target.checked) {
+			$('#Notify>div').css('color', '');
+			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = false;})
+		} else {
+			$('#Notify>div').css('color', 'grey');
+			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;})
+		} });
+	ael('#options_bg', 0, clickChangeUserCls);
+	ael('#options_bg', 0, function(e){
+		if (doc('zoomContent')) {
+			Animation('zoomContent', ['fadeOut', true, 0.7]);
+			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
+			doc('userChangePopup2').onclick = null
+		} });
 	ael('#fndAbug', 0, ReportAbug);
 	ael('#AppVersion', 0, function(){
 		AppVersionChanges('o') });
@@ -243,8 +240,6 @@ $(window).on('load',function() {
 		localJSON('Status', ['StopInterval', true]) });
 	ael('#zoomContent', 0, function() {
 		Animation('zoomContent', 'fadeOut', true);
-		Animation('userChangePopup2', 'fadeOut', true);
-		doc('userChangePopup2').onclick = null;
 		doc('zoomContent').onclick = null; });
 	ael('#UserName>p', 0, reLogin);
 	document.onmousemove = function(p){

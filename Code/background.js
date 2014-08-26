@@ -19,7 +19,10 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
     BadgeOnlineCount(0);
     localJSON('Status', ['online', 0]);
-    for (var i=0; i<localJSON('Following'); i++) FollowingList('c', i, '', false);
+    for (var i=0; i<localJSON('Following'); i++)
+        FollowingList('c', i, '', false);
+    if (local.Config.Format==='Mini')
+        localJSON('Config', ['Format', 'Light']);
 }
 
 var NowOnline = [];

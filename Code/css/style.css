@@ -121,22 +121,21 @@ button {
 	margin: 1.5 0 0;
 }
 
-#userChangePopup {
+#options {
 	display: none;
     position: fixed;
 	z-index: 10;
-	width: 300px;
+	width: 250px;
     top: 100px;
 	left: 173.5px;
     padding: 15px 15px 0 15px;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 1)), to(rgba(87, 87, 87, 1)));
-	position: fixed;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	-webkit-border-radius: 14px;
 	border-radius: 14px;
     color: white;
 }
-#userChangePopup2 {
+#options_bg {
 	display: none;
 	z-index: 5;
 	width: 100%;
@@ -251,15 +250,32 @@ button.button:hover {
 }
 
 
-#userChangePopup>div {
+#options>div {
 	display: block;
-	width: 340px;
+    margin: 5px 0;
 }
 
+#Notify>div {
+    margin: 10px 0;
+}
+
+.selected {
+    border: 5px rgb(163, 163, 163) solid;
+    margin: 0 5px -5px 5px !important;
+}
 .style {
     display: inline-block;
     width: 50px;
     height: 50px;
+    margin: 0 15px;
+}
+
+.List_Format {
+    text-align: center;
+}
+
+.List_Format>a {
+    display: block;
 }
 
 .Full, .Light, .Grid {
@@ -311,7 +327,10 @@ button.button:hover {
 }
 
 .Check_Box, .Check_Box_2 {
+    position: absolute;
+    right: 0;
     height: 22px;
+    margin-top: -2px;
     -webkit-appearance: none;
     outline: none;
 }
@@ -632,10 +651,6 @@ button.WelcomOK:hover {
 	position: absolute;
 	bottom: 0;
 	left: 3;
-}
-
-#SoundSelect,	#List_Format_List {
-	width: 90;
 }
 
 #refresh {
