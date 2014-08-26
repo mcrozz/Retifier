@@ -14,16 +14,6 @@ function snum(){
 snum();
 
 function InsertOnlineList() {
-	function zoom() {
-		Animation('zoomContent', ['fadeIn', false, 0.8]);
-		Animation('userChangePopup2', ['fadeIn', false, 0.8]);
-		doc('userChangePopup2').onclick = function() {
-			Animation('zoomContent', ['fadeOut', true, 0.7]);
-			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
-			doc('userChangePopup2').onclick = null;
-			doc('zoomContent').onclick = null;
-		}
-	}
 	function name(n){
 		if (local.Config.Format === 'Mini')
 			return n;
@@ -41,8 +31,10 @@ function InsertOnlineList() {
 		return (d.offsetWidth>w);
 	}
 
-	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
-	else doc('insertContentHere').style.overflow='auto';
+	if (local.Status.online <= 2)
+		doc('insertContentHere').style.overflow='hidden'
+	else
+		doc('insertContentHere').style.overflow='auto';
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
@@ -95,26 +87,8 @@ function InsertOnlineList() {
 
 				doc('insertContentHere').innerHTML += SLU;
 
-				if (TitleWidth) {
-					doc("Title_"+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("Title_"+i).onmouseover = null;
-					doc('Title_'+i).onmouseout = null;
-				}
-				if (GameWidth) {
-					doc('stream_game_'+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("stream_game_"+i).onmouseover = null;
-					doc('stream_game_'+i).onmouseout = null;
-				}
+				$.data(doc("Title_"+i), 'show', TitleWidth);
+				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
 				if (FirstLoadInsertFunc != 1) Animation(i, ['fadeIn', false]);
 				TimersetToUpdate.push(i);
@@ -134,37 +108,16 @@ function InsertOnlineList() {
 		    if (!local.FollowingList[i].Stream && doc(i) != null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
-		    	doc("Title_"+i).onmouseover = null;
-				doc('Title_'+i).onmouseout = null;
-				doc("stream_game_"+i).onmouseover = null;
-				doc('stream_game_'+i).onmouseout = null;
 		    } else {
 				doc('Title_'+i).innerHTML = StreamTitle
-				if (TitleWidth) {
-					doc("Title_"+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("Title_"+i).onmouseover = null;
-					doc('Title_'+i).onmouseout = null;
-				}
-				if (GameWidth) {
-					doc('stream_game_'+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("stream_game_"+i).onmouseover = null;
-					doc('stream_game_'+i).onmouseout = null;
-				}
+				
+				$.data(doc("Title_"+i), 'show', TitleWidth);
+				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
 				doc('stream_game_'+i).innerHTML = StreamGame
 				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
 
-				if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
 				
 				if (StreamGame == 'Not playing') {
