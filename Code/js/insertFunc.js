@@ -191,7 +191,7 @@ setInterval(function(){
 	pg = Upd!==0;
 	if (pg) {
 		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
-		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
+		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
 		else { st+=1 }
 	} else if (!doc('CheckingProgress').hidden) { $('#CheckingProgress').hide(); doc('CheckingProgress').hidden=true; }
@@ -204,9 +204,9 @@ var run = function() {
 			dif/=86400000;
 			if (local.Config.Timeout === 1337) return true;
 			if (dif > 0) return true;
-			if (dif <= 0 || dif > 14) localJSON('Config',['Timeout', 0]);
+			if (dif <= 0 || dif > 14) localJSON('Config.Timeout', 0);
 		} else {
-			localJSON('Config',['Timeout', TimeNdate(14,0,'-')]);
+			localJSON('Config.Timeout', TimeNdate(14,0,'-'));
 			return false;
 		}
 		if (!doc('donate')) {
@@ -217,7 +217,7 @@ var run = function() {
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config',['Timeout',TimeNdate(14,0)]);ga('set','PayPalButton','false')});
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config.Timeout',TimeNdate(14,0));ga('set','PayPalButton','false')});
 			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
 		}
 	})();

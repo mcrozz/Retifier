@@ -7,11 +7,10 @@ $(window).on('load',function() {
 		if (l)
 			document.getElementsByTagName("style")[0].remove();
 		var style = document.createElement('style'),
-			format = local.Config.Format,
 			AddAnyways, css;
-		if (!format)
-			localJSON('Config', ['Format', 'Grid']);
-		switch (format) {
+		if (!local.Config.Format)
+			localJSON('Config.Format', 'Grid');
+		switch (local.Config.Format) {
 			case 'Full':
 				css = '{{CSS_FULL}}'; break;
 			case 'Light':
@@ -73,23 +72,23 @@ $(window).on('load',function() {
 	function changeScriptStarter() {
 		var g = Math.floor(doc('ChgUsrInt').value);
 		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
-			localJSON('Config',['Interval_of_Checking', g]);
-			localJSON('Status',['StopInterval', true])
+			localJSON('Config.Interval_of_Checking', g);
+			localJSON('Status.StopInterval', true)
 		}
 		
-		localJSON('Config',['Notifications', 'status', doc('.EnNotify').checked]);
+		localJSON('Config.Notifications.status', doc('.EnNotify').checked);
 
-		localJSON('Config',['Notifications', 'online', doc('.NotifyStreamer').checked]);
-		localJSON('Config',['Notifications', 'update', doc('.NotifyStreamerChanged').checked]);
-		localJSON('Config',['Notifications', 'follow', doc('.NotifyUpdate').checked]);
+		localJSON('Config.Notifications.online', doc('.NotifyStreamer').checked);
+		localJSON('Config.Notifications.update', doc('.NotifyStreamerChanged').checked);
+		localJSON('Config.Notifications.follow', doc('.NotifyUpdate').checked);
 		
-		localJSON('Config',['Notifications', 'sound_status', doc('.SoundCheck').checked]);
+		localJSON('Config.Notifications.sound_status', doc('.SoundCheck').checked);
 		
-		localJSON('Config',['Duration_of_stream', doc('.StreamDurationCheck').checked]);
+		localJSON('Config.Duration_of_stream', doc('.StreamDurationCheck').checked);
 		
 		var a = doc('.selected').className.split(' ')[1];
 		if (local.Config.Format !== a) {
-			localJSON('Config',['Format', a]);
+			localJSON('Config.Format', a);
 			reloadStyle(true);
 			texts = { d:new Date() };
 		}
@@ -232,7 +231,7 @@ $(window).on('load',function() {
 	ael('#SoundCheck', 0, function(){
 		doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('#refresh', 0, function(){
-		localJSON('Status', ['StopInterval', true]) });
+		localJSON('Status.StopInterval', true) });
 	ael('#UserName>p', 0, reLogin);
 	ael('#zoomContent', 0, function() {
 		Animation('zoomContent', 'fadeOut', true) });
