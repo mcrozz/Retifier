@@ -67,30 +67,16 @@ function localJSON(pth,val) {
 }
 
 if (!localStorage.FollowingList) localStorage.FollowingList='{}';
-function FollowingList(type,id,name,stream) {
+function FollowingList(id, nm, st) {
     try {
-        var b, z, x;
-        b = local.FollowingList;
-        if (type == 'add') {
-            local.FollowingList[id] = {
-                Name: name,
-                Stream: false
-            };
-            return localStorage.FollowingList = JSON.stringify(local.FollowingList);
-        } else if (type == 'c') {
-            if (stream) {
-                local.FollowingList[id].Stream = {
-                    Title: stream[0],
-                    Game: stream[1],
-                    Viewers: stream[2],
-                    Time: stream[3],
-                    GameIMG: stream[4]
-                };
-            } else { local.FollowingList[id].Stream = false; }
-            return localStorage.FollowingList = JSON.stringify(local.FollowingList);
+        if (nm === null)
+            nm = local.FollowingList[id].Name;
+        local.FollowingList[id] = {
+            Name  : nm,
+            Stream: st
         }
-    } catch (e) { err(e); return false; }
-    return Error('Nope');
+        return localStorage.FollowingList = JSON.stringify(local.FollowingList);
+    } catch (e) { return err(e); }
 }
 
 {{NOTIFY_USER_FUNCTION}}

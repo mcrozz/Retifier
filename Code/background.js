@@ -26,10 +26,15 @@ function CheckFollowingList() {
             localJSON('Status.checked', '+1');
 
             if (j.stream) {
+                if (local.FollowingList[key].Name !== j.stream.channel.name) {
+                    deb(j);
+                    IT = j;
+                }
+
                 var FoLi = local.FollowingList[key],
                     Game = j.stream.game,
                     Status = j.stream.channel.status,
-                    Name = FoLi.Name,
+                    Name = j.stream.channel.name,
                     Time = j.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
 
                 if (Status === null) Status = 'Untitled stream';
@@ -40,18 +45,18 @@ function CheckFollowingList() {
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
-                if (FoLi.Stream.Title != Status &&
-                    FoLi.Stream.Title != undefined)
+                if (FoLi.Stream.Title !== Status &&
+                    FoLi.Stream.Title !== undefined)
                         Notify({name:Name, title:Name+' changed stream title on', msg:Status, type:'follow'});
                 if (Math.abs(new Date()-new Date(Time)) > Math.abs(new Date()-new Date(FoLi.Stream.Time)) || !FoLi.Stream) { Time2 = Time }
                 else { Time2 = FoLi.Stream.Time }
 
-                FollowingList('c',key,'',[Status, Game, j.stream.viewers, Time2, "NotYet"])
+                FollowingList(key, Name, {Title:Status, Game:Game, Viewers:j.stream.viewers, Time:Time2});
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
                 NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
-                FollowingList('c', key, '', false)                      
+                FollowingList(key, null, false)                      
             }
             if (local.Status.checked==local.Following || key===local.Following) {
                 if (ch) {
@@ -110,7 +115,7 @@ function CheckFollowingList() {
                 localStorage.Following = j._total;
                 chg = true;
                 for (var i=0; i<local.Following; i++)
-                    j.follows[i] ? FollowingList('add', i, j.follows[i].channel.name) : log(j);
+                    j.follows[i] ? FollowingList(i, j.follows[i].channel.name, false) : log(j);
             } else {
                 chg = false;
             }
