@@ -58,8 +58,9 @@ function InsertOnlineList() {
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (v.Stream) {
-		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>')
+		        if (doc('insertContentHere').innerHTML === '<div class="NOO"><a>No one online right now :(</a></div>')
 		        	doc('insertContentHere').innerHTML = null;
+				
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
 						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
@@ -77,8 +78,8 @@ function InsertOnlineList() {
 						SLU += '</div><div class="informationTextGame">';
 							SLU += '<a id="stream_game_'+i+'" type="inf"';
 							if (StreamGame!=='Not Playing')
-								SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							SLU += StreamGame+'</a>';
+								SLU+=' href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
+							SLU += '>'+StreamGame+'</a>';
 						SLU += '</div><div class="StreamOnChannelPage">';
 							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
 								SLU += '<button type="button" class="button">Channel page</button></a></div>';
@@ -105,7 +106,7 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-		    if (!local.FollowingList[i].Stream && doc(i) != null) {
+		    if (!v.Stream && doc(i) !== null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
@@ -115,7 +116,7 @@ function InsertOnlineList() {
 				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
 				doc('stream_game_'+i).innerHTML = StreamGame
-				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
+				doc('Viewers_' + i).innerHTML = StreamVievers;
 
 				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
