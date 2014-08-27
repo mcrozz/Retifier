@@ -234,7 +234,8 @@ $(window).on('load',function() {
 		localJSON('Status.StopInterval', true) });
 	ael('#UserName>p', 0, reLogin);
 	ael('#zoomContent', 0, function() {
-		Animation('zoomContent', 'fadeOut', true) });
+		Animation('zoomContent', 'fadeOut', true);
+		Animation('options_bg', 'fadeOut', true); });
 	window.onclick = function(e) {
 		var e = e.target;
 		if (e.className === 'zoom') {

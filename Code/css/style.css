@@ -719,8 +719,8 @@ button.WelcomOK:hover {
 	color: black;
 }
 .zoom {
-	background: url(/img/img.png) no-repeat -275px -2px;
-	background-size: 500;
+	background: url(/img/img.png) no-repeat -255px 0;
+	background-size: 465;
 	display: block;
 	position: absolute;
 	width: 32px;
