@@ -51,7 +51,7 @@ function InsertOnlineList() {
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
 			StreamerName  = v.Name,
-			ShortStrmName = v.Stream.d_name,
+			ShortStrmName = v.Stream.d_name || v.Name,
 			StreamGame    = v.Stream.Game,
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
