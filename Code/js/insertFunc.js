@@ -14,16 +14,6 @@ function snum(){
 snum();
 
 function InsertOnlineList() {
-	function name(n){
-		if (local.Config.Format === 'Mini')
-			return n;
-		var nm = {
-			// TODO
-			'speeddemosarchivesda': 'SDA'
-		};
-		if ($.inArray(n, nm)!==-1) { return nm[n]; }
-		else { return n; }
-	}
 	function offSet(s,n,w) {
 		var d = doc('textWidth');
 		d.style.fontSize = s+'px';
@@ -39,7 +29,7 @@ function InsertOnlineList() {
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
 			StreamerName  = v.Name,
-			ShortStrmName = name(StreamerName),
+			ShortStrmName = v.Stream.d_name,
 			StreamGame    = v.Stream.Game,
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
@@ -176,10 +166,13 @@ setInterval(function(){
 		6 :: Name doesn't set up!
 		7 :: First start
 	*/
+	if (localStorage.FirstLaunch === 'true')
+		return false;
 	var j = doc('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
-	if (!Onlv) Onlv = 0;
+	if (!Onlv)
+		Onlv = 0;
 	switch (Upd) {
 		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; break;
 		case 1: j.innerHTML='Behold! Update!'; break;
@@ -190,7 +183,7 @@ setInterval(function(){
 		case 6: j.innerHTML="Name doesn't set up yet!"; break;
 	}
 	pg = Upd!==0;
-	if (pg && localStorage.FirstLaunch !== 'true') {
+	if (pg) {
 		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
 		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }

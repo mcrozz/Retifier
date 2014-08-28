@@ -1,7 +1,6 @@
 {{LICENSE_HEADER}}
 $(window).on('load',function() {
-	var opened = false,
-		TimersetToUpdate = [];
+	var TimersetToUpdate = [];
 
 	function reloadStyle(l){
 		if (l)
@@ -27,14 +26,13 @@ $(window).on('load',function() {
 		Animation('options', ['bounceOut', true]);
 		Animation('options_bg', ['fadeOut', true, 0.5]);
 		Animation('AppVersion', ['fadeIn', false]);
-		if (opened) {
+		if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
 			Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
 			Animation('FoundAbugText', ['hideReportA', true, 0.7]);
 		} else {
 			Animation('fndAbug', ['hideReportBtn', true, 0.9]);
 			Animation('FoundAbugText', ['hideReport', true, 0.9]);
 		}
-		opened = false;
 	}
 
 	function clickChangeUser() {
@@ -98,14 +96,12 @@ $(window).on('load',function() {
 
 	function ReportAbug() {
 		ga('send', 'event', 'button', 'click', 'Report a bug');
-		if (!opened) {
+		if ($('#fndAbug').css('-webkit-animation')[0] == 'c') {
 			Animation('FoundAbugText', ['openReport', false, 0.8]);
 			Animation('fndAbug', ['openReportBtn', false, 0.8]);
-			opened = true;
 		} else {
 			Animation('FoundAbugText', ['closeReport', false, 0.8]);
 			Animation('fndAbug', ['closeReportBtn', false, 0.8]);
-			opened = false;
 		}
 	}
 
@@ -139,14 +135,13 @@ $(window).on('load',function() {
 		if (c=='c') {
 			Animation('AppChanges', ['bounceOutDown', true]);
 			Animation('AppInfoBack', ['fadeOut', true, 0.5], function(){ $('body').css('overflow', 'auto'); });
-			if (opened) {
+			if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
 				Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
 				Animation('FoundAbugText', ['hideReportA', true, 0.7]);
 			} else {
 				Animation('fndAbug', ['hideReportBtn', true, 0.9]);
 				Animation('FoundAbugText', ['hideReport', true, 0.9]);
 			}
-			opened = false;
 			Animation('AppVersion', ['fadeIn', false]);
 		} else if (c=='o') {
 			Animation('AppChanges', ['bounceInUp', false]);

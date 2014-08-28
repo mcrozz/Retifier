@@ -1,20 +1,16 @@
 {{LICENSE_HEADER}}
 function reLogin() {
-	$('userChangePopup, userChangePopup2').fadeOut(500, function(){
+	$('#options, #options_bg').fadeOut(500, function(){
 		$('#AppVersion').fadeIn(200)
 	});
-	if (opened) {
+	if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
 		Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
 		Animation('FoundAbugText', ['hideReportA', true, 0.7]);
-	} else {
-		Animation('fndAbug', ['hideReportBtn', true, 0.9]);
-		Animation('FoundAbugText', ['hideReport', true, 0.9]);
 	}
-	opened = false;
 	localJSON('Config.User_Name', 'Guest');
 	localJSON('Config.token', '');
 	localJSON('Status.update', 7);
-	localStorage.FollowingList={};
+	localStorage.FollowingList='{}';
 	localStorage.Following=0;
 	localStorage.FirstLaunch='true';
 	TimersetToUpdate=[];
@@ -73,7 +69,7 @@ function lgin() {
 				if (doc('SetUpUserNameInp').value !== undefined && doc('SetUpUserNameInp').value != ' ' && doc('SetUpUserNameInp').value != ''){ 
 					localJSON('Config.User_Name',doc('SetUpUserNameInp').value);
 			        localJSON('Status.update',0);
-			        localStorage.FirstLaunch = 'false';
+			        localStorage.FirstLaunch = false;
 					localJSON('Status.StopInterval',true);
 					$('#FollowedChannelsOnline').html("Please wait a moment");
 					doc('ChgUsr').disabled = false;
