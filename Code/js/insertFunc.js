@@ -190,7 +190,7 @@ setInterval(function(){
 		case 6: j.innerHTML="Name doesn't set up yet!"; break;
 	}
 	pg = Upd!==0;
-	if (pg) {
+	if (pg && localStorage.FirstLaunch !== 'true') {
 		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
 		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }

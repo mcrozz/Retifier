@@ -54,6 +54,8 @@ function localJSON(pth,val) {
         }
         var pth = pth.split('.');
         switch (pth.length) {
+            case 1:
+                local[pth[0]] = pr(local[pth[0]]); break;
             case 2:
                 local[pth[0]][pth[1]] = pr(local[pth[0]][pth[1]]); break;
             case 3:

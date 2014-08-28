@@ -11,14 +11,14 @@
     "UpdateLocal": "false"
   },
   "Chrome": {
-    "Ver": "1.3.9.9",
+    "Ver": "1.4",
     "IfBackB": "}",
     "IfBackA": "if(window.location.pathname==='/background.html'){",
     "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
     "Parse": "site",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Build": 669,
+    "Build": 677,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },

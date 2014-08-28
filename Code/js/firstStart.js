@@ -13,6 +13,7 @@ function reLogin() {
 	opened = false;
 	localJSON('Config.User_Name', 'Guest');
 	localJSON('Config.token', '');
+	localJSON('Status.update', 7);
 	localStorage.FollowingList={};
 	localStorage.Following=0;
 	localStorage.FirstLaunch='true';
@@ -22,6 +23,7 @@ function reLogin() {
 
 function lgin() {
 	if (localStorage.FirstLaunch === 'true'){
+		localJSON('Status.update', 7);
 		$('#FollowedChannelsOnline').html("Greetings!");
 		doc('ChgUsr').disabled = true;
 		doc('LstFlwdChnls').disabled = true;

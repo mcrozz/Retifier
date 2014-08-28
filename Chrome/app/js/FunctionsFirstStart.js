@@ -3,7 +3,7 @@ if (window.location.pathname === '/background.html') {
     if (!localStorage.Config)
         localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid"}';
     if (!localStorage.Status)
-        localStorage.Status = '{"update":0,"online":0,"checked":0,"StopInterval":false}';
+        localStorage.Status = '{"update":7,"online":0,"checked":0,"StopInterval":false}';
     if (!localStorage.FirstLaunch)
         localStorage.FirstLaunch='true';
     try { 
