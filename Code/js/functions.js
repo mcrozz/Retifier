@@ -100,7 +100,6 @@ function FollowingList(id, nm, st) {
         'page': location.pathname,
         'title': location.pathname
     });
-    ga('set', 'appVersion', local.App_Version.Ver.replace('v.',''));
 
 // https://www.parsecdn.com
 {{IF_BACKGROUND_BEGIN}}

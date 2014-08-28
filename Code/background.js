@@ -12,6 +12,8 @@ if (localStorage.FirstLaunch === 'true') {
         localJSON('Config.Format', 'Light');
 }
 
+ga('set', 'appVersion', local.App_Version.Ver.replace('v.',''));
+
 var NowOnline = [];
 
 function CheckFollowingList() {
