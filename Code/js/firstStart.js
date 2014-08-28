@@ -3,10 +3,8 @@ function reLogin() {
 	$('#options, #options_bg').fadeOut(500, function(){
 		$('#AppVersion').fadeIn(200)
 	});
-	if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
-		Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
-		Animation('FoundAbugText', ['hideReportA', true, 0.7]);
-	}
+	Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
+	Animation('FoundAbugText', ['hideReportA', true, 0.7]);
 	localJSON('Config.User_Name', 'Guest');
 	localJSON('Config.token', '');
 	localJSON('Status.update', 7);
