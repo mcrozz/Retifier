@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.0 Fresh look, added notifications (works only on 25+), fixed 'Following List' page, various improvements",
     "-0.9.0.4 Bug fixing",
     "-0.9.0.3 Code optimization",
     "-0.9.0.2 Fixed sound",

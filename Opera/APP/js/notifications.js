@@ -2,7 +2,8 @@ var ncnt = 0,
 	NotifyNames = {};
 
 function Notify(d) {
-	if (window.location.pathname !== '/background.html') return false;
+	if (window.location.pathname !== '/background.html')
+		return false;
 	if (d.type === 'sys' || d.type === 'update')
 		d.name = 'd'+Math.floor(Math.random(100)*100);
 	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
@@ -14,7 +15,7 @@ function Notify(d) {
 
 	function sendNotify(d) {
 		var ntf = new Notification(d.title, {
-			body: d.message,
+			body: d.msg,
 			icon: "/img/notification_icon.png"
 		}),
 			j = d.name;

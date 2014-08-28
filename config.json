@@ -28,14 +28,14 @@
     "music"
   ],
   "Opera": {
-    "Ver": "0.9.0.4",
+    "Ver": "1.0",
     "IfBackB": "}",
     "IfBackA": "if(window.location.pathname==='/background.html'){",
     "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
     "Parse": "local",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Build": 38,
+    "Build": 43,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
