@@ -20,6 +20,28 @@ function InsertOnlineList() {
 		d.innerHTML = n;
 		return (d.offsetWidth>w);
 	}
+	function time(t) {
+		function h(b,j) {
+			if (b === 0) { return '00'+j; }
+			else if (b < 10) { return '0'+b+j; }
+			else { return b.toString()+j; }
+		}
+		var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+		SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
+		Days = Math.floor(SubtractTimes/24/60/60);
+		SubtractTimes -= Days*24*60*60;
+		if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+		Hours = Math.floor(SubtractTimes/60/60);
+		SubtractTimes -= Hours*60*60;
+		Hours = h(Hours, 'h:');
+		Minutes = Math.floor(SubtractTimes/60);
+		SubtractTimes -= Minutes*60;
+		Minutes = h(Minutes, 'm:')
+		Seconds = Math.floor(SubtractTimes);
+		Seconds = h(Seconds, 's');
+		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+		return Time;
+	}
 
 	if (local.Status.online <= 2)
 		doc('insertContentHere').style.overflow='hidden'
@@ -81,7 +103,9 @@ function InsertOnlineList() {
 				$.data(doc("Title_"+i), 'show', TitleWidth);
 				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
-				if (FirstLoadInsertFunc != 1) Animation(i, ['fadeIn', false]);
+				if (FirstLoadInsertFunc != 1)
+					Animation(i, ['fadeIn', false]);
+
 				TimersetToUpdate.push(i);
 
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
@@ -105,8 +129,13 @@ function InsertOnlineList() {
 				$.data(doc("Title_"+i), 'show', TitleWidth);
 				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
-				doc('stream_game_'+i).innerHTML = StreamGame
+				doc('stream_game_'+i).innerHTML = StreamGame;
 				doc('Viewers_' + i).innerHTML = StreamVievers;
+
+				if (local.Config.Duration_of_stream && doc('Stream_Duration_'+i)) {
+           			doc('Stream_Duration_'+i).innerHTML = time(v.Stream.Time); }
+				else if (!local.Config.Duration_of_stream && doc('Stream_Duration_'+i).innerHTML !== '') {
+					doc('Stream_Duration_'+i).innerHTML = ''; }
 
 				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
@@ -125,31 +154,6 @@ function InsertOnlineList() {
 		if (local.Status.online == 0 && local.Status.update == 0) 
 		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
 	});
-	
-	if (local.Config.Duration_of_stream) {
-		function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
-		}
-		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var SubtractTimes, Days, Hours, Minutes, Seconds, Time
-			SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time)).getTime()) / 1000);
-			Days = Math.floor(SubtractTimes/24/60/60);
-			SubtractTimes -= Days*24*60*60;
-			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-			Hours = Math.floor(SubtractTimes/60/60);
-			SubtractTimes -= Hours*60*60;
-			Hours = h(Hours, 'h:');
-			Minutes = Math.floor(SubtractTimes/60);
-			SubtractTimes -= Minutes*60;
-			Minutes = h(Minutes, 'm:')
-			Seconds = Math.floor(SubtractTimes);
-			Seconds = h(Seconds, 's');
-			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-            if (doc('Stream_Duration_'+TimersetToUpdate[i])) doc('Stream_Duration_'+TimersetToUpdate[i]).innerHTML = Time;
-		}
-	}
 }
 
 var pg = false,
