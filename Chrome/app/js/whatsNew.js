@@ -1,6 +1,6 @@
 ﻿{{LICENSE_HEADER}}
 changes = [
-    "-1.4 Fresh look, various improvements",
+    "-1.4 Fresh look, fixed 'Following List' page, various improvements",
     "-1.3.9.9 Bug fixing",
     "-1.3.9.8 Code optimization",
     "-1.3.9.7 Fixed notifications",
@@ -47,7 +47,7 @@ changes = [
 messages = {
     "v.1.4": {
         "msg": "Fresh look",
-        "contain": "-Complete redesigned 'Options' tab <br>-..."
+        "contain": "-Complete redesigned 'Options' tab <br>-Fixed 'Following List' page <br>-Various improvements"
     }
 };
 
