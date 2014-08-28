@@ -19,17 +19,16 @@ function CheckFollowingList() {
         $.getJSON(j)
         .fail(function(d) { 
             err({message:'checkStatus() ended with error',stack:d});
-            Notify({title:"Update follows list", msg:"Error, can't update", type:"follow", context:"time"});
-            localJSON('Status.update', 5);
         })
         .done(function(d){
             localJSON('Status.checked', '+1');
             if (d.stream) {
                 var FoLi   = local.FollowingList[key],
-                    Game   = d.stream.game,
-                    Status = d.stream.status,
-                    Name   = d.stream.display_name,
-                    Time   = d.stream.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
+                    Game   = d.stream.channel.game,
+                    Status = d.stream.channel.status,
+                    Name   = d.stream.channel.name,
+                    d_name = d.stream.channel.display_name,
+                    Time   = d.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
                 if (Status === null)
                     Status = 'Untitled stream';
                 if (Game === null)
@@ -41,11 +40,16 @@ function CheckFollowingList() {
                     BadgeOnlineCount(local.Status.online);
                 }
                 if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
-                        Notify({name:Name, title:Name+' changed stream title on', msg:Status, type:'follow'});
-                if (new Date(FoLi.Stream.Time) - new Date(Time)  || !FoLi.Stream)
+                        Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+                if (new Date(FoLi.Stream.Time) - new Date(Time))
                     Time = FoLi.Stream.Time;
 
-                FollowingList(key, Name, {Title:Status, Game:Game, Viewers:d.stream.viewers, Time:Time});
+                FollowingList(key, Name, {
+                    d_name  : d_name,
+                    Title   : Status,
+                    Game    : Game,
+                    Viewers : d.stream.viewers,
+                    Time    : Time });
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
@@ -108,7 +112,7 @@ function CheckFollowingList() {
                 localJSON('Following', j._total);
                 chg = true;
                 for (var i=0; i<j._total; i++)
-                    FollowingList(i, j.follows[i].display_name, false);
+                    FollowingList(i, j.follows[i].channel.name, false);
             } else {
                 chg = false; }
             localJSON('Status.checked', 0);
