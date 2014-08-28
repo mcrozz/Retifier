@@ -1,24 +1,49 @@
-function notifyUser(streamerName, titleOfStream, type, streamer) {
+var ncnt = 0,
+	NotifyNames = {};
+
+function Notify(d) {
 	if (window.location.pathname !== '/background.html') return false;
-	function sendNotify(tle, msg, strm, upd) {
-		log(tle+' - '+msg);
-		if (local.Config.Notifications.sound_status) {
-			var Audio = document.createElement('audio');
-			Audio.src = '/Music/'+local.Config.Notifications.sound+'.{{AUDIO_FORMAT}}';
-			Audio.autoplay = 'autoplay';
+	if (d.type === 'sys' || d.type === 'update')
+		d.name = 'd'+Math.floor(Math.random(100)*100);
+	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
+		d[v] = typeof d[v] === 'undefined' ? '' : d[v];
+	});
+	if (!d.msg || !d.title)
+		return Error("Invalid input");
+	deb(d);
+
+	function sendNotify(d) {
+		var ntf = new Notification(d.title, {
+			body: d.message,
+			icon: "/img/notification_icon.png"
+		}),
+			j = d.name;
+		if (d.button) {
+			ntf.onClick = function(){
+				window.open('http://www.twitch.tv/'+j);
+			}
 		}
+		if (local.Config.Notifications.sound_status)
+			new Audio('DinDon.ogg').play();
 	}
 
 	if (local.Config.Notifications.status) {
-		if (type === 'Online' && local.Config.Notifications.online) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(streamer);
-		} else if (type === 'Changed' && local.Config.Notifications.update) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(streamer);
-		} else if (type === 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(' ');
-		} else { log(streamerName+' '+titleOfStream+' :: [Was not displayed]'); }
+		var j = local.Config.Notifications;
+		switch (d.type) {
+			case 'online':
+				// Somebody gone online
+				if (!j.online) return false; break;
+			case 'follow':
+				// Somebody changed title or game
+				if (!j.follow) return false; break;
+			case 'update':
+				// Infrorm about any steps
+				if (!j.update) return false; break;
+			case 'sys':
+				break;
+			default:
+				return false; break;
+		}
+		sendNotify(d);
 	}
 }

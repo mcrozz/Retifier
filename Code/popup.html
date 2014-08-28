@@ -24,34 +24,35 @@
 	</div>
 	<button type="button" id="fndAbug" name="Found a bug?" style="display:none">Found a bug?</button>
 
-	<div id="userChangePopup2"></div>
-	<div id="userChangePopup">
-		<p class="pGreetings">Hello dear user!</p>
-		<div id="UserName"></div>
-		<div id="CheckInterval"><input type="text" id="ChgUsrInt">(min) Check interval</div>
-		<div id="Notify_All"><input type="radio" id="EnNotify">Enable notifications</div>
-		<div id="DisNotify_All"><input type="radio" id="DisNotify">Disable all notifications</div>
-		<div id="Notify_Streamer"><input name="ntf" type="checkbox" id="NotifyStreamer">When streamer goes online</div>
-		<div id="Notify_Streamer_Changed"><input name="ntf" type="checkbox" id="NotifyStreamerChanged">When streamer changed title</div>
-		<div id="Notify_Upd"><input name="ntf" type="checkbox" id="NotifyUpdate">When updating following list</div>
-		<div id="Notify_Sound"><input name="ntf" type="checkbox" id="SoundCheck">Enable sound in notifications</div>
-		<div id="Notify_Sound_Select">
-			<select id="SoundSelect" name="ntf">
-				<option value="DinDon">Din-Don</option>
-				<option value="DinDon">More comin' soon</option>
-				<option value="DinDon">[:D</option>
-			</select>
-			Choose sound
+	<div id="options_bg"></div>
+	<div id="options">
+		<div class="popHead">Options</div>
+		
+		<div id="UserName">Welcome,<a></a><p class="Logout">Logout</p></div>
+		
+		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt">.min</div>
+
+		<div id="Notify">Enable notifications <input type="checkbox" class="Check_Box EnNotify">
+		
+			<div>Start streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
+			
+			<div>Changed title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
+			
+			<div>Updating process <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
+			
+			<div>Sound in notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
+
 		</div>
-		<div id="DurationOfStream"><input type="checkbox" id="StreamDurationCheck">Enable duration of stream</div>
-		<div id="List_Format">
-		    <select id="List_Format_List">
-		        <option value="Full">Full</option>
-		        <option value="Mini">Light</option>
-		        <option value="Grid">Grid</option>
-		    </select>
-		    Choose style of online list
+		
+		<div id="DurationOfStream">Duration of stream <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
+		
+		<div class="List_Format">
+			Choose style of online list
+			<div class="style Full"></div>
+			<div class="style Light"></div>
+			<div class="style Grid"></div>
 		</div>
+		
 		<button type="button" id="ChgUsrSnd">Save / Close</button>
 	</div>
 

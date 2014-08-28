@@ -7,20 +7,18 @@
     "Parse": "local",
     "Platform": "moz",
     "CopyBackgound": "false",
-    "Music": "wav",
     "Build": 40,
     "UpdateLocal": "false"
   },
   "Chrome": {
-    "Ver": "1.3.9.9",
+    "Ver": "1.4",
     "IfBackB": "}",
     "IfBackA": "if(window.location.pathname==='/background.html'){",
     "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
     "Parse": "site",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Music": "mp3",
-    "Build": 550,
+    "Build": 700,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -37,8 +35,7 @@
     "Parse": "local",
     "Platform": "webkit",
     "CopyBackgound": "true",
-    "Music": "wav",
-    "Build": 37,
+    "Build": 38,
     "UpdateLocal": "true",
     "Config": "manifest.json"
   },
@@ -47,15 +44,11 @@
     "./js/functions.js",
     "background.js"
   ],
-  "Music": [
-    "DinDon"
-  ],
   "Safari": {
-    "Ver": "0.9.0.0",
+    "Platform": "webkit",
     "Review": "",
-    "Music": "wav",
-    "Build": 0,
-    "Platform": "webkit"
+    "Ver": "0.9.0.0",
+    "Build": 0
   },
   "Scripts": [
     "./js/jquery-1.11.0.min.js",
@@ -67,9 +60,9 @@
     "popup.js"
   ],
   "Copy": [
+    "DinDon.ogg",
     "DejaVuSans.ttf",
     "LICENSE",
-    "style.css",
     "popup.html",
     "popup.js",
     "background.js",
@@ -77,9 +70,7 @@
     "img\\notification_icon.png",
     "img\\img.png",
     "img\\playing.png",
-    "img\\refresh.png",
     "img\\StillDownloading.gif",
-    "img\\zoom.png",
     "js\\jquery-1.11.0.min.js",
     "js\\insertFunc.js",
     "js\\firstStart.js",

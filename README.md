@@ -4,7 +4,7 @@
 # In web stores
 
 * For Google Chrome: [In Google Web Store](http://bit.ly/TwitchNotifer)
-* For Mozilla FireFox: [In Mozilla Add-Ons](http://bit.ly/TwitchTVfox)
+* For Mozilla FireFox: [In Mozilla Add-Ons (currently not available)](http://bit.ly/TwitchTVfox)
 * For Safari:	Coming soon...
 * For Opera: [In Opera Add-Ons](http://bit.ly/TwitchOpera)
 

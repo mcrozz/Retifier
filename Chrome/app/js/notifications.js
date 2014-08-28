@@ -1,35 +1,79 @@
-function notifyUser(streamerName, titleOfStream, type, streamer) {
+function clear(i) {
+	chrome.notifications.clear(i,function() {
+		$.each(NotifyNames, function(k,v) {
+			if (v[1]===i)
+				NotifyNames[k][0] = true;
+		});
+	});
+}
+chrome.notifications.onButtonClicked.addListener(function(id){$.each(NotifyNames, function(i,v){if(v[1]===id){window.open('http://www.twitch.tv/'+i);return true;}}); clear(id);});
+chrome.notifications.onClosed.addListener(function(id,u){if(u)clear(id)});
+chrome.notifications.onClicked.addListener(function(id){clear(id)});
+
+var ncnt = 0,
+	NotifyNames = {};
+
+function Notify(d) {
 	if (window.location.pathname !== '/background.html') return false;
-	function delNotify(id, types) {
-		var idToDel = id, times = 60000;
-		switch (types) {
-			case 'Online': times *= 15; break;
-			case 'Changed': times *= 5; break;
-			default: times *= 5; break;
+	if (d.type === 'sys' || d.type === 'update')
+		d.name = 'd'+Math.floor(Math.random(100)*100);
+	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
+		d[v] = typeof d[v] === 'undefined' ? '' : d[v];
+	});
+	if (!d.msg || !d.title)
+		return Error("Invalid input");
+	deb(d);
+	function delNotify(i,t) {
+		var idToDel = i, times = 60000;
+		switch (t) {
+			case 'Online':
+				times *= 30; break;
+			case 'Changed':
+				times *= 10; break;
+			default:
+				times *= 5; break;
 		}
-		setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
+		setTimeout(function(){chrome.notifications.clear(idToDel, function(){})}, times);
 	}
 
-	function sendNotify(tle, msg, strm, upd) {
-		log(tle+' - '+msg);
-		var NotifyConf = {type:"basic", title:tle, message:msg, iconUrl:"/img/notification_icon.png"};
-		if (upd !== 'ScriptUpdate') NotifyConf['buttons']=[{title:"Watch now!"}];
-		chrome.notifications.create('n'+strm, NotifyConf, function(){});
-		delNotify('n'+strm, upd);
+	function sendNotify(d) {
+		var k = d.name,
+			config = {
+			type           : "basic",
+			title          : d.title,
+			message        : d.msg,
+			contextMessage : d.context,
+			iconUrl        : "/img/notification_icon.png"}
+		if (d.button)
+			config['buttons'] = [{
+				title:"Watch now!"
+			}];
+		chrome.notifications.create('n'+ncnt, config, function(){
+			NotifyNames[d.name] = [false, 'n'+ncnt];
+			delNotify('n'+ncnt, d.type);
+			ncnt+=1;
+		});
 		if (local.Config.Notifications.sound_status)
-			new Audio('/Music/'+local.Config.Notifications.sound+'.mp3').play();
+			new Audio('DinDon.ogg').play();
 	}
 
 	if (local.Config.Notifications.status) {
-		if (type === 'Online' && local.Config.Notifications.online) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(streamer);
-		} else if (type === 'Changed' && local.Config.Notifications.update) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(streamer);
-		} else if (type === 'ScriptUpdate' && !sessionStorage.Disable_Update_Notifies) {
-			sendNotify(streamerName, titleOfStream, ncnt, type);
-			ncnt++; NameBuffer.push(' ');
-		} else { log(streamerName+' '+titleOfStream+' :: [Was not displayed]'); }
+		var j = local.Config.Notifications;
+		switch (d.type) {
+			case 'online':
+				// Somebody gone online
+				if (!j.online) return false; break;
+			case 'follow':
+				// Somebody changed title or game
+				if (!j.follow) return false; break;
+			case 'update':
+				// Infrorm about any steps
+				if (!j.update) return false; break;
+			case 'sys':
+				break;
+			default:
+				return false; break;
+		}
+		sendNotify(d);
 	}
 }

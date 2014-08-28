@@ -1,78 +1,78 @@
-/*
-	Copyright 2014 Ivan 'MacRozz' Zarudny
-
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-		http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-*/
-
+{{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
-	refresh = false,
-	texts = { d:new Date() };
+	refresh = false;
+texts = { d:new Date() };
 
 function snum(){
 	switch (local.Config.Format) {
-		case 'Grid': Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
-		case 'Full': Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
-		default:     Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
+		case 'Grid' : Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
+		case 'Full' : Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
+		case 'Light': Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
 	}
 };
 snum();
 
 function InsertOnlineList() {
-	function zoom() {
-		Animation('zoomContent', ['fadeIn', false, 0.8]);
-		Animation('userChangePopup2', ['fadeIn', false, 0.8]);
-		doc('userChangePopup2').onclick = function() {
-			Animation('zoomContent', ['fadeOut', true, 0.7]);
-			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
-			doc('userChangePopup2').onclick = null;
-			doc('zoomContent').onclick = null;
+	function offSet(s,n,w) {
+		var d = doc('textWidth');
+		d.style.fontSize = s+'px';
+		d.innerHTML = n;
+		return (d.offsetWidth>w);
+	}
+	function time(t) {
+		function h(b,j) {
+			if (b === 0) { return '00'+j; }
+			else if (b < 10) { return '0'+b+j; }
+			else { return b.toString()+j; }
 		}
+		var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+		SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
+		Days = Math.floor(SubtractTimes/24/60/60);
+		SubtractTimes -= Days*24*60*60;
+		if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+		Hours = Math.floor(SubtractTimes/60/60);
+		SubtractTimes -= Hours*60*60;
+		Hours = h(Hours, 'h:');
+		Minutes = Math.floor(SubtractTimes/60);
+		SubtractTimes -= Minutes*60;
+		Minutes = h(Minutes, 'm:')
+		Seconds = Math.floor(SubtractTimes);
+		Seconds = h(Seconds, 's');
+		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+		return Time;
 	}
 
-	if (local.Status.online <= 2) doc('insertContentHere').style.overflow='hidden'
-	else doc('insertContentHere').style.overflow='auto';
+	if (local.Status.online <= 2)
+		doc('insertContentHere').style.overflow='hidden'
+	else
+		doc('insertContentHere').style.overflow='auto';
 
-	var FollowList = local.FollowingList;
-
-	for (var i = 0; i < localJSON('Following') ; i++) {
-		var StreamTitle = FollowList[i].Stream.Title,
-			StreamerName = FollowList[i].Name,
-			ShortStrmName = (StreamerName === 'speeddemosarchivesda')?'SDA':StreamerName,
-			StreamGame = FollowList[i].Stream.Game,
-			StreamVievers = FollowList[i].Stream.Viewers,
-			TitleWidth = false,
-			GameWidth = false,
+	$.each(local.FollowingList, function(i,v) {
+		var StreamTitle   = v.Stream.Title,
+			StreamerName  = v.Name,
+			ShortStrmName = v.Stream.d_name || v.Name,
+			StreamGame    = v.Stream.Game,
+			StreamVievers = v.Stream.Viewers,
+			TitleWidth    = false,
+			GameWidth     = false,
 			SLU, dc;
 
-		if (FollowList[i].Stream) {
-			dc = doc('textWidth');
+		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
-				dc.style.fontSize = Num4+'px';
-				dc.innerHTML = StreamTitle;
-				texts[StreamTitle] = (dc.offsetWidth > Num);
+				texts[StreamTitle] = offSet(Num4, StreamTitle, Num);
 			} else { TitleWidth = texts[StreamTitle] }
 			
 			if (typeof texts[StreamGame] === 'undefined') {
-				dc.innerHTML = StreamGame;
-				dc.style.fontSize = Num4+'px';
-				texts[StreamGame] = (dc.offsetWidth > Num6);
+				texts[StreamGame] = offSet(Num4, StreamGame, Num6);
 			} else { GameWidth = texts[StreamGame] }
 		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
-		    if (FollowList[i].Stream) {
-		        if (doc('insertContentHere').innerHTML == '<div class="NOO"><a>No one online right now :(</a></div>') doc('insertContentHere').innerHTML = null;
+		    if (v.Stream) {
+		        if (doc('insertContentHere').innerHTML === '<div class="NOO"><a>No one online right now :(</a></div>')
+		        	doc('insertContentHere').innerHTML = null;
+				
 				SLU = '<div class="content" id="'+i+'">';
 					SLU += '<div class="tumblr">';
 						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
@@ -81,16 +81,17 @@ function InsertOnlineList() {
 						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
 						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
 					SLU += '</div><div class="information">';
-						SLU += '<div id="Title_'+i+'">'+StreamTitle+'</div>';
+						SLU += '<div id="Title_'+i+'" type="inf">'+StreamTitle+'</div>';
 						SLU += '<div class="streamer">';
 							SLU += '<a id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">'+ShortStrmName+'</a>';
 						SLU += '</div><div class="viewers">';
 							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
 							SLU += '<p>viewers</p>';
-						SLU += '</div><div class="informationTextGame" id="stream_game_'+i+'">'+StreamGame;
-							SLU += '<a class=';
-							if (StreamGame!='Not Playing') SLU+='href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							SLU += '</a>';
+						SLU += '</div><div class="informationTextGame">';
+							SLU += '<a id="stream_game_'+i+'" type="inf"';
+							if (StreamGame!=='Not Playing')
+								SLU+=' href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
+							SLU += '>'+StreamGame+'</a>';
 						SLU += '</div><div class="StreamOnChannelPage">';
 							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
 								SLU += '<button type="button" class="button">Channel page</button></a></div>';
@@ -99,33 +100,12 @@ function InsertOnlineList() {
 
 				doc('insertContentHere').innerHTML += SLU;
 
-				doc('zoom_'+i).onclick = function(call) {
-					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat;background-size:696 400');
-					zoom();
-				};
+				$.data(doc("Title_"+i), 'show', TitleWidth);
+				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
-				if (TitleWidth) {
-					doc("Title_"+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("Title_"+i).onmouseover = null;
-					doc('Title_'+i).onmouseout = null;
-				}
-				if (GameWidth) {
-					doc('stream_game_'+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("stream_game_"+i).onmouseover = null;
-					doc('stream_game_'+i).onmouseout = null;
-				}
+				if (FirstLoadInsertFunc != 1)
+					Animation(i, ['fadeIn', false]);
 
-				if (FirstLoadInsertFunc != 1) Animation(i, ['fadeIn', false]);
 				TimersetToUpdate.push(i);
 
 				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
@@ -140,44 +120,24 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) >= 0) {
-		    if (!local.FollowingList[i].Stream && doc(i) != null) {
+		    if (!v.Stream && doc(i) !== null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
-		    	doc("Title_"+i).onmouseover = null;
-				doc('Title_'+i).onmouseout = null;
-				doc("stream_game_"+i).onmouseover = null;
-				doc('stream_game_'+i).onmouseout = null;
 		    } else {
 				doc('Title_'+i).innerHTML = StreamTitle
-				if (TitleWidth) {
-					doc("Title_"+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('Title_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("Title_"+i).onmouseover = null;
-					doc('Title_'+i).onmouseout = null;
-				}
-				if (GameWidth) {
-					doc('stream_game_'+i).onmouseover = function(call){
-						doc('message').innerHTML = doc(call.target.id).innerHTML;
-						$('#message').show();
-					};
-					doc('stream_game_'+i).onmouseout = function(){ $('#message').hide() };
-				} else {
-					doc("stream_game_"+i).onmouseover = null;
-					doc('stream_game_'+i).onmouseout = null;
-				}
-				doc('zoom_'+i).onclick = function(call) {
-					doc('zoomIMG').setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+doc('stream_title_'+call.target.id.match(/\d+/)[0]).innerHTML+'-640x400.jpg) no-repeat;background-size:696 400');
-					zoom();
-				};
+				
+				$.data(doc("Title_"+i), 'show', TitleWidth);
+				$.data(doc("stream_game_"+i), 'show', TitleWidth);
 
-				doc('stream_game_'+i).innerHTML = StreamGame
-				doc('Viewers_' + i).innerHTML = local.FollowingList[i].Stream.Viewers;
+				doc('stream_game_'+i).innerHTML = StreamGame;
+				doc('Viewers_' + i).innerHTML = StreamVievers;
 
-				if (doc('stream_img_'+i).style.background != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+				if (local.Config.Duration_of_stream && doc('Stream_Duration_'+i)) {
+           			doc('Stream_Duration_'+i).innerHTML = time(v.Stream.Time); }
+				else if (!local.Config.Duration_of_stream && doc('Stream_Duration_'+i).innerHTML !== '') {
+					doc('Stream_Duration_'+i).innerHTML = ''; }
+
+				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
 				
 				if (StreamGame == 'Not playing') {
@@ -193,32 +153,7 @@ function InsertOnlineList() {
 
 		if (local.Status.online == 0 && local.Status.update == 0) 
 		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
-	}
-	
-	if (local.Config.Duration_of_stream) {
-		function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
-		}
-		for (var i=0;i<TimersetToUpdate.length;i++) {
-			var SubtractTimes, Days, Hours, Minutes, Seconds, Time
-			SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(local.FollowingList[TimersetToUpdate[i]].Stream.Time)).getTime()) / 1000);
-			Days = Math.floor(SubtractTimes/24/60/60);
-			SubtractTimes -= Days*24*60*60;
-			if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-			Hours = Math.floor(SubtractTimes/60/60);
-			SubtractTimes -= Hours*60*60;
-			Hours = h(Hours, 'h:');
-			Minutes = Math.floor(SubtractTimes/60);
-			SubtractTimes -= Minutes*60;
-			Minutes = h(Minutes, 'm:')
-			Seconds = Math.floor(SubtractTimes);
-			Seconds = h(Seconds, 's');
-			Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-            if (doc('Stream_Duration_'+TimersetToUpdate[i])) doc('Stream_Duration_'+TimersetToUpdate[i]).innerHTML = Time;
-		}
-	}
+	});
 }
 
 var pg = false,
@@ -235,10 +170,13 @@ setInterval(function(){
 		6 :: Name doesn't set up!
 		7 :: First start
 	*/
+	if (localStorage.FirstLaunch === 'true')
+		return false;
 	var j = doc('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
-	if (!Onlv) Onlv = 0;
+	if (!Onlv)
+		Onlv = 0;
 	switch (Upd) {
 		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; break;
 		case 1: j.innerHTML='Behold! Update!'; break;
@@ -251,7 +189,7 @@ setInterval(function(){
 	pg = Upd!==0;
 	if (pg) {
 		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
-		doc('CheckingProgress').value = Math.floor( (100 / localJSON('Following')) * local.Status.checked);
+		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
 		else { st+=1 }
 	} else if (!doc('CheckingProgress').hidden) { $('#CheckingProgress').hide(); doc('CheckingProgress').hidden=true; }
@@ -264,9 +202,9 @@ var run = function() {
 			dif/=86400000;
 			if (local.Config.Timeout === 1337) return true;
 			if (dif > 0) return true;
-			if (dif <= 0 || dif > 14) localJSON('Config',['Timeout', 0]);
+			if (dif <= 0 || dif > 14) localJSON('Config.Timeout', 0);
 		} else {
-			localJSON('Config',['Timeout', TimeNdate(14,0,'-')]);
+			localJSON('Config.Timeout', TimeNdate(14,0,'-'));
 			return false;
 		}
 		if (!doc('donate')) {
@@ -277,7 +215,7 @@ var run = function() {
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config',['Timeout',TimeNdate(14,0)]);ga('set','PayPalButton','false')});
+			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config.Timeout',TimeNdate(14,0));ga('set','PayPalButton','false')});
 			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
 		}
 	})();
