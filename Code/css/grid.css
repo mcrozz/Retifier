@@ -86,6 +86,7 @@ button:focus  {
 	padding-top: 5px;
 }
 .informationTextGame>a {
+	display: block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

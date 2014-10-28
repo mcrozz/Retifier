@@ -61,7 +61,8 @@
   ],
   "Copy": [
     "DinDon.ogg",
-    "DejaVuSans.ttf",
+    "PermianSansTypeface.otf",
+	"PermianSansTypeface_LICENSE",
     "LICENSE",
     "popup.html",
     "popup.js",

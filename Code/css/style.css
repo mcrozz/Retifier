@@ -1,12 +1,13 @@
 {{LICENSE_HEADER}}
 @font-face {
 	font-family: ExtFont;
-	src: url(DejaVuSans.ttf);
+	src: url(PermianSansTypeface.otf);
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
 	width: 697px;
 	height: 584px;
+	font:23px ExtFont!important;
 	overflow: hidden;
 	margin: 0;
 }
