@@ -178,13 +178,13 @@ setInterval(function(){
 	if (!Onlv)
 		Onlv = 0;
 	switch (Upd) {
-		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; break;
-		case 1: j.innerHTML='Behold! Update!'; break;
-		case 2: j.innerHTML='Updating list of followed channels...'; break;
-		case 3: j.innerHTML='List of followed channels updated.'; break;
+		case 0: j.innerHTML = 'Now online: '+Onlv+'/'+localStorage.Following; break;
+		case 1: j.innerHTML = 'Behold! Update!'; break;
+		case 2: j.innerHTML = 'Updating list of followed channels...'; break;
+		case 3: j.innerHTML = 'List of followed channels updated.'; break;
 		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; break;
-		case 5: j.innerHTML='App have a problem with update'; break;
-		case 6: j.innerHTML="Name doesn't set up yet!"; break;
+		case 5: j.innerHTML = 'App have a problem with update'; break;
+		case 6: j.innerHTML = "Name doesn't set up yet!"; break;
 	}
 	pg = Upd!==0;
 	if (pg) {

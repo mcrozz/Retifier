@@ -17,7 +17,8 @@ $(window).on('load',function() {
 			case 'Grid':
 				css = '{{CSS_GRID}}'; break;
 		}
-		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
+		style.appendChild(document.createTextNode(css));
+		document.getElementsByTagName('head')[0].appendChild(style);
 	}
 
 	function clickChangeUserCls(e) {
@@ -46,9 +47,11 @@ $(window).on('load',function() {
 		
 		doc('.NotifyStreamerChanged').disabled = a;
 		doc('.NotifyStreamer').disabled = a;
+		doc('.NotifysStreamer').disabled = a;
 		doc('.NotifyUpdate').disabled = a;
 
 		doc('.NotifyStreamer').checked = local.Config.Notifications.online;
+		doc('.NotifysStreamer').checked = local.Config.Notifications.offline;
 		doc('.NotifyUpdate').checked = local.Config.Notifications.update;
 		doc('.NotifyStreamerChanged').checked = local.Config.Notifications.follow;
 	
@@ -77,6 +80,7 @@ $(window).on('load',function() {
 		localJSON('Config.Notifications.status', doc('.EnNotify').checked);
 
 		localJSON('Config.Notifications.online', doc('.NotifyStreamer').checked);
+		localJSON('Config.Notifications.offline', doc('.NotifysStreamer').checked);
 		localJSON('Config.Notifications.update', doc('.NotifyUpdate').checked);
 		localJSON('Config.Notifications.follow', doc('.NotifyStreamerChanged').checked);
 		
@@ -107,7 +111,7 @@ $(window).on('load',function() {
 
 	function FollowedList(c) {
 		function append(i,v) {
-			var j = (v.Stream)?"rgb(0, 194, 40)":"black";
+			var j = (v.Stream) ? "rgb(0, 194, 40)" : "black";
 			$('#FollowingList').append('<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>');
 		}
 		if (c.id === 'ClsFlwdChnlsLst') {
