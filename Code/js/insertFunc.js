@@ -84,8 +84,8 @@ function InsertOnlineList() {
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,
-			b             = '#'+i+'>'
-			SLU, dc;
+			b             = '#'+i+'>',
+			dc;
 
 		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
