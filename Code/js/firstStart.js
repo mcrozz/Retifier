@@ -24,7 +24,8 @@ function lgin() {
 		doc('Direct').disabled = true;
 		doc('Dashboard').disabled = true;
 
-		$('#insertContentHere').html('<div class="fs1">'+
+		$('#insertContentHere').html(
+			'<div class="fs1">'+
 			'<a>Welcome!</a>'+
 			'<a>Please, choose how to login</a>'+
 			'<div id="TwitchAccount"><a>Using Twitct.TV account</a></div>'+
@@ -80,7 +81,8 @@ function lgin() {
 				} else { $('#FollowedChannelsOnline').html('Invalid name!') }
 			}
 			$('#FollowedChannelsOnline').html("Sign in by Twicth Name");
-			$('#insertContentHere').html('<div class="Welcome" style="animated FadeIn">'+
+			$('#insertContentHere').html(
+				'<div class="Welcome" style="animated FadeIn">'+
 				'<p>Hello!</p>'+
 				'<p>Before you will use this app,</p>'+
 				'<p>could you say your Twitch.tv name?</p>'+
