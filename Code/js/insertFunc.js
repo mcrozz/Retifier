@@ -72,9 +72,9 @@ function InsertOnlineList() {
 	}
 
 	if (local.Status.online <= 2)
-		doc('insertContentHere').style.overflow='hidden'
+		$('#insertContentHere').css(overflow, 'hidden')
 	else
-		doc('insertContentHere').style.overflow='auto';
+		$('#insertContentHere').css(overflow, 'auto');
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
