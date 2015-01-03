@@ -18,6 +18,9 @@ import os, json, shutil, sys, re
 
 tld = "====================================================="
 
+def p(m):
+	print(m)
+
 def rp(w, j, o):
 	f = open(o, 'r')
 	if os.path.exists(j):
@@ -30,7 +33,7 @@ def rp(w, j, o):
 		for line in newlines:
 			f.write(line)
 	n = o.split("\\")
-	print "	Replacing "+w+" at "+n[len(n)-1]
+	p("	Replacing "+w+" at "+n[len(n)-1])
 
 def pj(g):
 	h = os.path.join(g[0], g[1])
@@ -54,10 +57,10 @@ def int(f):
 		os.chmod(f, 436)
 		shutil.rmtree(f)
 		os.makedirs(f)
-		print "	Folder cleared"
+		p("	Folder cleared")
 	else:
 		os.makedirs(f)
-		print "	Folder created"
+		p("	Folder created")
 	os.chmod(f, 436)
 
 def ink(f):
@@ -85,8 +88,8 @@ def build(b):
 	browser = b
 	currDir = os.getcwd()
 	dbDir = pj([currDir, browser, "debug"])
-	print "     Build extension for "+browser
-	print tld
+	p("     Build extension for "+browser)
+	p(tld)
 	# Clear debug folder
 	int(dbDir)
 	# Create folders from config
@@ -95,7 +98,7 @@ def build(b):
 	# Copy without replacement
 	for t in config['Copy']:
 		shutil.copy2(pj([currDir, 'Code', t]), pj([dbDir, t]))
-		print "	Copy "+t;
+		p("	Copy "+t);
 	# Copy whatsNew.js
 	shutil.copy2(pj([currDir, browser, 'app', 'js', 'whatsNew.js']), pj([dbDir, 'js', 'whatsNew.js']))
 	# Copy background.html
@@ -159,10 +162,10 @@ def build(b):
 		rp("{{PARSE_COM_SRC}}", "https://www.parsecdn.com/js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
 	else:
 		rp("{{PARSE_COM_SRC}}", "./js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
-		print "	Copy parse.js"
+		p("	Copy parse.js")
 		shutil.copy2(pj([currDir, 'Code', 'js', 'parse-1.2.18.min.js']), pj([dbDir, 'js', 'parse-1.2.18.min.js']))
 	# Inserting config file 'n' replace version
-	print "	Inserting "+config[browser]['Config']
+	p("	Inserting "+config[browser]['Config'])
 	shutil.copy2(pj([currDir, browser, 'app', config[browser]['Config']]), pj([dbDir, config[browser]['Config']]))
 	# Inserting LICENSE_HEADER
 	toR = [

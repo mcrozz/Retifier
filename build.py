@@ -14,6 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import sys
+if "3.4" in sys.version:
+	print "Invalid versoin of Python, must be 2.*"
+	sys.exit(0);
+
 from functions import *
 
 if os.path.exists(os.path.join(os.getcwd(), 'publisher.py')):
@@ -33,17 +38,17 @@ def loopbuild(b):
 		v = c[b]['Ver']
 		bl = str(c[b]['Build'])
 		os.system(clr)
-		print tld
-		print "            TwitchTV Notifier for "+b
-		print "           Version: "+v+" ("+bl+" build)"
-		print tld
-		print ">  Press [ENTER] for build"
-		print ">  Type [2] for changing version"
+		p(tld)
+		p("            TwitchTV Notifier for "+b)
+		p("           Version: "+v+" ("+bl+" build)")
+		p(tld)
+		p(">  Press [ENTER] for build")
+		p(">  Type [2] for changing version")
 		if ENABLE_PUBLISHER:
-			print ">  Type [1] for publishing"
-		print ">  Type [0] for exit"
+			p(">  Type [1] for publishing")
+		p(">  Type [0] for exit")
 		k = ink('>>> ')
-		print tld
+		p(tld)
 		if k == '':
 			build(b)
 			ink('[DONE]')
@@ -51,7 +56,7 @@ def loopbuild(b):
 			publish_app(b)
 			ink('Press any key to continue');
 		elif k == '2':
-			print "Change version from "+v
+			p("Change version from "+v)
 			g = ink('>>> ')
 			c[b]['Ver'] = g
 			sc(c)
@@ -59,9 +64,9 @@ def loopbuild(b):
 			return returnt()
 
 def returnt():
-	print "         Back to main menu?"
-	print "    [1] Yes"
-	print "    [0] No"
+	p("         Back to main menu?")
+	p("    [1] Yes")
+	p("    [0] No")
 	k = ink('>>> ')
 	if k == '1':
 		init()
@@ -70,15 +75,15 @@ def returnt():
 
 def init():
 	os.system(clr)
-	print tld
-	print "   Welcome to build script for TwitchTV Notifier"
-	print tld
-	print "    [1]: Chrome"
-	print "    [2]: Opera"
-	print "    [3]: Firefox"
-	print "    [4]: Safari"
-	print "    [0]: Exit"
-	print tld
+	p(tld)
+	p("   Welcome to build script for TwitchTV Notifier")
+	p(tld)
+	p("    [1]: Chrome")
+	p("    [2]: Opera")
+	p("    [3]: Firefox")
+	p("    [4]: Safari")
+	p("    [0]: Exit")
+	p(tld)
 	inkey = ink(">>> ")
 	if inkey == '1':
 		loopbuild('Chrome')
