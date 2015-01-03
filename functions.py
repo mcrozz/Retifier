@@ -44,7 +44,7 @@ def pj(g):
 
 def sc(c):
 	with open('config.json', 'w') as o:
-		json.dump(c, o)
+		json.dump(c, o, sort_keys=True, indent=4, separators=(',', ': '))
 
 def cf():
 	return json.load(open('config.json'))
