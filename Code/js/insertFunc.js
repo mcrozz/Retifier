@@ -54,20 +54,20 @@ function InsertOnlineList() {
 	function insert(a) {
 		var t = '';
 		t += '<div class="content" id="'+a.pos+'">'
-			+'<div class="tum"><a href="http://www.twitch.tv/'
-			+a.str+'" target="_blank">Launch Stream</a>'
-			+'<img class="ST" /><img class="GT1" /><img class="GT2" />'
+			+'<div class="tum"><a href="http://www.twitch.tv/'+a.str
+			+'" target="_blank">Launch Stream</a><img class="ST" />'
+			+'<img class="GT1" /><img class="GT2" />'
 			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
-			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a>'
-			+'<div class="streamer"><a>'+a.str+'</a>'
-			+'<div class="viewers"><div></div><p>viewers</p>'
+			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
+			+'<div class="streamer"><a>'+a.str+'</a></div>'
+			+'<div class="viewers"><div>'+a.viw+'</div><p>viewers</p></div>'
 			+'<div class="game"><a';
 		if (a.gme !== 'Not Playing')
 			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
-		t += '>'+a.gme+'</a><div class="adds"><div class="page">'
+		t += '>'+a.gme+'</a></div><div class="adds"><div class="page">'
 			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
 			+'<button type="button" class="button">Channel page</button></a></div>'
-			+'<div class="duration"><a></a></div></div></div></div>';
+			+'<div class="duration"><a></a></div></div>';
 		doc('insertContentHere').innerHTML += t;
 	}
 
@@ -172,8 +172,12 @@ function InsertOnlineList() {
 					// $('#stream_game_2_' + i).css('cursor', 'default');
 					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
 					// $('#stream_game_2_img_'+i).hide();
-				} else if (doc('stream_game_img_'+i).style.background.match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
-					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
+				} else if ($(b+'.tum>.GT1').css('background').match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
+					$(b+'.tum>.GT1').css({
+						'background': 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
+						'background-size': Num2+'px',
+						'cursor': 'pointer'
+					});
 				}
 			}
 		}
