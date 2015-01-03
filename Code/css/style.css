@@ -1,18 +1,20 @@
 {{LICENSE_HEADER}}
 @font-face {
 	font-family: ExtFont;
-	src: url(DejaVuSans.ttf);
+	src: url(PermianSansTypeface.otf);
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
 	width: 697px;
 	height: 584px;
-	font-family: ExtFont, sans-serif;
+	font:23px ExtFont!important;
 	overflow: hidden;
 	margin: 0;
 }
 body {
 	margin: 0;
+    font-family: ExtFont;
+    font-size: inherit;
 }
 a {
 	color:	white;
@@ -45,13 +47,13 @@ button {
 	border-radius: 10px;
     background: -webkit-gradient(linear,left top,left bottom,from(rgba(194, 194, 194, 1)),to(rgba(155, 155, 155, 0.64)));
 }
-.GameTumb1 {
+.tum>.GT1 {
 	z-index: 2;
 }
-.GameTumb2 {
+.tum>.GT2 {
 	z-index: 1;
 }
-.LaunchStream {
+.tum>a {
 	width: 318px;
 	height: 49px;
 	z-index: 3;
@@ -66,7 +68,7 @@ button {
 	transition: opacity 0.8s;
 	opacity: 0;
 }
-.LaunchStream:hover {
+.tum>a:hover {
 	opacity: 1;
 }
 

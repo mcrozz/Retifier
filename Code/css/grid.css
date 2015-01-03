@@ -1,4 +1,4 @@
-.StreamDuration  {
+.adds>.duration>a  {
 	color: white;
 	text-shadow:  1px 2px 3px black;
 	margin: 0 0 0 17;
@@ -6,26 +6,26 @@
 button:focus  {
 	outline-color: rgba(0, 0, 0, 0);
 }
-.streamer  {
+.inf>.streamer  {
 	width: 165px;
 	height: 20px;
 	display: inline-table;
 	padding-top: 6px;
 }
-.streamer>a  {
+.inf>.streamer>a  {
 	cursor: pointer;
 	font-size: 16;
 	color: black;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	margin-left: 3;
 }
-.viewers  {
+.inf>.viewers  {
 	width: 150px;
 	height: 20px;
 	display: inline-block;
 	text-align: right;
 }
-.viewers>p  {
+.inf>.viewers>p  {
 	cursor: default;
 	width: 75px;
 	display: inline;
@@ -41,7 +41,7 @@ button:focus  {
 	display: inline-block;
 	margin-left: 7;
 }
-.tumblr  {
+.content>.tum  {
 	background: url("/img/StillDownloading.gif");
 	height: 200px;
 	width: 320px;
@@ -49,7 +49,7 @@ button:focus  {
 	position: absolute;
 	margin-left: 10px;
 }
-.information  {
+.content>.inf {
 	width: 315px;
 	height: 90px;
 	display: inline;
@@ -57,7 +57,7 @@ button:focus  {
 	left: 15;
 	top: 200;
 }
-.information>div:first-child  {
+.inf>.title {
 	height: 20px;
 	display: inline-block;
 	cursor: default;
@@ -70,13 +70,13 @@ button:focus  {
 	width: 315px;
 	border-bottom: 1px black solid;
 }
-.informationTextViewers  {
+.inf>.viewers {
 	cursor: default;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	width: 75px;
 	display: inline;
 }
-.informationTextGame  {
+.inf>.game {
 	text-align: center;
 	border-top: 1px solid black;
 	height: 20px;
@@ -85,7 +85,7 @@ button:focus  {
 	display: block;
 	padding-top: 5px;
 }
-.informationTextGame>a {
+.inf>.game>a {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -93,13 +93,13 @@ button:focus  {
 	color: black;
 	font-size: 16px;
 }
-.GameTumb1,  .GameTumb2 {
+.GT1, .GT2 {
 	width: 43px;
 	height: 60px;
 	position: absolute;
 	margin: 139 0 0 -44;
 }
-.GamaTumb1:hover::after  {
+.GT1:hover::after  {
 	content: attr(data-title);
 	left: -2%;
 	top: 0%;
@@ -115,11 +115,11 @@ button:focus  {
 	font-size: 17;
 	z-index: 1;
 }
-.TumbStream  {
+.tum>.ST  {
 	width: 320px;
 	height: 200px;
 }
-.StreamOnChannelPage  {
+.inf>.adds  {
 	width: 315px;
 	height: 40px;
 	position: absolute;
@@ -127,12 +127,12 @@ button:focus  {
 	left: -2;
 	text-align: center;
 }
-.StreamDurationDiv  {
+.adds>.duration {
 	width: 170;
 	height: 40;
 	display: inline;
 }
-.ChannelPageDiv  {
+.adds>.page  {
 	display: none;
 }
 button.button  {

@@ -42,6 +42,34 @@ function InsertOnlineList() {
 		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
 		return Time;
 	}
+	/*
+	* a : {
+	*  str : streamer
+	*  ttl : title
+	*  gme : game
+	*  viw : viewers count
+	*  pos : id
+	* }
+	*/
+	function insert(a) {
+		var t = '';
+		t += '<div class="content" id="'+a.pos+'">'
+			+'<div class="tum"><a href="http://www.twitch.tv/'
+			+a.str+'" target="_blank">Launch Stream</a>'
+			+'<img class="ST" /><img class="GT1" /><img class="GT2" />'
+			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
+			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a>'
+			+'<div class="streamer"><a>'+a.str+'</a>'
+			+'<div class="viewers"><div></div><p>viewers</p>'
+			+'<div class="game"><a';
+		if (a.gme !== 'Not Playing')
+			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
+		t += '>'+a.gme+'</a><div class="adds"><div class="page">'
+			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
+			+'<button type="button" class="button">Channel page</button></a></div>'
+			+'<div class="duration"><a></a></div></div></div></div>';
+		doc('insertContentHere').innerHTML += t;
+	}
 
 	if (local.Status.online <= 2)
 		doc('insertContentHere').style.overflow='hidden'
@@ -56,6 +84,7 @@ function InsertOnlineList() {
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,
+			b             = '#'+i+'>'
 			SLU, dc;
 
 		if (v.Stream) {
@@ -73,78 +102,76 @@ function InsertOnlineList() {
 		        if (doc('insertContentHere').innerHTML === '<div class="NOO"><a>No one online right now :(</a></div>')
 		        	doc('insertContentHere').innerHTML = null;
 				
-				SLU = '<div class="content" id="'+i+'">';
-					SLU += '<div class="tumblr">';
-						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
-						SLU += '<img class="TumbStream" id="stream_img_'+i+'" />';
-						SLU += '<img class="GameTumb1" id="stream_game_img_'+i+'" />';
-						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
-						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
-					SLU += '</div><div class="information">';
-						SLU += '<div id="Title_'+i+'" type="inf">'+StreamTitle+'</div>';
-						SLU += '<div class="streamer">';
-							SLU += '<a id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">'+ShortStrmName+'</a>';
-						SLU += '</div><div class="viewers">';
-							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
-							SLU += '<p>viewers</p>';
-						SLU += '</div><div class="informationTextGame">';
-							SLU += '<a id="stream_game_'+i+'" type="inf"';
-							if (StreamGame!=='Not Playing')
-								SLU+=' href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							SLU += '>'+StreamGame+'</a>';
-						SLU += '</div><div class="StreamOnChannelPage">';
-							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
-								SLU += '<button type="button" class="button">Channel page</button></a></div>';
-							SLU += '<div class="StreamDurationDiv"><a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
-				SLU += '</div></div></div></div>';
+				insert({
+					str: StreamerName,
+					ttl: StreamTitle,
+					gme: StreamGame,
+					viw: StreamVievers,
+					pos: i
+				});
 
-				doc('insertContentHere').innerHTML += SLU;
+				$.data($(b+'.inf>.title>a'), 'show', TitleWidth);
+				$.data($(b+'.inf>.game>a'), 'show', GameWidth);
 
-				$.data(doc("Title_"+i), 'show', TitleWidth);
-				$.data(doc("stream_game_"+i), 'show', TitleWidth);
-
-				if (FirstLoadInsertFunc != 1)
-					Animation(i, ['fadeIn', false]);
+				/*if (FirstLoadInsertFunc != 1)
+					Animation(i, ['fadeIn', false]);*/
 
 				TimersetToUpdate.push(i);
 
-				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
+				$(b+'.tum>.ST').css({
+					'background':'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+					'background-size':Num3+'px',
+					'cursor':'pointer'
+				});
 				if (StreamGame != 'Not playing') {
-					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
-					doc('stream_game_2_img_'+i).setAttribute('style','background:url("./img/playing.png");background-size:'+Num2+'px;cursor:pointer')
+					$(b+'.tum>.GT1').css({
+						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
+						'background-size':Num2+'px',
+						'cursor':'pointer'
+					});
+					$(b+'.tum>.GT2').css({
+						'background':'url("./img/playing.png")',
+						'background-size':Num2+'px',
+						'cursor':'pointer'
+					});
 				} else {
-					$('#stream_game_'+i).css('cursor', 'default');
-					$('#stream_game_img_'+i).hide();
-					$('#stream_game_2_img_'+i).hide();
-					$('#stream_game_2_img_'+i).css('cursor', 'default');
+					//$('#i>.inf>.game>a').css('cursor', 'default');
+					// $(b+'.tum>.GT1').hide();
+					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
+					$(b+'.tum>.GT2').css('cursor', 'default');
 				}
 			}
-		} else if (TimersetToUpdate.indexOf(i) >= 0) {
+		} else if (TimersetToUpdate.indexOf(i) != -1) {
 		    if (!v.Stream && doc(i) !== null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
-				doc('Title_'+i).innerHTML = StreamTitle
+				$(b+'.inf>.title>a').html(StreamTitle);
 				
-				$.data(doc("Title_"+i), 'show', TitleWidth);
-				$.data(doc("stream_game_"+i), 'show', TitleWidth);
+				$.data($(b+'.inf>.title>a'), 'show', TitleWidth);
+				$.data($(b+'.inf>.game>a'), 'show', GameWidth);
 
-				doc('stream_game_'+i).innerHTML = StreamGame;
-				doc('Viewers_' + i).innerHTML = StreamVievers;
+				$(b+'.inf>.game>a').html(StreamGame);
+				$(b+'.inf>.viewers>a').html(StreamVievers);
 
-				if (local.Config.Duration_of_stream && doc('Stream_Duration_'+i)) {
-           			doc('Stream_Duration_'+i).innerHTML = time(v.Stream.Time); }
-				else if (!local.Config.Duration_of_stream && doc('Stream_Duration_'+i).innerHTML !== '') {
-					doc('Stream_Duration_'+i).innerHTML = ''; }
+				if (local.Config.Duration_of_stream && $(b+'.adds>.duration>a') != null)
+           			$(b+'.adds>.duration>a').html(time(v.Stream.Time))
+           		else if (!local.Config.Duration_of_stream && $(b+'.adds>.duration>a').html() !== '')
+					$(b+'.adds>.duration>a').html('');
 
-				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
+				if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+					$(b+'.tum>.ST').css({
+						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+						'background-size': Num3+'px',
+						'cursor': 'pointer',
+						'zIndex': 0
+					});
 				
 				if (StreamGame == 'Not playing') {
-					$('#stream_game_' + i).css('cursor', 'default');
-					$('#stream_game_2_' + i).css('cursor', 'default');
-					$('#stream_game_img_'+i).hide();
-					$('#stream_game_2_img_'+i).hide();
+					// $('#stream_game_' + i).css('cursor', 'default');
+					// $('#stream_game_2_' + i).css('cursor', 'default');
+					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
+					// $('#stream_game_2_img_'+i).hide();
 				} else if (doc('stream_game_img_'+i).style.background.match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
 					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
 				}
@@ -188,11 +215,17 @@ setInterval(function(){
 	}
 	pg = Upd!==0;
 	if (pg) {
-		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
+		if (doc('CheckingProgress').hidden) {
+			$('#CheckingProgress').show();
+			doc('CheckingProgress').hidden=false;
+		}
 		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
 		else { st+=1 }
-	} else if (!doc('CheckingProgress').hidden) { $('#CheckingProgress').hide(); doc('CheckingProgress').hidden=true; }
+	} else if (!doc('CheckingProgress').hidden) {
+		$('#CheckingProgress').hide();
+		doc('CheckingProgress').hidden=true;
+	}
 }, 100);
 
 var run = function() {
