@@ -7,7 +7,7 @@ button:focus  {
 	outline-color: rgba(0, 0, 0, 0);
 }
 .inf>.streamer  {
-	width: 165px;
+	width: 185px;
 	height: 20px;
 	display: inline-table;
 	padding-top: 6px;
@@ -20,7 +20,7 @@ button:focus  {
 	margin-left: 3;
 }
 .inf>.viewers  {
-	width: 150px;
+	width: 130px;
 	height: 20px;
 	display: inline-block;
 	text-align: right;
@@ -29,7 +29,6 @@ button:focus  {
 	cursor: default;
 	width: 75px;
 	display: inline;
-	text-transform: lowercase;
 	padding-left: 5px;
 	border: none;
 }
@@ -63,18 +62,30 @@ button:focus  {
 	cursor: default;
 	z-index: 1;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-	padding-top: 6;
+	padding-top: 6px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 315px;
 	border-bottom: 1px black solid;
 }
+.inf>.title>a,
+.inf>.streamer>a,
+.inf>.game>a,
+.inf>.viewers>a,
+.inf>.viewers>p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
+	color: black;
+	font-size: 17px;
+}
 .inf>.viewers {
 	cursor: default;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	width: 75px;
-	display: inline;
+	display: inline-table;
 }
 .inf>.game {
 	text-align: center;
@@ -84,14 +95,6 @@ button:focus  {
 	width: 315px;
 	display: block;
 	padding-top: 5px;
-}
-.inf>.game>a {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-	color: black;
-	font-size: 16px;
 }
 .GT1, .GT2 {
 	width: 43px;

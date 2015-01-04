@@ -60,8 +60,8 @@ function InsertOnlineList() {
 			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
 			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
 			+'<div class="streamer"><a>'+a.str+'</a></div>'
-			+'<div class="viewers"><div>'+a.viw+'</div><p>viewers</p></div>'
-			+'<div class="game"><a';
+			+'<div class="viewers"><a>'+a.viw+'</a><p>viewers</p></div>'
+			+'<div class="game"><a ';
 		if (a.gme !== 'Not Playing')
 			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
 		t += '>'+a.gme+'</a></div><div class="adds"><div class="page">'
@@ -72,9 +72,9 @@ function InsertOnlineList() {
 	}
 
 	if (local.Status.online <= 2)
-		$('#insertContentHere').css(overflow, 'hidden')
+		$('#insertContentHere').css('overflow', 'hidden')
 	else
-		$('#insertContentHere').css(overflow, 'auto');
+		$('#insertContentHere').css('overflow', 'auto');
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
@@ -183,7 +183,7 @@ function InsertOnlineList() {
 		}
 
 		if (local.Status.online == 0 && local.Status.update == 0) 
-		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
+		    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	});
 }
 
@@ -213,7 +213,7 @@ setInterval(function(){
 		case 1: j.innerHTML = 'Behold! Update!'; break;
 		case 2: j.innerHTML = 'Updating list of followed channels...'; break;
 		case 3: j.innerHTML = 'List of followed channels updated.'; break;
-		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; break;
+		case 4: j.innerHTML = 'Checking, online '+Onlv+'/'+localStorage.Following; break;
 		case 5: j.innerHTML = 'App have a problem with update'; break;
 		case 6: j.innerHTML = "Name doesn't set up yet!"; break;
 	}
