@@ -251,19 +251,17 @@ $(window).on('load',function() {
 		}
 	}
 	document.onmousemove = function(p){
-		if (p.target.getAttribute('type') !== 'inf') {
+		if (!$.data(p.target, 'show')) {
 			if ($('#message').css('display') === 'block')
 				$('#message').css('display', 'none');
 			return false;
 		}
-		if (!$.data(p.target, 'show'))
-			return false;
 		if ($('#message').css('display') === 'none') {
-			doc('message').innerHTML = p.target.innerText;
+			$('#message').html(p.target.innerText);
 			$('#message').css('display', 'block');
 		}
-		if (doc('message').innerHTML !== p.target.innerText)
-			doc('message').innerHTML = p.target.innerText;
+		if ($('#message').html() !== p.target.innerText)
+			$('#message').html(p.target.innerText);
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
