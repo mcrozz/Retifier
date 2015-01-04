@@ -123,14 +123,14 @@ function InsertOnlineList() {
 					'background-size':Num3+'px',
 					'cursor':'pointer'
 				});
+				$(b+'.tum>.GT2').css({
+					'background':'url("./img/playing.png")',
+					'background-size': Num2+'px',
+					'cursor':'pointer'
+				});
 				if (StreamGame != 'Not playing') {
 					$(b+'.tum>.GT1').css({
 						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
-						'background-size':Num2+'px',
-						'cursor':'pointer'
-					});
-					$(b+'.tum>.GT2').css({
-						'background':'url("./img/playing.png")',
 						'background-size':Num2+'px',
 						'cursor':'pointer'
 					});
