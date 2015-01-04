@@ -56,7 +56,7 @@ button {
 .tum>a {
 	width: 318px;
 	height: 49px;
-	z-index: 3;
+	z-index: 0;
 	position: absolute;
 	left: 1;
 	text-align: center;
