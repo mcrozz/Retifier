@@ -32,7 +32,7 @@ if sys.platform == 'win32':
 else:
 	clr = 'clear'
 
-def loopbuild(b):
+def loopbuild(b, s):
 	while True:
 		c = cf()
 		v = c[b]['Ver']
@@ -42,6 +42,9 @@ def loopbuild(b):
 		p("            TwitchTV Notifier for "+b)
 		p("           Version: "+v+" ("+bl+" build)")
 		p(tld)
+		if s:
+			build(b)
+			break;
 		p(">  Press [ENTER] for build")
 		p(">  Type [2] for changing version")
 		if ENABLE_PUBLISHER:
@@ -86,14 +89,25 @@ def init():
 	p(tld)
 	inkey = ink(">>> ")
 	if inkey == '1':
-		loopbuild('Chrome')
+		loopbuild('Chrome', False)
 	elif inkey == '2':
-		loopbuild('Opera')
+		loopbuild('Opera', False)
 	elif inkey == '3':
-		loopbuild('Firefox')
+		loopbuild('Firefox', False)
 	elif inkey == '4':
-		loopbuild('Safari')
+		loopbuild('Safari', False)
 	else:
 		exit()
 
-init()
+k = sys.argv[1]
+if k == "":
+	init()
+else:
+	if "Chrome" in k:
+		loopbuild("Chrome", True)
+	elif "Opera" in k:
+		loopbuild("Opera", True)
+	elif "Firefox" in k:
+		loopbuild("Firefox", True)
+	elif "Safari" in k:
+		loopbuild("Safari", True)

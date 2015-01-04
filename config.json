@@ -1,6 +1,6 @@
 {
     "Chrome": {
-        "Build": 717,
+        "Build": 718,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
