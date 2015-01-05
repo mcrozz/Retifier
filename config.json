@@ -1,6 +1,6 @@
 {
     "Chrome": {
-        "Build": 727,
+        "Build": 736,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -22,6 +22,8 @@
         "img\\icon.png",
         "img\\notification_icon.png",
         "img\\img.png",
+        "img\\Check_Box.png",
+        "img\\Check_Box_2.png",
         "img\\playing.png",
         "img\\StillDownloading.gif",
         "js\\jquery-1.11.0.min.js",
