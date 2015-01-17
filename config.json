@@ -1,6 +1,6 @@
 {
     "Chrome": {
-        "Build": 736,
+        "Build": 741,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -8,6 +8,7 @@
         "Parse": "site",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
+        "UpdCall": "ch();",
         "UpdateLocal": "true",
         "Ver": "1.4.1"
     },
@@ -34,7 +35,8 @@
     "Create": [
         "img",
         "js",
-        "music"
+        "music",
+        "style"
     ],
     "Firefox": {
         "Build": 40,
@@ -56,6 +58,7 @@
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
+        "UpdCall": "ch();",
         "UpdateLocal": "true",
         "Ver": "1.0"
     },
@@ -82,15 +85,14 @@
     "Variables": {
         "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
         "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
-        "CSS_FULL": "code(css\\full.css) in deb(popup.js)",
-        "CSS_GRID": "code(css\\grid.css) in deb(popup.js)",
-        "CSS_MINI": "code(css\\mini.css) in deb(popup.js)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
         "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
         "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
         "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
         "LINK_REVIEW": "var(Review) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
-        "PLATFORM": "var(Platform) in deb(style.css)"
+        "PLATFORM": "var(Platform) in deb(style\\style.css)",
+        "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
+        "UPDATE_LOCAL_VAR_FUNC": "file(app\\js\\UpdateLocalVar.js) in deb(js\\functions.js)"
     }
 }
