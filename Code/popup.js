@@ -3,22 +3,18 @@ $(window).on('load',function() {
 	var TimersetToUpdate = [];
 
 	function reloadStyle(l){
-		if (l)
-			document.getElementsByTagName("style")[0].remove();
-		var style = document.createElement('style'),
-			AddAnyways, css;
+		var css;
 		if (!local.Config.Format)
 			localJSON('Config.Format', 'Grid');
 		switch (local.Config.Format) {
 			case 'Full':
-				css = '{{CSS_FULL}}'; break;
+				css = 'full'; break;
 			case 'Light':
-				css = '{{CSS_MINI}}'; break;
+				css = 'mini'; break;
 			case 'Grid':
-				css = '{{CSS_GRID}}'; break;
+				css = 'grid'; break;
 		}
-		style.appendChild(document.createTextNode(css));
-		document.getElementsByTagName('head')[0].appendChild(style);
+		$('#cust')[0].href = "./style/"+css+".css";
 	}
 
 	function clickChangeUserCls(e) {

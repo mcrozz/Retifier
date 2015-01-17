@@ -50,7 +50,8 @@ def cf():
 	return json.load(open('config.json'))
 
 def rf(f):
-	return open(f, 'r').read();
+	with open(f, 'r') as r:
+		return r.read();
 
 def int(f):
 	if os.path.exists(f):
@@ -105,19 +106,11 @@ def build(b, s):
 	# Copy background.html
 	if config[browser]['CopyBackgound'] == 'true':
 		shutil.copy2(pj([currDir, 'Code', 'background.html']), pj([dbDir, 'background.html']))
-	fw(pj([dbDir, 'style.css']), minify(rf(pj([currDir, 'Code', 'css', 'style.css']))))
-	if config[browser]['UpdateLocal'] == 'true':
-		# Replace UPDATE_LOCAL_VAR_FUNC
-		rp("{{UPDATE_LOCAL_VAR_FUNC}}", rf(pj([currDir, browser, 'app', 'js', 'updateLocalVar.js'])), pj([dbDir, "js", "functions.js"]))
-		# Replace UPDATE_LOCAL_VAR_CALL
-		rp("{{UPDATE_LOCAL_VAR_CALL}}", 'ch()', pj([dbDir, "js", "functions.js"]))
-	else:
-		# Replace UPDATE_LOCAL_VAR_FUNC
-		rp("{{UPDATE_LOCAL_VAR_FUNC}}", '', pj([dbDir, "js", "functions.js"]))
-		# Replace UPDATE_LOCAL_VAR_CALL
-		rp("{{UPDATE_LOCAL_VAR_CALL}}", '', pj([dbDir, "js", "functions.js"]))
 	# Insert/minify style.css
-	fw(pj([dbDir, 'style.css']), minify(rf(pj([currDir, 'Code', 'css', 'style.css']))))
+	fw(pj([dbDir, 'style', 'style.css']), minify(rf(pj([currDir, 'Code', 'style', 'style.css']))))
+	fw(pj([dbDir, 'style', 'grid.css']), minify(rf(pj([currDir, 'Code', 'style', 'grid.css']))))
+	fw(pj([dbDir, 'style', 'mini.css']), minify(rf(pj([currDir, 'Code', 'style', 'mini.css']))))
+	fw(pj([dbDir, 'style', 'full.css']), minify(rf(pj([currDir, 'Code', 'style', 'full.css']))))
 	# Replace INSERT_SCRIPTS_HERE
 	scrpts = ''
 	for y in config['Scripts']:
@@ -170,7 +163,10 @@ def build(b, s):
 		rp("{{"+h+"}}", outf[0], outf[1]);
 	# Inserting LICENSE_HEADER
 	toR = [
-		'style.css',
+		'style\\style.css',
+		'style\\full.css',
+		'style\\grid.css',
+		'style\\mini.css',
 		'js\\functions.js',
 		'js\\firstStart.js',
 		'js\\whatsNew.js',
