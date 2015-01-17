@@ -48,7 +48,7 @@
         "Ver": "0.9.1.1"
     },
     "Opera": {
-        "Build": 49,
+        "Build": 50,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -80,19 +80,17 @@
         "background.js"
     ],
     "Variables": {
+        "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
+        "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
+        "CSS_FULL": "code(css\\full.css) in deb(popup.js)",
+        "CSS_GRID": "code(css\\grid.css) in deb(popup.js)",
+        "CSS_MINI": "code(css\\mini.css) in deb(popup.js)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
-        "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
-        "APP_VERSION_CURRENT": "var(Ver) in deb(js\\functions)",
-        "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
-        "LINK_REVIEW": "var(Review) in deb(popup.js)",
         "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
         "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
-        "CSS_FULL": "code(css\\full.css) in deb(popup.js)",
-        "CSS_MINI": "code(css\\mini.css) in deb(popup.js)",
-        "CSS_GRID": "code(css\\grid.css) in deb(popup.js)",
-        "PLATFORM": "var(Platform) in deb(js\\functions.js)",
-        "PLATFORM": "var(Platform) in deb(style.css)",
-        "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
-        "APP_VERSION_CURRENT": "var(Ver) in var(Config)"
+        "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
+        "LINK_REVIEW": "var(Review) in deb(popup.js)",
+        "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
+        "PLATFORM": "var(Platform) in deb(style.css)"
     }
 }

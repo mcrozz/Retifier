@@ -24,8 +24,6 @@ def p(m):
 
 def rp(w, j, o):
 	f = open(o, 'r')
-	if os.path.exists(j):
-		j = open(j, 'r').read()
 	newlines = []
 	for line in f.readlines():
 			newlines.append(line.replace(w, j))
@@ -108,30 +106,6 @@ def build(b, s):
 	if config[browser]['CopyBackgound'] == 'true':
 		shutil.copy2(pj([currDir, 'Code', 'background.html']), pj([dbDir, 'background.html']))
 	fw(pj([dbDir, 'style.css']), minify(rf(pj([currDir, 'Code', 'css', 'style.css']))))
-	for h in config['Variables']:
-		itm = config['Variables'][h]
-		va = itm.split(" in ")
-		outf = []
-		"""
-		* file()
-		* var()
-		* code()
-		* deb()
-		"""
-		for i in va:
-			if i.startswith('file'):
-				outf.append(rf(pj([currDir, browser, i.replace('file(', '').replace(')', '')])))
-			elif i.startswith('var'):
-				outf.append(config[browser][i.replace('var(', '').replace(')', '')])
-			elif i.startswith('code'):
-				outf.append(rf(pj([currDir, 'Code', i.replace('code(', '').replace(')', '')])));
-			elif i.startswith('deb'):
-				outf.append(rf(pj([dbDir, i.replace('deb(', '').replace(')', '')])));
-		if len(outf) != 2:
-			p("    > failed to detect variables")
-			p("    [ERROR]")
-			sys.exit(0);
-		rp("{{"+h+"}}", outf[0], outf[1]);
 	if config[browser]['UpdateLocal'] == 'true':
 		# Replace UPDATE_LOCAL_VAR_FUNC
 		rp("{{UPDATE_LOCAL_VAR_FUNC}}", rf(pj([currDir, browser, 'app', 'js', 'updateLocalVar.js'])), pj([dbDir, "js", "functions.js"]))
@@ -169,6 +143,31 @@ def build(b, s):
 	# Inserting config file 'n' replace version
 	p("	Inserting "+config[browser]['Config'])
 	shutil.copy2(pj([currDir, browser, 'app', config[browser]['Config']]), pj([dbDir, config[browser]['Config']]))
+	# Replacing {{variables}}
+	for h in config['Variables']:
+		itm = config['Variables'][h]
+		va = itm.split(" in ")
+		outf = []
+		"""
+		* file()
+		* var()
+		* code()
+		* deb()
+		"""
+		for i in va:
+			if i.startswith('file'):
+				outf.append(rf(pj([currDir, browser, i.replace('file(', '').replace(')', '')])))
+			elif i.startswith('var'):
+				outf.append(config[browser][i.replace('var(', '').replace(')', '')])
+			elif i.startswith('code'):
+				outf.append(rf(pj([currDir, 'Code', i.replace('code(', '').replace(')', '')])));
+			elif i.startswith('deb'):
+				outf.append(pj([dbDir, i.replace('deb(', '').replace(')', '')]));
+		if len(outf) != 2:
+			p("    > failed to detect variables")
+			p("    [ERROR]")
+			sys.exit(0);
+		rp("{{"+h+"}}", outf[0], outf[1]);
 	# Inserting LICENSE_HEADER
 	toR = [
 		'style.css',
