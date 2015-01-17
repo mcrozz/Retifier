@@ -8,7 +8,7 @@ if (window.location.pathname === '/background.html') {
         localStorage.FirstLaunch='true';
     try { 
         var j = JSON.parse(localStorage.App_Version),
-            k = chrome.app.getDetails().version;
+            k = chrome.runtime.getManifest().version;
         if (k !== j.Ver.substr(2)) {
             Notify({title:"Extension has been updated", msg:"From "+j.Ver.substr(2)+" to "+k, type:"sys"});
             localStorage.App_Version_Update=true;
