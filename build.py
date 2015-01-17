@@ -43,7 +43,7 @@ def loopbuild(b, s):
 		p("           Version: "+v+" ("+bl+" build)")
 		p(tld)
 		if s:
-			build(b)
+			build(b, True)
 			break;
 		p(">  Press [ENTER] for build")
 		p(">  Type [2] for changing version")

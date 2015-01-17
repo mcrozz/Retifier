@@ -17,6 +17,7 @@ limitations under the License.
 import os, json, shutil, sys, re
 
 tld = "====================================================="
+silent = False
 
 def p(m):
 	print(m)
@@ -33,7 +34,8 @@ def rp(w, j, o):
 		for line in newlines:
 			f.write(line)
 	n = o.split("\\")
-	p("	Replacing "+w+" at "+n[len(n)-1])
+	if silent:
+		p("	Replacing "+w+" at "+n[len(n)-1])
 
 def pj(g):
 	h = os.path.join(g[0], g[1])
@@ -83,12 +85,15 @@ def minify(c):
 	c = c.replace("    ", "")
 	return c;
 
-def build(b):
+def build(b, s):
+	if s:
+		silent = True;
 	config = cf()
 	browser = b
 	currDir = os.getcwd()
 	dbDir = pj([currDir, browser, "debug"])
 	p("     Build extension for "+browser)
+	p("     Destination path: "+dbDir)
 	p(tld)
 	# Clear debug folder
 	int(dbDir)
@@ -98,7 +103,8 @@ def build(b):
 	# Copy without replacement
 	for t in config['Copy']:
 		shutil.copy2(pj([currDir, 'Code', t]), pj([dbDir, t]))
-		p("	Copy "+t);
+		if not silent:
+			p("	Copy "+t);
 	# Copy whatsNew.js
 	shutil.copy2(pj([currDir, browser, 'app', 'js', 'whatsNew.js']), pj([dbDir, 'js', 'whatsNew.js']))
 	# Copy background.html
@@ -182,3 +188,4 @@ def build(b):
 	rp('{{APP_VERSION_CURRENT}}', config[browser]['Ver'], pj([dbDir, config[browser]['Config']]))
 	config[browser]['Build'] += 1
 	sc(config)
+	p(" [DONE]");
