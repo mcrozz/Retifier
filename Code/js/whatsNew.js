@@ -15,14 +15,16 @@
 */
 
 changes = [
+    "-1.4.1 Changed font, added detailed streamers info, fixed ON/OFF statements"
+    "-1.4 A lot of fixes",
     "-1.3.9.5 Hotfix",
-    "-1.3.9.4 Fixed zoomed prewiew ratio",
+    "-1.3.9.4 Fixed zoomed preview ratio",
     "-1.3.9.3 Fixed Donation tab, various improvements",
     "-1.3.9.2 Added auth by TwitchTV account, fixed sound in notifications",
     "-1.3.9.1 Bug fix",
     "-1.3.9 Edited some animation, edited design, stability improvements",
     "-1.3.8 Fixed bug with text on hover, added new feature: zoom in",
-    "-1.3.7 Deleted 'Live update' script, various style editings",
+    "-1.3.7 Deleted 'Live update' script, various style editing",
     "-1.3.6 Cumulative update",
     "-1.3.5 Fixed update script",
     "-1.3.4 Happy New Year!",
@@ -44,7 +46,7 @@ changes = [
     "-1.1.8 Bug fixes",
     "-1.1.7 Added 'Live Update' script. Fixed minor bugs",
     "-1.1.6 Bug fixes",
-    "-1.1.5 A little optimisation in style. Now you can disable duration of stream. Button 'Found a bug?' now only viewable in options and in changes",
+    "-1.1.5 A little optimization in style. Now you can disable duration of stream. Button 'Found a bug?' now only viewable in options and in changes",
     "-1.1.4 Fixed freezes on opening",
     "-1.1.3 Bug with notifications, fixed stream duration",
     "-1.1.2 Stream duration",
@@ -55,9 +57,16 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.3.9.5": {
-        "msg": "Improvements",
-        "contain": "-Fixed zoomed preview ratio <br /> -I'm out of ideas how to improve style of this extension. If you got any wishes/desire or an idea, please contact me at <a href='https://twitter.com/iZarudny' target='_blank'>my Twitter @iZarudny</a> or <a href='https://chrome.google.com/webstore/support/mmemeoejijknklekkdacacimmkmmokbn?hl=en&gl=RU#bug' target='_blank'>Chrome Web Store support of mine extension</a>"
+    "v.1.4.1": {
+        "msg": "A long time update",
+        "contain": "-Changed font from DejaVuSans to PermianSans Typeface <br />"
+            +"-Fixed misspelling, miswording and etc <br />"
+            +"-Now you can click on game banner <br />"
+            +"-Fresh and new look <br />"
+            +"-Added detailed streamers info (on Follow List section) <br />"
+            +"-Added Followed Games section"
+            +"-Added new feature for notifications: now you can get notification when streamer goes offline <br />"
+            +"-Get informed right in time, optimized network code <br />"
     }
 };
 
