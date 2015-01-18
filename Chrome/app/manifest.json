@@ -16,6 +16,16 @@
     "512": "/img/icon.png"
   },
   "permissions": ["http://*.twitch.tv/", "https://*.twitch.tv/", "http://*.jtvnw.net/ttv-boxart/*", "https://api.parse.com/*", "notifications", "storage"],
+  "externally_connectable": {
+      "matches": ["http://twitchtvnotifier.host-ed.me/*"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://twitchtvnotifier.host-ed.me/auth.php"],
+      "js": ["js/authHelper.js"],
+      "run_at": "document_start"
+    }
+  ],
   "browser_action": {
     "default_title": "Who's online?",
     "default_icon": "/img/icon.png",

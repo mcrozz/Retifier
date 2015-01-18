@@ -9,14 +9,23 @@ function reLogin() {
 	localJSON('Config.token', '');
 	localJSON('Status.update', 7);
 	localStorage.FollowingList='{}';
-	localStorage.Following=0;
+	localStorage.Following='0';
 	localStorage.FirstLaunch='true';
 	TimersetToUpdate=[];
 	setTimeout(lgin, 1000);
 }
 
+function logged() {
+	doc('ChgUsr').disabled = false;
+	doc('LstFlwdChnls').disabled = false;
+	doc('Direct').disabled = false;
+	doc('Dashboard').disabled = false;
+	$('#insertContentHere').html('');
+	$('#FollowedChannelsOnline').html("Please wait a moment");
+}
+
 function lgin() {
-	if (localStorage.FirstLaunch === 'true'){
+	if (localStorage.FirstLaunch === 'true') {
 		localJSON('Status.update', 7);
 		$('#FollowedChannelsOnline').html("Greetings!");
 		doc('ChgUsr').disabled = true;
@@ -42,7 +51,8 @@ function lgin() {
 				try {
 					var f = e.originalEvent.data.split(':')[1];
 					log('Got message');
-					if (f === undefined || f === 'ERROR') throw Error();
+					if (f === undefined || f === 'ERROR')
+						throw Error();
 					localJSON('Config.token', f);
 					$.ajax({url:'https://api.twitch.tv/kraken/user?oauth_token='+f,dataType:'JSONP',complete:function(e){
 						log('Got user');
