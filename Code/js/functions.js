@@ -9,6 +9,7 @@ function deb(msg) { console.debug(msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
 function doc(id){if (id[0] === '.') return $(id)[0]; return document.getElementById(id);}
 {{BADGE_ONLINE_COUNT}}
+{{SEND_MSG}}
 function Animation(id, n, f) {
     if (doc(id)) {
         var ci = $('#'+id);
