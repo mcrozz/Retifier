@@ -264,4 +264,6 @@ $(window).on('load',function() {
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	}
+
+	{{MSG_PARSER_POP_FUNC}}
 });

@@ -143,3 +143,5 @@ function CheckFollowingList() {
         }
     },500);
 })();
+
+{{MSG_PARSER_BAC_FUNC}}
