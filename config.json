@@ -1,6 +1,6 @@
 {
     "Chrome": {
-        "Build": 774,
+        "Build": 778,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -19,6 +19,8 @@
         "LICENSE",
         "popup.html",
         "popup.js",
+        "auth.html",
+        "auth.js",
         "background.js",
         "img\\icon.png",
         "img\\notification_icon.png",
@@ -30,8 +32,7 @@
         "js\\jquery-1.11.0.min.js",
         "js\\insertFunc.js",
         "js\\firstStart.js",
-        "js\\functions.js",
-        "js\\authHelper.js"
+        "js\\functions.js"
     ],
     "Create": [
         "img",
@@ -85,7 +86,6 @@
     ],
     "Variables": {
         "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
-        "AUTH_HELPER": "file(app\\js\\authHelper.js) in deb(js\\authHelper.js)",
         "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
         "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
