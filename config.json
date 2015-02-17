@@ -1,6 +1,7 @@
 {
     "Chrome": {
-        "Build": 778,
+        "Browser": "Chrome",
+        "Build": 794,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -52,6 +53,7 @@
         "Ver": "0.9.1.1"
     },
     "Opera": {
+        "Browser": "Opera",
         "Build": 50,
         "Config": "manifest.json",
         "CopyBackgound": "true",
@@ -95,7 +97,7 @@
         "MSG_PARSER_BAC_FUNC": "file(app\\js\\parseMsgBack.js) in deb(background.js)",
         "MSG_PARSER_POP_FUNC": "file(app\\js\\parseMsgPopup.js) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
-        "PLATFORM": "var(Platform) in deb(style\\style.css)",
+        "PLATFORM": "var(Browser) in deb(auth.html)",
         "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)",
         "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
         "UPDATE_LOCAL_VAR_FUNC": "file(app\\js\\UpdateLocalVar.js) in deb(js\\functions.js)"

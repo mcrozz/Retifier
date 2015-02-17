@@ -1,21 +1,37 @@
 function init() {
+	deb("Script loaded... "+document.readyState);
 	function show(f) {
 		if (f.type == 'error') {
+			// Something happen
 			err({message: f.msg, stack: f.e});
-			// TODO: handle error
+		
+			var r = $('p>code');
+		
+			r[0].innerText = f.msg;
+			if (!f.expl) delete r[1]
+			else r[1].innerText = f.expl;
+		
+			$('.text .penging').show();
+			$('.text .failed').show();
 		} else {
-			// TODO: show success (YES)
+			// Succeed
+			$('.text .penging').show();
+			$('.text .succeed').show();
 		}
 	}
 
 	var loc = document.location;
 	if (loc.search !== '') {
 		var err = document.location.search.slice(1).split('&')[0].split('=')[1];
-		return show({type: 'error', error: err, stack: ''});
+		var huer;
+		switch (err) {
+			case "": huer=""; break;
+		}
+		return show({type: 'error', msg: err, expl: huer, stack: ''});
 	}
 
 	if (loc.hash === '') {
-		return show({type: 'error', error: 'No hash tag', stack: ''});
+		return show({type: 'error', msg: 'No hash tag', stack: ''});
 	}
 	var tkn = loc.hash.split('&')[0].split('=')[1];
 
@@ -29,14 +45,15 @@ function init() {
 				localJSON('Config.User_Name', e.responseJSON.name);
 	        	localStorage.FirstLaunch = false;
 				localJSON('Status.StopInterval', true);
+				show({type: 'ok'});
 			} else {
 				show({type: 'error', msg:'Cannot get user name from response',stack:e});
 			}
 		},
 		error: function(e){
-			show({type: 'error', msg:'Cannot get username',stack:e});
+			show({type: 'error', msg:'Cannot get username', stack:e});
 		}
 	});
 }
 
-$(init);
+$(document).on('load', init);
