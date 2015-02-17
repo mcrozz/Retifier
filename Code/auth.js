@@ -3,7 +3,7 @@ function init() {
 	function show(f) {
 		if (f.type == 'error') {
 			// Something happen
-			err({message: f.msg, stack: f.e});
+			// err({message: f.msg, stack: f.e});
 		
 			var r = $('p>code');
 		
@@ -11,12 +11,12 @@ function init() {
 			if (!f.expl) delete r[1]
 			else r[1].innerText = f.expl;
 		
-			$('.text .penging').show();
-			$('.text .failed').show();
+			$('.pending').hide();
+			$('.failed').show();
 		} else {
 			// Succeed
-			$('.text .penging').show();
-			$('.text .succeed').show();
+			$('.pending').hide();
+			$('.succeed').show();
 		}
 	}
 
@@ -43,7 +43,7 @@ function init() {
 			log('Got user');
 			if (e.responseJSON.name !== undefined) {
 				localJSON('Config.User_Name', e.responseJSON.name);
-	        	localStorage.FirstLaunch = false;
+				localStorage.FirstLaunch = false;
 				localJSON('Status.StopInterval', true);
 				show({type: 'ok'});
 			} else {
@@ -55,5 +55,5 @@ function init() {
 		}
 	});
 }
-
-$(document).on('load', init);
+deb("Initializing...");
+$(window).load(function(){setTimeout(init, 250)});

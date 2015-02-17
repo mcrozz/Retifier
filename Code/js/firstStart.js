@@ -43,33 +43,7 @@ function lgin() {
 			
 		// AUTH BY TWITCH ACCOUNT
 		$('#TwitchAccount, #TwitchAccount>a').on('click', function(){
-			$('#insertContentHere').html('<iframe src="https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=http://twitchtvnotifier.host-ed.me/auth.php&scope=user_follows_edit+user_read" width="696" height="520" style="position:absolute;top:0;left:13" frameborder="0"></iframe>');
-			$('#FollowedChannelsOnline').html("Sign in by Twicth Account");
-			t = 0;
-			$(window).on('message', function(e){
-				if (t !== 0) return false; t++;
-				try {
-					var f = e.originalEvent.data.split(':')[1];
-					log('Got message');
-					if (f === undefined || f === 'ERROR')
-						throw Error();
-					localJSON('Config.token', f);
-					$.ajax({url:'https://api.twitch.tv/kraken/user?oauth_token='+f,dataType:'JSONP',complete:function(e){
-						log('Got user');
-						if (e.responseJSON.name !== undefined) {
-							localJSON('Config.User_Name', e.responseJSON.name);
-							doc('ChgUsr').disabled = false;
-							doc('LstFlwdChnls').disabled = false;
-							doc('Direct').disabled = false;
-							doc('Dashboard').disabled = false;
-					        localStorage.FirstLaunch = false;
-							$('#insertContentHere').html('');
-							localJSON('Status.StopInterval',true);
-							$('#FollowedChannelsOnline').html("Please wait a moment");
-						} else { err({message:'Cannot get user name from response',stack:e}) }
-					}, error:function(e){err({message:'Tried to get username',stack:e})}});
-				} catch(e) { err(e); doc('FollowedChannelsOnline').innerHTML = "Error :(, please, restart extension"; }
-			});
+			window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=http://twitchtvnotifier.host-ed.me/auth.php&scope=user_follows_edit+user_read');
 		});
 
 		// AUTH BY TWICH NAME
