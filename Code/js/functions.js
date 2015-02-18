@@ -15,7 +15,7 @@ function Animation(id, n, f) {
         var ci = $('#'+id);
         if (!n[1]) ci.show();
         if (!n[2]) n[2]=1;
-        ci.css('-{{PLATFORM}}-animation', n[0]+' both '+n[2]+'s');
+        ci.css('-{{PLATFORM_}}-animation', n[0]+' both '+n[2]+'s');
         setTimeout(function(){
             if (n[1]) ci.hide();
             if (typeof f === 'function') f();

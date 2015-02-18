@@ -43,11 +43,11 @@ $(window).on('load',function() {
 		
 		doc('.NotifyStreamerChanged').disabled = a;
 		doc('.NotifyStreamer').disabled = a;
-		doc('.NotifysStreamer').disabled = a;
+		doc('.NotifyStreamer2').disabled = a;
 		doc('.NotifyUpdate').disabled = a;
 
 		doc('.NotifyStreamer').checked = local.Config.Notifications.online;
-		doc('.NotifysStreamer').checked = local.Config.Notifications.offline;
+		doc('.NotifyStreamer2').checked = local.Config.Notifications.offline;
 		doc('.NotifyUpdate').checked = local.Config.Notifications.update;
 		doc('.NotifyStreamerChanged').checked = local.Config.Notifications.follow;
 	
@@ -76,7 +76,7 @@ $(window).on('load',function() {
 		localJSON('Config.Notifications.status', doc('.EnNotify').checked);
 
 		localJSON('Config.Notifications.online', doc('.NotifyStreamer').checked);
-		localJSON('Config.Notifications.offline', doc('.NotifysStreamer').checked);
+		localJSON('Config.Notifications.offline', doc('.NotifyStreamer2').checked);
 		localJSON('Config.Notifications.update', doc('.NotifyUpdate').checked);
 		localJSON('Config.Notifications.follow', doc('.NotifyStreamerChanged').checked);
 		

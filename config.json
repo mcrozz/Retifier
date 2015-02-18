@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 828,
+        "Build": 834,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -89,6 +89,7 @@
     "Variables": {
         "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
         "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
+        "BROWSER": "var(Browser) in deb(auth.html)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
         "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
         "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
@@ -97,7 +98,8 @@
         "MSG_PARSER_BAC_FUNC": "file(app\\js\\parseMsgBack.js) in deb(background.js)",
         "MSG_PARSER_POP_FUNC": "file(app\\js\\parseMsgPopup.js) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
-        "PLATFORM": "var(Browser) in deb(auth.html)",
+        "PLATFORM": "var(Platform) in deb(style\\style.css)",
+        "PLATFORM_": "var(Platform) in deb(js\\functions.js)",
         "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)",
         "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
         "UPDATE_LOCAL_VAR_FUNC": "file(app\\js\\UpdateLocalVar.js) in deb(js\\functions.js)"
