@@ -14,7 +14,7 @@ $(window).on('load',function() {
 			case 'Grid':
 				css = 'grid'; break;
 		}
-		$('#cust')[0].href = "./style/"+css+".css";
+		$('#cust')[0].href = "./css/"+css+".css";
 	}
 
 	function clickChangeUserCls(e) {

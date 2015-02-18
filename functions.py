@@ -107,10 +107,10 @@ def build(b, s):
 	if config[browser]['CopyBackgound'] == 'true':
 		shutil.copy2(pj([currDir, 'Code', 'background.html']), pj([dbDir, 'background.html']))
 	# Insert/minify style.css
-	fw(pj([dbDir, 'style', 'style.css']), minify(rf(pj([currDir, 'Code', 'style', 'style.css']))))
-	fw(pj([dbDir, 'style', 'grid.css']), minify(rf(pj([currDir, 'Code', 'style', 'grid.css']))))
-	fw(pj([dbDir, 'style', 'mini.css']), minify(rf(pj([currDir, 'Code', 'style', 'mini.css']))))
-	fw(pj([dbDir, 'style', 'full.css']), minify(rf(pj([currDir, 'Code', 'style', 'full.css']))))
+	# fw(pj([dbDir, 'style', 'style.css']), minify(rf(pj([currDir, 'Code', 'style', 'style.css']))))
+	# fw(pj([dbDir, 'style', 'grid.css']), minify(rf(pj([currDir, 'Code', 'style', 'grid.css']))))
+	# fw(pj([dbDir, 'style', 'mini.css']), minify(rf(pj([currDir, 'Code', 'style', 'mini.css']))))
+	# fw(pj([dbDir, 'style', 'full.css']), minify(rf(pj([currDir, 'Code', 'style', 'full.css']))))
 	# Replace INSERT_SCRIPTS_HERE
 	scrpts = ''
 	for y in config['Scripts']:
@@ -163,10 +163,10 @@ def build(b, s):
 		rp("{{"+h+"}}", outf[0], outf[1]);
 	# Inserting LICENSE_HEADER
 	toR = [
-		'style\\style.css',
-		'style\\full.css',
-		'style\\grid.css',
-		'style\\mini.css',
+		'css\\style.css',
+		'css\\full.css',
+		'css\\grid.css',
+		'css\\mini.css',
 		'js\\functions.js',
 		'js\\firstStart.js',
 		'js\\whatsNew.js',

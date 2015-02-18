@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 836,
+        "Build": 840,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -34,7 +34,12 @@
         "img\\Mini.png",
         "img\\TwitchLogo.png",
         "img\\zoom.png",
+        "img\\Buttons.png",
         "img\\refresh.png",
+        "css\\full.css",
+        "css\\grid.css",
+        "css\\mini.css",
+        "css\\style.css",
         "js\\jquery-1.11.0.min.js",
         "js\\insertFunc.js",
         "js\\firstStart.js",
@@ -44,7 +49,7 @@
         "img",
         "js",
         "music",
-        "style"
+        "css"
     ],
     "Firefox": {
         "Build": 40,
@@ -103,7 +108,7 @@
         "MSG_PARSER_BAC_FUNC": "file(app\\js\\parseMsgBack.js) in deb(background.js)",
         "MSG_PARSER_POP_FUNC": "file(app\\js\\parseMsgPopup.js) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
-        "PLATFORM": "var(Platform) in deb(style\\style.css)",
+        "PLATFORM": "var(Platform) in deb(css\\style.css)",
         "PLATFORM_": "var(Platform) in deb(js\\functions.js)",
         "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)",
         "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
