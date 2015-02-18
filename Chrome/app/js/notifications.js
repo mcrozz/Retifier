@@ -26,10 +26,12 @@ function Notify(d) {
 	function delNotify(i,t) {
 		var idToDel = i, times = 60000;
 		switch (t) {
-			case 'Online':
+			case 'online':
 				times *= 30; break;
-			case 'Changed':
+			case 'changed':
 				times *= 10; break;
+			case 'offline':
+				times *= 30; break;
 			default:
 				times *= 5; break;
 		}
