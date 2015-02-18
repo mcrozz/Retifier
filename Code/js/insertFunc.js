@@ -60,7 +60,7 @@ function InsertOnlineList() {
 			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
 			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
 			+'<div class="streamer"><a>'+a.str+'</a></div>'
-			+'<div class="viewers"><a>'+a.viw+'</a><p>viewers</p></div>'
+			+'<div class="viewers"><a>'+a.viw+' viewers</a></div>'
 			+'<div class="game"><a ';
 		if (a.gme !== 'Not Playing')
 			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
@@ -120,18 +120,18 @@ function InsertOnlineList() {
 
 				$(b+'.tum>.ST').css({
 					'background':'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-					'background-size':Num3+'px',
+					'background-size':'contain',
 					'cursor':'pointer'
 				});
 				$(b+'.tum>.GT2').css({
 					'background':'url("./img/playing.png")',
-					'background-size': Num2+'px',
+					'background-size': 'contain',
 					'cursor':'pointer'
 				});
 				if (StreamGame != 'Not playing') {
 					$(b+'.tum>.GT1').css({
 						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
-						'background-size':Num2+'px',
+						'background-size':'contain',
 						'cursor':'pointer'
 					});
 				} else {
@@ -152,7 +152,7 @@ function InsertOnlineList() {
 				$.data($(b+'.inf>.game>a'), 'show', GameWidth);
 
 				$(b+'.inf>.game>a').html(StreamGame);
-				$(b+'.inf>.viewers>a').html(StreamVievers);
+				$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
 
 				if (local.Config.Duration_of_stream && $(b+'.adds>.duration>a') != null)
            			$(b+'.adds>.duration>a').html(time(v.Stream.Time))
@@ -162,7 +162,7 @@ function InsertOnlineList() {
 				if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					$(b+'.tum>.ST').css({
 						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-						'background-size': Num3+'px',
+						'background-size': 'contain',
 						'cursor': 'pointer',
 						'zIndex': 0
 					});
@@ -175,7 +175,7 @@ function InsertOnlineList() {
 				} else if ($(b+'.tum>.GT1').css('background').match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
 					$(b+'.tum>.GT1').css({
 						'background': 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
-						'background-size': Num2+'px',
+						'background-size': 'contain',
 						'cursor': 'pointer'
 					});
 				}
