@@ -723,6 +723,7 @@ button.WelcomOK:hover {
 }
 .zoom {
 	background: url(/img/zoom.png) no-repeat;
+	background-size: contain;
 	display: block;
 	position: absolute;
 	width: 32px;
