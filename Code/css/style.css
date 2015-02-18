@@ -201,7 +201,7 @@ button.button:hover {
 }
 
 .TwitchLogo {
-	background: url(/img/img.png) no-repeat -564px 0;
+	background: url(/img/TwitchLogo.png) no-repeat;
 	margin-left: 273px;
 	width: 151px;
 	height: 50px;
@@ -285,16 +285,13 @@ button.button:hover {
     border-radius: 5px;
 }
 .Full {
-    background: url(/img/img.png) no-repeat -100px 0;
-    background-size: 460;
+    background: url(/img/Full.png) no-repeat;
 }
 .Light {
-    background: url(/img/img.png) no-repeat 0 0;
-    background-size: 460;
+    background: url(/img/Mini.png) no-repeat;
 }
 .Grid {
-    background: url(/img/img.png) no-repeat -51px 0;
-    background-size: 460;
+    background: url(/img/Grid.png) no-repeat;
 }
 
 #UserName {
@@ -661,8 +658,7 @@ button.WelcomOK:hover {
 }
 
 #refresh {
-	background: url(/img/img.png) no-repeat -605px -80px;
-	background-size: 1100;
+	background: url(/img/refresh.png) no-repeat;
 	display: block;
 	position: absolute;
 	width: 32px;
@@ -726,8 +722,7 @@ button.WelcomOK:hover {
 	color: black;
 }
 .zoom {
-	background: url(/img/img.png) no-repeat -255px 0;
-	background-size: 465;
+	background: url(/img/zoom.png) no-repeat;
 	display: block;
 	position: absolute;
 	width: 32px;
