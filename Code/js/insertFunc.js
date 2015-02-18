@@ -6,19 +6,17 @@ texts = { d:new Date() };
 
 function snum(){
 	switch (local.Config.Format) {
-		case 'Grid' : Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
-		case 'Full' : Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
-		case 'Light': Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
+		case 'Grid' : Num = 315, Num4 = 16, Num6 = 315; break;
+		case 'Full' : Num = 340, Num4 = 17, Num6 = 340; break;
+		case 'Light': Num = 525, Num4 = 16, Num6 = 180; break;
 	}
 };
 snum();
 
 function InsertOnlineList() {
 	function offSet(s,n,w) {
-		var d = doc('textWidth');
-		d.style.fontSize = s+'px';
-		d.innerHTML = n;
-		return (d.offsetWidth>w);
+		var d = $('#textWidth').css('fontSize', s+'px').html(n);
+		return (d.width()>w);
 	}
 	function time(t) {
 		function h(b,j) {
