@@ -226,7 +226,7 @@ $(window).on('load',function() {
 	ael('#SoundCheck', 0, function(){
 		doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('#refresh', 0, function(){
-		localJSON('Status.StopInterval', true) });
+		send('refresh'); });
 	ael('#UserName>p', 0, reLogin);
 	ael('#zoomContent', 0, function() {
 		Animation('zoomContent', 'fadeOut', true);
