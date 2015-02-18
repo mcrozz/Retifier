@@ -50,7 +50,7 @@ var CheckStatus = function() {
                     Status = d.stream.channel.status,
                     Name   = d.stream.channel.name,
                     d_name = d.stream.channel.display_name,
-                    Time   = d.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
+                    Time   = d.stream.channel.updated_at;
                 
                 if (Status == null && FoLi.Stream.Title !== "")
                     Status = FoLi.Stream.Title
