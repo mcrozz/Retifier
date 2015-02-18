@@ -39,7 +39,7 @@ var basicCheck = function() {
 var CheckStatus = function() {
     function check(key,j) {
         $.getJSON(j)
-        .fail(function(d) { 
+        .fail(function(d) {
             err({message:'checkStatus() ended with error', stack:d});
         })
         .done(function(d){
@@ -125,6 +125,9 @@ var CheckStatus = function() {
             k += '?oauth_token='+token;
         check(i, k);
     });
+
+    if (local.Status.update !== 5)
+        localJSON('Status.update', 0);
 }
 var CheckFollowingList = function() {
     if (!basicCheck())
