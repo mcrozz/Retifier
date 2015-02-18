@@ -51,18 +51,27 @@ var CheckStatus = function() {
                     Name   = d.stream.channel.name,
                     d_name = d.stream.channel.display_name,
                     Time   = d.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
-                if (Status === null)
+                
+                if (Status == null && FoLi.Stream.Title !== "")
+                    Status = FoLi.Stream.Title
+                else
                     Status = 'Untitled stream';
-                if (Game === null)
+
+                if (Game == null && FoLi.Stream.Game !== "")
+                    Game = FoLi.Stream.Game
+                else
                     Game = 'Not playing';
+                
                 if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
                     Notify({name:Name, title:Name+' just went live!', msg:Status, type:'online', button:true});
                     localJSON('Status.online', '+1');
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
+                
                 if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
-                        Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+                    Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+                
                 if (new Date(FoLi.Stream.Time) - new Date(Time))
                     Time = FoLi.Stream.Time;
 
@@ -76,7 +85,7 @@ var CheckStatus = function() {
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
                 NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
-                FollowingList(key, null, false)                      
+                FollowingList(key, null, false);
             }
             if (local.Status.checked==local.Following || key===local.Following) {
                 if (local.Status.online === 0 && NowOnline.length !== 0)
