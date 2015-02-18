@@ -6,21 +6,41 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
     BadgeOnlineCount(0);
     localJSON('Status.online', 0);
-    for (var i=0; i<local.Following; i++)
+    if ($.inArray("object Object", localStorage.FollowingList) != -1) {
+        localStorage.FollowingList = "[]";
+        local.FollowingList = [];
+        localStorage.Following = 0;
+        local.Following = 0;
+    }
+    $.each(local.FollowingList, function(i,v) {
         FollowingList(i, null, false);
+    });
     if (local.Config.Format==='Mini')
         localJSON('Config.Format', 'Light');
 }
 
-try { ga('set', 'appVersion', local.App_Version.Ver.replace('v.','')) }catch(e){};
+try { ga('set', 'appVersion', local.App_Version.Ver) }catch(e){};
 
 var NowOnline = [];
 
-var CheckFollowingList = function() {
-    function checkStatus(key,j,ch) {
+var basicCheck = function() {
+    if (!localStorage.Following)
+        localStorage.Following = 0;
+
+    if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
+        if (localStorage.FirstLaunch !== 'true') {
+            localJSON('Status.update', 6);
+            log('Change user name!');
+            return false;
+        }
+    }
+    return true;
+}
+var CheckStatus = function() {
+    function check(key,j) {
         $.getJSON(j)
         .fail(function(d) { 
-            err({message:'checkStatus() ended with error',stack:d});
+            err({message:'checkStatus() ended with error', stack:d});
         })
         .done(function(d){
             localJSON('Status.checked', '+1');
@@ -59,11 +79,6 @@ var CheckFollowingList = function() {
                 FollowingList(key, null, false)                      
             }
             if (local.Status.checked==local.Following || key===local.Following) {
-                if (ch) {
-                    localJSON('Status.online', 0);
-                    for (var i=0; i<local.Following; i++)
-                        if (local.FollowingList[i].Stream) { localJSON('Status.online', '+1'); };
-                }
                 if (local.Status.online === 0 && NowOnline.length !== 0)
                     localJSON('Status.online', NowOnline.length);
                 BadgeOnlineCount(local.Status.online);
@@ -83,58 +98,79 @@ var CheckFollowingList = function() {
         });
     }
 
-    if (!localStorage.Following)
-        localStorage.Following = 0;
+    if (!basicCheck())
+        return;
     localJSON('Status.update', 1);
+    log("Checking status of streamers");
+    Notify({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
+    localJSON('Status.update', 4);
+    localJSON('Status.checked', 0);
 
-    if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
-        if (localStorage.FirstLaunch !== 'true') {
-            localJSON('Status.update', 6);
-            log('Change user name!');
-        }
-    } else {
-        log("Behold! Update is comin'");
-        Notify({title:'Behold! Update!', msg:'Starting update...', type:'update'});
-        localJSON('Status.update', 2);
-
-        var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
-        if (local.Config.token !== "")
-            uri += '&oauth_token='+local.Config.token;
-
-        $.getJSON(uri)
-        .fail(function(j) {
-            err({message:"Can't get following list",stack:j});
-            localJSON('Status.update', 5);
-            Notify({title:"Update follows list", msg:"Error, can't update", type:"update"});
-        })
-        .done(function(j) {
-            var chg;
-            if (local.Following !== j._total) {
-                log('Update list of following channels');
-                localJSON('Following', j._total);
-                chg = true;
-                for (var i=0; i<j._total; i++)
-                    FollowingList(i, j.follows[i].channel.name, false);
-            } else {
-                chg = false; }
-            localJSON('Status.checked', 0);
-            localJSON('Status.update', 4);
-            log('Checking Status of channels...');
-            for (var i=0; i<local.Following; i++) {
-                var k = 'https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name;
-                if (local.Config.token !== "")
-                    k += '?oauth_token='+local.Config.token;
-                checkStatus(i, k, chg);
-            }
-        });
-    }
+    var token = local.Config.token;
+    $.each(local.FollowingList, function(i,v) {
+        var k = 'https://api.twitch.tv/kraken/streams/'+v.Name;
+        if (token !== "")
+            k += '?oauth_token='+token;
+        check(i, k);
+    });
 }
-var CheckStatus = function() {}
+var CheckFollowingList = function() {
+    if (!basicCheck())
+        return;
+    localJSON('Status.update', 1);
+    log("Checking following list");
+    Notify({title:'Status', msg:'Checking following list...', type:'update'});
+    localJSON('Status.update', 2);
+
+    var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
+    if (local.Config.token !== "")
+        uri += '&oauth_token='+local.Config.token;
+
+    $.getJSON(uri)
+    .fail(function(j) {
+        err({message:"Can't get following list",stack:j});
+        localJSON('Status.update', 5);
+        Notify({title:"Error happen", msg:"Cannot update following list", type:"update"});
+    })
+    .done(function(j) {
+        if (local.Following === j._total)
+            return;
+
+        log('Updating list of following channels');
+        
+        if (local.Following == 0) {
+            $.each(j.follows, function(i,v) {
+                FollowingList(i, v.channel.name, false);
+            });
+            localJSON('Following', j._total);
+            CheckStatus();
+        } else {
+            localJSON('Following', j._total);
+            var NewJson = [];
+            $.each(local.FollowingList, function(i,v) {
+                var del = true;
+                $.each(j.follows, function(j,k) {
+                    if (k.channel.name === v.Name)
+                        del = false;
+                });
+                if (!del)
+                    NewJson[i] = v;
+            });
+            try {
+                localStorage.FollowingList = JSON.stringify(NewJson);
+            } catch(e) {
+                err(e);
+            }
+            localJSON('Status.online', 0);
+            CheckStatus();
+        }
+    });
+}
 
 var TwitchFollowing = -1, TwitchStatus = -1;
 var initTwitch = function() {
     function setIntervals() {
-        TwitchFollowing = setInterval(function(){CheckFollowingList()}, 60000);
+        TwitchFollowing = setInterval(function(){CheckFollowingList()}, 120000);
         CheckFollowingList();
 
         TwitchStatus = setInterval(function(){CheckStatus()}, 60000*local.Config.Interval_of_Checking);
