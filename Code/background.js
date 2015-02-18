@@ -16,7 +16,7 @@ try { ga('set', 'appVersion', local.App_Version.Ver.replace('v.','')) }catch(e){
 
 var NowOnline = [];
 
-function CheckFollowingList() {
+var CheckFollowingList = function() {
     function checkStatus(key,j,ch) {
         $.getJSON(j)
         .fail(function(d) { 
@@ -129,19 +129,25 @@ function CheckFollowingList() {
         });
     }
 }
+var CheckStatus = function() {}
 
-(function(){
-    CheckFollowingList();
-    CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000*local.Config.Interval_of_Checking);
-    localJSON('Status.StopInterval', false);
-    setInterval(function(){
-        if (local.Status.StopInterval) {
-            clearInterval(CheckTwitch);
-            CheckFollowingList();
-            CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000*local.Config.Interval_of_Checking);
-            localJSON('Status.StopInterval', false)
-        }
-    },500);
-})();
+var TwitchFollowing = -1, TwitchStatus = -1;
+var initTwitch = function() {
+    function setIntervals() {
+        TwitchFollowing = setInterval(function(){CheckFollowingList()}, 60000);
+        CheckFollowingList();
+
+        TwitchStatus = setInterval(function(){CheckStatus()}, 60000*local.Config.Interval_of_Checking);
+        CheckStatus();
+    }
+    if (TwitchFollowing == -1 && TwitchStatus == -1)
+        setIntervals()
+    else {
+        clearInterval(TwitchFollowing);
+        clearInterval(TwitchStatus);
+        setIntervals();
+    }
+};
+initTwitch();
 
 {{MSG_PARSER_BAC_FUNC}}
