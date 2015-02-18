@@ -152,7 +152,7 @@ button {
 }
 
 button.dash {
-	background: url(/img/img.png) no-repeat -764px -40px;
+	background: url(/img/Buttons.png) no-repeat 0 -40px;
 	color: white;
 	text-decoration: none;
 	font-size: 22px;
@@ -160,7 +160,7 @@ button.dash {
 	height: 40px;
 }
 button.dash:hover {
-	background-position: -764px 0;
+	background-position: 0 0;
 }
 
 button.first {
