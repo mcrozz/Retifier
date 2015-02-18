@@ -247,16 +247,16 @@ $(window).on('load',function() {
 		}
 	}
 	document.onmousemove = function(p){
-		var j = p.target.attributes.getNamedItem('show');
-		if (j == null)
-			return false;
-
-		if (j.value == 'false') {
+		function hide() {
 			if ($('#message').css('display') === 'block')
 				$('#message').css('display', 'none');
 			return false;
 		}
-
+		var j = p.target.attributes.getNamedItem('show');
+		if (j == null || typeof j === 'undefined')
+			return hide();
+		if (j.value == 'false')
+			return hide();
 		if (j.value != 'true')
 			return false;
 
