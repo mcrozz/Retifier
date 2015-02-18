@@ -59,21 +59,10 @@ function Notify(d) {
 
 	if (local.Config.Notifications.status) {
 		var j = local.Config.Notifications;
-		switch (d.type) {
-			case 'online':
-				// Somebody gone online
-				if (!j.online) return false; break;
-			case 'follow':
-				// Somebody changed title or game
-				if (!j.follow) return false; break;
-			case 'update':
-				// Infrorm about any steps
-				if (!j.update) return false; break;
-			case 'sys':
-				break;
-			default:
-				return false; break;
-		}
+		
+		if (!j[d.type])
+			return false;
+
 		sendNotify(d);
 	}
 }

@@ -84,6 +84,9 @@ var CheckStatus = function() {
             } else if (local.FollowingList[key].Stream) {
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
+                Notify({
+                    title: local.FollowingList[key].Name+" went offline", msg: "", type: "offline"
+                });
                 NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
                 FollowingList(key, null, false);
             }
