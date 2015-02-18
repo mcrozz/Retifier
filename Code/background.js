@@ -52,14 +52,16 @@ var CheckStatus = function() {
                     d_name = d.stream.channel.display_name,
                     Time   = d.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
                 
+                deb(Status+" ::: "+FoLi.Stream.Title);
                 if (Status == null && FoLi.Stream.Title !== "")
                     Status = FoLi.Stream.Title
-                else
+                else if (Status == null && !FoLi.Stream)
                     Status = 'Untitled stream';
 
+                deb(Game+" ::: "+FoLi.Stream.Game);
                 if (Game == null && FoLi.Stream.Game !== "")
                     Game = FoLi.Stream.Game
-                else
+                else if (Game == null && !FoLi.Stream)
                     Game = 'Not playing';
                 
                 if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
