@@ -1,5 +1,5 @@
 """
-Copyright 2014 Ivan 'MacRozz' Zarudny
+Copyright 2014-2015 Ivan 'MacRozz' Zarudny
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
