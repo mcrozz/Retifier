@@ -163,10 +163,10 @@ function InsertOnlineList() {
 				$(b+'.inf>.game>a').html(StreamGame);
 				$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
 
-				if (local.Config.Duration_of_stream && $(b+'.adds>.duration>a') != null)
-           			$(b+'.adds>.duration>a').html(time(v.Stream.Time))
-           		else if (!local.Config.Duration_of_stream && $(b+'.adds>.duration>a').html() !== '')
-					$(b+'.adds>.duration>a').html('');
+				if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
+           			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
+           		else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
+					$(b+'.inf>.adds>.duration>a').html('');
 
 				if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
 					$(b+'.tum>.ST').css({
