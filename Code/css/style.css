@@ -286,12 +286,15 @@ button.button:hover {
 }
 .Full {
     background: url(/img/Full.png) no-repeat;
+    background-size: contain;
 }
 .Light {
     background: url(/img/Mini.png) no-repeat;
+    background-size: contain;
 }
 .Grid {
     background: url(/img/Grid.png) no-repeat;
+    background-size: contain;
 }
 
 #UserName {
@@ -704,7 +707,7 @@ button.WelcomOK:hover {
 	position: absolute;
 	width: 98px;
 	height: 113px;
-	background: -webkit-gradient(linear,	left top,	left bottom,	from(rgba(1, 1, 1, 0.8)), to(rgba(1, 1, 1, 0.5)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(1, 1, 1, 0.8)), to(rgba(1, 1, 1, 0.5)));
 }
 #FoundAbugText>a {
 	z-index: 20;
