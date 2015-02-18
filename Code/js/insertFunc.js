@@ -135,8 +135,6 @@ function InsertOnlineList() {
 						'cursor':'pointer'
 					});
 				} else {
-					//$('#i>.inf>.game>a').css('cursor', 'default');
-					// $(b+'.tum>.GT1').hide();
 					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
 					$(b+'.tum>.GT2').css('cursor', 'default');
 				}

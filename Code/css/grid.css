@@ -24,6 +24,8 @@ button:focus  {
 	height: 20px;
 	display: inline-block;
 	text-align: right;
+	cursor: default;
+	display: inline-table;
 }
 .inf>.viewers>p  {
 	cursor: default;
@@ -80,12 +82,6 @@ button:focus  {
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	color: black;
 	font-size: 17px;
-}
-.inf>.viewers {
-	cursor: default;
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-	width: 75px;
-	display: inline-table;
 }
 .inf>.game {
 	text-align: center;
