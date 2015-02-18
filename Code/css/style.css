@@ -687,6 +687,7 @@ button.WelcomOK:hover {
 	position: absolute;
 	z-index: 99;
 	width: 310px;
+	font-size: 18px;
 	padding: 5 15 5 15;
 	background: white;
 	text-align: center;

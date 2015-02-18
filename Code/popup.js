@@ -247,17 +247,27 @@ $(window).on('load',function() {
 		}
 	}
 	document.onmousemove = function(p){
-		if (!$.data(p.target, 'show')) {
+		var j = p.target.attributes.getNamedItem('show');
+		if (j == null)
+			return false;
+
+		if (j.value == 'false') {
 			if ($('#message').css('display') === 'block')
 				$('#message').css('display', 'none');
 			return false;
 		}
+
+		if (j.value != 'true')
+			return false;
+
 		if ($('#message').css('display') === 'none') {
 			$('#message').html(p.target.innerText);
 			$('#message').css('display', 'block');
 		}
+
 		if ($('#message').html() !== p.target.innerText)
 			$('#message').html(p.target.innerText);
+		
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;

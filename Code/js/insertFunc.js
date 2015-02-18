@@ -1,19 +1,26 @@
 {{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
-	refresh = false;
+	refresh = false,
+	t, g;
 texts = { d:new Date() };
 
 function snum(){
 	switch (local.Config.Format) {
-		case 'Grid' : Num = 315, Num4 = 16, Num6 = 315; break;
-		case 'Full' : Num = 340, Num4 = 17, Num6 = 340; break;
-		case 'Light': Num = 525, Num4 = 16, Num6 = 180; break;
+		// [T]itle = { [W]idth, [F]ontSize }
+		case 'Grid' : t = {w: 315, f: 17}; g = {w: 315, f: 17}; break;
+		case 'Full' : t = {w: 340, f: 18}; g = {w: 340, f: 17}; break;
+		case 'Light': t = {w: 530, f: 18}; g = {w: 200, f: 16}; break;
 	}
 };
 snum();
 
 function InsertOnlineList() {
+	/*
+	* s - font size
+	* n - text
+	* w - max width
+	*/
 	function offSet(s,n,w) {
 		var d = $('#textWidth').css('fontSize', s+'px').html(n);
 		return (d.width()>w);
@@ -25,18 +32,24 @@ function InsertOnlineList() {
 			else { return b.toString()+j; }
 		}
 		var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+		
 		SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
-		Days = Math.floor(SubtractTimes/24/60/60);
-		SubtractTimes -= Days*24*60*60;
+		
+		Days = Math.floor(SubtractTimes/24/1200);
+		SubtractTimes -= Days*24*1200;
 		if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-		Hours = Math.floor(SubtractTimes/60/60);
-		SubtractTimes -= Hours*60*60;
+		
+		Hours = Math.floor(SubtractTimes/1200);
+		SubtractTimes -= Hours*1200;
 		Hours = h(Hours, 'h:');
+		
 		Minutes = Math.floor(SubtractTimes/60);
 		SubtractTimes -= Minutes*60;
 		Minutes = h(Minutes, 'm:')
+		
 		Seconds = Math.floor(SubtractTimes);
 		Seconds = h(Seconds, 's');
+		
 		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
 		return Time;
 	}
@@ -87,11 +100,11 @@ function InsertOnlineList() {
 
 		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
-				texts[StreamTitle] = offSet(Num4, StreamTitle, Num);
+				texts[StreamTitle] = offSet(t.f, StreamTitle, t.w);
 			} else { TitleWidth = texts[StreamTitle] }
 			
 			if (typeof texts[StreamGame] === 'undefined') {
-				texts[StreamGame] = offSet(Num4, StreamGame, Num6);
+				texts[StreamGame] = offSet(g.f, StreamGame, g.w);
 			} else { GameWidth = texts[StreamGame] }
 		}
 
@@ -108,8 +121,8 @@ function InsertOnlineList() {
 					pos: i
 				});
 
-				$.data($(b+'.inf>.title>a'), 'show', TitleWidth);
-				$.data($(b+'.inf>.game>a'), 'show', GameWidth);
+				$(b+'.inf>.title>a').attr('show', TitleWidth);
+				$(b+'.inf>.game>a').attr('show', GameWidth);
 
 				/*if (FirstLoadInsertFunc != 1)
 					Animation(i, ['fadeIn', false]);*/
@@ -144,8 +157,8 @@ function InsertOnlineList() {
 		    } else {
 				$(b+'.inf>.title>a').html(StreamTitle);
 				
-				$.data($(b+'.inf>.title>a'), 'show', TitleWidth);
-				$.data($(b+'.inf>.game>a'), 'show', GameWidth);
+				$(b+'.inf>.title>a').attr('show', TitleWidth);
+				$(b+'.inf>.game>a').attr('show', GameWidth);
 
 				$(b+'.inf>.game>a').html(StreamGame);
 				$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
