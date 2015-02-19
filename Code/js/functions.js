@@ -92,14 +92,14 @@ function time(t) {
     }
     var SubtractTimes, Days, Hours, Minutes, Seconds, Time
     
-    SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
+    SubtractTimes = (((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
     
-    Days = Math.floor(SubtractTimes/24/60/60);
-    SubtractTimes -= Days*24*1200;
-    if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+    Days = Math.floor(SubtractTimes/86400);
+    SubtractTimes -= Days*86400;
+    if (Days == 0) { Days = ''; } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
     
-    Hours = Math.floor(SubtractTimes/60/60);
-    SubtractTimes -= Hours*1200;
+    Hours = Math.floor(SubtractTimes/3600);
+    SubtractTimes -= Hours*3600;
     Hours = h(Hours, 'h:');
     
     Minutes = Math.floor(SubtractTimes/60);
