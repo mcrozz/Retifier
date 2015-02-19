@@ -7,10 +7,9 @@ if (localStorage.FirstLaunch === 'true') {
     BadgeOnlineCount(0);
     localJSON('Status.online', 0);
     if ($.inArray("object Object", localStorage.FollowingList) != -1) {
-        localStorage.FollowingList = "[]";
-        local.FollowingList = [];
+        localStorage.FollowingList = "{}";
         localStorage.Following = 0;
-        local.Following = 0;
+        send('refresh');
     }
     $.each(local.FollowingList, function(i,v) {
         FollowingList(i, null, false);
@@ -28,11 +27,15 @@ var basicCheck = function() {
         localStorage.Following = 0;
 
     if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
+        if (localStorage.FollowingList !== "{}") {
+            localStorage.FollowingList = "{}";
+            send('refresh');
+        }
         if (localStorage.FirstLaunch !== 'true') {
             localJSON('Status.update', 6);
             log('Change user name!');
-            return false;
         }
+        return false;
     }
     return true;
 }
@@ -52,7 +55,7 @@ var CheckStatus = function() {
                     Name   = d.stream.channel.name,
                     d_name = d.stream.channel.display_name,
                     Time   = d.stream.channel.updated_at;
-                
+
                 if (Status == null && FoLi.Stream.Title !== "")
                     Status = FoLi.Stream.Title
                 else if (Status == null && !FoLi.Stream)
@@ -62,17 +65,17 @@ var CheckStatus = function() {
                     Game = FoLi.Stream.Game
                 else if (Game == null && !FoLi.Stream)
                     Game = 'Not playing';
-                
+
                 if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
                     Notify({name:Name, title:Name+' just went live!', msg:Status, type:'online', button:true});
                     localJSON('Status.online', '+1');
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
-                
+
                 if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
                     Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
-                
+
                 if (new Date(FoLi.Stream.Time) - new Date(Time))
                     Time = FoLi.Stream.Time;
 
@@ -156,7 +159,7 @@ var CheckFollowingList = function() {
             return;
 
         log('Updating list of following channels');
-        
+
         if (local.Following == 0) {
             $.each(j.follows, function(i,v) {
                 FollowingList(i, v.channel.name, false);
