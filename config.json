@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 882,
+        "Build": 884,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -48,7 +48,6 @@
     "Create": [
         "img",
         "js",
-        "music",
         "css"
     ],
     "Firefox": {
