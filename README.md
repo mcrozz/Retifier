@@ -21,6 +21,7 @@ _Google Chrome_
 	* fixed ON/OFF statements
 	* added notify on offline
 	* optimized network code
+
 _Opera_
 * **0.9.0.4**
 	* bugfix
