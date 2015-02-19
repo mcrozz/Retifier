@@ -45,6 +45,7 @@ var CheckStatus = function() {
         .done(function(d){
             localJSON('Status.checked', '+1');
             if (d.stream) {
+                // Channel is online
                 var FoLi   = local.FollowingList[key],
                     Game   = d.stream.channel.game,
                     Status = d.stream.channel.status,
@@ -82,11 +83,14 @@ var CheckStatus = function() {
                     Viewers : d.stream.viewers,
                     Time    : Time });
             } else if (local.FollowingList[key].Stream) {
+                // Channel went offline
+                Notify({
+                    title: local.FollowingList[key].Name+" went offline",
+                    msg: "Been online for "+time(local.FollowingList[key].Stream.Time),
+                    type: "offline"
+                });
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
-                Notify({
-                    title: local.FollowingList[key].Name+" went offline", msg: "", type: "offline"
-                });
                 NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
                 FollowingList(key, null, false);
             }
