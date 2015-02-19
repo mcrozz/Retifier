@@ -180,6 +180,8 @@ var CheckFollowingList = function() {
             CheckStatus();
         }
     });
+    if (local.Status.update !== 5)
+        localJSON('Status.update', 0);
 }
 
 var TwitchFollowing = -1, TwitchStatus = -1;
