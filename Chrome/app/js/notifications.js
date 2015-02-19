@@ -18,7 +18,7 @@ function Notify(d) {
 	if (d.type === 'sys' || d.type === 'update')
 		d.name = 'd'+Math.floor(Math.random(100)*100);
 	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
-		d[v] = typeof d[v] === 'undefined' ? '' : d[v];
+		d[v] = (typeof d[v] === 'undefined') ? '' : d[v];
 	});
 	if (!d.msg || !d.title)
 		return Error("Invalid input");
@@ -28,10 +28,12 @@ function Notify(d) {
 		switch (t) {
 			case 'online':
 				times *= 30; break;
-			case 'changed':
-				times *= 10; break;
 			case 'offline':
 				times *= 30; break;
+			case 'changed':
+				times *= 10; break;
+			case 'follow':
+				times *= 3; break;
 			default:
 				times *= 5; break;
 		}
@@ -41,19 +43,17 @@ function Notify(d) {
 	function sendNotify(d) {
 		var k = d.name,
 			config = {
-			type           : "basic",
-			title          : d.title,
-			message        : d.msg,
-			contextMessage : d.context,
-			iconUrl        : "/img/notification_icon.png"}
+				type           : "basic",
+				title          : d.title,
+				message        : d.msg,
+				contextMessage : d.context,
+				iconUrl        : "/img/notification_icon.png"}
 		if (d.button)
-			config['buttons'] = [{
-				title:"Watch now!"
-			}];
+			config['buttons'] = [{ title:"Watch now!" }];
 		chrome.notifications.create('n'+ncnt, config, function(){
 			NotifyNames[d.name] = [false, 'n'+ncnt];
 			delNotify('n'+ncnt, d.type);
-			ncnt+=1;
+			ncnt++;
 		});
 		if (local.Config.Notifications.sound_status)
 			new Audio('DinDon.ogg').play();
@@ -62,7 +62,7 @@ function Notify(d) {
 	if (local.Config.Notifications.status) {
 		var j = local.Config.Notifications;
 		
-		if (!j[d.type])
+		if (!j[d.type] && d.type !== 'sys')
 			return false;
 
 		sendNotify(d);
