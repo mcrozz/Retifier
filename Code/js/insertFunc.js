@@ -177,7 +177,6 @@ function InsertOnlineList() {
 					});
 				
 				$(b+'.tum>.GT1').css({
-					'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
 					'background-size':'contain',
 					'cursor':'pointer'
 				});
