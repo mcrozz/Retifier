@@ -110,8 +110,8 @@ function InsertOnlineList() {
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (v.Stream) {
-		        if (doc('insertContentHere').innerHTML === '<div class="NOO"><a>No one online right now :(</a></div>')
-		        	doc('insertContentHere').innerHTML = null;
+		        if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
+		        	$('#insertContentHere').html('');
 				
 				insert({
 					str: StreamerName,
@@ -176,18 +176,18 @@ function InsertOnlineList() {
 						'zIndex': 0
 					});
 				
-				if (StreamGame == 'Not playing') {
-					// $('#stream_game_' + i).css('cursor', 'default');
-					// $('#stream_game_2_' + i).css('cursor', 'default');
+				$(b+'.tum>.GT1').css({
+					'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
+					'background-size':'contain',
+					'cursor':'pointer'
+				});
+				$(b+'.tum>.GT2').css({
+					'background':'url("./img/playing.png")',
+					'background-size': 'contain',
+					'cursor':'pointer'
+				});
+				if (StreamGame == 'Not playing')
 					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
-					// $('#stream_game_2_img_'+i).hide();
-				} else if ($(b+'.tum>.GT1').css('background').match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
-					$(b+'.tum>.GT1').css({
-						'background': 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
-						'background-size': 'contain',
-						'cursor': 'pointer'
-					});
-				}
 			}
 		}
 
