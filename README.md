@@ -22,8 +22,8 @@ _Google Chrome_
 	* added notify on offline
 	* optimized network code
 _Opera_
-* **1.0.0**
-	* Something
+* **0.9.0.4**
+	* bugfix
 
 [Show full changelog](CHANGELOG.md)
 
