@@ -12,6 +12,7 @@ function reLogin() {
 	localStorage.Following='0';
 	localStorage.FirstLaunch='true';
 	TimersetToUpdate=[];
+	send('update');
 	setTimeout(lgin, 1000);
 }
 
@@ -53,7 +54,7 @@ function lgin() {
 					localJSON('Config.User_Name',doc('SetUpUserNameInp').value);
 			        localJSON('Status.update',0);
 			        localStorage.FirstLaunch = false;
-					localJSON('Status.StopInterval',true);
+					send('refresh');
 					$('#FollowedChannelsOnline').html("Please wait a moment");
 					doc('ChgUsr').disabled = false;
 					doc('LstFlwdChnls').disabled = false;
