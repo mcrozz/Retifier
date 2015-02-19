@@ -1,5 +1,5 @@
-﻿/*
-	Copyright 2014 Ivan 'MacRozz' Zarudny
+/*
+	Copyright 2014-2015 Ivan 'MacRozz' Zarudny
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 */
 
 changes = [
+    "-1.0 Fresh look, added notifications (works only on 25+), fixed 'Following List' page, various improvements",
     "-0.9.0.4 Bug fixing",
     "-0.9.0.3 Code optimization",
     "-0.9.0.2 Fixed sound",
@@ -42,14 +43,14 @@ function versionCheck() {
                 '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
                 '<button id="msgClose">Okay</button>';
 
-            
+
             msgUnit += '<div class="msgChange">Please disable or enable option below</div>';
             msgUnit += '<div class="msgCheckbox"><input type="checkbox" id="msgDisSmth_1" checked="false">';
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
             msgUnit += '</input></div>';
 
             Animation('WhatsNew', ['slideInDown', false]);
-            
+
             doc('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
                 localStorage.App_Version_Update=false;
