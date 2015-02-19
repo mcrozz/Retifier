@@ -1,5 +1,6 @@
 ﻿{{LICENSE_HEADER}}
 changes = [
+    "-1.4.1 changed font to PermianSans Typeface, fixed ON/OFF statements, added notify on offline, optimized network code",
     "-1.4 Fresh look, fixed 'Following List' page, various improvements",
     "-1.3.9.9 Bug fixing",
     "-1.3.9.8 Code optimization",
@@ -45,9 +46,9 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.4": {
-        "msg": "Fresh look",
-        "contain": "-Complete redesigned 'Options' tab <br>-Fixed 'Following List' page <br>-Various improvements"
+    "v.1.4.1": {
+        "msg": "Various improvements",
+        "contain": "-changed font to PermianSans Typeface<br>-fixed ON/OFF statements<br>-added notify on offline<br>-optimized network code"
     }
 };
 
@@ -65,14 +66,14 @@ function versionCheck() {
                 '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
                 '<button id="msgClose">Okay</button>';
 
-            
+
             msgUnit += '<div class="msgChange">Please disable or enable option below</div>';
             msgUnit += '<div class="msgCheckbox"><input type="checkbox" id="msgDisSmth_1" checked="false">';
             msgUnit += messages[versionGot]['change']['STORAGE'][1];
             msgUnit += '</input></div>';
 
             Animation('WhatsNew', ['slideInDown', false]);
-            
+
             doc('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
                 localStorage.App_Version_Update=false;

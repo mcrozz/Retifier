@@ -1,52 +1,63 @@
 {{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
 	TimersetToUpdate = [],
-	refresh = false;
+	refresh = false,
+	t, g;
 texts = { d:new Date() };
 
 function snum(){
 	switch (local.Config.Format) {
-		case 'Grid' : Num = 315, Num2 = 43, Num3 = 'none', Num4 = 16, Num6 = 315; break;
-		case 'Full' : Num = 340, Num2 = 43, Num3 = 'none', Num4 = 17, Num6 = 340; break;
-		case 'Light': Num = 525, Num2 = 43, Num3 = 90,     Num4 = 16, Num6 = 180; break;
+		// [T]itle = { [W]idth, [F]ontSize }
+		case 'Grid' : t = {w: 315, f: 17}; g = {w: 315, f: 17}; break;
+		case 'Full' : t = {w: 340, f: 18}; g = {w: 340, f: 17}; break;
+		case 'Light': t = {w: 530, f: 18}; g = {w: 200, f: 16}; break;
 	}
 };
 snum();
 
 function InsertOnlineList() {
+	/*
+	* s - font size
+	* n - text
+	* w - max width
+	*/
 	function offSet(s,n,w) {
-		var d = doc('textWidth');
-		d.style.fontSize = s+'px';
-		d.innerHTML = n;
-		return (d.offsetWidth>w);
+		var d = $('#textWidth').css('fontSize', s+'px').html(n);
+		return (d.width()>w);
 	}
-	function time(t) {
-		function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
-		}
-		var SubtractTimes, Days, Hours, Minutes, Seconds, Time
-		SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
-		Days = Math.floor(SubtractTimes/24/60/60);
-		SubtractTimes -= Days*24*60*60;
-		if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-		Hours = Math.floor(SubtractTimes/60/60);
-		SubtractTimes -= Hours*60*60;
-		Hours = h(Hours, 'h:');
-		Minutes = Math.floor(SubtractTimes/60);
-		SubtractTimes -= Minutes*60;
-		Minutes = h(Minutes, 'm:')
-		Seconds = Math.floor(SubtractTimes);
-		Seconds = h(Seconds, 's');
-		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-		return Time;
+	/*
+	* a : {
+	*  str : streamer
+	*  ttl : title
+	*  gme : game
+	*  viw : viewers count
+	*  pos : id
+	* }
+	*/
+	function insert(a) {
+		var t = '';
+		t += '<div class="content" id="'+a.pos+'">'
+			+'<div class="tum"><a href="http://www.twitch.tv/'+a.str
+			+'" target="_blank">Launch Stream</a><img class="ST" />'
+			+'<img class="GT1" /><img class="GT2" />'
+			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
+			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
+			+'<div class="streamer"><a>'+a.str+'</a></div>'
+			+'<div class="viewers"><a>'+a.viw+' viewers</a></div>'
+			+'<div class="game"><a ';
+		if (a.gme !== 'Not Playing')
+			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
+		t += '>'+a.gme+'</a></div><div class="adds"><div class="page">'
+			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
+			+'<button type="button" class="button">Channel page</button></a></div>'
+			+'<div class="duration"><a></a></div></div>';
+		doc('insertContentHere').innerHTML += t;
 	}
 
-	if (local.Status.online <= 2)
-		doc('insertContentHere').style.overflow='hidden'
-	else
-		doc('insertContentHere').style.overflow='auto';
+	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
+
+	if (TimersetToUpdate.length >= 1 && $('#'+TimersetToUpdate[0]).length == 0)
+		TimersetToUpdate = [];
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
@@ -56,103 +67,103 @@ function InsertOnlineList() {
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,
-			SLU, dc;
+			b             = '#'+i+'>',
+			dc;
 
 		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
-				texts[StreamTitle] = offSet(Num4, StreamTitle, Num);
+				texts[StreamTitle] = offSet(t.f, StreamTitle, t.w);
 			} else { TitleWidth = texts[StreamTitle] }
-			
+
 			if (typeof texts[StreamGame] === 'undefined') {
-				texts[StreamGame] = offSet(Num4, StreamGame, Num6);
+				texts[StreamGame] = offSet(g.f, StreamGame, g.w);
 			} else { GameWidth = texts[StreamGame] }
 		}
 
 		if (TimersetToUpdate.indexOf(i) < 0) {
 		    if (v.Stream) {
-		        if (doc('insertContentHere').innerHTML === '<div class="NOO"><a>No one online right now :(</a></div>')
-		        	doc('insertContentHere').innerHTML = null;
-				
-				SLU = '<div class="content" id="'+i+'">';
-					SLU += '<div class="tumblr">';
-						SLU += '<a class="LaunchStream" href="http://www.twitch.tv/'+StreamerName+'" target="_blank">Launch Stream</a>'
-						SLU += '<img class="TumbStream" id="stream_img_'+i+'" />';
-						SLU += '<img class="GameTumb1" id="stream_game_img_'+i+'" />';
-						SLU += '<img class="GameTumb2" id="stream_game_2_img_'+i+'" />';
-						SLU += '<div class="zoom" id="zoom_'+i+'"></div>';
-					SLU += '</div><div class="information">';
-						SLU += '<div id="Title_'+i+'" type="inf">'+StreamTitle+'</div>';
-						SLU += '<div class="streamer">';
-							SLU += '<a id="stream_title_'+i+'" target="_blank" href="http://www.twitch.tv/'+StreamerName+'">'+ShortStrmName+'</a>';
-						SLU += '</div><div class="viewers">';
-							SLU += '<div class="informationTextViewers" id="Viewers_'+i+'">'+StreamVievers+'</div>';
-							SLU += '<p>viewers</p>';
-						SLU += '</div><div class="informationTextGame">';
-							SLU += '<a id="stream_game_'+i+'" type="inf"';
-							if (StreamGame!=='Not Playing')
-								SLU+=' href="http://www.twitch.tv/directory/game/'+StreamGame+'" target="_blank"';
-							SLU += '>'+StreamGame+'</a>';
-						SLU += '</div><div class="StreamOnChannelPage">';
-							SLU += '<div class="ChannelPageDiv"><a href="http://www.twitch.tv/"'+StreamerName+'" target="_blank">';
-								SLU += '<button type="button" class="button">Channel page</button></a></div>';
-							SLU += '<div class="StreamDurationDiv"><a id="Stream_Duration_'+i+'" class="StreamDuration"></a>';
-				SLU += '</div></div></div></div>';
+		        if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
+		        	$('#insertContentHere').html('');
 
-				doc('insertContentHere').innerHTML += SLU;
+				insert({
+					str: StreamerName,
+					ttl: StreamTitle,
+					gme: StreamGame,
+					viw: StreamVievers,
+					pos: i
+				});
 
-				$.data(doc("Title_"+i), 'show', TitleWidth);
-				$.data(doc("stream_game_"+i), 'show', TitleWidth);
+				$(b+'.inf>.title>a').attr('show', TitleWidth);
+				$(b+'.inf>.game>a').attr('show', GameWidth);
 
-				if (FirstLoadInsertFunc != 1)
-					Animation(i, ['fadeIn', false]);
+				/*if (FirstLoadInsertFunc != 1)
+					Animation(i, ['fadeIn', false]);*/
 
 				TimersetToUpdate.push(i);
 
-				doc('stream_img_'+i).setAttribute('style','background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer');
+				$(b+'.tum>.ST').css({
+					'background':'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+					'background-size':'contain',
+					'cursor':'pointer'
+				});
+				$(b+'.tum>.GT2').css({
+					'background':'url("./img/playing.png")',
+					'background-size': 'contain',
+					'cursor':'pointer'
+				});
 				if (StreamGame != 'Not playing') {
-					doc('stream_game_img_'+i).setAttribute('style','background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
-					doc('stream_game_2_img_'+i).setAttribute('style','background:url("./img/playing.png");background-size:'+Num2+'px;cursor:pointer')
+					$(b+'.tum>.GT1').css({
+						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
+						'background-size':'contain',
+						'cursor':'pointer'
+					});
 				} else {
-					$('#stream_game_'+i).css('cursor', 'default');
-					$('#stream_game_img_'+i).hide();
-					$('#stream_game_2_img_'+i).hide();
-					$('#stream_game_2_img_'+i).css('cursor', 'default');
+					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
+					$(b+'.tum>.GT2').css('cursor', 'default');
 				}
 			}
-		} else if (TimersetToUpdate.indexOf(i) >= 0) {
+		} else if (TimersetToUpdate.indexOf(i) != -1) {
 		    if (!v.Stream && doc(i) !== null) {
 		    	doc(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
-				doc('Title_'+i).innerHTML = StreamTitle
-				
-				$.data(doc("Title_"+i), 'show', TitleWidth);
-				$.data(doc("stream_game_"+i), 'show', TitleWidth);
+				$(b+'.inf>.title>a').html(StreamTitle);
 
-				doc('stream_game_'+i).innerHTML = StreamGame;
-				doc('Viewers_' + i).innerHTML = StreamVievers;
+				$(b+'.inf>.title>a').attr('show', TitleWidth);
+				$(b+'.inf>.game>a').attr('show', GameWidth);
 
-				if (local.Config.Duration_of_stream && doc('Stream_Duration_'+i)) {
-           			doc('Stream_Duration_'+i).innerHTML = time(v.Stream.Time); }
-				else if (!local.Config.Duration_of_stream && doc('Stream_Duration_'+i).innerHTML !== '') {
-					doc('Stream_Duration_'+i).innerHTML = ''; }
+				$(b+'.inf>.game>a').html(StreamGame);
+				$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
 
-				if ($('#stream_img_'+i).css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-					doc('stream_img_'+i).setAttribute('style', 'background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg);background-size:'+Num3+'px;cursor:pointer;z-index:0');
-				
-				if (StreamGame == 'Not playing') {
-					$('#stream_game_' + i).css('cursor', 'default');
-					$('#stream_game_2_' + i).css('cursor', 'default');
-					$('#stream_game_img_'+i).hide();
-					$('#stream_game_2_img_'+i).hide();
-				} else if (doc('stream_game_img_'+i).style.background.match(/(?:boxart)(.*)(?:\.jpg)/)[0].slice(7) !== encodeURIComponent(StreamGame).replace('%3A',':')+'.jpg') {
-					doc('stream_game_img_' + i).setAttribute('style', 'background:url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg");background-size:'+Num2+'px;cursor:pointer')
-				}
+				if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
+           			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
+           		else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
+					$(b+'.inf>.adds>.duration>a').html('');
+
+				if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+					$(b+'.tum>.ST').css({
+						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+						'background-size': 'contain',
+						'cursor': 'pointer',
+						'zIndex': 0
+					});
+
+				$(b+'.tum>.GT1').css({
+					'background-size':'contain',
+					'cursor':'pointer'
+				});
+				$(b+'.tum>.GT2').css({
+					'background':'url("./img/playing.png")',
+					'background-size': 'contain',
+					'cursor':'pointer'
+				});
+				if (StreamGame == 'Not playing')
+					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
 			}
 		}
 
-		if (local.Status.online == 0 && local.Status.update == 0) 
-		    doc('insertContentHere').innerHTML = '<div class="NOO"><a>No one online right now :(</a></div>';
+		if (local.Status.online == 0 && local.Status.update == 0)
+		    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	});
 }
 
@@ -178,25 +189,33 @@ setInterval(function(){
 	if (!Onlv)
 		Onlv = 0;
 	switch (Upd) {
-		case 0: j.innerHTML = 'Now online '+Onlv+' from '+localStorage.Following; break;
-		case 1: j.innerHTML='Behold! Update!'; break;
-		case 2: j.innerHTML='Updating list of followed channels...'; break;
-		case 3: j.innerHTML='List of followed channels updated.'; break;
-		case 4: j.innerHTML = 'Checking, online '+Onlv+' from '+localStorage.Following; break;
-		case 5: j.innerHTML='App have a problem with update'; break;
-		case 6: j.innerHTML="Name doesn't set up yet!"; break;
+		case 0: j.innerHTML = 'Now online: '+Onlv+'/'+localStorage.Following; break;
+		case 1: j.innerHTML = 'Behold! Update!'; break;
+		case 2: j.innerHTML = 'Updating list of followed channels...'; break;
+		case 3: j.innerHTML = 'List of followed channels updated.'; break;
+		case 4: j.innerHTML = 'Checking, online '+Onlv+'/'+localStorage.Following; break;
+		case 5: j.innerHTML = 'App have a problem with update'; break;
+		case 6: j.innerHTML = "Name doesn't set up yet!"; break;
 	}
 	pg = Upd!==0;
 	if (pg) {
-		if (doc('CheckingProgress').hidden) { $('#CheckingProgress').show(); doc('CheckingProgress').hidden=false; }
+		if (doc('CheckingProgress').hidden) {
+			$('#CheckingProgress').show();
+			doc('CheckingProgress').hidden=false;
+		}
 		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
 		else { st+=1 }
-	} else if (!doc('CheckingProgress').hidden) { $('#CheckingProgress').hide(); doc('CheckingProgress').hidden=true; }
+	} else if (!doc('CheckingProgress').hidden) {
+		$('#CheckingProgress').hide();
+		doc('CheckingProgress').hidden=true;
+	}
 }, 100);
 
 var run = function() {
 	(function() {
+		// You can relax for now... until next time...
+		return true;
 		if (typeof local.Config.Timeout !== 'undefined') {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
 			dif/=86400000;

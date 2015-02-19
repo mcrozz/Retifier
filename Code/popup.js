@@ -3,21 +3,18 @@ $(window).on('load',function() {
 	var TimersetToUpdate = [];
 
 	function reloadStyle(l){
-		if (l)
-			document.getElementsByTagName("style")[0].remove();
-		var style = document.createElement('style'),
-			AddAnyways, css;
+		var css;
 		if (!local.Config.Format)
 			localJSON('Config.Format', 'Grid');
 		switch (local.Config.Format) {
 			case 'Full':
-				css = '{{CSS_FULL}}'; break;
+				css = 'full'; break;
 			case 'Light':
-				css = '{{CSS_MINI}}'; break;
+				css = 'mini'; break;
 			case 'Grid':
-				css = '{{CSS_GRID}}'; break;
+				css = 'grid'; break;
 		}
-		style.appendChild(document.createTextNode(css)); document.getElementsByTagName('head')[0].appendChild(style);
+		$('#cust')[0].href = "./css/"+css+".css";
 	}
 
 	function clickChangeUserCls(e) {
@@ -46,9 +43,11 @@ $(window).on('load',function() {
 		
 		doc('.NotifyStreamerChanged').disabled = a;
 		doc('.NotifyStreamer').disabled = a;
+		doc('.NotifyStreamer2').disabled = a;
 		doc('.NotifyUpdate').disabled = a;
 
 		doc('.NotifyStreamer').checked = local.Config.Notifications.online;
+		doc('.NotifyStreamer2').checked = local.Config.Notifications.offline;
 		doc('.NotifyUpdate').checked = local.Config.Notifications.update;
 		doc('.NotifyStreamerChanged').checked = local.Config.Notifications.follow;
 	
@@ -77,6 +76,7 @@ $(window).on('load',function() {
 		localJSON('Config.Notifications.status', doc('.EnNotify').checked);
 
 		localJSON('Config.Notifications.online', doc('.NotifyStreamer').checked);
+		localJSON('Config.Notifications.offline', doc('.NotifyStreamer2').checked);
 		localJSON('Config.Notifications.update', doc('.NotifyUpdate').checked);
 		localJSON('Config.Notifications.follow', doc('.NotifyStreamerChanged').checked);
 		
@@ -107,7 +107,7 @@ $(window).on('load',function() {
 
 	function FollowedList(c) {
 		function append(i,v) {
-			var j = (v.Stream)?"rgb(0, 194, 40)":"black";
+			var j = (v.Stream) ? "rgb(0, 194, 40)" : "black";
 			$('#FollowingList').append('<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>');
 		}
 		if (c.id === 'ClsFlwdChnlsLst') {
@@ -226,7 +226,7 @@ $(window).on('load',function() {
 	ael('#SoundCheck', 0, function(){
 		doc('SoundSelect').disabled = !doc('SoundCheck').checked });
 	ael('#refresh', 0, function(){
-		localJSON('Status.StopInterval', true) });
+		send('refresh'); });
 	ael('#UserName>p', 0, reLogin);
 	ael('#zoomContent', 0, function() {
 		Animation('zoomContent', 'fadeOut', true);
@@ -247,23 +247,33 @@ $(window).on('load',function() {
 		}
 	}
 	document.onmousemove = function(p){
-		if (p.target.getAttribute('type') !== 'inf') {
+		function hide() {
 			if ($('#message').css('display') === 'block')
 				$('#message').css('display', 'none');
 			return false;
 		}
-		if (!$.data(p.target, 'show'))
+		var j = p.target.attributes.getNamedItem('show');
+		if (j == null || typeof j === 'undefined')
+			return hide();
+		if (j.value == 'false')
+			return hide();
+		if (j.value != 'true')
 			return false;
+
 		if ($('#message').css('display') === 'none') {
-			doc('message').innerHTML = p.target.innerText;
+			$('#message').html(p.target.innerText);
 			$('#message').css('display', 'block');
 		}
-		if (doc('message').innerHTML !== p.target.innerText)
-			doc('message').innerHTML = p.target.innerText;
+
+		if ($('#message').html() !== p.target.innerText)
+			$('#message').html(p.target.innerText);
+		
 		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
 		doc('message').style.left = left+'px';
 		doc('message').style.top = top+'px';
 	}
+
+	{{MSG_PARSER_POP_FUNC}}
 });

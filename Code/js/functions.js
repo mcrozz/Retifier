@@ -9,12 +9,13 @@ function deb(msg) { console.debug(msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
 function doc(id){if (id[0] === '.') return $(id)[0]; return document.getElementById(id);}
 {{BADGE_ONLINE_COUNT}}
+{{SEND_MSG}}
 function Animation(id, n, f) {
     if (doc(id)) {
         var ci = $('#'+id);
         if (!n[1]) ci.show();
         if (!n[2]) n[2]=1;
-        ci.css('-{{PLATFORM}}-animation', n[0]+' both '+n[2]+'s');
+        ci.css('-{{PLATFORM_}}-animation', n[0]+' both '+n[2]+'s');
         setTimeout(function(){
             if (n[1]) ci.hide();
             if (typeof f === 'function') f();
@@ -82,6 +83,35 @@ function FollowingList(id, nm, st) {
 }
 
 {{NOTIFY_USER_FUNCTION}}
+
+function time(t) {
+    function h(b,j) {
+        if (b === 0) { return '00'+j; }
+        else if (b < 10) { return '0'+b+j; }
+        else { return b.toString()+j; }
+    }
+    var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+    
+    SubtractTimes = (((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
+    
+    Days = Math.floor(SubtractTimes/86400);
+    SubtractTimes -= Days*86400;
+    if (Days == 0) { Days = ''; } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+    
+    Hours = Math.floor(SubtractTimes/3600);
+    SubtractTimes -= Hours*3600;
+    Hours = h(Hours, 'h:');
+    
+    Minutes = Math.floor(SubtractTimes/60);
+    SubtractTimes -= Minutes*60;
+    Minutes = h(Minutes, 'm:')
+    
+    Seconds = Math.floor(SubtractTimes);
+    Seconds = h(Seconds, 's');
+    
+    Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+    return Time;
+}
 
 // https://www.google-analytics.com
 (function(i,s,o,g,r,a,m){

@@ -6,43 +6,76 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
     BadgeOnlineCount(0);
     localJSON('Status.online', 0);
-    for (var i=0; i<local.Following; i++)
+    if ($.inArray("object Object", localStorage.FollowingList) != -1) {
+        localStorage.FollowingList = "{}";
+        localStorage.Following = 0;
+        send('refresh');
+    }
+    $.each(local.FollowingList, function(i,v) {
         FollowingList(i, null, false);
+    });
     if (local.Config.Format==='Mini')
         localJSON('Config.Format', 'Light');
 }
 
-try { ga('set', 'appVersion', local.App_Version.Ver.replace('v.','')) }catch(e){};
+try { ga('set', 'appVersion', local.App_Version.Ver) }catch(e){};
 
 var NowOnline = [];
 
-function CheckFollowingList() {
-    function checkStatus(key,j,ch) {
+var basicCheck = function() {
+    if (!localStorage.Following)
+        localStorage.Following = 0;
+
+    if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
+        if (localStorage.FollowingList !== "{}") {
+            localStorage.FollowingList = "{}";
+            send('refresh');
+        }
+        if (localStorage.FirstLaunch !== 'true') {
+            localJSON('Status.update', 6);
+            log('Change user name!');
+        }
+        return false;
+    }
+    return true;
+}
+var CheckStatus = function() {
+    function check(key,j) {
         $.getJSON(j)
-        .fail(function(d) { 
-            err({message:'checkStatus() ended with error',stack:d});
+        .fail(function(d) {
+            err({message:'checkStatus() ended with error', stack:d});
         })
         .done(function(d){
             localJSON('Status.checked', '+1');
             if (d.stream) {
+                // Channel is online
                 var FoLi   = local.FollowingList[key],
                     Game   = d.stream.channel.game,
                     Status = d.stream.channel.status,
                     Name   = d.stream.channel.name,
                     d_name = d.stream.channel.display_name,
-                    Time   = d.stream.channel.updated_at.replace('T', ' ').replace('Z', ' ')+' GMT+0000';
-                if (Status === null)
+                    Time   = d.stream.channel.updated_at;
+
+                if (Status == null && FoLi.Stream.Title !== "")
+                    Status = FoLi.Stream.Title
+                else if (Status == null && !FoLi.Stream)
                     Status = 'Untitled stream';
-                if (Game === null)
+
+                if (Game == null && FoLi.Stream.Game !== "")
+                    Game = FoLi.Stream.Game
+                else if (Game == null && !FoLi.Stream)
                     Game = 'Not playing';
+
                 if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
                     Notify({name:Name, title:Name+' just went live!', msg:Status, type:'online', button:true});
                     localJSON('Status.online', '+1');
                     NowOnline.push(Name);
                     BadgeOnlineCount(local.Status.online);
                 }
+
                 if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
-                        Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+                    Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+
                 if (new Date(FoLi.Stream.Time) - new Date(Time))
                     Time = FoLi.Stream.Time;
 
@@ -53,17 +86,18 @@ function CheckFollowingList() {
                     Viewers : d.stream.viewers,
                     Time    : Time });
             } else if (local.FollowingList[key].Stream) {
+                // Channel went offline
+                Notify({
+                    title: local.FollowingList[key].Name+" went offline",
+                    msg: "Been online for "+time(local.FollowingList[key].Stream.Time),
+                    type: "offline"
+                });
                 localJSON('Status.online', '-1');
                 BadgeOnlineCount(local.Status.online);
                 NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
-                FollowingList(key, null, false)                      
+                FollowingList(key, null, false);
             }
             if (local.Status.checked==local.Following || key===local.Following) {
-                if (ch) {
-                    localJSON('Status.online', 0);
-                    for (var i=0; i<local.Following; i++)
-                        if (local.FollowingList[i].Stream) { localJSON('Status.online', '+1'); };
-                }
                 if (local.Status.online === 0 && NowOnline.length !== 0)
                     localJSON('Status.online', NowOnline.length);
                 BadgeOnlineCount(local.Status.online);
@@ -83,63 +117,97 @@ function CheckFollowingList() {
         });
     }
 
-    if (!localStorage.Following)
-        localStorage.Following = 0;
+    if (!basicCheck())
+        return;
     localJSON('Status.update', 1);
+    log("Checking status of streamers");
+    Notify({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
+    localJSON('Status.update', 4);
+    localJSON('Status.checked', 0);
 
-    if (['','Guest',undefined].indexOf(local.Config.User_Name) !== -1) {
-        if (localStorage.FirstLaunch !== 'true') {
-            localJSON('Status.update', 6);
-            log('Change user name!');
-        }
-    } else {
-        log("Behold! Update is comin'");
-        Notify({title:'Behold! Update!', msg:'Starting update...', type:'update'});
-        localJSON('Status.update', 2);
+    var token = local.Config.token;
+    $.each(local.FollowingList, function(i,v) {
+        var k = 'https://api.twitch.tv/kraken/streams/'+v.Name;
+        if (token !== "")
+            k += '?oauth_token='+token;
+        check(i, k);
+    });
 
-        var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
-        if (local.Config.token !== "")
-            uri += '&oauth_token='+local.Config.token;
+    if (local.Status.update !== 5)
+        localJSON('Status.update', 0);
+}
+var CheckFollowingList = function() {
+    if (!basicCheck())
+        return;
+    localJSON('Status.update', 1);
+    log("Checking following list");
+    Notify({title:'Status', msg:'Checking following list...', type:'update'});
+    localJSON('Status.update', 2);
 
-        $.getJSON(uri)
-        .fail(function(j) {
-            err({message:"Can't get following list",stack:j});
-            localJSON('Status.update', 5);
-            Notify({title:"Update follows list", msg:"Error, can't update", type:"update"});
-        })
-        .done(function(j) {
-            var chg;
-            if (local.Following !== j._total) {
-                log('Update list of following channels');
-                localJSON('Following', j._total);
-                chg = true;
-                for (var i=0; i<j._total; i++)
-                    FollowingList(i, j.follows[i].channel.name, false);
-            } else {
-                chg = false; }
-            localJSON('Status.checked', 0);
-            localJSON('Status.update', 4);
-            log('Checking Status of channels...');
-            for (var i=0; i<local.Following; i++) {
-                var k = 'https://api.twitch.tv/kraken/streams/'+local.FollowingList[i].Name;
-                if (local.Config.token !== "")
-                    k += '?oauth_token='+local.Config.token;
-                checkStatus(i, k, chg);
+    var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
+    if (local.Config.token !== "")
+        uri += '&oauth_token='+local.Config.token;
+
+    $.getJSON(uri)
+    .fail(function(j) {
+        err({message:"Can't get following list",stack:j});
+        localJSON('Status.update', 5);
+        Notify({title:"Error happen", msg:"Cannot update following list", type:"update"});
+    })
+    .done(function(j) {
+        if (local.Following === j._total)
+            return;
+
+        log('Updating list of following channels');
+
+        if (local.Following == 0) {
+            $.each(j.follows, function(i,v) {
+                FollowingList(i, v.channel.name, false);
+            });
+            localJSON('Following', j._total);
+            CheckStatus();
+        } else {
+            localJSON('Following', j._total);
+            var NewJson = [];
+            $.each(local.FollowingList, function(i,v) {
+                var del = true;
+                $.each(j.follows, function(j,k) {
+                    if (k.channel.name === v.Name)
+                        del = false;
+                });
+                if (!del)
+                    NewJson[i] = v;
+            });
+            try {
+                localStorage.FollowingList = JSON.stringify(NewJson);
+            } catch(e) {
+                err(e);
             }
-        });
-    }
+            localJSON('Status.online', 0);
+            CheckStatus();
+        }
+    });
+    if (local.Status.update !== 5)
+        localJSON('Status.update', 0);
 }
 
-(function(){
-    CheckFollowingList();
-    CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000*local.Config.Interval_of_Checking);
-    localJSON('Status.StopInterval', false);
-    setInterval(function(){
-        if (local.Status.StopInterval) {
-            clearInterval(CheckTwitch);
-            CheckFollowingList();
-            CheckTwitch = setInterval(function(){CheckFollowingList()}, 60000*local.Config.Interval_of_Checking);
-            localJSON('Status.StopInterval', false)
-        }
-    },500);
-})();
+var TwitchFollowing = -1, TwitchStatus = -1;
+var initTwitch = function() {
+    function setIntervals() {
+        TwitchFollowing = setInterval(function(){CheckFollowingList()}, 120000);
+        CheckFollowingList();
+
+        TwitchStatus = setInterval(function(){CheckStatus()}, 60000*local.Config.Interval_of_Checking);
+        CheckStatus();
+    }
+    if (TwitchFollowing == -1 && TwitchStatus == -1)
+        setIntervals()
+    else {
+        clearInterval(TwitchFollowing);
+        clearInterval(TwitchStatus);
+        setIntervals();
+    }
+};
+initTwitch();
+
+{{MSG_PARSER_BAC_FUNC}}

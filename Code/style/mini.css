@@ -1,45 +1,48 @@
-.adds>.duration>a {
+{{LICENSE_HEADER}}
+.adds>.duration>a  {
 	color: black;
 	margin: 0 0 0 17;
 	font-size: 19;
 }
-.inf>.streamer {
+.inf>.streamer  {
 	width: 180px;
-	height: 22px;
+	height: 20px;
 	display: inline-block;
 }
-.inf>.streamer>a {
+.inf>.streamer>a  {
 	cursor: pointer;
-	font-size: 18px;
+	font-size: 16;
 	color: black;
 	display: inline;
 	padding-left: 5px;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
+	padding-left: 5;
 }
-button:focus {
+button:focus  {
 	outline-color: rgba(255, 255, 255, 0);
 }
-.inf>.viewers {
+.inf>.viewers  {
 	width: 150px;
 	height: 20px;
-	display: inline-flex;
+	position: absolute;
 	right: 12;
 	text-align: right;
 	top: 20;
 }
-.inf>.viewers>a {
+.inf>.viewers>p  {
 	cursor: default;
-	color: black;
+	width: 75px;
+	padding-left: 5px;
 	display: inline;
-	font-size: 18px;
+	border: none;
 }
-.content {
+.content  {
 	height: 90px;
 	width: 685px;
 	padding: 2;
 	position: relative;
 }
-.content>.inf {
+.content>.inf  {
 	width: 535px;
 	height: 80px;
 	display: inline;
@@ -47,7 +50,7 @@ button:focus {
 	right: 0;
 	top: 6;
 }
-.inf>.title {
+.inf>.title  {
 	cursor: default;
 	display: -webkit-inline-flex;
 	z-index: 1;
@@ -59,11 +62,7 @@ button:focus {
 	width: 525px;
 	border-bottom: 1px black solid;
 }
-.title>a {
-	color: black;
-	font-size: 18px;
-}
-.inf>.game {
+.inf>.game  {
 	cursor: default;
 	display: inline;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
@@ -71,7 +70,7 @@ button:focus {
 }
 .inf>.game {
 	cursor: pointer;
-	display: inline-flex;
+	display: inline-block;
 	width: 195px;
 	left: 145px;
 	text-align: center;

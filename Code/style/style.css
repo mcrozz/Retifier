@@ -1,11 +1,7 @@
 {{LICENSE_HEADER}}
 @font-face {
 	font-family: ExtFont;
-<<<<<<< HEAD
 	src: url(PermianSansTypeface.otf);
-=======
-	src: url(../PermianSansTypeface.otf);
->>>>>>> remotes/origin/WIP
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
@@ -156,7 +152,7 @@ button {
 }
 
 button.dash {
-	background: url(/img/Buttons.png) no-repeat 0 -40px;
+	background: url(/img/img.png) no-repeat -764px -40px;
 	color: white;
 	text-decoration: none;
 	font-size: 22px;
@@ -164,7 +160,7 @@ button.dash {
 	height: 40px;
 }
 button.dash:hover {
-	background-position: 0 0;
+	background-position: -764px 0;
 }
 
 button.first {
@@ -205,7 +201,7 @@ button.button:hover {
 }
 
 .TwitchLogo {
-	background: url(/img/TwitchLogo.png) no-repeat;
+	background: url(/img/img.png) no-repeat -564px 0;
 	margin-left: 273px;
 	width: 151px;
 	height: 50px;
@@ -289,16 +285,16 @@ button.button:hover {
     border-radius: 5px;
 }
 .Full {
-    background: url(/img/Full.png) no-repeat;
-    background-size: contain;
+    background: url(/img/img.png) no-repeat -100px 0;
+    background-size: 460;
 }
 .Light {
-    background: url(/img/Mini.png) no-repeat;
-    background-size: contain;
+    background: url(/img/img.png) no-repeat 0 0;
+    background-size: 460;
 }
 .Grid {
-    background: url(/img/Grid.png) no-repeat;
-    background-size: contain;
+    background: url(/img/img.png) no-repeat -51px 0;
+    background-size: 460;
 }
 
 #UserName {
@@ -665,7 +661,8 @@ button.WelcomOK:hover {
 }
 
 #refresh {
-	background: url(/img/refresh.png) no-repeat;
+	background: url(/img/img.png) no-repeat -605px -80px;
+	background-size: 1100;
 	display: block;
 	position: absolute;
 	width: 32px;
@@ -691,7 +688,6 @@ button.WelcomOK:hover {
 	position: absolute;
 	z-index: 99;
 	width: 310px;
-	font-size: 18px;
 	padding: 5 15 5 15;
 	background: white;
 	text-align: center;
@@ -712,7 +708,7 @@ button.WelcomOK:hover {
 	position: absolute;
 	width: 98px;
 	height: 113px;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(1, 1, 1, 0.8)), to(rgba(1, 1, 1, 0.5)));
+	background: -webkit-gradient(linear,	left top,	left bottom,	from(rgba(1, 1, 1, 0.8)), to(rgba(1, 1, 1, 0.5)));
 }
 #FoundAbugText>a {
 	z-index: 20;
@@ -730,8 +726,8 @@ button.WelcomOK:hover {
 	color: black;
 }
 .zoom {
-	background: url(/img/zoom.png) no-repeat;
-	background-size: contain;
+	background: url(/img/img.png) no-repeat -255px 0;
+	background-size: 465;
 	display: block;
 	position: absolute;
 	width: 32px;

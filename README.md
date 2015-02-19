@@ -2,22 +2,33 @@
 ![Screenshot](https://raw.githubusercontent.com/mcrozz/Twitch.tv_Notifier/master/screenshots/ScreenShot_1.png)
 
 # In web stores
-
 * For Google Chrome: [In Google Web Store](http://bit.ly/TwitchNotifer)
 * For Mozilla FireFox: [In Mozilla Add-Ons (currently not available)](http://bit.ly/TwitchTVfox)
 * For Safari:	Coming soon...
 * For Opera: [In Opera Add-Ons](http://bit.ly/TwitchOpera)
 
 # Installation
-
 * Clone https://github.com/mcrozz/Twitch.tv_Notifier
 * Start build.py or build.bat
 * Choose platform
 * Enable developer mode in browser
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
+# Changelog
+_Google Chrome_ - **1.4.1**
+	* changed font to PermianSans Typeface
+	* fixed ON/OFF statements
+	* added notify on offline
+	* optimized network code
+
+_Opera_ - **0.9.0.4**
+	* bugfix
+
+[Show full changelog](CHANGELOG.md)
+
+
 # License
-Copyright 2014 Ivan 'MacRozz' Zarudny
+Copyright 2013-2015 Ivan 'MacRozz' Zarudny
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

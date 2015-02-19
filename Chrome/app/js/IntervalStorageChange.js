@@ -1,7 +1,9 @@
-setInterval(function(){
-    if (typeof localStorage.ChangedBG !== 'undefined' && window.location.pathname === '/background.html') {
-        try { loc(); localStorage.removeItem('ChangedBG') } catch(e) { err(e) }
-    } else if (typeof localStorage.ChangedPP !== 'undefined' && window.location.pathname === '/popup.html') {
-        try { loc(); localStorage.removeItem('ChangedPP') } catch(e) { err(e) }
-    }
-}, 100);
+chrome.runtime.onMessage.addListener(function(msg) {
+	if (msg.type == "update")
+		loc();
+	else
+		window.parseMsg(msg);
+		// Background and popup pages will have different parseMsg
+		// BUG: function reference is working, but chromium thinks
+		// that is not...
+});

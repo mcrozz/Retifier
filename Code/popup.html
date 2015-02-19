@@ -1,5 +1,6 @@
-﻿<meta charset='utf-8'> 
-<link rel="stylesheet" href="style.css" type="text/css" />
+<meta charset='utf-8'> 
+<link rel="stylesheet" href="./css/style.css" type="text/css" />
+<link rel="stylesheet" id="cust" href="./css/full.css" type="text/css" />
 {{INSERT_SCRIPTS_HERE}}
 <body id="body">
 
@@ -30,21 +31,23 @@
 		
 		<div id="UserName">Welcome,<a></a><p class="Logout">Logout</p></div>
 		
-		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt">.min</div>
+		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt"> min.</div>
 
 		<div id="Notify">Enable notifications <input type="checkbox" class="Check_Box EnNotify">
 		
-			<div>Start streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
+			<div>Channel Starts Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
+
+			<div>Channel Stops Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer2"></div>
 			
-			<div>Changed title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
+			<div>Channel Changes Title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
 			
-			<div>Updating process <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
+			<div>When Updating List <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
 			
-			<div>Sound in notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
+			<div>Play Sounds With Notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
 
 		</div>
 		
-		<div id="DurationOfStream">Duration of stream <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
+		<div id="DurationOfStream">Show Stream Duration <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
 		
 		<div class="List_Format">
 			Choose style of online list
@@ -62,7 +65,7 @@
 	            <button type="button" id="Dashboard" class="dash">Dashboard</button>
 	        </div>
 	        <div class="ProbablyNothing">
-	            <button type="button" id="Direct" class="dash">Direct</button>
+	            <button type="button" id="Direct" class="dash">Directory</button>
 	        </div>
 
 	        <div>
