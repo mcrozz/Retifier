@@ -1,4 +1,3 @@
 function ch() {
-	localStorage.ChangedBG = 'y'
-	localStorage.ChangedPP = 'y'
+	chrome.runtime.sendMessage({type: "update"});
 }

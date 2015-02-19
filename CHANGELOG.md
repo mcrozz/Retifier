@@ -102,6 +102,14 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1**
+	* changed font to PermianSans Typeface
+	* fixed ON/OFF statements
+	* added notify on offline
+	* optimized network code
+* **1.0**
+	* activated notification support
+	* bugfix
 * **0.9.0.4**
 	* bugfix
 * **0.9.0.3**
