@@ -15,15 +15,13 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_
-* **1.4.1**
+_Google Chrome_ - **1.4.1**
 	* changed font to PermianSans Typeface
 	* fixed ON/OFF statements
 	* added notify on offline
 	* optimized network code
 
-_Opera_
-* **0.9.0.4**
+_Opera_ - **0.9.0.4**
 	* bugfix
 
 [Show full changelog](CHANGELOG.md)
