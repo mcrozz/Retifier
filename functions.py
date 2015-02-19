@@ -31,8 +31,7 @@ def rp(w, j, o):
 		for line in newlines:
 			f.write(line)
 	n = o.split("\\")
-	if silent:
-		p("	Replacing "+w+" at "+n[len(n)-1])
+	p("	Replacing "+w+" at "+n[len(n)-1])
 
 def pj(g):
 	h = os.path.join(g[0], g[1])
