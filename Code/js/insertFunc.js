@@ -25,34 +25,6 @@ function InsertOnlineList() {
 		var d = $('#textWidth').css('fontSize', s+'px').html(n);
 		return (d.width()>w);
 	}
-	function time(t) {
-		function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
-		}
-		var SubtractTimes, Days, Hours, Minutes, Seconds, Time
-		
-		SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
-		
-		Days = Math.floor(SubtractTimes/24/1200);
-		SubtractTimes -= Days*24*1200;
-		if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
-		
-		Hours = Math.floor(SubtractTimes/1200);
-		SubtractTimes -= Hours*1200;
-		Hours = h(Hours, 'h:');
-		
-		Minutes = Math.floor(SubtractTimes/60);
-		SubtractTimes -= Minutes*60;
-		Minutes = h(Minutes, 'm:')
-		
-		Seconds = Math.floor(SubtractTimes);
-		Seconds = h(Seconds, 's');
-		
-		Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-		return Time;
-	}
 	/*
 	* a : {
 	*  str : streamer
@@ -82,10 +54,10 @@ function InsertOnlineList() {
 		doc('insertContentHere').innerHTML += t;
 	}
 
-	if (local.Status.online <= 2)
-		$('#insertContentHere').css('overflow', 'hidden')
-	else
-		$('#insertContentHere').css('overflow', 'auto');
+	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
+
+	if (TimersetToUpdate.length >= 1 && $('#'+TimersetToUpdate[0]).length == 0)
+		TimersetToUpdate = [];
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,

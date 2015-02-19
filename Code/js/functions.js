@@ -84,6 +84,35 @@ function FollowingList(id, nm, st) {
 
 {{NOTIFY_USER_FUNCTION}}
 
+function time(t) {
+    function h(b,j) {
+        if (b === 0) { return '00'+j; }
+        else if (b < 10) { return '0'+b+j; }
+        else { return b.toString()+j; }
+    }
+    var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+    
+    SubtractTimes = Math.floor(((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
+    
+    Days = Math.floor(SubtractTimes/24/60/60);
+    SubtractTimes -= Days*24*1200;
+    if (Days == 0) { Days = '' } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+    
+    Hours = Math.floor(SubtractTimes/60/60);
+    SubtractTimes -= Hours*1200;
+    Hours = h(Hours, 'h:');
+    
+    Minutes = Math.floor(SubtractTimes/60);
+    SubtractTimes -= Minutes*60;
+    Minutes = h(Minutes, 'm:')
+    
+    Seconds = Math.floor(SubtractTimes);
+    Seconds = h(Seconds, 's');
+    
+    Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
+    return Time;
+}
+
 // https://www.google-analytics.com
 (function(i,s,o,g,r,a,m){
     i['GoogleAnalyticsObject']=r;
