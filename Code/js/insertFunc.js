@@ -74,7 +74,7 @@ function InsertOnlineList() {
 			if (typeof texts[StreamTitle] === 'undefined') {
 				texts[StreamTitle] = offSet(t.f, StreamTitle, t.w);
 			} else { TitleWidth = texts[StreamTitle] }
-			
+
 			if (typeof texts[StreamGame] === 'undefined') {
 				texts[StreamGame] = offSet(g.f, StreamGame, g.w);
 			} else { GameWidth = texts[StreamGame] }
@@ -84,7 +84,7 @@ function InsertOnlineList() {
 		    if (v.Stream) {
 		        if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
 		        	$('#insertContentHere').html('');
-				
+
 				insert({
 					str: StreamerName,
 					ttl: StreamTitle,
@@ -128,7 +128,7 @@ function InsertOnlineList() {
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
 				$(b+'.inf>.title>a').html(StreamTitle);
-				
+
 				$(b+'.inf>.title>a').attr('show', TitleWidth);
 				$(b+'.inf>.game>a').attr('show', GameWidth);
 
@@ -147,7 +147,7 @@ function InsertOnlineList() {
 						'cursor': 'pointer',
 						'zIndex': 0
 					});
-				
+
 				$(b+'.tum>.GT1').css({
 					'background-size':'contain',
 					'cursor':'pointer'
@@ -162,7 +162,7 @@ function InsertOnlineList() {
 			}
 		}
 
-		if (local.Status.online == 0 && local.Status.update == 0) 
+		if (local.Status.online == 0 && local.Status.update == 0)
 		    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	});
 }
@@ -214,6 +214,8 @@ setInterval(function(){
 
 var run = function() {
 	(function() {
+		// You can relax for now... until next time...
+		return true;
 		if (typeof local.Config.Timeout !== 'undefined') {
 			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
 			dif/=86400000;
