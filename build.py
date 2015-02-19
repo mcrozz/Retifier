@@ -53,7 +53,7 @@ def loopbuild(b, s):
 		k = ink('>>> ')
 		p(tld)
 		if k == '':
-			build(b)
+			build(b, False)
 			ink('[DONE]')
 		elif k == '1' and ENABLE_PUBLISHER:
 			publish_app(b)
@@ -99,10 +99,10 @@ def init():
 	else:
 		exit()
 
-k = sys.argv[1]
-if k == "":
+if len(sys.argv) == 1:
 	init()
 else:
+	k = sys.argv[1]
 	if "Chrome" in k:
 		loopbuild("Chrome", True)
 	elif "Opera" in k:

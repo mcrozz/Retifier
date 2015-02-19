@@ -17,7 +17,6 @@ limitations under the License.
 import os, json, shutil, sys, re
 
 tld = "====================================================="
-silent = False
 
 def p(m):
 	print(m)
@@ -82,8 +81,6 @@ def minify(c):
 	return c.replace("\n", "").replace("\t", "").replace("    ", "");
 
 def build(b, s):
-	if s:
-		silent = True;
 	config = cf()
 	browser = b
 	currDir = os.getcwd()
@@ -99,7 +96,7 @@ def build(b, s):
 	# Copy without replacement
 	for t in config['Copy']:
 		shutil.copy2(pj([currDir, 'Code', t]), pj([dbDir, t]))
-		if not silent:
+		if not s:
 			p("	Copy "+t);
 	# Copy whatsNew.js
 	shutil.copy2(pj([currDir, browser, 'app', 'js', 'whatsNew.js']), pj([dbDir, 'js', 'whatsNew.js']))
