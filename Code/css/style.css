@@ -47,6 +47,9 @@ button {
 	border-radius: 10px;
     background: -webkit-gradient(linear,left top,left bottom,from(rgba(194, 194, 194, 1)),to(rgba(155, 155, 155, 0.64)));
 }
+.game>a, .streamer>a {
+	cursor: pointer;
+}
 .tum>.GT1 {
 	z-index: 2;
 }

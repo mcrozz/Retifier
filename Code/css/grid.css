@@ -83,9 +83,6 @@ button:focus  {
 	color: black;
 	font-size: 17px;
 }
-.game>a, .streamer>a {
-	cursor: pointer;
-}
 .inf>.game {
 	text-align: center;
 	border-top: 1px solid black;
