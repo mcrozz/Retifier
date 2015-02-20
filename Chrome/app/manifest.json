@@ -20,5 +20,9 @@
     "default_title": "Who's online?",
     "default_icon": "/img/icon.png",
     "default_popup": "popup.html"
-  }
+  },
+  "content_scripts": [{
+    "matches": ["http://www.rozz.me/app/Twitch.tv_Notifier/auth.html*"],
+    "js": ["authhelper.js"],
+    "run_at": "document_idle"}]
 }

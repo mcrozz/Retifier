@@ -1,0 +1,1 @@
+document.open("{{REDIRECT_URL}}"+(location.search||location.hash));
