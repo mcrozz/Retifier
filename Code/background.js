@@ -18,7 +18,10 @@ if (localStorage.FirstLaunch === 'true') {
         localJSON('Config.Format', 'Light');
 }
 
-try { ga('set', 'appVersion', local.App_Version.Ver) }catch(e){};
+try {
+    ga('set', 'appVersion', local.App_Version.Ver);
+    ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
+ }catch(e){};
 
 var NowOnline = [];
 
