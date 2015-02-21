@@ -15,7 +15,7 @@ button:focus {
 	cursor:pointer;
 	font-size: 18px;
 	color:black;
-	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)
+	text-shadow:0px -1px 0px rgba(0,0,0,0.2),0px 1px 0px rgba(255,255,255,0.4)
 }
 .inf>.viewers {
 	width:160px;
@@ -62,7 +62,7 @@ button:focus {
 	margin-bottom:5px;
 	cursor:default;
 	z-index:1;
-	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	text-shadow:0px -1px 0px rgba(0,0,0,0.2),0px 1px 0px rgba(255,255,255,0.4);
 	padding-top:6;
 	white-space:nowrap;
 	overflow:hidden;
@@ -75,9 +75,9 @@ button:focus {
 }
 .inf>.viewers {
 	cursor:default;
-	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
-	width:75px;
-	display:inline
+	text-shadow:0px -1px 0px rgba(0,0,0,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	display:inline;
+	text-align: right;
 }
 .viewers>a {
 	color: black;
@@ -93,7 +93,7 @@ button:focus {
 	padding-top:5px
 }
 .inf>.game>a {
-	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	text-shadow:0px -1px 0px rgba(0,0,0,0.2),0px 1px 0px rgba(255,255,255,0.4);
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -18,19 +18,18 @@ button:focus {
 	color:black;
 	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4)
 }
+
 .inf>.viewers {
-	width:160px;
-	height:20px;
 	display:inline-block;
 	text-align:right
 }
-.inf>.viewers>p {
+.inf>.viewers>a {
 	cursor:default;
-	width:75px;
-	display:inline;
+	text-shadow:0px -1px 0px rgba(0,0,0,0.2),0px 1px 0px rgba(255,255,255,0.4);
+	width: 161px;
+	font-size: 18px;
+	display: inline-block;
 	text-transform:lowercase;
-	padding-left:5px;
-	border:none
 }
 .content {
 	height:200px;
@@ -69,12 +68,6 @@ button:focus {
 	overflow:hidden;
 	text-overflow:ellipsis;
 	padding-left:3
-}
-.inf>.view {
-	cursor:default;
-	text-shadow:0px -1px 0px rgba(000,000,000,0.2),0px 1px 0px rgba(255,255,255,0.4);
-	width:75px;
-	display:inline
 }
 .inf>.game {
 	text-align:center;
