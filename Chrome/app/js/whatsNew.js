@@ -1,5 +1,6 @@
 ﻿{{LICENSE_HEADER}}
 changes = [
+    "-1.4.2 hotfix, fixed auth by twitch's account, fixed game links",
     "-1.4.1 changed font to PermianSans Typeface, fixed ON/OFF statements, added notify on offline, optimized network code",
     "-1.4 Fresh look, fixed 'Following List' page, various improvements",
     "-1.3.9.9 Bug fixing",
@@ -46,9 +47,9 @@ changes = [
     "-1.0.0 First publish in Google Web Store"
 ];
 messages = {
-    "v.1.4.1": {
-        "msg": "Various improvements",
-        "contain": "-changed font to PermianSans Typeface<br>-fixed ON/OFF statements<br>-added notify on offline<br>-optimized network code"
+    "v.1.4.2": {
+        "msg": "Hotfix",
+        "contain": "-fixed auth by twitch's account<br>-fixed game links"
     }
 };
 
