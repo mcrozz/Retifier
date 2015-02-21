@@ -46,6 +46,7 @@ function init() {
 				localStorage.FirstLaunch = false;
 				localJSON('Status.StopInterval', true);
 				show({type: 'ok'});
+				send('refresh');
 			} else {
 				show({type: 'error', msg:'Cannot get user name from response',stack:e});
 			}
@@ -54,6 +55,7 @@ function init() {
 			show({type: 'error', msg:'Cannot get username', stack:e});
 		}
 	});
+	$('button').on('click', function(){window.close();});
 }
 deb("Initializing...");
 $(window).load(function(){setTimeout(init, 250)});

@@ -20,5 +20,6 @@
     "default_title": "Who's online?",
     "default_icon": "/img/icon.png",
     "default_popup": "popup.html"
-  }
+  },
+  "web_accessible_resources": ["auth.html"]
 }

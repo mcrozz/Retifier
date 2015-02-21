@@ -4,6 +4,10 @@ Current versions:
 - [_Opera_](#opera) - **1.0.0**
 
 # _Google Chrome_
+* **1.4.2**
+	* hotfix
+	* fixed auth by twitch's account
+	* fixed game links
 * **1.4.1**
 	* changed font to PermianSans Typeface
 	* fixed ON/OFF statements
@@ -102,6 +106,10 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1.1**
+	* hotfix
+	* fixed auth by twitch's account
+	* fixed game links
 * **1.1**
 	* changed font to PermianSans Typeface
 	* fixed ON/OFF statements

@@ -35,19 +35,20 @@ function InsertOnlineList() {
 	* }
 	*/
 	function insert(a) {
-		var t = '';
+		var t = '', n = (a.gme !== 'Not Playing');
 		t += '<div class="content" id="'+a.pos+'">'
 			+'<div class="tum"><a href="http://www.twitch.tv/'+a.str
 			+'" target="_blank">Launch Stream</a><img class="ST" />'
 			+'<img class="GT1" /><img class="GT2" />'
 			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
 			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
-			+'<div class="streamer"><a>'+a.str+'</a></div>'
+			+'<div class="streamer"><a '
+			+ (n?'target="_blank" href="http://www.twitch.tv/'+a.str+'/profile"':'')
+			+'>'+a.str+'</a></div>'
 			+'<div class="viewers"><a>'+a.viw+' viewers</a></div>'
-			+'<div class="game"><a ';
-		if (a.gme !== 'Not Playing')
-			t += 'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"';
-		t += '>'+a.gme+'</a></div><div class="adds"><div class="page">'
+			+'<div class="game"><a '
+			+(n?'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"':'')
+			+'>'+a.gme+'</a></div><div class="adds"><div class="page">'
 			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
 			+'<button type="button" class="button">Channel page</button></a></div>'
 			+'<div class="duration"><a></a></div></div>';

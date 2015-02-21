@@ -16,6 +16,7 @@
 
 changes = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     "-1.0 Fresh look, added notifications (works only on 25+), fixed 'Following List' page, various improvements",
     "-0.9.0.4 Bug fixing",
     "-0.9.0.3 Code optimization",
@@ -23,6 +24,9 @@ changes = [
     "-0.9.0.1 Bugfix",
     "-0.9.0.0 First publish in Opera Web Store"
 =======
+=======
+    "-1.1.1 hotfix, fixed auth by twitch's account, fixed game links",
+>>>>>>> origin/WIP
     "-1.1 changed font to PermianSans Typeface, fixed ON/OFF statements, added notify on offline, optimized network code",
     "-1.0 fresh look, added notifications (works only on 25+), fixed 'Following List' page, various improvements",
     "-0.9.0.4 bug fixing",
@@ -33,9 +37,9 @@ changes = [
 >>>>>>> remotes/origin/WIP
 ];
 messages = {
-    "v.1.1": {
-      "msg": "Various improvements",
-        "contain": "-changed font to PermianSans Typeface<br>-fixed ON/OFF statements<br>-added notify on offline<br>-optimized network code"
+    "v.1.1.1": {
+        "msg": "Hotfix",
+        "contain": "-fixed auth by twitch's account<br>-fixed game links"
     }
 };
 

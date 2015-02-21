@@ -87,7 +87,6 @@ button:focus  {
 	text-align: center;
 	border-top: 1px solid black;
 	height: 20px;
-	cursor: pointer;
 	width: 315px;
 	display: block;
 	padding-top: 5px;

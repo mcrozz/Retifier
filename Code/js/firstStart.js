@@ -43,8 +43,13 @@ function lgin() {
 			'</div>');
 			
 		// AUTH BY TWITCH ACCOUNT
-		$('#TwitchAccount, #TwitchAccount>a').on('click', function(){
-			window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=http://twitchtvnotifier.host-ed.me/auth.php&scope=user_follows_edit+user_read');
+		$('#TwitchAccount').on('click', function(){
+			/* Redirect path:
+			* api.twitch.tv ->
+			* www.rozz.me ->
+			* extension
+			*/
+			window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=https://www.rozz.me/app/Twitch.tv_Notifier/auth.html&scope=user_follows_edit+user_read');
 		});
 
 		// AUTH BY TWICH NAME

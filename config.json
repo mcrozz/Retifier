@@ -81,7 +81,7 @@
 =======
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 886,
+        "Build": 916,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -91,7 +91,7 @@
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.4.1"
+        "Ver": "1.4.2"
     },
     "Copy": [
         "DinDon.ogg",
@@ -143,7 +143,7 @@
     },
     "Opera": {
         "Browser": "Opera",
-        "Build": 59,
+        "Build": 60,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -153,7 +153,7 @@
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.1"
+        "Ver": "1.1.1"
     },
     "Safari": {
         "Build": 0,

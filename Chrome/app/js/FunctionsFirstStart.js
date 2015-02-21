@@ -8,7 +8,6 @@ if (window.location.pathname === '/background.html') {
         localStorage.FirstLaunch='true';
     if (!localStorage.FollowingList)
         localStorage.FollowingList = '{}';
-    deb(localStorage.FollowingList);
     try {
         var j = JSON.parse(localStorage.App_Version),
             k = chrome.runtime.getManifest().version;
