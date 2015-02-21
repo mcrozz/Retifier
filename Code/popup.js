@@ -89,6 +89,7 @@ $(window).on('load',function() {
 			localJSON('Config.Format', a);
 			reloadStyle(true);
 			texts = { d:new Date() };
+			snum();
 		}
 
 		clickChangeUserCls();
