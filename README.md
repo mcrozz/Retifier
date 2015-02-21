@@ -15,14 +15,15 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.1**
-	* changed font to PermianSans Typeface
-	* fixed ON/OFF statements
-	* added notify on offline
-	* optimized network code
+_Google Chrome_ - **1.4.2**
+	* hotfix
+	* fixed auth by twitch's account
+	* fixed game links
 
-_Opera_ - **0.9.0.4**
-	* bugfix
+_Opera_ - **1.1.1**
+	* hotfix
+	* fixed auth by twitch's account
+	* fixed game links
 
 [Show full changelog](CHANGELOG.md)
 
