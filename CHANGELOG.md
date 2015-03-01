@@ -1,7 +1,7 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.0**
-- [_Opera_](#opera) - **1.0.0**
+- [_Google Chrome_](#google-chrome) - **1.4.2**
+- [_Opera_](#opera) - **1.1.1**
 
 # _Google Chrome_
 * **1.4.2**
