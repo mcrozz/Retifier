@@ -1,11 +1,7 @@
 {{LICENSE_HEADER}}
 @font-face {
 	font-family: ExtFont;
-<<<<<<< HEAD
-	src: url(PermianSansTypeface.otf);
-=======
 	src: url(../PermianSansTypeface.otf);
->>>>>>> remotes/origin/WIP
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
@@ -676,18 +672,18 @@ button.WelcomOK:hover {
 	right: 150px;
 }
 #refresh:hover {
-	-{{PLATFORM}}-animation:spinh 0.2s both
+	-webkit-animation:spinh 0.2s both
 }
 .spin {
-	-{{PLATFORM}}-animation-name:spin
+	-webkit-animation-name:spin
 }
-@-{{PLATFORM}}-keyframes spin {
-	0% { -{{PLATFORM}}-transform:rotate(0) }
-	100% { -{{PLATFORM}}-transform:rotate(360deg) }
+@-webkit-keyframes spin {
+	0% { -webkit-transform:rotate(0) }
+	100% { -webkit-transform:rotate(360deg) }
 }
-@-{{PLATFORM}}-keyframes spinh {
-	0% { -{{PLATFORM}}-transform:rotate(0) }
-	100% { -{{PLATFORM}}-transform:rotate(15deg) }
+@-webkit-keyframes spinh {
+	0% { -webkit-transform:rotate(0) }
+	100% { -webkit-transform:rotate(15deg) }
 }
 #message {
 	display: none;
