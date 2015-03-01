@@ -7,15 +7,14 @@ function clear(i) {
 	});
 }
 chrome.notifications.onButtonClicked.addListener(function(id){$.each(NotifyNames, function(i,v){if(v[1]===id){window.open('http://www.twitch.tv/'+i);return true;}}); clear(id);});
-chrome.notifications.onClosed.addListener(function(id,u){if(u)clear(id);});
-chrome.notifications.onClicked.addListener(function(id){clear(id);});
+chrome.notifications.onClosed.addListener(function(id,u){if(u)clear(id)});
+chrome.notifications.onClicked.addListener(function(id){clear(id)});
 
 var ncnt = 0,
 	NotifyNames = {};
 
 function Notify(d) {
-	if (window.location.pathname !== '/background.html')
-		return false;
+	if (window.location.pathname !== '/background.html') return false;
 	if (d.type === 'sys' || d.type === 'update')
 		d.name = 'd'+Math.floor(Math.random(100)*100);
 	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
@@ -42,18 +41,6 @@ function Notify(d) {
 	}
 
 	function sendNotify(d) {
-<<<<<<< HEAD
-		var ntf = new Notification(d.title, {
-			body: d.msg,
-			icon: "/img/notification_icon.png"
-		}),
-			j = d.name;
-		if (d.button) {
-			ntf.onClick = function(){
-				window.open('http://www.twitch.tv/'+j);
-			}
-		}
-=======
 		var k = d.name,
 			config = {
 				type           : "basic",
@@ -61,21 +48,20 @@ function Notify(d) {
 				message        : d.msg,
 				contextMessage : d.context,
 				iconUrl        : "/img/notification_icon.png"}
-		/* if (d.button)
-		 	config['buttons'] = [{ title:"Watch now!" }];*/
+		if (d.button)
+			config['buttons'] = [{ title:"Watch now!" }];
 		chrome.notifications.create('n'+ncnt, config, function(){
 			NotifyNames[d.name] = [false, 'n'+ncnt];
 			delNotify('n'+ncnt, d.type);
 			ncnt++;
 		});
->>>>>>> remotes/origin/WIP
 		if (local.Config.Notifications.sound_status)
 			new Audio('DinDon.ogg').play();
 	}
 
 	if (local.Config.Notifications.status) {
 		var j = local.Config.Notifications;
-
+		
 		if (!j[d.type] && d.type !== 'sys')
 			return false;
 

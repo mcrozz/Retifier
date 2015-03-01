@@ -239,6 +239,10 @@ var run = function() {
 			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
 		}
 	})();
-	InsertOnlineList()
+	InsertOnlineList();
 };
-setInterval(run, 1000);
+// TODO: make it faster
+window.onload = function(e){
+	setInterval(run, 1000);
+	InsertOnlineList();
+};
