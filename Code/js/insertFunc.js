@@ -244,5 +244,5 @@ var run = function() {
 // TODO: make it faster
 window.onload = function(e){
 	setInterval(run, 1000);
-	InsertOnlineList();
+	setTimeout(InsertOnlineList, 0);
 };
