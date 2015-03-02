@@ -81,7 +81,7 @@ function InsertOnlineList() {
 			} else { GameWidth = texts[StreamGame] }
 		}
 
-		if (TimersetToUpdate.indexOf(i) < 0) {
+		if (TimersetToUpdate.indexOf(i) === -1) {
 		    if (v.Stream) {
 		        if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
 		        	$('#insertContentHere').html('');
@@ -93,12 +93,6 @@ function InsertOnlineList() {
 					viw: StreamVievers,
 					pos: i
 				});
-
-				$(b+'.inf>.title>a').attr('show', TitleWidth);
-				$(b+'.inf>.game>a').attr('show', GameWidth);
-
-				/*if (FirstLoadInsertFunc != 1)
-					Animation(i, ['fadeIn', false]);*/
 
 				TimersetToUpdate.push(i);
 
@@ -112,55 +106,45 @@ function InsertOnlineList() {
 					'background-size': 'contain',
 					'cursor':'pointer'
 				});
-				if (StreamGame != 'Not playing') {
-					$(b+'.tum>.GT1').css({
-						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+StreamGame+'.jpg")',
-						'background-size':'contain',
-						'cursor':'pointer'
-					});
-				} else {
-					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
-					$(b+'.tum>.GT2').css('cursor', 'default');
-				}
 			}
-		} else if (TimersetToUpdate.indexOf(i) != -1) {
+		} if (TimersetToUpdate.indexOf(i) !== -1) {
 		    if (!v.Stream && _$(i) !== null) {
 		    	_$(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
-				$(b+'.inf>.title>a').html(StreamTitle);
+					$(b+'.inf>.title>a').html(StreamTitle);
 
-				$(b+'.inf>.title>a').attr('show', TitleWidth);
-				$(b+'.inf>.game>a').attr('show', GameWidth);
+					$(b+'.inf>.title>a').attr('show', TitleWidth);
+					$(b+'.inf>.game>a').attr('show', GameWidth);
 
-				$(b+'.inf>.game>a').html(StreamGame);
-				$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
+					$(b+'.inf>.game>a').html(StreamGame);
+					$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
 
-				if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
-           			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
-           		else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
-					$(b+'.inf>.adds>.duration>a').html('');
+					if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
+	           			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
+	        else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
+						$(b+'.inf>.adds>.duration>a').html('');
 
-				if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-					$(b+'.tum>.ST').css({
-						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-						'background-size': 'contain',
-						'cursor': 'pointer',
-						'zIndex': 0
+					if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
+						$(b+'.tum>.ST').css({
+							'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+							'background-size': 'contain',
+							'cursor': 'pointer',
+							'zIndex': 0
+						});
+
+					$(b+'.tum>.GT1').css({
+						'background-size':'contain',
+						'cursor':'pointer'
 					});
-
-				$(b+'.tum>.GT1').css({
-					'background-size':'contain',
-					'cursor':'pointer'
-				});
-				$(b+'.tum>.GT2').css({
-					'background':'url("./img/playing.png")',
-					'background-size': 'contain',
-					'cursor':'pointer'
-				});
-				if (StreamGame == 'Not playing')
-					$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
-			}
+					$(b+'.tum>.GT2').css({
+						'background':'url("./img/playing.png")',
+						'background-size': 'contain',
+						'cursor':'pointer'
+					});
+					if (StreamGame == 'Not playing')
+						$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
+				}
 		}
 
 		if (local.Status.online == 0 && local.Status.update == 0)
@@ -241,7 +225,7 @@ var run = function() {
 	})();
 	InsertOnlineList();
 };
-// TODO: make it faster
+
 window.onload = function(e){
 	setInterval(run, 1000);
 	setTimeout(InsertOnlineList, 0);

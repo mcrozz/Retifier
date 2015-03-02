@@ -10,9 +10,11 @@ html {
 	margin: 0;
 }
 body {
+	width: 100%;
+	height: 100%;
 	margin: 0;
-    font-family: ExtFont;
-    font-size: inherit;
+  font-family: ExtFont;
+  font-size: inherit;
 }
 a {
 	color:	white;
@@ -614,8 +616,8 @@ button.WelcomOK:hover {
 }
 
 #content3 {
-	height: 515px;
-	width: 703px;
+	height: inherit;
+	width: inherit;
 	position: relative;
 	display: block;
 	padding: 5px;
@@ -838,7 +840,7 @@ button.WelcomOK:hover {
 }
 
 
-/* 
+/*
 		based on Animate.css
 	http://daneden.me/animate
 */
@@ -846,21 +848,21 @@ button.WelcomOK:hover {
 	0% { opacity:0 }
 	100% { opacity:1 }
 }
-@-{{PLATFORM}}-keyframes fadeOut { 
+@-{{PLATFORM}}-keyframes fadeOut {
 	0% { opacity:1 }
 	100% { opacity:0 }
 }
-@-{{PLATFORM}}-keyframes bounceInUp { 
+@-{{PLATFORM}}-keyframes bounceInUp {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateY(600px) }
 	99% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }
 	100% { -{{PLATFORM}}-transform:translateY(0) }
 }
-@-{{PLATFORM}}-keyframes bounceOutDown { 
+@-{{PLATFORM}}-keyframes bounceOutDown {
 	0% { -{{PLATFORM}}-transform:translateY(0) }
 	20% { opacity:1;-{{PLATFORM}}-transform:translateY(-20px) }
 	100% { opacity:0;-{{PLATFORM}}-transform:translateY(600px) }
 }
-@-{{PLATFORM}}-keyframes bounceIn { 
+@-{{PLATFORM}}-keyframes bounceIn {
 	0% { opacity:0;-{{PLATFORM}}-transform:scale(.0) }
 	100% { opacity:1;-{{PLATFORM}}-transform:scale(1) }
 }
@@ -868,27 +870,27 @@ button.WelcomOK:hover {
 	0% { opacity:1;-{{PLATFORM}}-transform:scale(1) }
 	100% { opacity:0;-{{PLATFORM}}-transform:scale(.0) }
 }
-@-{{PLATFORM}}-keyframes slideInDown { 
+@-{{PLATFORM}}-keyframes slideInDown {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateY(-2000px) }
 	100% { -{{PLATFORM}}-transform:translateY(0) }
 }
-@-{{PLATFORM}}-keyframes slideOutUp { 
+@-{{PLATFORM}}-keyframes slideOutUp {
 	0% { -{{PLATFORM}}-transform:translateY(0) }
 	100% { opacity:0;-{{PLATFORM}}-transform:translateY(-2000px) }
 }
-@-{{PLATFORM}}-keyframes slideInLeft { 
+@-{{PLATFORM}}-keyframes slideInLeft {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateX(-2000px) }
 	100% { -{{PLATFORM}}-transform:translateX(0) }
 }
-@-{{PLATFORM}}-keyframes slideOutLeft { 
+@-{{PLATFORM}}-keyframes slideOutLeft {
 	0% { -{{PLATFORM}}-transform:translateX(0) }
 	100% { opacity:0;-{{PLATFORM}}-transform:translateX(-2000px) }
 }
-@-{{PLATFORM}}-keyframes slideInRight { 
+@-{{PLATFORM}}-keyframes slideInRight {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateX(2000px) }
 	100% { -{{PLATFORM}}-transform:translateX(0) }
 }
-@-{{PLATFORM}}-keyframes slideOutRight { 
+@-{{PLATFORM}}-keyframes slideOutRight {
 	0% { -{{PLATFORM}}-transform:translateX(0) }
 	100% { opacity:0;-{{PLATFORM}}-transform:translateX(2000px) }
 }
