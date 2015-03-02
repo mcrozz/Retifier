@@ -1,9 +1,12 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.2**
-- [_Opera_](#opera) - **1.1.1**
+- [_Google Chrome_](#google-chrome) - **1.4.3**
+- [_Opera_](#opera) - **1.1.2**
 
 # _Google Chrome_
+* **1.4.3**
+	* extension's popup window now opens quickly
+	* now notifications won't 'attack' when you restarting your browser
 * **1.4.2**
 	* hotfix
 	* fixed auth by twitch's account
