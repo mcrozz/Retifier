@@ -1,8 +1,13 @@
 {{LICENSE_HEADER}}
-$(window).on('load',function() {
+$(function() {
 	var TimersetToUpdate = [];
 
 	function reloadStyle(l){
+		// TODO: big, light, micro
+		// big: 697px by 584px
+		// light: 450px by 584px
+		// micro: 340px by 584px
+		$('style').html('html { width: 697px; height: 584px; }');
 		var css;
 		if (!local.Config.Format)
 			localJSON('Config.Format', 'Grid');
@@ -20,15 +25,15 @@ $(window).on('load',function() {
 	function clickChangeUserCls(e) {
 		if (e && e.target.id !== 'options_bg')
 			return false;
-		Animation('options', ['bounceOut', true]);
-		Animation('options_bg', ['fadeOut', true, 0.5]);
-		Animation('AppVersion', ['fadeIn', false]);
+		anim('options', ['bounceOut', true]);
+		$('#options_bg').fadeOut(500);
+		$('#AppVersion').fadeIn(1000);
 		if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
-			Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
-			Animation('FoundAbugText', ['hideReportA', true, 0.7]);
+			anim('fndAbug', ['hideReportBtnA', true, 0.7]);
+			anim('FoundAbugText', ['hideReportA', true, 0.7]);
 		} else {
-			Animation('fndAbug', ['hideReportBtn', true, 0.9]);
-			Animation('FoundAbugText', ['hideReport', true, 0.9]);
+			anim('fndAbug', ['hideReportBtn', true, 0.9]);
+			anim('FoundAbugText', ['hideReport', true, 0.9]);
 		}
 	}
 
@@ -36,55 +41,55 @@ $(window).on('load',function() {
 		$('#options, #options_bg').show();
 		$('#AppVersion').hide();
 		$('#UserName>a').html(local.Config.User_Name);
-		doc('ChgUsrInt').value = local.Config.Interval_of_Checking;
-		
+		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
+
 		var a = !local.Config.Notifications.status;
-		doc('.EnNotify').checked = !a;
-		
-		doc('.NotifyStreamerChanged').disabled = a;
-		doc('.NotifyStreamer').disabled = a;
-		doc('.NotifyStreamer2').disabled = a;
-		doc('.NotifyUpdate').disabled = a;
+		_$('.EnNotify').checked = !a;
 
-		doc('.NotifyStreamer').checked = local.Config.Notifications.online;
-		doc('.NotifyStreamer2').checked = local.Config.Notifications.offline;
-		doc('.NotifyUpdate').checked = local.Config.Notifications.update;
-		doc('.NotifyStreamerChanged').checked = local.Config.Notifications.follow;
-	
-		doc('.SoundCheck').checked = local.Config.Notifications.sound_status
-		
-		doc('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
+		_$('.NotifyStreamerChanged').disabled = a;
+		_$('.NotifyStreamer').disabled = a;
+		_$('.NotifyStreamer2').disabled = a;
+		_$('.NotifyUpdate').disabled = a;
 
-		doc('.List_Format>.'+local.Config.Format).className += ' selected';
+		_$('.NotifyStreamer').checked = local.Config.Notifications.online;
+		_$('.NotifyStreamer2').checked = local.Config.Notifications.offline;
+		_$('.NotifyUpdate').checked = local.Config.Notifications.update;
+		_$('.NotifyStreamerChanged').checked = local.Config.Notifications.follow;
 
-		Animation('options_bg', ['fadeIn', false, 0.9]);
-		Animation('options', ['bounceIn', false, 0.9]);
-		doc('fndAbug').setAttribute("style","top:190;right:-68");
-		Animation('fndAbug', ['showReportBtn', false, 0.8]);
-		Animation('FoundAbugText', ['showReport', false, 0.8]);
+		_$('.SoundCheck').checked = local.Config.Notifications.sound_status;
+
+		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
+
+		_$('.List_Format>.'+local.Config.Format).className += ' selected';
+
+		$('#options_bg').fadeIn(900);
+		anim('options', ['bounceIn', false, 0.9]);
+		_$('fndAbug').setAttribute("style","top:190;right:-68");
+		anim('fndAbug', ['showReportBtn', false, 0.8]);
+		anim('FoundAbugText', ['showReport', false, 0.8]);
 
 		ga('send', 'event', 'button', 'click', 'Options');
 	}
 
 	function changeScriptStarter() {
-		var g = Math.floor(doc('ChgUsrInt').value);
+		var g = Math.floor(_$('ChgUsrInt').value);
 		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
 			localJSON('Config.Interval_of_Checking', g);
-			localJSON('Status.StopInterval', true)
+			localJSON('Status.StopInterval', true);
 		}
-		
-		localJSON('Config.Notifications.status', doc('.EnNotify').checked);
 
-		localJSON('Config.Notifications.online', doc('.NotifyStreamer').checked);
-		localJSON('Config.Notifications.offline', doc('.NotifyStreamer2').checked);
-		localJSON('Config.Notifications.update', doc('.NotifyUpdate').checked);
-		localJSON('Config.Notifications.follow', doc('.NotifyStreamerChanged').checked);
-		
-		localJSON('Config.Notifications.sound_status', doc('.SoundCheck').checked);
-		
-		localJSON('Config.Duration_of_stream', doc('.StreamDurationCheck').checked);
-		
-		var a = doc('.selected').className.split(' ')[1];
+		localJSON('Config.Notifications.status', _$('.EnNotify').checked);
+
+		localJSON('Config.Notifications.online', _$('.NotifyStreamer').checked);
+		localJSON('Config.Notifications.offline', _$('.NotifyStreamer2').checked);
+		localJSON('Config.Notifications.update', _$('.NotifyUpdate').checked);
+		localJSON('Config.Notifications.follow', _$('.NotifyStreamerChanged').checked);
+
+		localJSON('Config.Notifications.sound_status', _$('.SoundCheck').checked);
+
+		localJSON('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
+
+		var a = _$('.selected').className.split(' ')[1];
 		if (local.Config.Format !== a) {
 			localJSON('Config.Format', a);
 			reloadStyle(true);
@@ -98,11 +103,11 @@ $(window).on('load',function() {
 	function ReportAbug() {
 		ga('send', 'event', 'button', 'click', 'Report a bug');
 		if ($('#fndAbug').css('-webkit-animation')[0] == 'c') {
-			Animation('FoundAbugText', ['openReport', false, 0.8]);
-			Animation('fndAbug', ['openReportBtn', false, 0.8]);
+			anim('FoundAbugText', ['openReport', false, 0.8]);
+			anim('fndAbug', ['openReportBtn', false, 0.8]);
 		} else {
-			Animation('FoundAbugText', ['closeReport', false, 0.8]);
-			Animation('fndAbug', ['closeReportBtn', false, 0.8]);
+			anim('FoundAbugText', ['closeReport', false, 0.8]);
+			anim('fndAbug', ['closeReportBtn', false, 0.8]);
 		}
 	}
 
@@ -113,7 +118,11 @@ $(window).on('load',function() {
 		}
 		if (c.id === 'ClsFlwdChnlsLst') {
 			clearInterval(flw);
-			$('#FollowedChannelsList').fadeOut(250, function(){ $('#firstScane').fadeIn(250, function(){$('#FollowingList').html('');}) });
+			$('#FollowedChannelsList').fadeOut(250, function(){
+				$('#firstScane').fadeIn(250, function(){
+					$('#FollowingList').html('');
+				});
+			});
 		} else {
 			$.each(local.FollowingList, append);
 			var curr = local.FollowingList.length;
@@ -134,23 +143,25 @@ $(window).on('load',function() {
 
 	function AppVersionChanges(c) {
 		if (c=='c') {
-			Animation('AppChanges', ['bounceOutDown', true]);
-			Animation('AppInfoBack', ['fadeOut', true, 0.5], function(){ $('body').css('overflow', 'auto'); });
+			anim('AppChanges', ['bounceOutDown', true]);
+			$('#AppInfoBack').fadeOut(500,
+				function(){ $('body').css('overflow', 'auto'); });
 			if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
-				Animation('fndAbug', ['hideReportBtnA', true, 0.7]);
-				Animation('FoundAbugText', ['hideReportA', true, 0.7]);
+				anim('fndAbug', ['hideReportBtnA', true, 0.7]);
+				anim('FoundAbugText', ['hideReportA', true, 0.7]);
 			} else {
-				Animation('fndAbug', ['hideReportBtn', true, 0.9]);
-				Animation('FoundAbugText', ['hideReport', true, 0.9]);
+				anim('fndAbug', ['hideReportBtn', true, 0.9]);
+				anim('FoundAbugText', ['hideReport', true, 0.9]);
 			}
-			Animation('AppVersion', ['fadeIn', false]);
+			$('#AppVersion').fadeIn();
 		} else if (c=='o') {
-			Animation('AppChanges', ['bounceInUp', false]);
-			Animation('AppInfoBack', ['fadeIn', false]);
-			doc('fndAbug').setAttribute('style', 'top:190px;right:-68px');
-			Animation('fndAbug', ['showReportBtn', false]);
-			Animation('FoundAbugText', ['showReport', false]);
-			Animation('AppVersion', ['fadeOut', true]);
+			anim('AppChanges', ['bounceInUp', false]);
+			$('#AppInfoBack').fadeIn();
+			// FIXIT: must be percent
+			_$('fndAbug').setAttribute('style', 'top:190px;right:-68px');
+			anim('fndAbug', ['showReportBtn', false]);
+			anim('FoundAbugText', ['showReport', false]);
+			$('#AppVersion').fadeOut();
 			$('body').css('overflow', 'hidden');
 			$('#AppVersion').hide();
 			CURRENT_APP_PAGE = 'About';
@@ -159,19 +170,19 @@ $(window).on('load',function() {
 			if (CURRENT_APP_PAGE == 'About') {
 				var AppFirst = '';
 				for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a>"+changes[i]+"</a></div>";
-				Animation('AppVersionContent', ['fadeIn', false]);
-				doc('AppVersionContent').innerHTML = AppFirst;
+				$('#AppVersionContent').fadeIn();
+				_$('AppVersionContent').innerHTML = AppFirst;
 				$('#AppFirst').css('border-bottom', '2px solid rgb(3,64,223)');
 				$('#AppThird').css('border-bottom', '2px solid white');
 				$('#AppInfoClose').css('border-bottom', '2px solid white');
 				CURRENT_APP_PAGE = 'Changes';
 			} else if (CURRENT_APP_PAGE == 'Changes') {
-				doc('AppVersionContent').innerHTML = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>'+
+				_$('AppVersionContent').innerHTML = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>'+
 					"<div class='AppInfoAbout2'><a>Ivan 'MacRozz' Zarudny</a></div>"+
 					"<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>"+
 					"<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>"+
 					"<div class='AppInfoAbout5'><a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a></div>";
-				Animation('AppVersionContent', ['fadeIn', false]);
+				$('#AppVersionContent').fadeIn();
 				$('#AppFirst').css('border-bottom', '2px solid white');
 				$('#AppThird').css('border-bottom', '2px solid rgb(3,64,223)');
 				$('#AppInfoClose').css('border-bottom', '2px solid white');
@@ -180,81 +191,80 @@ $(window).on('load',function() {
 		}
 	}
 
-	function ael(id, type, func) { $(id).on(['click', 'change'][type], func); }
+	function ael(id, type, func) { $(id).on('click', func); }
 	reloadStyle();
 	versionCheck();
 	$('#AppVersion').html(local.App_Version.Ver);
-	ael('#ChgUsr', 0, clickChangeUser);
-	ael('#ChgUsrSnd', 0, changeScriptStarter);
-	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', 0, function(){
+	ael('#ChgUsr', clickChangeUser);
+	ael('#ChgUsrSnd', changeScriptStarter);
+	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', function(){
 		FollowedList(this); });
-	ael('.style', 0, function(t){
+	ael('.style', function(t){
 		var a = t.target.className.split(' ')[1],
-			b = doc('.selected').className.split(' ')[1];
-		doc('.selected').className = 'style '+b;
-		doc('.'+a).className += ' selected'; });
-	ael('.EnNotify', 0, function(t){
+			b = _$('.selected').className.split(' ')[1];
+		_$('.selected').className = 'style '+b;
+		_$('.'+a).className += ' selected'; });
+	ael('.EnNotify', function(t){
 		if (t.target.checked) {
 			$('#Notify>div').css('color', '');
-			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = false;})
+			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = false;});
 		} else {
 			$('#Notify>div').css('color', 'grey');
-			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;})
+			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;});
 		} });
-	ael('#options_bg', 0, clickChangeUserCls);
-	ael('#options_bg', 0, function(e){
-		if (doc('zoomContent')) {
-			Animation('zoomContent', ['fadeOut', true, 0.7]);
-			Animation('userChangePopup2', ['fadeOut', true, 0.5]);
+	ael('#options_bg', clickChangeUserCls);
+	ael('#options_bg', function(e){
+		if (_$('zoomContent')) {
+			$('#zoomContent').fadeOut(700);
+			$('#userChangePopup2').fadeOut(500);
 		} });
-	ael('#fndAbug', 0, ReportAbug);
-	ael('#AppVersion', 0, function(){
-		AppVersionChanges('o') });
-	ael('#AppFirst', 0, function(){
-		AppVersionChanges('ch') });
-	ael('#AppThird', 0, function(){
-		AppVersionChanges('ch') });
-	ael('#AppInfoClose', 0, function(){
-		AppVersionChanges('c') });
-	ael('#AppInfoBack', 0, function(){
-		AppVersionChanges('c') });
-	ael('#Dashboard', 0, function(){
+	ael('#fndAbug', ReportAbug);
+	ael('#AppVersion', function(){
+		AppVersionChanges('o'); });
+	ael('#AppFirst', function(){
+		AppVersionChanges('ch'); });
+	ael('#AppThird', function(){
+		AppVersionChanges('ch'); });
+	ael('#AppInfoClose', function(){
+		AppVersionChanges('c'); });
+	ael('#AppInfoBack', function(){
+		AppVersionChanges('c'); });
+	ael('#Dashboard', function(){
 		ga('send', 'event', 'button', 'click', 'Dashboard');
-		window.open('http://www.twitch.tv/broadcast/dashboard') });
-	ael('#Direct', 0, function(){
+		window.open('http://www.twitch.tv/broadcast/dashboard'); });
+	ael('#Direct', function(){
 		ga('send', 'event', 'button', 'click', 'Direct');
-		window.open('http://www.twitch.tv/directory/following') });
-	ael('#SoundCheck', 0, function(){
-		doc('SoundSelect').disabled = !doc('SoundCheck').checked });
-	ael('#refresh', 0, function(){
+		window.open('http://www.twitch.tv/directory/following'); });
+	ael('#SoundCheck', function(){
+		_$('SoundSelect').disabled = !_$('SoundCheck').checked; });
+	ael('#refresh', function(){
 		send('refresh'); });
-	ael('#UserName>p', 0, reLogin);
-	ael('#zoomContent', 0, function() {
-		Animation('zoomContent', 'fadeOut', true);
-		Animation('options_bg', 'fadeOut', true); });
+	ael('#UserName>p', reLogin);
+	ael('#zoomContent', function() {
+		$('#zoomContent').fadeOut(700);
+		$('#options_bg').fadeOut(1);} );
 	window.onclick = function(e) {
-		var e = e.target;
-		if (e.className === 'zoom') {
-			var n = local.FollowingList[e.id.match(/\d+/)[0]].Name;
+		if (e.target.className === 'zoom') {
+			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
 			$('#zoomIMG').css({
 				'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
 				'background-size': '696 400'
 			});
-			Animation('zoomContent', ['fadeIn', false, 0.8]);
-			Animation('options_bg', ['fadeIn', false, 0.8]);
-			doc('options_bg').onclick = function() {
-				Animation('zoomContent', ['fadeOut', true, 0.7]);
-			}
+			$('#zoomContent').fadeIn(800);
+			$('#options_bg').fadeIn(800);
+			_$('options_bg').onclick = function() {
+				$('#zoomContent').fadeOut(700);
+			};
 		}
-	}
-	document.onmousemove = function(p){
+	};
+	$(document).on('mousemove', function(p) {
 		function hide() {
 			if ($('#message').css('display') === 'block')
 				$('#message').css('display', 'none');
 			return false;
 		}
 		var j = p.target.attributes.getNamedItem('show');
-		if (j == null || typeof j === 'undefined')
+		if (j === null || typeof j === 'undefined')
 			return hide();
 		if (j.value == 'false')
 			return hide();
@@ -268,13 +278,15 @@ $(window).on('load',function() {
 
 		if ($('#message').html() !== p.target.innerText)
 			$('#message').html(p.target.innerText);
-		
-		var left, top, offsetX=10, width=doc('message').offsetWidth, height=doc('message').offsetHeight;
+
+		var left, top, offsetX=10, width=_$('message').offsetWidth, height=_$('message').offsetHeight;
         left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
         top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
-		doc('message').style.left = left+'px';
-		doc('message').style.top = top+'px';
-	}
+		$('#message').css({
+			left: left+'px',
+			top: top+'px'
+		});
+	});
 
 	{{MSG_PARSER_POP_FUNC}}
 });

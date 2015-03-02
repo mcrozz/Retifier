@@ -7,11 +7,14 @@ function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if 
 function log(msg) { console.log(tm(': ')+msg); }
 function deb(msg) { console.debug(msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
-function doc(id){if (id[0] === '.') return $(id)[0]; return document.getElementById(id);}
+function _$(id){
+    if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
+    return $('#'+id)[0];
+}
 {{BADGE_ONLINE_COUNT}}
 {{SEND_MSG}}
-function Animation(id, n, f) {
-    if (doc(id)) {
+function anim(id, n, f) {
+    if (_$(id)) {
         var ci = $('#'+id);
         if (!n[1]) ci.show();
         if (!n[2]) n[2]=1;
@@ -148,9 +151,9 @@ function time(t) {
 
 setInterval(function(){
     if (parse) {
-        // Getting usernames from 'Ads' table on parse.com and pasting them in localStorage
+        // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
         var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
-        // Getting usernames from 'Donators' table and disabling 'Please, support...'
+        // Getting usernames from table 'Donators'
         var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config.Timeout',0)});
     }
 }, 600000);

@@ -52,7 +52,7 @@ function InsertOnlineList() {
 			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
 			+'<button type="button" class="button">Channel page</button></a></div>'
 			+'<div class="duration"><a></a></div></div>';
-		doc('insertContentHere').innerHTML += t;
+		_$('insertContentHere').innerHTML += t;
 	}
 
 	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
@@ -124,8 +124,8 @@ function InsertOnlineList() {
 				}
 			}
 		} else if (TimersetToUpdate.indexOf(i) != -1) {
-		    if (!v.Stream && doc(i) !== null) {
-		    	doc(i).remove();
+		    if (!v.Stream && _$(i) !== null) {
+		    	_$(i).remove();
 		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
 		    } else {
 				$(b+'.inf>.title>a').html(StreamTitle);
@@ -184,7 +184,7 @@ setInterval(function(){
 	*/
 	if (localStorage.FirstLaunch === 'true')
 		return false;
-	var j = doc('FollowedChannelsOnline'),
+	var j = _$('FollowedChannelsOnline'),
 	    Upd = local.Status.update,
 	    Onlv = local.Status.online;
 	if (!Onlv)
@@ -200,16 +200,16 @@ setInterval(function(){
 	}
 	pg = Upd!==0;
 	if (pg) {
-		if (doc('CheckingProgress').hidden) {
+		if (_$('CheckingProgress').hidden) {
 			$('#CheckingProgress').show();
-			doc('CheckingProgress').hidden=false;
+			_$('CheckingProgress').hidden=false;
 		}
-		doc('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
+		_$('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
 		if (st === 8) { Animation('refresh', ['spin', false, 0.8]); st = 1; }
 		else { st+=1 }
-	} else if (!doc('CheckingProgress').hidden) {
+	} else if (!_$('CheckingProgress').hidden) {
 		$('#CheckingProgress').hide();
-		doc('CheckingProgress').hidden=true;
+		_$('CheckingProgress').hidden=true;
 	}
 }, 100);
 
@@ -227,7 +227,7 @@ var run = function() {
 			localJSON('Config.Timeout', TimeNdate(14,0,'-'));
 			return false;
 		}
-		if (!doc('donate')) {
+		if (!_$('donate')) {
 			$('#insertContentHere').prepend("<div id='donate'><a>Don't forget support me by donation ;)</a>"+
 				'<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">'+
 				'<input type="hidden" name="cmd" value="_s-xclick">'+
@@ -235,7 +235,7 @@ var run = function() {
 				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
 				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
 				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){doc('donate').remove();localJSON('Config.Timeout',TimeNdate(14,0));ga('set','PayPalButton','false')});
+			setTimeout(function(){$('#CloseNews').on('click', function(){_$('donate').remove();localJSON('Config.Timeout',TimeNdate(14,0));ga('set','PayPalButton','false')});
 			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
 		}
 	})();

@@ -81,7 +81,7 @@ function versionCheck() {
             if (local.Config.Duration_of_stream === 'Enable') localJSON('Config','c',['Duration_of_stream', true]);
             if (local.Config.Duration_of_stream === 'Disable') localJSON('Config','c',['Duration_of_stream', false]);
 
-            /*doc('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
+            /*_$('WhatsNew').innerHTML = '<div class="msgTitle">'+messages[versions.Got].msg+'</div>'+
                 '<div class="msgContain">'+messages[versions.Got].contain+'</div>'+
                 '<button id="msgClose">Okay</button>';
 
@@ -93,7 +93,7 @@ function versionCheck() {
 
             Animation('WhatsNew', ['slideInDown', false]);
 
-            doc('msgClose').onclick = function () {
+            _$('msgClose').onclick = function () {
                 Animation('WhatsNew', ['slideOutUp', true]);
                 localStorage.App_Version_Update=false;
             };*/
