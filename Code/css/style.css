@@ -5,8 +5,6 @@
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
-	width: 697px;
-	height: 584px;
 	font:23px ExtFont!important;
 	overflow: hidden;
 	margin: 0;
@@ -793,6 +791,10 @@ button.WelcomOK:hover {
 	right: 28px;
 	top: 10px;
 }
+
+@media screen and (width: 678px) {}
+@media screen and (width: 450px) {}
+@media screen and (width: 340px) {}
 
 @-{{PLATFORM}}-keyframes openReport {
 	0% { -{{PLATFORM}}-transform:translateX(108px) }
