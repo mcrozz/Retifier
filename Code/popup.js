@@ -191,7 +191,7 @@ $(function() {
 		}
 	}
 
-	function ael(id, type, func) { $(id).on('click', func); }
+	function ael(id, func) { $(id).on('click', func); }
 	reloadStyle();
 	versionCheck();
 	$('#AppVersion').html(local.App_Version.Ver);
