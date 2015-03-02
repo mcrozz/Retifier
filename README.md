@@ -9,7 +9,7 @@
 
 # Installation
 * Clone https://github.com/mcrozz/Twitch.tv_Notifier
-* Start build.py or build.bat
+* Start build.py
 * Choose platform
 * Enable developer mode in browser
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug

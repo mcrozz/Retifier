@@ -6,7 +6,7 @@
   "description": "Get notified when your following channel going online",
   "background": {
     "persistent": true,
-	"page": "background.html"
+	  "page": "background.html"
   },
   "icons": {
   	"16": "/img/icon.png",
@@ -15,7 +15,13 @@
   	"256": "/img/icon.png",
     "512": "/img/icon.png"
   },
-  "permissions": ["http://*.twitch.tv/", "https://*.twitch.tv/", "http://*.jtvnw.net/ttv-boxart/*", "https://api.parse.com/*", "notifications", "storage"],
+  "permissions": [
+    "http://*.twitch.tv/",
+    "https://*.twitch.tv/",
+    "http://*.jtvnw.net/ttv-boxart/*",
+    "https://api.parse.com/*",
+    "notifications", "storage"
+    ],
   "browser_action": {
     "default_title": "Who's online?",
     "default_icon": "/img/icon.png",
