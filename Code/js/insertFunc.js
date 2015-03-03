@@ -27,7 +27,8 @@ function InsertOnlineList() {
 	}
 	/*
 	* a : {
-	*  str : streamer
+	*  str : streamer for urls
+	*  dsn : display streamer name
 	*  ttl : title
 	*  gme : game
 	*  viw : viewers count
@@ -44,7 +45,7 @@ function InsertOnlineList() {
 			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
 			+'<div class="streamer"><a '
 			+ (n?'target="_blank" href="http://www.twitch.tv/'+a.str+'/profile"':'')
-			+'>'+a.str+'</a></div>'
+			+'>'+a.dsn+'</a></div>'
 			+'<div class="viewers"><a>'+a.viw+' viewers</a></div>'
 			+'<div class="game"><a '
 			+(n?'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"':'')
@@ -63,7 +64,7 @@ function InsertOnlineList() {
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
 			StreamerName  = v.Name,
-			ShortStrmName = v.Stream.d_name || v.Name,
+			ShortStrmName = v.d_name,
 			StreamGame    = v.Stream.Game,
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
@@ -88,6 +89,7 @@ function InsertOnlineList() {
 
 				insert({
 					str: StreamerName,
+					dsn: ShortStrmName,
 					ttl: StreamTitle,
 					gme: StreamGame,
 					viw: StreamVievers,

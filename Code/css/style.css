@@ -115,15 +115,26 @@ button {
 .close>button {
 	width: 167px;
 }
+
 #FollowingList {
 	overflow: auto;
 	width: 99%;
-	max-height: 93%}
-.user {
+	max-height: 93%;
+}
+#FollowingList>div {
 	display: inline-block;
-	width: 260px;
-	height: 24px;
-	margin: 1.5 0 0;
+	width: 225px;
+	height: 27px;
+	margin: 1.5px 0 0;
+}
+div>.user {
+	display: inherit;
+	width: 200px;
+}
+#FollowingList>div>input {
+	display: inline-block;
+	position: static;
+	margin: 0;
 }
 
 #options {
@@ -221,7 +232,7 @@ button.button:hover {
 
 #FollowedChannelsList {
 	position: absolute;
-	height: 100%;
+	height: 92%;
 	width: 100%;
 	margin: 5;
 	padding-top: 35px;

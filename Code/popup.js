@@ -111,11 +111,26 @@ $(function() {
 		}
 	}
 
+	var flw = -1, curr;
 	function FollowedList(c) {
-		function append(i,v) {
-			var j = (v.Stream) ? "rgb(0, 194, 40)" : "black";
-			$('#FollowingList').append('<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>');
+		function insert() {
+			$('#FollowingList').html('');
+			$.each(local.FollowingList, function(i,v) {
+				var j = (v.Stream) ? "rgb(0, 194, 40)" : "black", ht;
+				ht  = '<div>';
+				ht += '<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>';
+				ht += '<input type="checkbox" id="'+i+'" class="Check_Box_2">';
+				ht += '</div>';
+				$('#FollowingList').append(ht);
+			});
+			$('#FollowingList>div>input').on('click', function(e) {
+				FollowingList(e.target.id, {Notify: e.target.checked});
+			});
+			$.each($('#FollowingList>div>input'), function(i,v) {
+				v.checked = local.FollowingList[i].Notify;
+			});
 		}
+
 		if (c.id === 'ClsFlwdChnlsLst') {
 			clearInterval(flw);
 			$('#FollowedChannelsList').fadeOut(250, function(){
@@ -124,15 +139,14 @@ $(function() {
 				});
 			});
 		} else {
-			$.each(local.FollowingList, append);
-			var curr = local.FollowingList.length;
+			insert();
+			curr = local.FollowingList.length;
 			flw = setInterval(function(){
 				if (curr !== local.FollowingList.length) {
-					$('#FollowingList').html('');
-					$.each(local.FollowingList, append);
+					insert();
 					curr = local.FollowingList.length;
 				} else {
-					$.each($('#FollowingList>.user'), function(i,v){
+					$.each($('div>.user'), function(i,v){
 						v.style.color = (local.FollowingList[i].Stream)?'rgb(0, 194, 40)':'black';
 					});
 				}
@@ -259,11 +273,12 @@ $(function() {
 	};
 	$(document).on('mousemove', function(p) {
 		function hide() {
-			if ($('#message').css('display') === 'block')
-				$('#message').css('display', 'none');
+			if (k.css('display') === 'block')
+				k.css('display', 'none');
 			return false;
 		}
 		var j = p.target.attributes.getNamedItem('show');
+		var k = $('#message');
 		if (j === null || typeof j === 'undefined')
 			return hide();
 		if (j.value == 'false')
@@ -271,20 +286,23 @@ $(function() {
 		if (j.value != 'true')
 			return false;
 
-		if ($('#message').css('display') === 'none') {
-			$('#message').html(p.target.innerText);
-			$('#message').css('display', 'block');
+		if (k.css('display') === 'none') {
+			k.html(p.target.innerText);
+			k.css('display', 'block');
 		}
 
-		if ($('#message').html() !== p.target.innerText)
-			$('#message').html(p.target.innerText);
+		if (k.html() !== p.target.innerText)
+			k.html(p.target.innerText);
 
-		var left, top, offsetX=10, width=_$('message').offsetWidth, height=_$('message').offsetHeight;
-        left = (697-width-p.x-10 < 0) ? 697-width : p.x+offsetX;
-        top = (600-height-p.y < 0) ? p.y-height-5 : p.y-height-5;
-		$('#message').css({
+		var left, top, width=p.target.offsetWidth, height=p.target.offsetHeight;
+
+		left = (width+p.pageX > 697) ? p.pageX-width-5 : p.x-5;
+    top = (height+p.pageY > 600) ? p.pageY-height-5 : p.y-5;
+
+		k.css({
 			left: left+'px',
-			top: top+'px'
+			top: top+'px',
+			width: width+'px'
 		});
 	});
 
