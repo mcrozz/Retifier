@@ -72,7 +72,14 @@ var CheckStatus = function() {
           Game = 'Not playing';
 
         if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
-          Notify({name:Name, title:Name+' just went live!', msg:Status, type:'online', button:true});
+          if (FoLi.Notify)
+            Notify({
+              name:Name,
+              title:Name+' just went live!',
+              msg:Status,
+              type:'online',
+              button:true
+            });
           localJSON('Status.online', '+1');
           NowOnline.push(Name);
           BadgeOnlineCount(local.Status.online);
@@ -96,11 +103,12 @@ var CheckStatus = function() {
         });
       } else if (local.FollowingList[key].Stream) {
         // Channel went offline
-        Notify({
-          title: local.FollowingList[key].Name+" went offline",
-          msg: "Been online for "+time(local.FollowingList[key].Stream.Time),
-          type: "offline"
-        });
+        if (FoLi.Notify)
+          Notify({
+            title: local.FollowingList[key].Name+" went offline",
+            msg: "Been online for "+time(local.FollowingList[key].Stream.Time),
+            type: "offline"
+          });
         localJSON('Status.online', '-1');
         BadgeOnlineCount(local.Status.online);
         NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
