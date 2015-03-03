@@ -76,10 +76,12 @@ if (!localStorage.FollowingList) localStorage.FollowingList='{}';
 function FollowingList(id, dt) {
   try {
     var tm = local.FollowingList[id];
-    $.each(['Name', 'Stream', 'Notify'], function(i,v) {
-      if (typeof dt[v] === 'undefined')
-        dt[v] = tm[v];
-    });
+    if (typeof tm !== 'undefined')
+      $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
+        if (typeof dt[v] === 'undefined')
+          dt[v] = tm[v];
+        });
+
     local.FollowingList[id] = dt;
     return localStorage.FollowingList = JSON.stringify(local.FollowingList);
   } catch (e) { return err(e); }

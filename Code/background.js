@@ -11,10 +11,19 @@ if (localStorage.FirstLaunch === 'true') {
     localStorage.Following = 0;
     send('refresh');
   }
+  if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
+    localJSON('Following', 0);
   $.each(local.FollowingList, function(i,v) {
-    FollowingList(i, {Stream: false});
-    if (typeof local.FollowingList[i].Notify === 'undefined')
-      FollowingList(i, {Notify: true});
+    if (local.FollowingList.length === 0)
+      return false;
+
+    var j = {Stream: false}, k = local.FollowingList[i];
+    if (typeof k.Notify === 'undefined')
+      j.Notify = true;
+    if (typeof k.d_name === 'undefined')
+      j.d_name = k.Name;
+
+    FollowingList(i, j);
   });
   if (local.Config.Format==='Mini')
     localJSON('Config.Format', 'Light');
@@ -172,14 +181,22 @@ var CheckFollowingList = function() {
     Notify({title:"Error happen", msg:"Cannot update following list", type:"update"});
   })
   .done(function(j) {
-    if (local.Following === j._total)
+    if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
+      localJSON('Following', 0);
+    else if (local.Following === j._total)
       return;
 
       log('Updating list of following channels');
 
       if (local.Following == 0) {
         $.each(j.follows, function(i,v) {
-          FollowingList(i, {Name: v.channel.name, Stream: false, Notify: true});
+          IT = v;
+          FollowingList(i, {
+            Name: v.channel.name,
+            Stream: false,
+            Notify: true,
+            d_name: v.channel.display_name
+          });
         });
         localJSON('Following', j._total);
         CheckStatus();
