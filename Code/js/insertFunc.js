@@ -123,7 +123,7 @@ function InsertOnlineList() {
 					$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
 
 					if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
-	           			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
+						$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
 	        else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
 						$(b+'.inf>.adds>.duration>a').html('');
 
@@ -199,36 +199,7 @@ setInterval(function(){
 	}
 }, 100);
 
-var run = function() {
-	(function() {
-		// You can relax for now... until next time...
-		return true;
-		if (typeof local.Config.Timeout !== 'undefined') {
-			var dif = (new Date(local.Config.Timeout)).getTime()-(new Date()).getTime();
-			dif/=86400000;
-			if (local.Config.Timeout === 1337) return true;
-			if (dif > 0) return true;
-			if (dif <= 0 || dif > 14) localJSON('Config.Timeout', 0);
-		} else {
-			localJSON('Config.Timeout', TimeNdate(14,0,'-'));
-			return false;
-		}
-		if (!_$('donate')) {
-			$('#insertContentHere').prepend("<div id='donate'><a>Don't forget support me by donation ;)</a>"+
-				'<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">'+
-				'<input type="hidden" name="cmd" value="_s-xclick">'+
-				'<input type="hidden" name="hosted_button_id" value="PMS9N35GNTLNQ">'+
-				'<input type="image" id="PayPalCheckOut" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'+
-				'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">'+
-				'</form><a id="CloseNews">Close</a></div>');
-			setTimeout(function(){$('#CloseNews').on('click', function(){_$('donate').remove();localJSON('Config.Timeout',TimeNdate(14,0));ga('set','PayPalButton','false')});
-			$('#PayPalCheckOut').on('click', function(){ga('set', 'PayPalButton', 'true')});});
-		}
-	})();
-	InsertOnlineList();
-};
-
 window.onload = function(e){
-	setInterval(run, 1000);
+	setInterval(InsertOnlineList, 1000);
 	setTimeout(InsertOnlineList, 0);
 };
