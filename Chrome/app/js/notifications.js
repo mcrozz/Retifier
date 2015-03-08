@@ -1,25 +1,65 @@
 function clear(i) {
 	chrome.notifications.clear(i,function() {
-		$.each(NotifyNames, function(k,v) {
-			if (v[1]===i)
-				NotifyNames[k][0] = true;
+		var j = {};
+		$.each(StrNames, function(k,v) {
+			if (k!==i)
+				j[k] = v;
 		});
+		StrNames = j;
 	});
 }
 chrome.notifications.onButtonClicked.addListener(function(id){
-	$.each(NotifyNames, function(i,v){
-		if (v[1]===id) {
-			window.open('http://www.twitch.tv/'+i);
-			return true;
-		}
-	});
+	window.open('http://www.twitch.tv/'+StrNames[id]);
 	clear(id);
-});
-chrome.notifications.onClosed.addListener(function(id,u){ if(u) clear(id); });
-chrome.notifications.onClicked.addListener(function(id) { clear(id); });
+	return true; });
+chrome.notifications.onClosed.addListener(function(id,u){
+	if(u) clear(id); });
+chrome.notifications.onClicked.addListener(function(id) {
+	clear(id); });
 
-var ncnt = 0,
-	NotifyNames = {};
+var ncnt = 0;
+var StrNames = {};
+
+if (!localStorage.timeOut)
+	localStorage.timeOut = '{}';
+var timeOut = {
+	init: function() {
+		try {
+			this.names = JSON.parse(localStorage.timeOut);
+		} catch(e) { return err(e); }
+	},
+	set: function(name) {
+		this.names[name] = (new Date()).toJSON();
+		this.save();
+	},
+	save: function() {
+		try {
+			localStorage.timeOut = JSON.stringify(this.names);
+		} catch(e) {return err(e); }
+	},
+	find: function(n) {
+		// return true if more than 15 second
+		if (typeof this.names[n] === 'undefined')
+			return true;
+
+		setTimeout(this.check, 5000);
+		var dif = ((new Date())-(new Date(this.names[n])))/1000;
+		return dif>=15;
+	},
+	check: function() {
+		if (this.names.length === 0)
+			return false;
+		var n;
+		$.each(this.names, function(i,v) {
+			var dif = ((new Date())-(new Date(v)))/1000;
+			if (dif<15)
+				n[i] = v;
+		});
+		this.names = !n ? '{}' : n;
+		this.save();
+	}
+};
+timeOut.init();
 
 function Notify(d) {
 	if (window.location.pathname !== '/background.html')
@@ -50,7 +90,8 @@ function Notify(d) {
 			default:
 				times *= 5; break;
 		}
-		setTimeout(function(){chrome.notifications.clear(idToDel, function(){});}, times);
+		setTimeout(function(){
+			chrome.notifications.clear(idToDel, function(){});}, times);
 	}
 
 	function sendNotify(d) {
@@ -65,7 +106,8 @@ function Notify(d) {
 		if (d.button)
 			config.buttons = [{ title:"Watch now!" }];
 		chrome.notifications.create('n'+ncnt, config, function(){
-			NotifyNames[d.name] = [false, 'n'+ncnt];
+			StrNames['n'+ncnt] = d.name;
+			timeOut.set(d.name);
 			delNotify('n'+ncnt, d.type);
 			ncnt++;
 			if (local.Config.Notifications.sound_status)
@@ -74,9 +116,10 @@ function Notify(d) {
 	}
 
 	if (local.Config.Notifications.status) {
+		if (!timeOut.find(d.name))
+			return false;
+
 		var j = local.Config.Notifications;
-
-
 
 		if (!j[d.type] && d.type !== 'sys')
 			return false;
