@@ -103,6 +103,11 @@ function InsertOnlineList() {
 					'background-size':'contain',
 					'cursor':'pointer'
 				});
+				$(b+'.tum>.GT1').css({
+					'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
+					'background-size': 'contain',
+					'cursor':'pointer'
+				});
 				$(b+'.tum>.GT2').css({
 					'background':'url("./img/playing.png")',
 					'background-size': 'contain',
@@ -127,18 +132,25 @@ function InsertOnlineList() {
 	        else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
 						$(b+'.inf>.adds>.duration>a').html('');
 
-					if ($(b+'.tum>.ST').css('background') != 'http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg')
-						$(b+'.tum>.ST').css({
-							'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-							'background-size': 'contain',
-							'cursor': 'pointer',
-							'zIndex': 0
-						});
-
-					$(b+'.tum>.GT1').css({
-						'background-size':'contain',
-						'cursor':'pointer'
+					$(b+'.tum>.ST').css({
+						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+						'background-size': 'contain',
+						'cursor': 'pointer',
+						'zIndex': 0
 					});
+
+					var jl = $(b+'.tum>.GT1').css('background').split('/');
+					if (jl[jl.length-1] != encodeURI(StreamGame)+'-272x380.jpg')
+						$(b+'.tum>.GT1').css({
+							'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
+							'background-size':'contain',
+							'cursor':'pointer'
+						});
+					else
+						$(b+'.tum>.GT1').css({
+							'background-size':'contain',
+							'cursor':'pointer'
+						});
 					$(b+'.tum>.GT2').css({
 						'background':'url("./img/playing.png")',
 						'background-size': 'contain',
@@ -154,8 +166,7 @@ function InsertOnlineList() {
 	});
 }
 
-var pg = false,
-	st = 1;
+var pg = false, st = 1;
 setInterval(function(){
 	/*
 			Status.update
