@@ -42,7 +42,6 @@ var timeOut = {
 		if (typeof this.names[n] === 'undefined')
 			return true;
 
-		setTimeout(this.check, 8000);
 		var dif = ((new Date())-(new Date(this.names[n])))/1000;
 		return dif>=15;
 	},
