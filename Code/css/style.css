@@ -119,7 +119,7 @@ button {
 #FollowingList {
 	overflow: auto;
 	width: 99%;
-	max-height: 93%;
+	min-height: 100%;
 }
 #FollowingList>div {
 	display: inline-block;
@@ -352,7 +352,7 @@ button.button:hover {
 }
 
 #insertContentHere {
-	height: 100%;
+	height: 88%;
 	overflow: auto;
 }
 
