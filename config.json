@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 998,
+        "Build": 1005,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -111,8 +111,6 @@
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
         "PLATFORM": "var(Platform) in deb(css\\style.css)",
         "PLATFORM_": "var(Platform) in deb(js\\functions.js)",
-        "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)",
-        "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
-        "UPDATE_LOCAL_VAR_FUNC": "file(app\\js\\UpdateLocalVar.js) in deb(js\\functions.js)"
+        "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)"
     }
 }

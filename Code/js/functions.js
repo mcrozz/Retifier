@@ -1,7 +1,7 @@
 {{LICENSE_HEADER}}
 {{FUNCTIONS_FIRST_START}}
-if (localStorage.Ads === '')
-    localStorage.Ads = '[]';
+if (localStorage.Ads === '') localStorage.Ads = '[]';
+if (!localStorage.FollowingList) localStorage.FollowingList='{}';
 function tm(j) { function g(s) { return s<10 ? '0'+s : s; } var d = new Date(); return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j; }
 function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
 function log(msg) { console.log(tm(': ')+msg); }
@@ -26,66 +26,72 @@ function anim(id, n, f) {
     }
 }
 
-window.local = {};
+window.local = {
+  init: function(w) {
+    if (typeof w !== 'undefined') {
+      if (typeof this[w] !== 'undefined' && w !== -1) {
+        try {
+          this[w] = JSON.parse(localStorage[w]);
+        } catch(e) { return err(e); }
+        return true;
+      }
+    }
+    try {
+      this.Config = JSON.parse(localStorage.Config);
+      this.Status = JSON.parse(localStorage.Status);
+      this.FollowingList = JSON.parse(localStorage.FollowingList);
+      this.App_Version = JSON.parse(localStorage.App_Version);
+      this.Following = JSON.parse(localStorage.Following);
+    } catch(e) { err(e); return false; }
+    return true;
+  },
+  set: function(pth, val) {
+    if (!pth || typeof val==='undefined')
+      return err("Invalid input @ function local.set()");
+    try {
+      function pr(v) {
+        switch(val[0]) {
+          case '+':
+            v = parseFloat(v)+parseFloat(val.slice(1)); break;
+          case '-':
+            v = parseFloat(v)-parseFloat(val.slice(1)); break;
+          default:
+            v = val; break;
+        }
+        return v;
+      }
+      var pth = pth.split('.');
+      switch (pth.length) {
+        case 1:
+          this[pth[0]] = pr(this[pth[0]]); break;
+        case 2:
+          this[pth[0]][pth[1]] = pr(this[pth[0]][pth[1]]); break;
+        case 3:
+          this[pth[0]][pth[1]][pth[2]] = pr(this[pth[0]][pth[1]][pth[2]]); break;
+        default:
+          return err("Path is too long @ function localJSON()");
+      }
+      localStorage[pth[0]] = JSON.stringify(this[pth[0]]);
+      send({type:'update', data:pth[0]});
+    } catch(e) { return err(e); }
+  },
+  following: function(id, dt) {
+    try {
+      var tm = this.FollowingList[id];
+      if (typeof tm !== 'undefined')
+        $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
+          if (typeof dt[v] === 'undefined')
+            dt[v] = tm[v];
+          });
 
-function loc() {
-    local.Config = JSON.parse(localStorage.Config);
-    local.Status = JSON.parse(localStorage.Status);
-    local.FollowingList = JSON.parse(localStorage.FollowingList);
-    local.App_Version = JSON.parse(localStorage.App_Version);
-    local.Following = JSON.parse(localStorage.Following);
-}
-
-try { loc() } catch(e) { err(e) }
+      this.FollowingList[id] = dt;
+      return localStorage.FollowingList = JSON.stringify(this.FollowingList);
+    } catch (e) { return err(e); }
+  }
+};
+local.init();
 
 {{INTERVAL_STORAGE_CHANGE}}
-
-function localJSON(pth,val) {
-  if (!pth || typeof val==='undefined')
-    return err("Invalid input @ function localJSON()");
-  try {
-    {{UPDATE_LOCAL_VAR_FUNC}}
-    function pr(v) {
-      switch(val[0]) {
-        case '+':
-          v = parseFloat(v)+parseFloat(val.slice(1)); break;
-        case '-':
-          v = parseFloat(v)-parseFloat(val.slice(1)); break;
-        default:
-          v = val; break;
-      }
-      return v;
-    }
-    var pth = pth.split('.');
-    switch (pth.length) {
-      case 1:
-        local[pth[0]] = pr(local[pth[0]]); break;
-      case 2:
-        local[pth[0]][pth[1]] = pr(local[pth[0]][pth[1]]); break;
-      case 3:
-        local[pth[0]][pth[1]][pth[2]] = pr(local[pth[0]][pth[1]][pth[2]]); break;
-      default:
-        return err("Path is too long @ function localJSON()");
-    }
-    localStorage[pth[0]] = JSON.stringify(local[pth[0]]);
-    {{UPDATE_LOCAL_VAR_CALL}}
-  } catch(e) { return err(e); }
-}
-
-if (!localStorage.FollowingList) localStorage.FollowingList='{}';
-function FollowingList(id, dt) {
-  try {
-    var tm = local.FollowingList[id];
-    if (typeof tm !== 'undefined')
-      $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
-        if (typeof dt[v] === 'undefined')
-          dt[v] = tm[v];
-        });
-
-    local.FollowingList[id] = dt;
-    return localStorage.FollowingList = JSON.stringify(local.FollowingList);
-  } catch (e) { return err(e); }
-}
 
 {{NOTIFY_USER_FUNCTION}}
 
@@ -145,7 +151,7 @@ function time(t) {
   p.src='{{PARSE_COM_SRC}}';
   p.onload = function(){
     parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config.Timeout',0)});
+    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
     var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
   }
   s.parentNode.insertBefore(p,s);
@@ -156,7 +162,7 @@ setInterval(function(){
     // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
     var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
     // Getting usernames from table 'Donators'
-    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){localJSON('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)localJSON('Config.Timeout',0)});
+    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
   }
 }, 600000);
 {{IF_BACKGROUND_END}}

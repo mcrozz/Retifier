@@ -1,18 +1,18 @@
 {{LICENSE_HEADER}}
 if (localStorage.FirstLaunch === 'true') {
   localStorage.Following = 0;
-  localJSON('Status.update', 7);
+  local.set('Status.update', 7);
   BadgeOnlineCount(' Hi ');
 } else {
   BadgeOnlineCount(0);
-  localJSON('Status.online', 0);
+  local.set('Status.online', 0);
   if ($.inArray("object Object", localStorage.FollowingList) != -1) {
     localStorage.FollowingList = "{}";
     localStorage.Following = 0;
     send('refresh');
   }
   if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
-    localJSON('Following', 0);
+    local.set('Following', 0);
   $.each(local.FollowingList, function(i,v) {
     if (local.FollowingList.length === 0)
       return false;
@@ -23,10 +23,10 @@ if (localStorage.FirstLaunch === 'true') {
     if (typeof k.d_name === 'undefined')
       j.d_name = k.Name;
 
-    FollowingList(i, j);
+    local.following(i, j);
   });
   if (local.Config.Format==='Mini')
-    localJSON('Config.Format', 'Light');
+    local.set('Config.Format', 'Light');
 }
 
 try {
@@ -46,7 +46,7 @@ var basicCheck = function() {
       send('refresh');
     }
     if (localStorage.FirstLaunch !== 'true') {
-      localJSON('Status.update', 6);
+      local.set('Status.update', 6);
       log('Change user name!');
     }
     return false;
@@ -60,7 +60,7 @@ var CheckStatus = function() {
       err({message:'checkStatus() ended with error', stack:d});
     })
     .done(function(d){
-      localJSON('Status.checked', '+1');
+      local.set('Status.checked', '+1');
       if (d.stream) {
         // Channel is online
         var FoLi   = local.FollowingList[key],
@@ -89,7 +89,7 @@ var CheckStatus = function() {
               type:'online',
               button:true
             });
-          localJSON('Status.online', '+1');
+          local.set('Status.online', '+1');
           NowOnline.push(Name);
           BadgeOnlineCount(local.Status.online);
         }
@@ -100,7 +100,7 @@ var CheckStatus = function() {
         if (new Date(FoLi.Stream.Time) - new Date(Time))
           Time = FoLi.Stream.Time;
 
-        FollowingList(key, {
+        local.following(key, {
           Name    : Name,
           d_name  : d_name,
           Stream  : {
@@ -118,17 +118,17 @@ var CheckStatus = function() {
             msg: "Been online for "+time(local.FollowingList[key].Stream.Time),
             type: "offline"
           });
-        localJSON('Status.online', '-1');
+        local.set('Status.online', '-1');
         BadgeOnlineCount(local.Status.online);
         NowOnline = NowOnline.filter(function(e){ return e !== local.FollowingList[key].Name; });
-        FollowingList(key, {Stream: false});
+        local.following(key, {Stream: false});
       }
       if (local.Status.checked==local.Following || key===local.Following) {
         if (local.Status.online === 0 && NowOnline.length !== 0)
-          localJSON('Status.online', NowOnline.length);
+          local.set('Status.online', NowOnline.length);
         BadgeOnlineCount(local.Status.online);
         log('Every channel checked ('+local.Status.checked+')');
-        localJSON('Status.update', 0);
+        local.set('Status.update', 0);
         if (local.Config.Notifications.update) {
           switch (local.Status.online) {
             case 0:
@@ -145,11 +145,11 @@ var CheckStatus = function() {
 
   if (!basicCheck())
     return;
-  localJSON('Status.update', 1);
+  local.set('Status.update', 1);
   log("Checking status of streamers");
   Notify({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
-  localJSON('Status.update', 4);
-  localJSON('Status.checked', 0);
+  local.set('Status.update', 4);
+  local.set('Status.checked', 0);
 
   var token = local.Config.token;
   $.each(local.FollowingList, function(i,v) {
@@ -160,15 +160,15 @@ var CheckStatus = function() {
   });
 
   if (local.Status.update !== 5)
-    localJSON('Status.update', 0);
+    local.set('Status.update', 0);
 };
 var CheckFollowingList = function() {
   if (!basicCheck())
     return;
-  localJSON('Status.update', 1);
+  local.set('Status.update', 1);
   log("Checking following list");
   Notify({title:'Status', msg:'Checking following list...', type:'update'});
-  localJSON('Status.update', 2);
+  local.set('Status.update', 2);
 
   var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
   if (local.Config.token !== "")
@@ -177,12 +177,12 @@ var CheckFollowingList = function() {
   $.getJSON(uri)
   .fail(function(j) {
     err({message:"Can't get following list",stack:j});
-    localJSON('Status.update', 5);
+    local.set('Status.update', 5);
     Notify({title:"Error happen", msg:"Cannot update following list", type:"update"});
   })
   .done(function(j) {
     if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
-      localJSON('Following', 0);
+      local.set('Following', 0);
     else if (local.Following === j._total)
       return;
 
@@ -190,18 +190,17 @@ var CheckFollowingList = function() {
 
       if (local.Following == 0) {
         $.each(j.follows, function(i,v) {
-          IT = v;
-          FollowingList(i, {
+          local.following(i, {
             Name: v.channel.name,
             Stream: false,
             Notify: true,
             d_name: v.channel.display_name
           });
         });
-        localJSON('Following', j._total);
+        local.set('Following', j._total);
         CheckStatus();
       } else {
-        localJSON('Following', j._total);
+        local.set('Following', j._total);
         var NewJson = [];
         $.each(local.FollowingList, function(i,v) {
           var del = true;
@@ -215,12 +214,12 @@ var CheckFollowingList = function() {
         try {
           localStorage.FollowingList = JSON.stringify(NewJson);
         } catch(e) { err(e); }
-        localJSON('Status.online', 0);
+        local.set('Status.online', 0);
         CheckStatus();
       }
   });
   if (local.Status.update !== 5)
-    localJSON('Status.update', 0);
+    local.set('Status.update', 0);
 };
 
 var TwitchFollowing = -1, TwitchStatus = -1;

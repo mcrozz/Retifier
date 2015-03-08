@@ -1,6 +1,5 @@
 function parseMsg(msg) {
-	switch(msg) {
+	switch(msg.type) {
 		case "refresh": initTwitch(); break;
-		case "update": loc(); break;
 	}
 }

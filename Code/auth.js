@@ -4,13 +4,13 @@ function init() {
 		if (f.type == 'error') {
 			// Something happen
 			// err({message: f.msg, stack: f.e});
-		
+
 			var r = $('p>code');
-		
+
 			r[0].innerText = f.msg;
 			if (!f.expl) delete r[1]
 			else r[1].innerText = f.expl;
-		
+
 			$('.pending').hide();
 			$('.failed').show();
 		} else {
@@ -35,16 +35,16 @@ function init() {
 	}
 	var tkn = loc.hash.split('&')[0].split('=')[1];
 
-	localJSON('Config.token', tkn);
+	local.set('Config.token', tkn);
 	$.ajax({
 		url:'https://api.twitch.tv/kraken/user?oauth_token='+tkn,
 		dataType:'JSONP',
 		complete: function(e){
 			log('Got user');
 			if (e.responseJSON.name !== undefined) {
-				localJSON('Config.User_Name', e.responseJSON.name);
+				local.set('Config.User_Name', e.responseJSON.name);
 				localStorage.FirstLaunch = false;
-				localJSON('Status.StopInterval', true);
+				local.set('Status.StopInterval', true);
 				show({type: 'ok'});
 				send('refresh');
 			} else {

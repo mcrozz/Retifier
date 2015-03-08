@@ -10,7 +10,7 @@ $(function() {
 		$('style').html('html { width: 697px; height: 584px; }');
 		var css;
 		if (!local.Config.Format)
-			localJSON('Config.Format', 'Grid');
+			local.set('Config.Format', 'Grid');
 		switch (local.Config.Format) {
 			case 'Full':
 				css = 'full'; break;
@@ -74,24 +74,24 @@ $(function() {
 	function changeScriptStarter() {
 		var g = Math.floor(_$('ChgUsrInt').value);
 		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
-			localJSON('Config.Interval_of_Checking', g);
-			localJSON('Status.StopInterval', true);
+			local.set('Config.Interval_of_Checking', g);
+			local.set('Status.StopInterval', true);
 		}
 
-		localJSON('Config.Notifications.status', _$('.EnNotify').checked);
+		local.set('Config.Notifications.status', _$('.EnNotify').checked);
 
-		localJSON('Config.Notifications.online', _$('.NotifyStreamer').checked);
-		localJSON('Config.Notifications.offline', _$('.NotifyStreamer2').checked);
-		localJSON('Config.Notifications.update', _$('.NotifyUpdate').checked);
-		localJSON('Config.Notifications.follow', _$('.NotifyStreamerChanged').checked);
+		local.set('Config.Notifications.online', _$('.NotifyStreamer').checked);
+		local.set('Config.Notifications.offline', _$('.NotifyStreamer2').checked);
+		local.set('Config.Notifications.update', _$('.NotifyUpdate').checked);
+		local.set('Config.Notifications.follow', _$('.NotifyStreamerChanged').checked);
 
-		localJSON('Config.Notifications.sound_status', _$('.SoundCheck').checked);
+		local.set('Config.Notifications.sound_status', _$('.SoundCheck').checked);
 
-		localJSON('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
+		local.set('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
 
 		var a = _$('.selected').className.split(' ')[1];
 		if (local.Config.Format !== a) {
-			localJSON('Config.Format', a);
+			local.set('Config.Format', a);
 			reloadStyle(true);
 			texts = { d:new Date() };
 			snum();
@@ -124,7 +124,7 @@ $(function() {
 				$('#FollowingList').append(ht);
 			});
 			$('#FollowingList>div>input').on('click', function(e) {
-				FollowingList(e.target.id, {Notify: e.target.checked});
+				local.following(e.target.id, {Notify: e.target.checked});
 			});
 			$.each($('#FollowingList>div>input'), function(i,v) {
 				v.checked = local.FollowingList[i].Notify;
