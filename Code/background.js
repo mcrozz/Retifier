@@ -34,7 +34,7 @@ try {
   ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
 }catch(e){};
 
-var NowOnline = [];
+var NowOnline = [], reCount = false;
 
 var basicCheck = function() {
   if (!localStorage.Following)
@@ -63,7 +63,7 @@ var CheckStatus = function() {
       local.set('Status.checked', '+1');
       if (d.stream) {
         // Channel is online
-        var FoLi   = local.FollowingList[key],
+        var FoLi = local.FollowingList[key],
           Game   = d.stream.channel.game,
           Status = d.stream.channel.status,
           Name   = d.stream.channel.name,
@@ -124,6 +124,15 @@ var CheckStatus = function() {
         local.following(key, {Stream: false});
       }
       if (local.Status.checked==local.Following || key===local.Following) {
+        if (reCount || local.Status.online < 0) {
+          var onl = 0;
+          $.each(local.FollowingList, function(i,v) {
+            if (v.Stream)
+              onl++;
+          });
+          local.set('Status.online', onl);
+        }
+
         if (local.Status.online === 0 && NowOnline.length !== 0)
           local.set('Status.online', NowOnline.length);
         BadgeOnlineCount(local.Status.online);
@@ -198,6 +207,7 @@ var CheckFollowingList = function() {
           });
         });
         local.set('Following', j._total);
+        reCount = true;
         CheckStatus();
       } else {
         local.set('Following', j._total);
@@ -215,6 +225,7 @@ var CheckFollowingList = function() {
           localStorage.FollowingList = JSON.stringify(NewJson);
         } catch(e) { err(e); }
         local.set('Status.online', 0);
+        reCount = true;
         CheckStatus();
       }
   });
