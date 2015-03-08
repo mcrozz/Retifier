@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 996,
+        "Build": 998,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -61,6 +61,10 @@
         "UpdateLocal": "false",
         "Ver": "0.9.1.1"
     },
+    "GlobalVar": {
+        "Parse": "parse-1.3.5.min.js",
+        "jQuery": "jquery-2.1.3.min.js"
+    },
     "Opera": {
         "Browser": "Opera",
         "Build": 60,
@@ -82,7 +86,6 @@
         "Ver": "0.9.0.0"
     },
     "Scripts": [
-        "./js/jquery-2.1.3.min.js",
         "./js/functions.js",
         "background.js",
         "./js/firstStart.js",
@@ -91,7 +94,6 @@
         "popup.js"
     ],
     "ScriptsBack": [
-        "./js/jquery-2.1.3.min.js",
         "./js/functions.js",
         "background.js"
     ],

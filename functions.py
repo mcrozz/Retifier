@@ -102,15 +102,11 @@ def build(b, s):
 	# Copy background.html
 	if config[browser]['CopyBackgound'] == 'true':
 		shutil.copy2(pj([currDir, 'Code', 'background.html']), pj([dbDir, 'background.html']))
-	# Insert/minify style.css
-	# fw(pj([dbDir, 'style', 'style.css']), minify(rf(pj([currDir, 'Code', 'style', 'style.css']))))
-	# fw(pj([dbDir, 'style', 'grid.css']), minify(rf(pj([currDir, 'Code', 'style', 'grid.css']))))
-	# fw(pj([dbDir, 'style', 'mini.css']), minify(rf(pj([currDir, 'Code', 'style', 'mini.css']))))
-	# fw(pj([dbDir, 'style', 'full.css']), minify(rf(pj([currDir, 'Code', 'style', 'full.css']))))
 	# Replace INSERT_SCRIPTS_HERE
-	scrpts = ''
+	scrpts = '<script src="./js/'+config['GlobalVar']['jQuery']+'"></script>\n'
 	for y in config['Scripts']:
 		if y == "background.js":
+			# FIXIT: probably bug
 			if config[browser]['CopyBackgound'] != 'true':
 				scrpts += '<script src="'+y+'"></script>\n'
 		else:
@@ -118,17 +114,17 @@ def build(b, s):
 	rp("{{INSERT_SCRIPTS_HERE}}", str(scrpts), pj([dbDir, "popup.html"]))
 	# Replace INSERT_BACKGROUND_SCRIPTS
 	if config[browser]['CopyBackgound'] == 'true':
-		scrBack = ''
+		scrBack = '<script src="./js/'+config['GlobalVar']['jQuery']+'"></script>\n'
 		for g in config['ScriptsBack']:
 			scrBack += '<script src="'+g+'"></script>\n'
 		rp('{{INSERT_BACKGROUND_SCRIPTS}}', str(scrBack), pj([dbDir, 'background.html']))
 	# Replace PARSE_COM_SRC
 	if config[browser]['Parse'] == 'site':
-		rp("{{PARSE_COM_SRC}}", "https://www.parsecdn.com/js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
+		rp("{{PARSE_COM_SRC}}", "https://www.parsecdn.com/js/"+config['GlobalVar']['Parse'], pj([dbDir, 'js', 'functions.js']))
 	else:
-		rp("{{PARSE_COM_SRC}}", "./js/parse-1.2.18.min.js", pj([dbDir, 'js', 'functions.js']))
+		rp("{{PARSE_COM_SRC}}", "./js/"+config['GlobalVar']['Parse'], pj([dbDir, 'js', 'functions.js']))
 		p("	Copy parse.js")
-		shutil.copy2(pj([currDir, 'Code', 'js', 'parse-1.2.18.min.js']), pj([dbDir, 'js', 'parse-1.2.18.min.js']))
+		shutil.copy2(pj([currDir, 'Code', 'js', config['GlobalVar']['Parse']]), pj([dbDir, 'js', config['GlobalVar']['Parse']]))
 	# Inserting config file 'n' replace version
 	p("	Inserting "+config[browser]['Config'])
 	shutil.copy2(pj([currDir, browser, 'app', config[browser]['Config']]), pj([dbDir, config[browser]['Config']]))
