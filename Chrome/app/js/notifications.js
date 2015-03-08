@@ -42,20 +42,21 @@ var timeOut = {
 		if (typeof this.names[n] === 'undefined')
 			return true;
 
-		setTimeout(this.check, 5000);
+		setTimeout(this.check, 8000);
 		var dif = ((new Date())-(new Date(this.names[n])))/1000;
 		return dif>=15;
 	},
 	check: function() {
-		if (this.names.length === 0)
-			return false;
-		var n;
-		$.each(this.names, function(i,v) {
-			var dif = ((new Date())-(new Date(v)))/1000;
-			if (dif<15)
-				n[i] = v;
-		});
-		this.names = !n ? '{}' : n;
+		var n = {}, ad = 0;
+		for (var i in this.names) {
+			var c = this.names[i];
+			var dif = ((new Date())-(new Date(c)))/1000;
+			if (dif<15) {
+				n[i] = c;
+				ad++;
+			}
+		}
+		this.names = ad===0 ? {} : n;
 		this.save();
 	}
 };
@@ -107,7 +108,8 @@ function Notify(d) {
 			config.buttons = [{ title:"Watch now!" }];
 		chrome.notifications.create('n'+ncnt, config, function(){
 			StrNames['n'+ncnt] = d.name;
-			timeOut.set(d.name);
+			if (d.type != 'sys')
+				timeOut.set(d.name);
 			delNotify('n'+ncnt, d.type);
 			ncnt++;
 			if (local.Config.Notifications.sound_status)
