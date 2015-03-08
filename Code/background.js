@@ -131,6 +131,7 @@ var CheckStatus = function() {
               onl++;
           });
           local.set('Status.online', onl);
+          reCount = false;
         }
 
         if (local.Status.online === 0 && NowOnline.length !== 0)
