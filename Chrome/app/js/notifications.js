@@ -26,6 +26,7 @@ var timeOut = {
 	init: function() {
 		try {
 			this.names = JSON.parse(localStorage.timeOut);
+			timeOut.check();
 		} catch(e) { return err(e); }
 	},
 	set: function(name) {
@@ -45,18 +46,25 @@ var timeOut = {
 		var dif = ((new Date())-(new Date(this.names[n])))/1000;
 		return dif>=15;
 	},
+	chck: -1,
 	check: function() {
-		var n = {}, ad = 0;
-		for (var i in this.names) {
-			var c = this.names[i];
-			var dif = ((new Date())-(new Date(c)))/1000;
-			if (dif<15) {
-				n[i] = c;
-				ad++;
+		if (this.chck !== -1)
+			return true;
+
+		this.chck = setTimeout(function() {
+			var n = {}, ad = 0;
+			for (var i in timeOut.names) {
+				var c = timeOut.names[i];
+				var dif = ((new Date())-(new Date(c)))/1000;
+				if (dif<15) {
+					n[i] = c;
+					ad++;
+				}
 			}
-		}
-		this.names = ad===0 ? {} : n;
-		this.save();
+			timeOut.names = ad===0 ? {} : n;
+			timeOut.save();
+			timeOut.chck = -1;
+		}, 0);
 	}
 };
 timeOut.init();

@@ -140,6 +140,7 @@ var CheckStatus = function() {
         BadgeOnlineCount(local.Status.online);
         log('Every channel checked ('+local.Status.checked+')');
         local.set('Status.update', 0);
+        timeOut.check();
         if (local.Config.Notifications.update) {
           switch (local.Status.online) {
             case 0:
