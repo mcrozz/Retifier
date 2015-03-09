@@ -75,12 +75,20 @@ window.local = {
       send({type:'update', data:pth[0]});
     } catch(e) { return err(e); }
   },
+  default: {
+    Name: 'invalid',
+    Stream: false,
+    Notify: true,
+    d_name: 'invalid'
+  },
   following: function(id, dt) {
     try {
       var tm = this.FollowingList[id];
       if (typeof tm !== 'undefined')
         $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
-          if (typeof dt[v] === 'undefined')
+          if (typeof tm[v] === 'undefined')
+            dt[v] = this.default[v];
+          else if (typeof dt[v] === 'undefined')
             dt[v] = tm[v];
           });
 
