@@ -6,6 +6,10 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
   BadgeOnlineCount(0);
   local.set('Status.online', 0);
+  if (local.Games.length > 50) {
+    localStorage.Games = '{}';
+    local.init('Games');
+  }
   if ($.inArray("object Object", localStorage.FollowingList) != -1) {
     localStorage.FollowingList = "{}";
     localStorage.Following = 0;

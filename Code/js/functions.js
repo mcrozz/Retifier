@@ -96,6 +96,10 @@ window.local = {
   },
   game: function(name) {
     setTimeout(function() {
+      if (local.Games.length > 50) {
+        localStorage.Games = '{}';
+        local.init('Games');
+      }
       var dname = encodeURI(name);
       $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
       .done(function(e) {
