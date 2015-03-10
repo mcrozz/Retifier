@@ -1,7 +1,5 @@
 {{LICENSE_HEADER}}
 {{FUNCTIONS_FIRST_START}}
-if (localStorage.Ads === '') localStorage.Ads = '[]';
-if (!localStorage.FollowingList) localStorage.FollowingList='{}';
 function tm(j) { function g(s) { return s<10 ? '0'+s : s; } var d = new Date(); return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j; }
 function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
 function log(msg) { console.log(tm(': ')+msg); }
@@ -42,6 +40,7 @@ window.local = {
       this.FollowingList = JSON.parse(localStorage.FollowingList);
       this.App_Version = JSON.parse(localStorage.App_Version);
       this.Following = JSON.parse(localStorage.Following);
+      this.Games = JSON.parse(localStorage.Games);
     } catch(e) { err(e); return false; }
     return true;
   },
@@ -52,13 +51,12 @@ window.local = {
       function pr(v) {
         switch(val[0]) {
           case '+':
-            v = parseFloat(v)+parseFloat(val.slice(1)); break;
+            return parseFloat(v)+parseFloat(val.slice(1));
           case '-':
-            v = parseFloat(v)-parseFloat(val.slice(1)); break;
+            return parseFloat(v)-parseFloat(val.slice(1));
           default:
-            v = val; break;
+            return val;
         }
-        return v;
       }
       var pth = pth.split('.');
       switch (pth.length) {
@@ -95,6 +93,24 @@ window.local = {
       this.FollowingList[id] = dt;
       return localStorage.FollowingList = JSON.stringify(this.FollowingList);
     } catch (e) { return err(e); }
+  },
+  game: function(name) {
+    setTimeout(function() {
+      var dname = encodeURI(name);
+      $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
+      .done(function(e) {
+        var isThere = false;
+        if (e.games.length === 0)
+          isThere = false;
+        else
+          $.each(e.games, function(i,v) {
+            if (v.name === name) {
+              isThere = true;
+            }
+          });
+        local.set('Games.'+dname, isThere);
+      });
+    }, 0);
   }
 };
 local.init();
@@ -141,7 +157,7 @@ function time(t) {
   a.async=1; a.src=g;
   m.parentNode.insertBefore(a,m);
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-25472862-3', {'cookieDomain': 'none'});
+  ga('create', 'UA-25472862-3', {cookieDomain: 'none'});
   ga('set', 'checkProtocolTask', function(){});
   ga('set', 'anonymizeIp', true);
   ga('require', 'displayfeatures');

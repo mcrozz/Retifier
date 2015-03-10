@@ -100,6 +100,8 @@ var CheckStatus = function() {
         if (new Date(FoLi.Stream.Time) - new Date(Time))
           Time = FoLi.Stream.Time;
 
+        local.game(Game);
+
         local.following(key, {
           Name    : Name,
           d_name  : d_name,

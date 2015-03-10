@@ -1,8 +1,8 @@
 {{LICENSE_HEADER}}
 var FirstLoadInsertFunc = 1,
-	TimersetToUpdate = [],
-	refresh = false,
-	t, g;
+		TimersetToUpdate = [],
+		refresh = false,
+		t, g;
 texts = { d:new Date() };
 
 function snum(){
@@ -66,6 +66,8 @@ function InsertOnlineList() {
 			StreamerName  = v.Name,
 			ShortStrmName = v.d_name,
 			StreamGame    = v.Stream.Game,
+			eStreamGame   = encodeURI(StreamGame),
+			isGameThumb   = local.Games[eStreamGame],
 			StreamVievers = v.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,
@@ -103,11 +105,12 @@ function InsertOnlineList() {
 					'background-size':'contain',
 					'cursor':'pointer'
 				});
-				$(b+'.tum>.GT1').css({
-					'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
-					'background-size': 'contain',
-					'cursor':'pointer'
-				});
+				if (isGameThumb)
+					$(b+'.tum>.GT1').css({
+						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+eStreamGame+'-272x380.jpg")',
+						'background-size': 'contain',
+						'cursor':'pointer'
+					});
 				$(b+'.tum>.GT2').css({
 					'background':'url("./img/playing.png")',
 					'background-size': 'contain',
@@ -140,17 +143,18 @@ function InsertOnlineList() {
 					});
 
 					var jl = $(b+'.tum>.GT1').css('background').split('/');
-					if (jl[jl.length-1] != encodeURI(StreamGame)+'-272x380.jpg')
-						$(b+'.tum>.GT1').css({
-							'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
-							'background-size':'contain',
-							'cursor':'pointer'
-						});
-					else
-						$(b+'.tum>.GT1').css({
-							'background-size':'contain',
-							'cursor':'pointer'
-						});
+					if (isGameThumb)
+						if (jl[jl.length-1] != encodeURI(StreamGame)+'-272x380.jpg')
+							$(b+'.tum>.GT1').css({
+								'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
+								'background-size':'contain',
+								'cursor':'pointer'
+							});
+							else
+							$(b+'.tum>.GT1').css({
+								'background-size':'contain',
+								'cursor':'pointer'
+							});
 					$(b+'.tum>.GT2').css({
 						'background':'url("./img/playing.png")',
 						'background-size': 'contain',
