@@ -1,25 +1,25 @@
-.adds>.duration>a  {
+.adds>.duration>a {
 	color: white;
-	text-shadow:  1px 2px 3px black;
+	text-shadow: 1px 2px 3px black;
 	margin: 0 0 0 17;
 }
-button:focus  {
+button:focus {
 	outline-color: rgba(0, 0, 0, 0);
 }
-.inf>.streamer  {
+.inf>.streamer {
 	width: 185px;
 	height: 20px;
 	display: inline-table;
 	padding-top: 6px;
 }
-.inf>.streamer>a  {
+.inf>.streamer>a {
 	cursor: pointer;
 	font-size: 16;
 	color: black;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	margin-left: 3;
 }
-.inf>.viewers  {
+.inf>.viewers {
 	width: 130px;
 	height: 20px;
 	display: inline-block;
@@ -27,14 +27,14 @@ button:focus  {
 	cursor: default;
 	display: inline-table;
 }
-.inf>.viewers>p  {
+.inf>.viewers>p {
 	cursor: default;
 	width: 75px;
 	display: inline;
 	padding-left: 5px;
 	border: none;
 }
-.content  {
+.content {
 	height: 290px;
 	width: 330px;
 	padding: 2;
@@ -42,13 +42,38 @@ button:focus  {
 	display: inline-block;
 	margin-left: 7;
 }
-.content>.tum  {
-	background: url("/img/StillDownloading.gif");
+.content>.tum {
 	height: 200px;
 	width: 320px;
 	display: inline;
 	position: absolute;
 	margin-left: 10px;
+}
+.loading {
+	width: 200px;
+	height: 320px;
+	top: -60px;
+	left: 45px;
+}
+.loading>div {
+	width: 120px;
+  height: 120px;
+}
+.loading>div:nth-of-type(1) {
+	top: 0;
+  left: 0;
+}
+.loading>div:nth-of-type(2) {
+	top: 0;
+	left: 170px;
+}
+.loading>div:nth-of-type(3) {
+	top: 170px;
+  left: 0;
+}
+.loading>div:nth-of-type(4) {
+	top: 170px;
+  left: 170px;
 }
 .content>.inf {
 	width: 315px;
@@ -97,7 +122,7 @@ button:focus  {
 	position: absolute;
 	margin: 139 0 0 -44;
 }
-.GT1:hover::after  {
+.GT1:hover::after {
 	content: attr(data-title);
 	left: -2%;
 	top: 0%;
@@ -105,7 +130,7 @@ button:focus  {
 	background: rgba(255, 255, 255, 0.95);
 	font-size: 14px;
 	padding: 7 10;
-	border: 1px solid rgba(51,  51,  51,  0.34);
+	border: 1px solid rgba(51, 51, 51, 0.34);
 	-webkit-animation: fadeInDown 0.2s both;
 	white-space: normal;
 	display: block;
@@ -113,11 +138,11 @@ button:focus  {
 	font-size: 17;
 	z-index: 1;
 }
-.tum>.ST  {
+.tum>.ST {
 	width: 320px;
 	height: 200px;
 }
-.inf>.adds  {
+.inf>.adds {
 	width: 315px;
 	height: 40px;
 	position: absolute;
@@ -130,10 +155,10 @@ button:focus  {
 	height: 40;
 	display: inline;
 }
-.adds>.page  {
+.adds>.page {
 	display: none;
 }
-button.button  {
+button.button {
 	font-size: 22px;
 	width: 150px;
 	height: 30px;

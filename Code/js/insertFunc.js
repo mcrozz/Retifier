@@ -38,7 +38,8 @@ function InsertOnlineList() {
 	function insert(a) {
 		var t = '', n = (a.gme !== 'Not Playing');
 		t += '<div class="content" id="'+a.pos+'">'
-			+'<div class="tum"><a href="http://www.twitch.tv/'+a.str
+			+'<div class="tum"><div class="loading" style="-webkit-transform:scale(0.35)"><div></div><div></div><div></div><div></div></div>'
+			+'<a href="http://www.twitch.tv/'+a.str
 			+'" target="_blank">Launch Stream</a><img class="ST" />'
 			+'<img class="GT1" /><img class="GT2" />'
 			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
@@ -138,8 +139,7 @@ function InsertOnlineList() {
 					$(b+'.tum>.ST').css({
 						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
 						'background-size': 'contain',
-						'cursor': 'pointer',
-						'zIndex': 0
+						'cursor': 'pointer'
 					});
 
 					var jl = $(b+'.tum>.GT1').css('background').split('/');

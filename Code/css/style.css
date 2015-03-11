@@ -50,16 +50,22 @@ button {
 .game>a, .streamer>a {
 	cursor: pointer;
 }
-.tum>.GT1 {
+.tum>.ST {
 	z-index: 2;
 }
+.tum>.loading {
+	z-index: -1;
+}
+.tum>.GT1 {
+	z-index: 4;
+}
 .tum>.GT2 {
-	z-index: 1;
+	z-index: 3;
 }
 .tum>a {
+	z-index: 0;
 	width: 318px;
 	height: 49px;
-	z-index: 0;
 	position: absolute;
 	left: 1;
 	text-align: center;
@@ -73,6 +79,42 @@ button {
 }
 .tum>a:hover {
 	opacity: 1;
+}
+
+@-webkit-keyframes loading {
+  0% {
+    -webkit-transform: scale(1.4);
+	} 100% {
+    -webkit-transform: scale(1);
+	}
+}
+.loading {
+  position: absolute;
+	display: block;
+}
+.loading>div {
+  position: absolute;
+  -webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
+}
+.loading>div:nth-of-type(1) {
+  background: #4821b8;
+  opacity: 0.9;
+  -webkit-animation-delay: 0s;
+}
+.loading>div:nth-of-type(2) {
+  background: #4821b8;
+  opacity: 0.8;
+  -webkit-animation-delay: 0.1s;
+}
+.loading > div:nth-of-type(3) {
+  background: #4821b8;
+  opacity: 0.7;
+  -webkit-animation-delay: 0.3s;
+}
+.loading > div:nth-of-type(4) {
+  background: #4821b8;
+  opacity: 0.6;
+  -webkit-animation-delay: 0.2s;
 }
 
 #header {
