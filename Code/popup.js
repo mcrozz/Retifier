@@ -3,11 +3,42 @@ $(function() {
 	var TimersetToUpdate = [];
 
 	function reloadStyle(l){
-		// TODO: big, light, micro
-		// big: 697px by 584px
-		// light: 450px by 584px
-		// micro: 340px by 584px
-		$('style').html('html { width: 697px; height: 584px; }');
+		var s = window.screen, w, h, wp, hp;
+    if (!local.Config.Screen)
+			local.set('Config.Screen', 'big');
+		/*
+		Aspect ratio 1.2
+		Original size: 697px by 584px
+
+		Maximum width is 700px
+		Minimum width is 385px
+		Maximum height is 585px
+		Minimum height is 400px
+
+		big: 35% by 54%
+		mini: 25% by 47%
+		micro: 18% by 38%
+		custom: user's decision
+    */
+		switch (local.Config.Screen) {
+			case 'big':
+				wp = .35; hp = .54; break;
+			case 'mini':
+				wp = .25; hp = .47; break;
+			case 'micro':
+				wp = .18; hp = .38; break;
+			case 'custom':
+				if (local.Config.ScreenCastom) {
+					var j = local.Config.ScreenCastom;
+					wp = j[0]; hp = j[1];
+				} else { wp = .35; hp = .54; }
+				break;
+		}
+		w = s.availWidth*wp*1.2;
+		h = s.availHeight*hp*1.2;
+		w = w<385?385:w;
+		h = h<400?400:h;
+		$('style').html('html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }');
 		var css;
 		if (!local.Config.Format)
 			local.set('Config.Format', 'Grid');
