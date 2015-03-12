@@ -289,7 +289,7 @@ $(function() {
 	ael('#zoomContent', function() {
 		$('#zoomContent').fadeOut(700);
 		$('#options_bg').fadeOut(1);} );
-	window.onclick = function(e) {
+	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
 			$('#zoomIMG').css({
@@ -302,7 +302,7 @@ $(function() {
 				$('#zoomContent').fadeOut(700);
 			};
 		}
-	};
+	});
 	$(document).on('mousemove', function(p) {
 		function hide() {
 			if (k.css('display') === 'block')
@@ -326,10 +326,13 @@ $(function() {
 		if (k.html() !== p.target.innerText)
 			k.html(p.target.innerText);
 
-		var left, top, width=p.target.offsetWidth, height=p.target.offsetHeight;
+		var left, top,
+			tarH = $('#message').height();
+			width=Math.floor($(window).width()/2),
+			height=$(window).height();
 
-		left = (width+p.pageX > 697) ? p.pageX-width-5 : p.x-5;
-    top = (height+p.pageY > 600) ? p.pageY-height-5 : p.y-5;
+		left = p.pageX<width ? 0 : width;
+		top = (p.pageY+tarH)>height ? p.pageY-tarH-15 : p.pageY+5;
 
 		k.css({
 			left: left+'px',
