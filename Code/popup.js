@@ -22,6 +22,7 @@ $(function() {
     */
 		switch (local.Config.Screen) {
 			case 'big':
+			default:
 				wp = .35; hp = .54; break;
 			case 'mini':
 				wp = .25; hp = .47; break;
