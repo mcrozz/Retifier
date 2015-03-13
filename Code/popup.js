@@ -229,9 +229,9 @@ $(function() {
 	reloadStyle();
 	versionCheck();
 	$('#AppVersion').html(local.App_Version.Ver);
-	ael('#ChgUsr', clickChangeUser);
+	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
-	ael('#ClsFlwdChnlsLst, #LstFlwdChnls', function(){
+	ael('#ClsFlwdChnlsLst, .following', function(){
 		FollowedList(this); });
 	ael('.style', function(t){
 		var a = t.target.className.split(' ')[1],
@@ -266,7 +266,7 @@ $(function() {
 	ael('#Dashboard', function(){
 		ga('send', 'event', 'button', 'click', 'Dashboard');
 		window.open('http://www.twitch.tv/broadcast/dashboard'); });
-	ael('#Direct', function(){
+	ael('.directory', function(){
 		ga('send', 'event', 'button', 'click', 'Direct');
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('#SoundCheck', function(){
