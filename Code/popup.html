@@ -29,62 +29,37 @@
 	<div id="options_bg"></div>
 	<div id="options">
 		<div class="popHead">Options</div>
-
 		<div id="UserName">Welcome,<a></a><p class="Logout">Logout</p></div>
-
 		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt"> min.</div>
-
 		<div id="Notify">Enable notifications <input type="checkbox" class="Check_Box EnNotify">
-
 			<div>Channel Starts Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
-
 			<div>Channel Stops Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer2"></div>
-
 			<div>Channel Changes Title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
-
 			<div>When Updating List <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
-
 			<div>Play Sounds With Notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
-
 		</div>
-
 		<div id="DurationOfStream">Show Stream Duration <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
-
 		<div class="List_Format">
 			Choose style of online list
 			<div class="style Full"></div>
 			<div class="style Mini"></div>
 			<div class="style Grid"></div>
 		</div>
-
 		<button type="button" id="ChgUsrSnd">Save / Close</button>
 	</div>
 
 	<div id="header">
-	    <div id="controls">
-	        <div class="DashboardButton">
-	            <button type="button" id="Dashboard" class="dash">Dashboard</button>
-	        </div>
-	        <div class="ProbablyNothing">
-	            <button type="button" id="Direct" class="dash">Directory</button>
-	        </div>
-
-	        <div>
-	            <a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
-	        </div>
-
-	        <span id="refresh"></span>
-
-	        <div class="LoginORoutButton">
-	            <button type="button" id="ChgUsr" class="dash">Options</button>
-	        </div>
-	        <div class="ListOfFollowed">
-	            <button type="button" id="LstFlwdChnls" class="dash">Following List</button>
-	        </div>
-	    </div>
+    <div class="dashL">
+			<button type="button" class="dash directory"></button>
+			<button type="button" class="dash following"></button>
+		</div>
 
 		<div id="nowONline"><p id="FollowedChannelsOnline"></p></div>
 
+		<div class="dashL">
+			<button type="button" class="dash refresh"></button>
+      <button type="button" class="dash settings"></button>
+		</div>
 	</div>
 
 	<div id="News"></div>

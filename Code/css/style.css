@@ -51,6 +51,9 @@ button {
 .tum>.ST {
 	z-index: 2;
 }
+.content>.tum {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(211, 192, 239, 1)), to(rgba(114, 113, 131, 1)));
+}
 .tum>.loading {
 	z-index: -1;
 }
@@ -62,14 +65,9 @@ button {
 }
 .tum>a {
 	z-index: 0;
-	width: 318px;
-	height: 49px;
 	position: absolute;
-	left: 1;
 	text-align: center;
 	color: white;
-	font-size: 23;
-	padding: 75 0;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(95, 29, 194, 0.66)), to(rgba(0, 0, 0, 0.85)));
 	cursor: pointer;
 	transition: opacity 0.8s;
@@ -117,22 +115,15 @@ button {
 
 #header {
 	background: rgb(189, 189, 189);
-	height: 80px;
-	display: block;
-}
-
-#controls {
-	height: 80px;
+	height: 10%;
 	display: block;
 }
 
 #nowONline {
+	display: inline-block;
 	height: 30px;
-	position: absolute;
-	top: 33;
+	width: 55%;
 	text-align: center;
-	width: 397px;
-	margin: 0 0 0 150;
 }
 
 .close {
@@ -205,18 +196,6 @@ div>.user {
 	background: rgba(0, 0, 0, 0.65);
 }
 
-button.dash {
-	background: url(/img/Buttons.png) no-repeat 0 -40px;
-	color: white;
-	text-decoration: none;
-	font-size: 22px;
-	width: 150px;
-	height: 40px;
-}
-button.dash:hover {
-	background-position: 0 0;
-}
-
 button.first {
 	color: white;
 	text-decoration: none;
@@ -246,11 +225,11 @@ button.button:hover {
 #FollowedChannelsOnline {
 	cursor: default;
 	border-right: none;
-	font-size: 20px;
+	font-size: 98%;
+	margin: 0;
 }
 
-.aAppInfoAbout1::selection, .aAppInfoAbout2::selection, .aAppInfoAbout3::selection, .aAppInfoAbout4::selection, .aAppInfoAbout5::selection, .AppInfoAbout1::selection, .AppInfoAbout2::selection, .AppInfoAbout3::selection, .AppInfoAbout4::selection, .AppInfoAbout5::selection, .aAppInfo::selection, .aAppInfoFuture::selection, #AppVersion::selection, #FollowedChannelsOnline::selection, #CheckInterval::selection, #UserName::selection, #Notify_All::selection, #DisNotify_All::selection, #Notify_Streamer::selection, #Notify_Streamer_Changed::selection, #Notify_Upd::selection, #Notify_Sound::selection, #Notify_Sound_Select::selection, #DurationOfStream::selection, #List_Format::selection, #AppVersionContent::selection
-	 {
+*::selection {
 	background: rgba(0,	0,	0,	0);
 }
 
@@ -335,14 +314,14 @@ button.button:hover {
     display: block;
 }
 
-.Full, .Light, .Grid {
+.Full, .Mini, .Grid {
     border-radius: 5px;
 }
 .Full {
     background: url(/img/Full.png) no-repeat;
     background-size: contain;
 }
-.Light {
+.Mini {
     background: url(/img/Mini.png) no-repeat;
     background-size: contain;
 }
@@ -392,7 +371,7 @@ button.button:hover {
 }
 
 #insertContentHere {
-	height: 88%;
+	height: 89%;
 	overflow: auto;
 }
 
@@ -411,22 +390,24 @@ button.button:hover {
 
 .Check_Box {
     background: url(/img/Check_Box.png) no-repeat 0 -22px;
-    background-size: 50!important;
+		background-size: cover;
     width: 50px;
 }
 
 .Check_Box:checked {
     background: url(/img/Check_Box.png) no-repeat 0 0;
+		background-size: cover;
 }
 
 .Check_Box_2 {
     background: url(/img/Check_Box_2.png) no-repeat 0 -22px;
-    background-size: 22!important;
+		background-size: cover;
     width: 22px;
 }
 
 .Check_Box_2:checked {
     background: url(/img/Check_Box_2.png) no-repeat 0 0;
+		background-size: cover;
 }
 
 #fndAbug {
@@ -714,28 +695,37 @@ button.WelcomOK:hover {
 	left: 3;
 }
 
-#refresh {
+button.refresh {
 	background: url(/img/refresh.png) no-repeat;
-	display: block;
-	position: absolute;
-	width: 32px;
-	height: 32px;
-	right: 150px;
+	background-size: contain;
 }
-#refresh:hover {
-	-webkit-animation:spinh 0.2s both
+button.directory {
+	background: url(/img/Home.png) no-repeat;
+	background-size: contain;
 }
-.spin {
-	-webkit-animation-name:spin
+button.following {
+	background: url(/img/Following.png) no-repeat;
+	background-size: contain;
 }
-@-webkit-keyframes spin {
-	0% { -webkit-transform:rotate(0) }
-	100% { -webkit-transform:rotate(360deg) }
+button.settings {
+	background: url(/img/Setting.png) no-repeat;
+	background-size: contain;
 }
-@-webkit-keyframes spinh {
-	0% { -webkit-transform:rotate(0) }
-	100% { -webkit-transform:rotate(15deg) }
+#header>.dashL {
+	display: inline-block;
+	width: 20%;
+	padding: 1% 0;
 }
+#header>.dashL:first-child {
+	text-align: right;
+}
+button.dash {
+	display: inline-block;
+	width: 47px;
+	height: 47px;
+}
+button.dash:hover {}
+
 #message {
 	display: none;
 	position: absolute;
@@ -784,10 +774,10 @@ button.WelcomOK:hover {
 	background-size: contain;
 	display: block;
 	position: absolute;
-	width: 32px;
-	height: 32px;
-	top: 5;
-	left: 5;
+	width: 10.02%;
+	height: 10.02%;
+	top: 2%;
+	left: 2%;
 	z-index: 4;
 	cursor: pointer;
 }
