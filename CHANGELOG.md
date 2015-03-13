@@ -7,6 +7,8 @@ Current versions:
 * **1.4.3**
 	* extension's popup window now opens quickly
 	* now notifications won't 'attack' when you restarting your browser
+	* now you can change size of popup window! Yay!
+	* now you can disable/enable notifications for certain streamers
 * **1.4.2**
 	* hotfix
 	* fixed auth by twitch's account
@@ -26,7 +28,7 @@ Current versions:
 	* fixed Donation tab
 	* various improvements
 * **1.3.9.2**
-	* added authification by [TwitchTV](https://www.twitch.tv) account
+	* added authentication by [TwitchTV](https://www.twitch.tv) account
 	* fixed sound on notifications
 * **1.3.9.1**
 	* bug fix
