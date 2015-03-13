@@ -1,5 +1,4 @@
 {{LICENSE_HEADER}}
-{{FUNCTIONS_FIRST_START}}
 function tm(j) { function g(s) { return s<10 ? '0'+s : s; } var d = new Date(); return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j; }
 function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
 function log(msg) { console.log(tm(': ')+msg); }
@@ -117,7 +116,8 @@ window.local = {
     }, 0);
   }
 };
-local.init();
+
+{{FUNCTIONS_FIRST_START}}
 
 {{INTERVAL_STORAGE_CHANGE}}
 

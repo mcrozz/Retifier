@@ -4,8 +4,6 @@ $(function() {
 
 	function reloadStyle(l){
 		var s = window.screen, w, h, wp, hp;
-    if (!local.Config.Screen)
-			local.set('Config.Screen', 'big');
 		/*
 		Aspect ratio 1.2
 		Original size: 697px by 584px
@@ -29,8 +27,8 @@ $(function() {
 			case 'micro':
 				wp = .18; hp = .38; break;
 			case 'custom':
-				if (local.Config.ScreenCastom) {
-					var j = local.Config.ScreenCastom;
+				if (local.Config.ScreenCustom) {
+					var j = local.Config.ScreenCustom;
 					wp = j[0]; hp = j[1];
 				} else { wp = .35; hp = .54; }
 				break;
@@ -40,18 +38,8 @@ $(function() {
 		w = w<385?385:w;
 		h = h<400?400:h;
 		$('style').html('html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }');
-		var css;
-		if (!local.Config.Format)
-			local.set('Config.Format', 'Grid');
-		switch (local.Config.Format) {
-			case 'Full':
-				css = 'full'; break;
-			case 'Light':
-				css = 'mini'; break;
-			case 'Grid':
-				css = 'grid'; break;
-		}
-		$('#cust')[0].href = "./css/"+css+".css";
+
+		$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
 	}
 
 	function clickChangeUserCls(e) {
@@ -107,7 +95,7 @@ $(function() {
 		var g = Math.floor(_$('ChgUsrInt').value);
 		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
 			local.set('Config.Interval_of_Checking', g);
-			local.set('Status.StopInterval', true);
+			send('refresh');
 		}
 
 		local.set('Config.Notifications.status', _$('.EnNotify').checked);

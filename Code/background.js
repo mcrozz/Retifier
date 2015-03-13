@@ -29,8 +29,6 @@ if (localStorage.FirstLaunch === 'true') {
 
     local.following(i, j);
   });
-  if (local.Config.Format==='Mini')
-    local.set('Config.Format', 'Light');
 }
 
 try {
