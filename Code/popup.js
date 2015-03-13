@@ -282,7 +282,8 @@ $(function() {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
 			$('#zoomIMG').css({
 				'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
-				'background-size': '696 400'
+				'background-size': 'contain',
+				'height': (WIDTH*.625)+'px'
 			});
 			$('#zoomContent').fadeIn(800);
 			$('#options_bg').fadeIn(800);
@@ -327,6 +328,10 @@ $(function() {
 			top: top+'px',
 			width: width+'px'
 		});
+	});
+	var WIDTH = $(window).width();
+	$(window).on('resize', function(e) {
+		WIDTH = $(window).width();
 	});
 
 	{{MSG_PARSER_POP_FUNC}}
