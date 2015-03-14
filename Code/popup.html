@@ -13,40 +13,72 @@
 	<div id="FollowingList"></div>
 </div>
 
-<div id="firstScane" style="display:block;overflow:hidden">
-	<div id="message"></div>
-	<div id="textWidth"></div>
+<div id="popup">
+	<div class="background"></div>
 
-	<div id="zoomContent">
-		<div id="zoomIMG"></div>
-	</div>
+	<div id="zoomIMG"></div>
 
-	<div id="FoundAbugText" style="display:none">
-		<a href="https://github.com/mcrozz/Twitch.tv_Notifier/issues" target="_blank">Open new issue on GitHub</a>
-	</div>
-	<button type="button" id="fndAbug" name="Found a bug?" style="display:none">Found a bug?</button>
-
-	<div id="options_bg"></div>
 	<div id="options">
-		<div class="popHead">Options</div>
-		<div id="UserName">Welcome,<a></a><p class="Logout">Logout</p></div>
-		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt"> min.</div>
-		<div id="Notify">Enable notifications <input type="checkbox" class="Check_Box EnNotify">
-			<div>Channel Starts Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
-			<div>Channel Stops Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer2"></div>
-			<div>Channel Changes Title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
-			<div>When Updating List <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
-			<div>Play Sounds With Notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
+		<div>Options</div>
+		<div id="UserName"><p>Welcome,</p><p></p><p class="Logout">Logout</p></div>
+		<div id="CheckInterval">
+			<a>Check every <input type="text" id="ChgUsrInt"> min.</a>
 		</div>
-		<div id="DurationOfStream">Show Stream Duration <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
+		<div id="Notify">
+			<a>Enable notifications</a>
+			<input type="checkbox" class="Check_Box EnNotify">
+			<div>
+				<a>Channel Starts Streaming</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamer">
+			</div>
+			<div>
+				<a>Channel Stops Streaming</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamer2">
+			</div>
+			<div>
+				<a>Channel Changes Title</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamerChanged">
+			</div>
+			<div>
+				<a>When Updating List</a>
+				<input type="checkbox" class="Check_Box_2 NotifyUpdate">
+			</div>
+			<div>
+				<a>Play Sound With Notification</a>
+				<input type="checkbox" class="Check_Box SoundCheck">
+			</div>
+		</div>
+		<div id="DurationOfStream">
+			<a>Show Stream Duration</a>
+			<input type="checkbox" class="Check_Box StreamDurationCheck">
+		</div>
 		<div class="List_Format">
-			Choose style of online list
+			<a>Choose style of online list</a>
 			<div class="style Full"></div>
 			<div class="style Mini"></div>
 			<div class="style Grid"></div>
 		</div>
 		<button type="button" id="ChgUsrSnd">Save / Close</button>
 	</div>
+
+	<div id="AppChanges" style="display:none">
+		<div class="AppInfoNav">
+			<button type="button" id="AppFirst" class="AppInfo">Changes</button>
+			<button type="button" id="AppThird" class="AppInfo">About</button>
+			<button type="button" id="AppInfoClose" class="AppInfo">Close</button>
+		</div>
+		<div class="AppVersionContent2"><div class="AppVersionContent3"><div id="AppVersionContent"></div></div></div>
+	</div>
+</div>
+
+<div id="firstScane" style="display:block;overflow:hidden">
+	<div id="message"></div>
+	<div id="textWidth"></div>
+
+	<div id="FoundAbugText" style="display:none">
+		<a href="https://github.com/mcrozz/Twitch.tv_Notifier/issues" target="_blank">Open new issue on GitHub</a>
+	</div>
+	<button type="button" id="fndAbug" name="Found a bug?" style="display:none">Found a bug?</button>
 
 	<div id="header">
     <div class="dashL">
@@ -66,17 +98,11 @@
 	<div id="WhatsNew"></div>
 	<progress style="display:none" id="CheckingProgress" max="100" value="0"></progress>
 
-	<div id="content3"><div id="insertContentHere"></div></div>
+	<div id="content3">
+		<div id="insertContentHere"></div>
+	</div>
 
 	<div id="AppInfoBack"></div>
 	<div id="AppVersion"></div>
-	<div id="AppChanges" style="display:none">
-		<div class="AppInfoNav">
-			<button type="button" id="AppFirst" class="AppInfo">Changes</button>
-			<button type="button" id="AppThird" class="AppInfo">About</button>
-			<button type="button" id="AppInfoClose" class="AppInfo">Close</button>
-		</div>
-		<div class="AppVersionContent2"><div class="AppVersionContent3"><div id="AppVersionContent"></div></div></div>
-	</div>
 </div>
 </body>

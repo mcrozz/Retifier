@@ -2,6 +2,13 @@
 $(function() {
 	var TimersetToUpdate = [];
 
+	/*
+		Optional input
+		l :: object {
+			*size : array of integers,
+			*format : string
+		}
+	*/
 	function reloadStyle(l){
 		var s = window.screen, w, h, wp, hp;
 		/*
@@ -33,20 +40,49 @@ $(function() {
 				} else { wp = .35; hp = .54; }
 				break;
 		}
-		w = s.availWidth*wp*1.2;
-		h = s.availHeight*hp*1.2;
+		if (l && l.size) {
+			w = l.size[0];
+			h = l.size[1];
+		}
+		else {
+			w = s.availWidth*wp*1.2;
+			h = s.availHeight*hp*1.2;
+		}
 		w = w<385?385:w;
 		h = h<400?400:h;
 		$('style').html('html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }');
 
-		$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
+		if (l && l.format)
+			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
+		else
+			$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
 	}
 
-	function clickChangeUserCls(e) {
-		if (e && e.target.id !== 'options_bg')
-			return false;
-		anim('options', ['bounceOut', true]);
-		$('#options_bg').fadeOut(500);
+	var Popup = {
+		init: function(id, callback) {
+			$('#popup').fadeIn(300);
+			$(id).fadeIn(285);
+			Popup.id = id;
+			if (typeof callback !== 'undefined')
+				Popup.callback = callback;
+		},
+		callback: null,
+		id: '',
+		close: function() {
+			$('#popup').fadeOut(300);
+			$(Popup.id).fadeOut(285);
+			Popup.id = '';
+		},
+		clicked: function() {
+			if (typeof Popup.callback !== 'undefined')
+				Popup.callback();
+			Popup.callback = null;
+			Popup.close();
+		}
+	};
+
+	function clickChangeUserCls() {
+		reloadStyle();
 		$('#AppVersion').fadeIn(1000);
 		if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
 			anim('fndAbug', ['hideReportBtnA', true, 0.7]);
@@ -58,9 +94,9 @@ $(function() {
 	}
 
 	function clickChangeUser() {
-		$('#options, #options_bg').show();
-		$('#AppVersion').hide();
-		$('#UserName>a').html(local.Config.User_Name);
+		Popup.init('#options', clickChangeUserCls);
+		$('#AppVersion').fadeOut(1000);
+		$('#UserName>p:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
 
 		var a = !local.Config.Notifications.status;
@@ -80,7 +116,12 @@ $(function() {
 
 		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
 
-		_$('.List_Format>.'+local.Config.Format).className += ' selected';
+		$('.List_Format>div').each(function(i,e) {
+			if ($.inArray(local.Config.Format, e.classList) === -1)
+				e.className = e.className.replace(/ selected/g, '');
+			else if ($.inArray('selected', e.classList) === -1)
+				e.className+= ' selected';
+		});
 
 		$('#options_bg').fadeIn(900);
 		anim('options', ['bounceIn', false, 0.9]);
@@ -117,7 +158,7 @@ $(function() {
 			snum();
 		}
 
-		clickChangeUserCls();
+		Popup.close();
 	}
 
 	function ReportAbug() {
@@ -237,7 +278,8 @@ $(function() {
 		var a = t.target.className.split(' ')[1],
 			b = _$('.selected').className.split(' ')[1];
 		_$('.selected').className = 'style '+b;
-		_$('.'+a).className += ' selected'; });
+		_$('.'+a).className += ' selected';
+		reloadStyle({format: a}); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
 			$('#Notify>div').css('color', '');
@@ -245,12 +287,6 @@ $(function() {
 		} else {
 			$('#Notify>div').css('color', 'grey');
 			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;});
-		} });
-	ael('#options_bg', clickChangeUserCls);
-	ael('#options_bg', function(e){
-		if (_$('zoomContent')) {
-			$('#zoomContent').fadeOut(700);
-			$('#userChangePopup2').fadeOut(500);
 		} });
 	ael('#fndAbug', ReportAbug);
 	ael('#AppVersion', function(){
@@ -271,12 +307,9 @@ $(function() {
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('#SoundCheck', function(){
 		_$('SoundSelect').disabled = !_$('SoundCheck').checked; });
-	ael('#refresh', function(){
+	ael('.refresh', function(){
 		send('refresh'); });
 	ael('#UserName>p', reLogin);
-	ael('#zoomContent', function() {
-		$('#zoomContent').fadeOut(700);
-		$('#options_bg').fadeOut(1);} );
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
@@ -285,13 +318,11 @@ $(function() {
 				'background-size': 'contain',
 				'height': (WIDTH*.625)+'px'
 			});
-			$('#zoomContent').fadeIn(800);
-			$('#options_bg').fadeIn(800);
-			_$('options_bg').onclick = function() {
-				$('#zoomContent').fadeOut(700);
-			};
+			Popup.init('#zoomIMG');
 		}
 	});
+	ael('#popup>.background', Popup.clicked);
+	ael('#zoomIMG', Popup.close);
 	$(document).on('mousemove', function(p) {
 		function hide() {
 			if (k.css('display') === 'block')
