@@ -10,7 +10,7 @@ $(function() {
 		}
 	*/
 	function reloadStyle(l){
-		var s = window.screen, w, h, wp, hp;
+		var s = window.screen, w, h, wp, hp, css;
 		/*
 		Aspect ratio 1.2
 		Original size: 697px by 584px
@@ -50,7 +50,17 @@ $(function() {
 		}
 		w = w<385?385:w;
 		h = h<400?400:h;
-		$('style').html('html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }');
+		css = 'html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }';
+
+		// preveiw is 46.3% and ratio is .625
+		var h = WIDTH*.289375,
+			 wx = WIDTH*.061116,
+			 hx = wx*1.397;
+		css+= '.content>.tum {height:'+h+'px}';
+		css+= '.tum>a {height:'+h*.26253+'px}'
+		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(h-hx)+'px 0 0 -'+wx+'px}';
+
+		$('style').html(css);
 
 		if (l && l.format)
 			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
@@ -63,7 +73,7 @@ $(function() {
 			$('#popup').fadeIn(300);
 			$(id).fadeIn(285);
 			Popup.id = id;
-			if (typeof callback !== 'undefined')
+			if (typeof callback === 'function')
 				Popup.callback = callback;
 		},
 		callback: null,
@@ -74,7 +84,7 @@ $(function() {
 			Popup.id = '';
 		},
 		clicked: function() {
-			if (typeof Popup.callback !== 'undefined')
+			if (typeof Popup.callback === 'function')
 				Popup.callback();
 			Popup.callback = null;
 			Popup.close();
@@ -360,9 +370,12 @@ $(function() {
 			width: width+'px'
 		});
 	});
-	var WIDTH = $(window).width();
+	var WIDTH = $(window).width(),
+			HEIGHT = $(window).height();
 	$(window).on('resize', function(e) {
 		WIDTH = $(window).width();
+		HEIGHT = $(window).height();
+		reloadStyle();
 	});
 
 	{{MSG_PARSER_POP_FUNC}}
