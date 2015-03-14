@@ -53,12 +53,12 @@ $(function() {
 		css = 'html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }';
 
 		// preveiw is 46.3% and ratio is .625
-		var h = WIDTH*.289375,
-			 wx = WIDTH*.061116,
+		var hh = w*.289375,
+			 wx = w*.061116,
 			 hx = wx*1.397;
-		css+= '.content>.tum {height:'+h+'px}';
-		css+= '.tum>a {height:'+h*.26253+'px}'
-		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(h-hx)+'px 0 0 -'+wx+'px}';
+		css+= '.content>.tum {height:'+hh+'px}';
+		css+= '.tum>a {height:'+hh*.26253+'px}'
+		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(hh-hx)+'px 0 0 -'+wx+'px}';
 
 		$('style').html(css);
 
@@ -375,7 +375,6 @@ $(function() {
 	$(window).on('resize', function(e) {
 		WIDTH = $(window).width();
 		HEIGHT = $(window).height();
-		reloadStyle();
 	});
 
 	{{MSG_PARSER_POP_FUNC}}
