@@ -28,16 +28,13 @@ $(function() {
 		switch (local.Config.Screen) {
 			case 'big':
 			default:
-				wp = .35; hp = .54; break;
+				wp = .35; break;
 			case 'mini':
-				wp = .25; hp = .47; break;
+				wp = .25; break;
 			case 'micro':
-				wp = .18; hp = .38; break;
+				wp = .18; break;
 			case 'custom':
-				if (local.Config.ScreenCustom) {
-					var j = local.Config.ScreenCustom;
-					wp = j[0]; hp = j[1];
-				} else { wp = .35; hp = .54; }
+				wp = (local.Config.ScreenCustom) ? local.Config.ScreenCustom : .35;
 				break;
 		}
 		if (l && l.size) {
@@ -46,7 +43,7 @@ $(function() {
 		}
 		else {
 			w = s.availWidth*wp*1.2;
-			h = s.availHeight*hp*1.2;
+			h = w*1.2;
 		}
 		w = w<385?385:w;
 		h = h<400?400:h;
@@ -77,6 +74,7 @@ $(function() {
 		},
 		close: function() {
 			$('#popup').fadeOut(300);
+			$('#AppVersion').fadeIn(1000);
 			$(Popup.id).fadeOut(285);
 			Popup.id = '';
 		},
@@ -109,14 +107,19 @@ $(function() {
 
 			// hide current window
 			if (Popup.id)
-				$(Popup.id).fadeOut(285);
+				$(Popup.id).hide();
 
-			if (!Popup.returns)
+			if (!Popup.returns) {
 				Popup.id = '';
+				Popup.callback = null;
+			}
 
 			$('.alert>header>p').html(par.header);
 			$('.alert>div>div').html(par.content);
+			$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
 			$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
+
+			$('#AppVersion').fadeOut(1000);
 
 			// show background
 			if ($('#popup').css('display')[0] === 'n')
@@ -139,6 +142,9 @@ $(function() {
 				Popup.init(Popup.id, Popup.callback);
 			} else
 				$('#popup').fadeOut(300);
+
+			if (!Popup.returns)
+				$('#AppVersion').fadeIn(1000);
 		},
 		clickAlert: function() {
 			// Clicked 'Ok'
@@ -159,7 +165,6 @@ $(function() {
 
 	function clickChangeUserCls() {
 		reloadStyle();
-		$('#AppVersion').fadeIn(1000);
 		if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
 			anim('fndAbug', ['hideReportBtnA', true, 0.7]);
 			anim('FoundAbugText', ['hideReportA', true, 0.7]);
@@ -172,7 +177,6 @@ $(function() {
 	function clickChangeUser() {
 		Popup.init('#options', clickChangeUserCls);
 
-		$('#AppVersion').fadeOut(1000);
 		$('#UserName>p:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
 
