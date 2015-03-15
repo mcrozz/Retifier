@@ -50,15 +50,14 @@ $(function() {
 		}
 		w = w<385?385:w;
 		h = h<400?400:h;
-		css = 'html { width: '+(w>700?700:w)+'px; height: '+(h>585?585:h)+'px; }';
+		css = 'html {width:'+(w>700?700:w)+'px;height:'+(h>585?585:h)+'px;}\n';
 
-		// preveiw is 46.3% and ratio is .625
 		var hh = w*.289375,
-			 wx = w*.061116,
-			 hx = wx*1.397;
-		css+= '.content>.tum {height:'+hh+'px}';
-		css+= '.tum>a {height:'+hh*.26253+'px}'
-		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(hh-hx)+'px 0 0 -'+wx+'px}';
+			  wx = w*.061116,
+			  hx = wx*1.397;
+		css+= '.content>.tum {height:'+hh+'px}\n';
+		css+= '.tum>a {height:'+hh*.26253+'px}\n'
+		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(hh-hx)+'px 0 0 -'+wx+'px}\n';
 
 		$('style').html(css);
 

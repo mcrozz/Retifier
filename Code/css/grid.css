@@ -79,7 +79,7 @@ button:focus {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 315px;
+	width: 100%;
 	border-bottom: 1px black solid;
 }
 .inf>div {
