@@ -200,6 +200,68 @@ div>.user {
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.65);
 }
+#popup>.alert {
+	display: none;
+	width: 45%;
+	height: 60%;
+	position: relative;
+	margin: 12% auto;
+}
+.alert>header {
+	display: block;
+	width: 98%;
+	height: auto;
+	background: -webkit-gradient(linear, left top, left bottom, from(#A1A1A1), to(#4C4C4C));
+	color: white;
+	padding: 3% 1% 2% 1%;
+	text-align: center;
+	border-bottom: 1px dotted rgb(168, 157, 157);
+}
+.alert>header>p {
+	margin: 0;
+  color: inherit;
+  border: none;
+  text-shadow: none;
+}
+.alert>div {
+	display: block;
+	width: 96%;
+	height: 79%;
+	background: -webkit-gradient(linear, left top, left bottom, from(#4C4C4C), to(#6F6C6C));
+	padding: 0 2%;
+	overflow: auto;
+}
+.alert>div>div {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.alert>div>div>* {
+	margin: 0;
+	padding: 0;
+	color: white!important;
+}
+.alert>footer {
+	display: block;
+	width: 100%;
+}
+.alert>footer>button {
+	display: inline-block;
+	width: 49%;
+	font-size: 100%;
+}
+button[name=k] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#9CD892), to(#608B62));
+}
+button[name=k]:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(#B2EDA8), to(#719B73));
+}
+button[name=c] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#D89292), to(#8B6060));
+}
+button[name=c]:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(#E8A6A6), to(#A37676));
+}
 
 button.first {
 	color: white;

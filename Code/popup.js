@@ -75,19 +75,86 @@ $(function() {
 			if (typeof callback === 'function')
 				Popup.callback = callback;
 		},
-		callback: null,
-		id: '',
 		close: function() {
 			$('#popup').fadeOut(300);
 			$(Popup.id).fadeOut(285);
 			Popup.id = '';
 		},
 		clicked: function() {
+			if (Popup.alerted)
+				return Popup.onClose();
+
 			if (typeof Popup.callback === 'function')
 				Popup.callback();
 			Popup.callback = null;
 			Popup.close();
-		}
+		},
+		alert: function(par) {
+			/*
+				par :: object {
+					header :: string,
+					content :: html or DOM,
+					onOk :: function,
+					onClose :: function,
+					showClose :: boolean,
+					returns :: boolean
+				}
+			*/
+			if (typeof par.onOk === 'function')
+				Popup.onOk = par.onOk;
+			if (typeof par.onClose === 'function')
+				Popup.onClose = par.onClose;
+			if (typeof par.returns === 'boolean')
+				Popup.returns = par.returns;
+
+			// hide current window
+			if (Popup.id)
+				$(Popup.id).fadeOut(285);
+
+			if (!Popup.returns)
+				Popup.id = '';
+
+			$('.alert>header>p').html(par.header);
+			$('.alert>div>div').html(par.content);
+			$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
+
+			// show background
+			if ($('#popup').css('display')[0] === 'n')
+				$('#popup').fadeIn(300);
+
+			$('.alert').fadeIn(285);
+			Popup.alerted = true;
+		},
+		closeAlert: function() {
+			// If clicked 'Cancel' or outside of window
+			if (typeof Popup.onClose === 'function')
+				Popup.onClose();
+
+			Popup.onClose = null;
+			Popup.alerted = false;
+
+			$('.alert').fadeOut(285);
+			if (Popup.returns) {
+				Popup.returns = false;
+				Popup.init(Popup.id, Popup.callback);
+			} else
+				$('#popup').fadeOut(300);
+		},
+		clickAlert: function() {
+			// Clicked 'Ok'
+			if (typeof Popup.onOk === 'function')
+				Popup.onOk();
+
+			Popup.onOk = null;
+
+			Popup.closeAlert();
+		},
+		onOk: null,
+		onClose: null,
+		returns: false,
+		callback: null,
+		alerted: false,
+		id: ''
 	};
 
 	function clickChangeUserCls() {
@@ -104,6 +171,7 @@ $(function() {
 
 	function clickChangeUser() {
 		Popup.init('#options', clickChangeUserCls);
+
 		$('#AppVersion').fadeOut(1000);
 		$('#UserName>p:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
@@ -181,48 +249,49 @@ $(function() {
 		}
 	}
 
-	var flw = -1, curr;
-	function FollowedList(c) {
-		function insert() {
-			$('#FollowingList').html('');
-			$.each(local.FollowingList, function(i,v) {
-				var j = (v.Stream) ? "rgb(0, 194, 40)" : "black", ht;
-				ht  = '<div>';
-				ht += '<a class="user" style="color:'+j+'" href="http://www.twitch.tv/'+v.Name+'/profile" target="_blank">'+v.Name+'</a>';
-				ht += '<input type="checkbox" id="'+i+'" class="Check_Box_2">';
-				ht += '</div>';
-				$('#FollowingList').append(ht);
-			});
-			$('#FollowingList>div>input').on('click', function(e) {
-				local.following(e.target.id, {Notify: e.target.checked});
-			});
-			$.each($('#FollowingList>div>input'), function(i,v) {
-				v.checked = local.FollowingList[i].Notify;
-			});
+	function FollowedList(check) {
+		function cr(n) { return document.createElement(n); }
+		var flw = cr('div');
+		$.each(local.FollowingList, function(i,v) {
+			var hld = cr('div');
+
+			var nm = cr('div');
+			var name = cr('a');
+			name.className = 'user';
+			name.innerHTML = v.d_name;
+			name.href = 'http://www.twitch.tv/'+v.Name+'/profile'
+			name.target = '_blank';
+			name.style.color = (v.Stream) ? "rgb(0, 194, 40)" : "white";
+			nm.appendChild(name);
+			hld.appendChild(nm);
+
+			if (check) {
+				var ch = cr('div');
+				var check = cr('input');
+				check.type = 'checkbox';
+				check.id = i;
+				check.className = 'Check_Box_2';
+				check.checked = v.Notify;
+				check.onClick = function(e) {
+					local.following(e.target.id, {Notify: e.target.checked});
+				};
+				ch.appendChild(check);
+				hld.appendChild(ch);
+			}
+			flw.appendChild(hld);
+		});
+
+		function saveList() {
+			deb('I will, I promise!');
 		}
 
-		if (c.id === 'ClsFlwdChnlsLst') {
-			clearInterval(flw);
-			$('#FollowedChannelsList').fadeOut(250, function(){
-				$('#firstScane').fadeIn(250, function(){
-					$('#FollowingList').html('');
-				});
-			});
-		} else {
-			insert();
-			curr = local.FollowingList.length;
-			flw = setInterval(function(){
-				if (curr !== local.FollowingList.length) {
-					insert();
-					curr = local.FollowingList.length;
-				} else {
-					$.each($('div>.user'), function(i,v){
-						v.style.color = (local.FollowingList[i].Stream)?'rgb(0, 194, 40)':'black';
-					});
-				}
-			}, 1000);
-			$('#firstScane').fadeOut(250, function(){ $('#FollowedChannelsList').fadeIn(250); });
-		}
+		Popup.alert({
+			header: check?'Receive notifications from':'Following list',
+			content: flw,
+			onOk: check?saveList:null,
+			returns: check,
+			showClose: check
+		});
 	}
 
 	function AppVersionChanges(c) {
@@ -281,8 +350,8 @@ $(function() {
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
-	ael('#ClsFlwdChnlsLst, .following', function(){
-		FollowedList(this); });
+	ael('.following', function(){
+		FollowedList(false); });
 	ael('.style', function(t){
 		var a = t.target.className.split(' ')[1],
 			b = _$('.selected').className.split(' ')[1];
@@ -332,6 +401,8 @@ $(function() {
 	});
 	ael('#popup>.background', Popup.clicked);
 	ael('#zoomIMG', Popup.close);
+	ael('button[name=k]', Popup.clickAlert);
+	ael('button[name=c]', Popup.closeAlert);
 	$(document).on('mousemove', function(p) {
 		function hide() {
 			if (k.css('display') === 'block')
