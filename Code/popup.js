@@ -2,14 +2,14 @@
 $(function() {
 	var TimersetToUpdate = [];
 
-	/*
-		Optional input
-		l :: object {
-			*size : array of integers,
-			*format : string
-		}
-	*/
 	function reloadStyle(l){
+		/*
+			Optional input
+			l :: object {
+				*size : array of integers,
+				*format : string
+			}
+		*/
 		var s = window.screen, w, h, wp, hp, css;
 		/*
 		Aspect ratio 1.2
@@ -249,15 +249,15 @@ $(function() {
 		}
 	}
 
-	function FollowedList(check) {
+	function FollowedList(chk) {
 		function cr(n) { return document.createElement(n); }
 		var flw = cr('div');
 		$.each(local.FollowingList, function(i,v) {
 			var hld = cr('div');
 
 			var nm = cr('div');
+			nm.className = 'user';
 			var name = cr('a');
-			name.className = 'user';
 			name.innerHTML = v.d_name;
 			name.href = 'http://www.twitch.tv/'+v.Name+'/profile'
 			name.target = '_blank';
@@ -265,8 +265,9 @@ $(function() {
 			nm.appendChild(name);
 			hld.appendChild(nm);
 
-			if (check) {
+			if (chk) {
 				var ch = cr('div');
+				ch.className = 'checkBox';
 				var check = cr('input');
 				check.type = 'checkbox';
 				check.id = i;
@@ -278,19 +279,23 @@ $(function() {
 				ch.appendChild(check);
 				hld.appendChild(ch);
 			}
+
 			flw.appendChild(hld);
 		});
 
 		function saveList() {
-			deb('I will, I promise!');
+			$('input[id].Check_Box_2').each(function(i,v) {
+				if (local.FollowingList[v.id].Notify !== v.checked)
+					local.following(v.id, {Notify: v.checked});
+			});
 		}
 
 		Popup.alert({
-			header: check?'Receive notifications from':'Following list',
+			header: chk?'Receive notifications from':'Following list',
 			content: flw,
-			onOk: check?saveList:null,
-			returns: check,
-			showClose: check
+			onOk: chk?saveList:null,
+			returns: chk,
+			showClose: chk
 		});
 	}
 
@@ -385,6 +390,8 @@ $(function() {
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('#SoundCheck', function(){
 		_$('SoundSelect').disabled = !_$('SoundCheck').checked; });
+	ael('.NotificationsOpt', function() {
+		FollowedList(true);} );
 	ael('.refresh', function(){
 		send('refresh'); });
 	ael('#UserName>p', reLogin);

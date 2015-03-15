@@ -150,25 +150,13 @@ button {
 	width: 167px;
 }
 
-#FollowingList {
-	overflow: auto;
-	width: 99%;
-	min-height: 100%;
-}
-#FollowingList>div {
-	display: inline-block;
-	width: 225px;
-	height: 27px;
-	margin: 1.5px 0 0;
-}
 div>.user {
-	display: inherit;
-	width: 200px;
-}
-#FollowingList>div>input {
 	display: inline-block;
-	position: static;
-	margin: 0;
+	width: 88%;
+}
+div>.checkBox {
+	display: inline-block;
+	width: 11%;
 }
 
 #options {
@@ -490,6 +478,19 @@ button.button:hover {
 .Check_Box_2:checked {
 	background: url(/img/Check_Box_2.png) no-repeat 0 0;
 		background-size: cover;
+}
+.NotificationsOpt {
+	background: rgb(22, 25, 58);
+	width: 100%;
+	font-size: 100%;
+	color: white;
+	text-align: left;
+	padding: 1.5% 2%;
+	cursor: pointer;
+}
+.NotificationsOpt:hover {
+	background: rgb(43, 48, 98);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 #fndAbug {

@@ -5,14 +5,6 @@
 {{INSERT_SCRIPTS_HERE}}
 <body id="body">
 
-<div id="FollowedChannelsList" style="display:none">
-	<div class="close">
-		<a>Following list</a>
-		<button type="button" id="ClsFlwdChnlsLst" class="button">Close</button>
-	</div>
-	<div id="FollowingList"></div>
-</div>
-
 <div id="popup">
 	<div class="background"></div>
 
@@ -62,6 +54,11 @@
 				<a>Play Sound With Notification</a>
 				<input type="checkbox" class="Check_Box SoundCheck">
 			</div>
+			<div>
+				<button type="button" class="NotificationsOpt">
+					Get notificaitons from...
+				</button>
+			</div>
 		</div>
 		<div id="DurationOfStream">
 			<a>Show Stream Duration</a>
@@ -109,15 +106,12 @@
 		</div>
 	</div>
 
-	<div id="News"></div>
-	<div id="WhatsNew"></div>
 	<progress style="display:none" id="CheckingProgress" max="100" value="0"></progress>
 
 	<div id="content3">
 		<div id="insertContentHere"></div>
 	</div>
 
-	<div id="AppInfoBack"></div>
 	<div id="AppVersion"></div>
 </div>
 </body>
