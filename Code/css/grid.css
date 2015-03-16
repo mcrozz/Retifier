@@ -24,7 +24,7 @@ button:focus {
 	cursor: default;
 	display: inline-table;
 }
-.inf>.viewers>p {
+.inf>.viewers>a {
 	cursor: default;
 	width: 75px;
 	display: inline;
@@ -39,33 +39,9 @@ button:focus {
 	display: inline-block;
 }
 .content>.tum {
-	height: 71%;
+	height: 66%;
 	width: 100%;
 	display: block;
-}
-.loading {
-	width: 107%;
-	height: 57%;
-}
-.loading>div {
-	width: 120px;
-  height: 120px;
-}
-.loading>div:nth-of-type(1) {
-	top: 0;
-  left: 0;
-}
-.loading>div:nth-of-type(2) {
-	top: 0;
-	left: 170px;
-}
-.loading>div:nth-of-type(3) {
-	top: 170px;
-  left: 0;
-}
-.loading>div:nth-of-type(4) {
-	top: 170px;
-  left: 170px;
 }
 .content>.inf {
 	width: 100%;
@@ -104,10 +80,10 @@ button:focus {
 	display: block;
 }
 .GT1, .GT2 {
-	width: 13.2%;
-	height: 21.4%;
+	width: 16.2%;
+	height: 24%;
 	position: absolute;
-	margin: 43.5% 0 0 -13.5%;
+	margin: 40% 0 0 -16.5%;
 }
 .tum>a {
 	width: 100%;
