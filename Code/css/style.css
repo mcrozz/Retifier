@@ -505,23 +505,6 @@ button.button:hover {
   color: rgba(255, 255, 255, 0.72);
 }
 
-#fndAbug {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.37)), to(rgba(255, 5, 5, 0.75)));
-	position: fixed;
-	z-index: 20;
-	width: 163px;
-	height: 25px;
-	-webkit-transform: rotate(-90deg);
-	color: white;
-	font-size: 23;
-}
-#fndAbug:hover {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0.5)), to(rgba(255, 255, 255, 0.8)));
-}
-.foundAbug:hover {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(1, 1, 1, 0.5)), to(rgba(1, 1, 1, 0.8)));
-}
-
 .Welcome {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)), to(rgba(39, 39, 39, 0.5)));
 	width: 396px;

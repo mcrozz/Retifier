@@ -156,13 +156,6 @@ $(function() {
 
 	function clickChangeUserCls() {
 		reloadStyle();
-		if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
-			anim('fndAbug', ['hideReportBtnA', true, 0.7]);
-			anim('FoundAbugText', ['hideReportA', true, 0.7]);
-		} else {
-			anim('fndAbug', ['hideReportBtn', true, 0.9]);
-			anim('FoundAbugText', ['hideReport', true, 0.9]);
-		}
 	}
 
 	function clickChangeUser() {
@@ -197,9 +190,6 @@ $(function() {
 
 		$('#options_bg').fadeIn(900);
 		anim('options', ['bounceIn', false, 0.9]);
-		_$('fndAbug').setAttribute("style","top:190;right:-68");
-		anim('fndAbug', ['showReportBtn', false, 0.8]);
-		anim('FoundAbugText', ['showReport', false, 0.8]);
 
 		ga('send', 'event', 'button', 'click', 'Options');
 	}
@@ -235,13 +225,6 @@ $(function() {
 
 	function ReportAbug() {
 		ga('send', 'event', 'button', 'click', 'Report a bug');
-		if ($('#fndAbug').css('-webkit-animation')[0] == 'c') {
-			anim('FoundAbugText', ['openReport', false, 0.8]);
-			anim('fndAbug', ['openReportBtn', false, 0.8]);
-		} else {
-			anim('FoundAbugText', ['closeReport', false, 0.8]);
-			anim('fndAbug', ['closeReportBtn', false, 0.8]);
-		}
 	}
 
 	function FollowedList(chk) {
@@ -299,21 +282,10 @@ $(function() {
 			anim('AppChanges', ['bounceOutDown', true]);
 			$('#AppInfoBack').fadeOut(500,
 				function(){ $('body').css('overflow', 'auto'); });
-			if ($('#fndAbug').css('-webkit-animation')[0] == 'o') {
-				anim('fndAbug', ['hideReportBtnA', true, 0.7]);
-				anim('FoundAbugText', ['hideReportA', true, 0.7]);
-			} else {
-				anim('fndAbug', ['hideReportBtn', true, 0.9]);
-				anim('FoundAbugText', ['hideReport', true, 0.9]);
-			}
 			$('#AppVersion').fadeIn();
 		} else if (c=='o') {
 			anim('AppChanges', ['bounceInUp', false]);
 			$('#AppInfoBack').fadeIn();
-			// FIXIT: must be percent
-			_$('fndAbug').setAttribute('style', 'top:190px;right:-68px');
-			anim('fndAbug', ['showReportBtn', false]);
-			anim('FoundAbugText', ['showReport', false]);
 			$('#AppVersion').fadeOut();
 			$('body').css('overflow', 'hidden');
 			$('#AppVersion').hide();
@@ -366,7 +338,6 @@ $(function() {
 			$('#Notify>div').css('color', 'grey');
 			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;});
 		} });
-	ael('#fndAbug', ReportAbug);
 	ael('#AppVersion', function(){
 		AppVersionChanges('o'); });
 	ael('#AppFirst', function(){
