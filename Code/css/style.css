@@ -872,7 +872,7 @@ button.dash:hover {
 }
 #zoomIMG {
 	display: block;
-	z-index: 100;
+	position: relative;
 }
 
 .Welcome>p {

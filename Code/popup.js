@@ -10,7 +10,7 @@ $(function() {
 				*format : string
 			}
 		*/
-		var s = window.screen, w, h, wp, hp, css;
+		var s = window.screen, w, h, wp, hp;
 		/*
 		Aspect ratio 1.2
 		Original size: 697px by 584px
@@ -28,13 +28,13 @@ $(function() {
 		switch (local.Config.Screen) {
 			case 'big':
 			default:
-				wp = .35; break;
+				hp = .54; break;
 			case 'mini':
-				wp = .25; break;
+				hp = .47; break;
 			case 'micro':
-				wp = .18; break;
+				hp = .38; break;
 			case 'custom':
-				wp = (local.Config.ScreenCustom) ? local.Config.ScreenCustom : .35;
+				hp = (local.Config.ScreenCustom) ? local.Config.ScreenCustom : .35;
 				break;
 		}
 		if (l && l.size) {
@@ -42,21 +42,12 @@ $(function() {
 			h = l.size[1];
 		}
 		else {
-			w = s.availWidth*wp*1.2;
-			h = w*1.2;
+			h = s.availHeight*hp*1.2;
+			w = h*1.2;
 		}
 		w = w<385?385:w;
 		h = h<400?400:h;
-		css = 'html {width:'+(w>700?700:w)+'px;height:'+(h>585?585:h)+'px;}\n';
-
-		var hh = w*.289375,
-			  wx = w*.061116,
-			  hx = wx*1.397;
-		css+= '.content>.tum {height:'+hh+'px}\n';
-		css+= '.tum>a {height:'+hh*.26253+'px}\n'
-		css+= 'img[class=GT1],img[class=GT2] {width:'+wx+'px;height:'+hx+'px;margin:'+(hh-hx)+'px 0 0 -'+wx+'px}\n';
-
-		$('style').html(css);
+		$('style').html('html {width:'+(w>700?700:w)+'px;height:'+(h>585?585:h)+'px;}');
 
 		if (l && l.format)
 			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
@@ -401,11 +392,13 @@ $(function() {
 	ael('#UserName>p', reLogin);
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
-			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
+			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name,
+				w = WIDTH*.625;
 			$('#zoomIMG').css({
-				'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
-				'background-size': 'contain',
-				'height': (WIDTH*.625)+'px'
+				background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
+				backgroundSize: 'contain',
+				height: w+'px',
+				margin: ((HEIGHT-w)/2)+'px 0'
 			});
 			Popup.init('#zoomIMG');
 		}
@@ -451,8 +444,8 @@ $(function() {
 			width: width+'px'
 		});
 	});
-	var WIDTH = $(window).width(),
-			HEIGHT = $(window).height();
+	window.WIDTH = $(window).width(),
+	window.HEIGHT = $(window).height();
 	$(window).on('resize', function(e) {
 		WIDTH = $(window).width();
 		HEIGHT = $(window).height();
