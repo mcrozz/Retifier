@@ -8,9 +8,9 @@ texts = { d:new Date() };
 function snum(){
 	switch (local.Config.Format) {
 		// [T]itle = { [W]idth, [F]ontSize }
-		case 'Grid' : t = {w: 315, f: 17}; g = {w: 315, f: 17}; break;
-		case 'Full' : t = {w: 340, f: 18}; g = {w: 340, f: 17}; break;
-		case 'Light': t = {w: 530, f: 18}; g = {w: 200, f: 16}; break;
+		case 'Grid': t = {w: 46.2, f: 79}; g = {w: 46.2, f: 79}; break;
+		case 'Full': t = {w: 340, f: 87}; g = {w: 340, f: 87}; break;
+		case 'Mini': t = {w: 73.2, f: 87}; g = {w: 29.201, f: 87}; break;
 	}
 };
 snum();
@@ -19,11 +19,11 @@ function InsertOnlineList() {
 	/*
 	* s - font size
 	* n - text
-	* w - max width
+	* w - width
 	*/
-	function offSet(s,n,w) {
-		var d = $('#textWidth').css('fontSize', s+'px').html(n);
-		return (d.width()>w);
+	function offSet(s,n,w,wp) {
+		var d = $('#textWidth').css({fontSize: s+'%', width: w+'%'}).html(n);
+		return (d.width()>(window.WIDTH*w));
 	}
 	/*
 	* a : {
@@ -64,16 +64,16 @@ function InsertOnlineList() {
 
 	$.each(local.FollowingList, function(i,v) {
 		var StreamTitle   = v.Stream.Title,
-			StreamerName  = v.Name,
-			ShortStrmName = v.d_name,
-			StreamGame    = v.Stream.Game,
-			eStreamGame   = encodeURI(StreamGame),
-			isGameThumb   = local.Games[eStreamGame],
-			StreamVievers = v.Stream.Viewers,
-			TitleWidth    = false,
-			GameWidth     = false,
-			b             = '#'+i+'>',
-			dc;
+				StreamerName  = v.Name,
+				ShortStrmName = v.d_name,
+				StreamGame    = v.Stream.Game,
+				eStreamGame   = encodeURI(StreamGame),
+				isGameThumb   = local.Games[eStreamGame],
+				StreamVievers = v.Stream.Viewers,
+				TitleWidth    = false,
+				GameWidth     = false,
+				b             = '#'+i+'>',
+				dc;
 
 		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
