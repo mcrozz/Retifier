@@ -90,7 +90,9 @@ window.local = {
           });
 
       this.FollowingList[id] = dt;
-      return localStorage.FollowingList = JSON.stringify(this.FollowingList);
+      localStorage.FollowingList = JSON.stringify(this.FollowingList);
+      send({type: 'update', data: 'FollowingList'});
+      return true;
     } catch (e) { return err(e); }
   },
   game: function(name) {
