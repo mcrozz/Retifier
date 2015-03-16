@@ -9,7 +9,7 @@ function snum(){
 	switch (local.Config.Format) {
 		// [T]itle = { [W]idth, [F]ontSize }
 		case 'Grid': t = {w: 46.2, f: 79}; g = {w: 46.2, f: 79}; break;
-		case 'Full': t = {w: 340, f: 87}; g = {w: 340, f: 87}; break;
+		case 'Full': t = {w: 48.2, f: 85}; g = {w: 48.2, f: 85}; break;
 		case 'Mini': t = {w: 73.2, f: 87}; g = {w: 29.201, f: 87}; break;
 	}
 };
