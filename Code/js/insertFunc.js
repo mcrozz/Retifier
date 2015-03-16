@@ -1,7 +1,7 @@
 {{LICENSE_HEADER}}
-var FirstLoadInsertFunc = 1,
-		TimersetToUpdate = [],
-		refresh = false,
+var FirstLoadInsertFunc = 1;
+TimersetToUpdate = [];
+var refresh = false,
 		t, g;
 texts = { d:new Date() };
 
@@ -16,6 +16,8 @@ function snum(){
 snum();
 
 function InsertOnlineList() {
+	if (localStorage.FirstLaunch === 'true')
+		return false;
 	/*
 	* s - font size
 	* n - text

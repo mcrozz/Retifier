@@ -360,7 +360,9 @@ $(function() {
 		FollowedList(true);} );
 	ael('.refresh', function(){
 		send('refresh'); });
-	ael('#UserName>p', reLogin);
+	ael('#UserName>p', function(){
+		Popup.close();
+		reLogin(); });
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name,
