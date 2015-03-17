@@ -230,36 +230,87 @@ $(function() {
 	function FollowedList(chk) {
 		function cr(n) { return document.createElement(n); }
 		var flw = cr('div');
-		$.each(local.FollowingList, function(i,v) {
-			var hld = cr('div');
 
-			var nm = cr('div');
-			nm.className = 'user';
-			var name = cr('a');
-			name.innerHTML = v.d_name;
-			name.href = 'http://www.twitch.tv/'+v.Name+'/profile'
-			name.target = '_blank';
-			name.style.color = (v.Stream) ? "rgb(0, 194, 40)" : "white";
-			nm.appendChild(name);
-			hld.appendChild(nm);
+		if (chk) {
+			var d = cr('div');
 
-			if (chk) {
-				var ch = cr('div');
-				ch.className = 'checkBox';
-				var check = cr('input');
-				check.type = 'checkbox';
-				check.id = i;
-				check.className = 'Check_Box_2';
-				check.checked = v.Notify;
-				check.onClick = function(e) {
-					local.following(e.target.id, {Notify: e.target.checked});
-				};
-				ch.appendChild(check);
-				hld.appendChild(ch);
-			}
+			var b1 = cr('button');
+			b1.innerHTML = 'Show online';
+			b1.name = 'Select1';
+			b1.onclick = function(e) {
+				if (e.target.innerHTML === 'Show online') {
+					e.target.innerHTML = 'Show all';
+					$('.alert>div>div>div>div').each(function(i,v) {
+						if (v.childNodes[0].tagName === 'BUTTON')
+							return;
+						if (v.childNodes[0].childNodes[0].style.color === 'white')
+							v.remove();
+					});
+				} else {
+					e.target.innerHTML = 'Show online';
+					$('.alert>div>div>div>div').each(function(i,v) {
+						if (v.childNodes[0].tagName === 'BUTTON')
+							return;
+						v.remove();
+					});
+					insert();
+				}
+			};
 
-			flw.appendChild(hld);
-		});
+			var b2 = cr('button');
+			b2.innerHTML = 'Deselect all';
+			b2.name = 'Select2';
+			b2.onclick = function(e) {
+				if (e.target.innerHTML === 'Deselect all') {
+					e.target.innerHTML = 'Select all';
+					$('.alert>div>div>div>div>div.checkBox>input').each(function(i,v) {
+						v.checked = false;
+					});
+				} else {
+					e.target.innerHTML = 'Deselect all';
+					$('.alert>div>div>div>div>div.checkBox>input').each(function(i,v) {
+						v.checked = true;
+					});
+				}
+			};
+
+			d.appendChild(b1);
+			d.appendChild(b2);
+			flw.appendChild(d);
+		}
+
+		function insert() {
+			$.each(local.FollowingList, function(i,v) {
+				var hld = cr('div');
+
+				var nm = cr('div');
+				nm.className = 'user';
+				var name = cr('a');
+				name.innerHTML = v.d_name;
+				name.href = 'http://www.twitch.tv/'+v.Name+'/profile'
+				name.target = '_blank';
+				name.style.color = (v.Stream) ? "rgb(0, 194, 40)" : "white";
+				nm.appendChild(name);
+				hld.appendChild(nm);
+
+				if (chk) {
+					var ch = cr('div');
+					ch.className = 'checkBox';
+					var check = cr('input');
+					check.type = 'checkbox';
+					check.id = i;
+					check.className = 'Check_Box_2';
+					check.checked = v.Notify;
+					check.onClick = function(e) {
+						local.following(e.target.id, {Notify: e.target.checked});
+					};
+					ch.appendChild(check);
+					hld.appendChild(ch);
+				}
+
+				flw.appendChild(hld);
+			});
+		}
 
 		function saveList() {
 			$('input[id].Check_Box_2').each(function(i,v) {
@@ -267,6 +318,8 @@ $(function() {
 					local.following(v.id, {Notify: v.checked});
 			});
 		}
+
+		insert();
 
 		Popup.alert({
 			header: chk?'Receive notifications from':'Following list',

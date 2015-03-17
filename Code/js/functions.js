@@ -177,8 +177,7 @@ function time(t) {
 (function(){
   var p=document.createElement('script'),
     s=document.getElementsByTagName('script')[0];
-  p.type='text/javascript';p.async=true;
-  p.src='{{PARSE_COM_SRC}}';
+  p.async=1; p.src='{{PARSE_COM_SRC}}';
   p.onload = function(){
     parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
     var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
