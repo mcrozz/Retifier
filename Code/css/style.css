@@ -5,7 +5,7 @@
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
-	font:23px ExtFont!important;
+	font:130% ExtFont!important;
 	overflow: hidden;
 	margin: 0;
 }
@@ -17,16 +17,13 @@ body {
 a {
 	color:	white;
 	text-decoration: none;
-	font-size: 22px;
+	font-size: 80%;
 	cursor: default;
 }
 p {
 	color:	black;
 	border-right: 1px dotted black;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-}
-b {
-	border:	2px dotted #d6d4d4;
 }
 button {
 	border: none;
@@ -140,27 +137,6 @@ button {
 	width: 55.5%;
 	text-align: center;
 	line-height: 256%;
-}
-
-.close {
-	display: block;
-	width: 100%;
-	height: 43px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background: lightgrey;
-	z-index: 10;
-}
-.close>a {
-	color: black;
-	font-size: 27;
-	display: inline-block;
-	width: 505px;
-	padding: 3 0 0 15;
-}
-.close>button {
-	width: 167px;
 }
 
 div>.user {
@@ -284,18 +260,6 @@ button[name=Select2]:hover {
 	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 }
 
-button.first {
-	color: white;
-	text-decoration: none;
-	font-size: 22px;
-	padding: 5px 20px;
-	background: -webkit-gradient(linear, left top, left bottom, from(#6441a5), to(#2a1b47));
-	-moz-border-radius:	14px;
-	-webkit-border-radius: 14px;
-	border-radius: 14px;
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-}
-
 button.button {
 	color: white;
 	text-decoration: none;
@@ -321,59 +285,6 @@ button.button:hover {
 	background: rgba(0,	0,	0,	0);
 }
 
-.TwitchLogo {
-	background: url(/img/TwitchLogo.png) no-repeat;
-	margin-left: 273px;
-	width: 151px;
-	height: 50px;
-	text-indent: -9999px;
-	overflow: hidden;
-	position: absolute;
-	cursor: auto;
-}
-
-.LoginORoutButton {
-	margin-left: 547px;
-	position: absolute;
-}
-
-#FollowedChannelsList {
-	position: absolute;
-	height: 92%;
-	width: 100%;
-	margin: 5;
-	padding-top: 35px;
-}
-.ListOfFollowed {
-	position: absolute;
-	left: 547px;
-	top: 40px;
-}
-
-.ProbablyNothing {
-	position: absolute;
-	left: 0px;
-	top: 40px;
-}
-
-.pStatusUserNameChg {
-	position: absolute;
-	font-size: 20px;
-	border-right: none;
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-	top: 27px;
-	left: -187px;
-}
-.pStatusRefreshIntChg {
-	position: absolute;
-	font-size: 20px;
-	border-right: none;
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
-	top: 67px;
-	left: -229px;
-}
-
-
 #options>div {
 	display: block;
 	margin: 1% 4% 0 4%;
@@ -394,13 +305,13 @@ button.button:hover {
 
 .selected {
 	border: 5px rgb(140, 100, 213) solid;
-	margin: 0 10px -6px 10px !important;
+	margin: 0 4% -6px 4% !important;
 }
 .style {
 	display: inline-block;
-	width: 50px;
-	height: 50px;
-	margin: 0 15px;
+	width: 16%;
+	height: 8%;
+	margin: 0 4%;
 }
 
 .List_Format {
@@ -465,13 +376,12 @@ button.button:hover {
 }
 
 #ChgUsrInt {
-	max-width: 52px;
-	min-width: 15px;
-	font-size: 27px;
+	max-width: 24%;
+	min-width: 10%;
+	font-size: 160%;
 	border-color: rgba(0, 0, 0, 0);
 	color: white;
 	background: none;
-	padding: 0 8 0 8;
 	text-align: center;
 }
 
@@ -481,7 +391,7 @@ button.button:hover {
 }
 
 .Check_Box, .Check_Box_2 {
-	height: 22px;
+	height: 3.7%;
 	-webkit-appearance: none;
 	outline: none;
 	margin: 0;
@@ -493,8 +403,8 @@ button.button:hover {
 
 .Check_Box {
 	background: url(/img/Check_Box.png) no-repeat 0 -22px;
-		background-size: cover;
-	width: 50px;
+	background-size: cover;
+	width: 16.5%;
 }
 
 .Check_Box:checked {
@@ -505,7 +415,7 @@ button.button:hover {
 .Check_Box_2 {
 	background: url(/img/Check_Box_2.png) no-repeat 0 -22px;
 		background-size: cover;
-	width: 22px;
+	width: 7.4%;
 }
 
 .Check_Box_2:checked {
@@ -582,7 +492,7 @@ input#SetUpUserNameInp::selection {
 	width: 23%;
 	height: 26%;
 	color: rgba(255, 255, 255, 0.97);
-	-webkit-border-radius: 62px;
+	border-radius: 62px;
 	transition: color .3s;
 }
 #TwitchName:hover,	#TwitchAccount:hover {
@@ -607,13 +517,13 @@ input#SetUpUserNameInp::selection {
 
 #AppVersion {
 	position: fixed;
-	right: 15px;
-	bottom: -5px;
-	-webkit-border-radius: 15px;
+	right: 3%;
+	bottom: -1%;
+	border-radius: 15px;
 	background: white;
-	padding: 4px;
+	padding: .6%;
 	color: black;
-	font-size: 15px;
+	font-size: 70%;
 	cursor: help;
 	z-index: 15;
 	-webkit-animation-name: fadeIn;
@@ -876,6 +786,10 @@ button.dash:hover {
 #zoomIMG {
 	display: block;
 	position: relative;
+	width: 100%;
+	height: 74.5%;
+	background-size: contain;
+	margin: 12.75% 0;
 }
 
 .Welcome>p {
@@ -885,102 +799,19 @@ button.dash:hover {
 	background: none;
 }
 
-#donate {
-	display: block;
-	background: rgba(0, 0, 0, 0.08);
-	margin: 0 0 3 0;
-	width: 100%;
-	height: 30px;
-}
-#donate>a:first-child {
-	color: black;
-	font-size: 22;
-	display: inline-block;
-	position: absolute;
-	margin: 2 0 0 55;
-}
-#donate>form {
-	width: 90px;
-	display: inline-block;
-	position: absolute;
-	margin-left: 501px;
-	top: 8px;
-}
-#closenews {
-	color: black;
-	font-size: 15;
-	position: absolute;
-	right: 28px;
-	top: 10px;
-}
-
-@media screen and (width: 678px) {}
-@media screen and (width: 450px) {}
-@media screen and (width: 340px) {}
-
-@-{{PLATFORM}}-keyframes openReport {
-	0% { -{{PLATFORM}}-transform:translateX(108px) }
-	100% { -{{PLATFORM}}-transform:translateX(0) }
-}
-@-{{PLATFORM}}-keyframes closeReport {
-	0% { -{{PLATFORM}}-transform:translateX(0) }
-	100% { -{{PLATFORM}}-transform:translateX(108px) }
-}
-@-{{PLATFORM}}-keyframes showReport {
-	0% { -{{PLATFORM}}-transform:translateX(133px) }
-	100% { -{{PLATFORM}}-transform:translateX(108px) }
-}
-@-{{PLATFORM}}-keyframes hideReport {
-	0% { -{{PLATFORM}}-transform:translateX(108px) }
-	100% { -{{PLATFORM}}-transform:translateX(133px) }
-}
-@-{{PLATFORM}}-keyframes hideReportA {
-	0% { -{{PLATFORM}}-transform:translateX(0) }
-	100% { -{{PLATFORM}}-transform:translateX(133px) }
-}
-@-{{PLATFORM}}-keyframes openReportBtn {
-	0% { -{{PLATFORM}}-transform:translateX(0) rotate(-90deg) }
-	100% { -{{PLATFORM}}-transform:translateX(-106px) rotate(-90deg) }
-}
-@-{{PLATFORM}}-keyframes closeReportBtn {
-	0% { -{{PLATFORM}}-transform:translateX(-106px) rotate(-90deg) }
-	100% { -{{PLATFORM}}-transform:translateX(0) rotate(-90deg) }
-}
-@-{{PLATFORM}}-keyframes showReportBtn {
-	0% { -{{PLATFORM}}-transform:translateX(25px) rotate(-90deg) }
-	100% { -{{PLATFORM}}-transform:translateX(0) rotate(-90deg) }
-}
-@-{{PLATFORM}}-keyframes hideReportBtn {
-	0% { -{{PLATFORM}}-transform:translateX(0) rotate(-90deg) }
-	100% { -{{PLATFORM}}-transform:translateX(25px) rotate(-90deg) }
-}
-@-{{PLATFORM}}-keyframes hideReportBtnA {
-	0% { -{{PLATFORM}}-transform:translateX(-106px) rotate(-90deg) }
-	100% { -{{PLATFORM}}-transform:translateX(25px) rotate(-90deg) }
-}
-
-
 /*
 		based on Animate.css
 	http://daneden.me/animate
 */
-@-{{PLATFORM}}-keyframes fadeIn {
-	0% { opacity:0 }
-	100% { opacity:1 }
-}
-@-{{PLATFORM}}-keyframes fadeOut {
-	0% { opacity:1 }
-	100% { opacity:0 }
-}
 @-{{PLATFORM}}-keyframes bounceInUp {
-	0% { opacity:0;-{{PLATFORM}}-transform:translateY(600px) }
+	0% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
 	99% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }
 	100% { -{{PLATFORM}}-transform:translateY(0) }
 }
 @-{{PLATFORM}}-keyframes bounceOutDown {
 	0% { -{{PLATFORM}}-transform:translateY(0) }
-	20% { opacity:1;-{{PLATFORM}}-transform:translateY(-20px) }
-	100% { opacity:0;-{{PLATFORM}}-transform:translateY(600px) }
+	20% { opacity:1;-{{PLATFORM}}-transform:translateY(-10%) }
+	100% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
 }
 @-{{PLATFORM}}-keyframes bounceIn {
 	0% { opacity:0;-{{PLATFORM}}-transform:scale(.0) }

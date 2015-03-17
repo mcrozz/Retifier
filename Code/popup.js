@@ -418,13 +418,10 @@ $(function() {
 		reLogin(); });
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
-			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name,
-				w = WIDTH*.625;
+			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
 			$('#zoomIMG').css({
 				background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
-				backgroundSize: 'contain',
-				height: w+'px',
-				margin: ((HEIGHT-w)/2)+'px 0'
+				backgroundSize: 'contain'
 			});
 			Popup.init('#zoomIMG');
 		}
