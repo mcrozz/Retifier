@@ -531,37 +531,34 @@ input#SetUpUserNameInp::selection {
 }
 #AppChanges {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(85, 85, 85, 0.95)));
-	position: fixed;
-	z-index: 35;
-	width: 400px;
-	height: 400px;
-	left: 148.5px;
+	position: absolute;
+	left: 21%;
+	width: 58%;
+	height: 70%;
 	bottom: 0;
 }
 .AppInfo::selection {
-	background: rgba(0,	0,	0,	0);
+	background: rgba(0, 0, 0, 0);
 }
-
 button.AppInfo {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)), to(rgba(39, 39, 39, 0.5)));
-	padding: 2 0 2 0;
-	margin: 0 -5 0 0;
-	width: 161px;
-	font-size: 22px;
+	padding: .6% 0;
+	margin: 0 -1% 0 0;
+	width: 40%;
+	font-size: 100%;
 	color: white;
 	border-right: 1px solid black;
 }
 button.AppInfo:last-child {
-	width: 80px;
+	width: 20%;
 }
 button.AppInfo:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(117,	117,	117,	0.8)), to(rgba(61,	61,	61,	0)));
 }
-
 .AppVersionContent2 {
 	position: relative;
-	height: 360px;
-	padding: 10 15 0 15;
+	height: 90%;
+	padding: 1% 4% 0 4%;
 }
 .AppVersionContent3 {
 	max-height: 100%;
@@ -582,29 +579,29 @@ button.AppInfo:hover {
 }
 
 .AppInfo>a {
-	font-size: 18px;
+	font-size: 80%;
 }
-
-.AppInfoAbout1 {
-	margin: 7 0 2 0;
+.AppInfoAbout>a {
+	display: block;
 }
-.AppInfoAbout1>a {
-	font-size: 17px;
+.AppInfoAbout>a:nth-child(1) {
+	margin-top: 2%;
+	font-size: 82%;
 }
-.AppInfoAbout2 {
+.AppInfoAbout>a:nth-child(2) {
 	text-align: center;
 }
-.AppInfoAbout3>a, .AppInfoAbout4>a, .AppInfoAbout5>a {
+.AppInfoAbout>a:nth-child(3) {
+	margin: 4% 0 0 3%;
 	cursor: pointer;
 }
-.AppInfoAbout3 {
-	margin: 34 0 0 5;
+.AppInfoAbout>a:nth-child(4) {
+	margin: 1% 0 0 9%;
+	cursor: pointer;
 }
-.AppInfoAbout4 {
-	margin: 0 0 0 16;
-}
-.AppInfoAbout5 {
-	margin: 0 0 0 28;
+.AppInfoAbout>a:nth-child(5) {
+	margin: 1% 0 0 15%;
+	cursor: pointer;
 }
 
 #CheckingProgress {

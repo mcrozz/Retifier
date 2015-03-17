@@ -57,6 +57,7 @@ $(function() {
 
 	var Popup = {
 		init: function(id, callback) {
+			$('#AppVersion').fadeOut(1000);
 			$('#popup').fadeIn(300);
 			$(id).fadeIn(285);
 			Popup.id = id;
@@ -64,6 +65,7 @@ $(function() {
 				Popup.callback = callback;
 		},
 		close: function() {
+			$('#AppVersion').fadeIn(1000);
 			$('#popup').fadeOut(300);
 			$('#AppVersion').fadeIn(1000);
 			$(Popup.id).fadeOut(285);
@@ -110,12 +112,11 @@ $(function() {
 			$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
 			$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
 
-			$('#AppVersion').fadeOut(1000);
-
 			// show background
 			if ($('#popup').css('display')[0] === 'n')
 				$('#popup').fadeIn(300);
 
+			$('#AppVersion').fadeOut(1000);
 			$('.alert').fadeIn(285);
 			Popup.alerted = true;
 		},
@@ -330,42 +331,25 @@ $(function() {
 		});
 	}
 
-	function AppVersionChanges(c) {
-		if (c=='c') {
-			anim('AppChanges', ['bounceOutDown', true]);
-			$('#AppInfoBack').fadeOut(500,
-				function(){ $('body').css('overflow', 'auto'); });
-			$('#AppVersion').fadeIn();
-		} else if (c=='o') {
-			anim('AppChanges', ['bounceInUp', false]);
-			$('#AppInfoBack').fadeIn();
-			$('#AppVersion').fadeOut();
-			$('body').css('overflow', 'hidden');
-			$('#AppVersion').hide();
-			CURRENT_APP_PAGE = 'About';
-			AppVersionChanges('ch');
-		} else if (c=='ch') {
-			if (CURRENT_APP_PAGE == 'About') {
-				var AppFirst = '';
-				for (i = 0; i < changes.length; i++) AppFirst += "<div class='AppInfo'><a>"+changes[i]+"</a></div>";
-				$('#AppVersionContent').fadeIn();
-				_$('AppVersionContent').innerHTML = AppFirst;
-				$('#AppFirst').css('border-bottom', '2px solid rgb(3,64,223)');
-				$('#AppThird').css('border-bottom', '2px solid white');
-				$('#AppInfoClose').css('border-bottom', '2px solid white');
-				CURRENT_APP_PAGE = 'Changes';
-			} else if (CURRENT_APP_PAGE == 'Changes') {
-				_$('AppVersionContent').innerHTML = '<div class="AppInfoAbout1"><a class="aAppInfoAbout1">This extension developed and published by</a></div>'+
-					"<div class='AppInfoAbout2'><a>Ivan 'MacRozz' Zarudny</a></div>"+
-					"<div class='AppInfoAbout3'><a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a></div>"+
-					"<div class='AppInfoAbout4'><a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a></div>"+
-					"<div class='AppInfoAbout5'><a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a></div>";
-				$('#AppVersionContent').fadeIn();
-				$('#AppFirst').css('border-bottom', '2px solid white');
-				$('#AppThird').css('border-bottom', '2px solid rgb(3,64,223)');
-				$('#AppInfoClose').css('border-bottom', '2px solid white');
-				CURRENT_APP_PAGE = 'About';
-			}
+	var AppVersion = {
+		init: function() {
+			AppVersion.changes();
+			Popup.init('#AppChanges', function() {
+				// $('')
+			});
+		},
+		changes: function() {
+			var data = '';
+			for (i=0; i<changes.length; i++)
+				data += "<div class='AppInfo'><a>"+changes[i]+"</a></div>";
+			$('#AppVersionContent').html(data);
+		},
+		about: function() {
+			$('#AppVersionContent').html('<div class="AppInfoAbout"><a>This extension developed and published by</a>'+
+				"<a>Ivan 'MacRozz' Zarudny</a>"+
+				"<a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a>"+
+				"<a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a>"+
+				"<a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a></div>");
 		}
 	}
 
@@ -391,16 +375,10 @@ $(function() {
 			$('#Notify>div').css('color', 'grey');
 			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;});
 		} });
-	ael('#AppVersion', function(){
-		AppVersionChanges('o'); });
-	ael('#AppFirst', function(){
-		AppVersionChanges('ch'); });
-	ael('#AppThird', function(){
-		AppVersionChanges('ch'); });
-	ael('#AppInfoClose', function(){
-		AppVersionChanges('c'); });
-	ael('#AppInfoBack', function(){
-		AppVersionChanges('c'); });
+	ael('#AppVersion', AppVersion.init);
+	ael('button.About', AppVersion.about);
+	ael('button.Changes', AppVersion.changes);
+	ael('button.Close', Popup.close);
 	ael('#Dashboard', function(){
 		ga('send', 'event', 'button', 'click', 'Dashboard');
 		window.open('http://www.twitch.tv/broadcast/dashboard'); });
