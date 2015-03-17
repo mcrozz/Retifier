@@ -64,6 +64,25 @@ $(function() {
 			if (typeof callback === 'function')
 				Popup.callback = callback;
 		},
+		change: function(id, returns, callback) {
+			if (typeof returns === 'boolean')
+				Popup.returns = returns;
+			if (typeof callback === 'function')
+				Popup.onClose = callback;
+
+			Popup.ids = id;
+			$(id).fadeIn(285);
+			$(Popup.id).fadeOut(284);
+		},
+		change_: function() {
+			$(Popup.id_).fadeOut(285);
+			if (Popup.returns)
+				Popup.init(Popup.id, Popup.callback);
+
+			Popup.id_ = '';
+			Popup.onClose = null;
+			Popup.returns = false;
+		},
 		close: function() {
 			$('#AppVersion').fadeIn(1000);
 			$('#popup').fadeOut(300);
@@ -72,6 +91,8 @@ $(function() {
 			Popup.id = '';
 		},
 		clicked: function() {
+			if (Popup.id_)
+				return Popup.change_();
 			if (Popup.alerted)
 				return Popup.onClose();
 
@@ -152,7 +173,8 @@ $(function() {
 		returns: false,
 		callback: null,
 		alerted: false,
-		id: ''
+		id: '',
+		id_: ''
 	};
 
 	function clickChangeUserCls() {
@@ -394,6 +416,9 @@ $(function() {
 	ael('#UserName>p', function(){
 		Popup.close();
 		reLogin(); });
+	ael('button.ChangeSize', function() {
+		Popup.change('#size', true, reloadStyle);
+	});
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
@@ -445,10 +470,8 @@ $(function() {
 			width: width+'px'
 		});
 	});
-	window.WIDTH = $(window).width(),
 	window.HEIGHT = $(window).height();
 	$(window).on('resize', function(e) {
-		WIDTH = $(window).width();
 		HEIGHT = $(window).height();
 	});
 
