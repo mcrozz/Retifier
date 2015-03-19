@@ -25,7 +25,7 @@ button:focus {
 }
 .content {
 	height: 15%;
-	width: 99%;
+	width: 97%;
 	margin: 1% 0 0 0;
 }
 .content>.tum {
@@ -36,10 +36,10 @@ button:focus {
 	margin: 1% 0 0 1%;
 }
 .content>.inf {
-	width: 73%;
+	width: 71%;
 	display: inline;
 	position: absolute;
-	right: 1%;
+	right: 2%;
 }
 .zoom {
 	width: 27.02%;
