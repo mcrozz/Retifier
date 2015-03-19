@@ -27,7 +27,7 @@ if (localStorage.FirstLaunch === 'true') {
     if (typeof k.d_name === 'undefined')
       j.d_name = k.Name;
 
-    local.following(i, j);
+    local.following.set(i, j);
   });
 }
 
@@ -104,7 +104,7 @@ var CheckStatus = function() {
 
         local.game(Game);
 
-        local.following(key, {
+        local.following.set(key, {
           Name    : Name,
           d_name  : d_name,
           Stream  : {
@@ -125,7 +125,7 @@ var CheckStatus = function() {
         local.set('Status.online', '-1');
         BadgeOnlineCount(local.Status.online);
         NowOnline = NowOnline.filter(function(e){ return e !== FoLi.Name; });
-        local.following(key, {Stream: false});
+        local.following.set(key, {Stream: false});
       }
 
       if (local.Status.checked==local.Following || key===local.Following) {
@@ -206,7 +206,7 @@ var CheckFollowingList = function() {
 
       if (local.Following == 0) {
         $.each(j.follows, function(i,v) {
-          local.following(i, {
+          local.following.set(i, {
             Name: v.channel.name,
             Stream: false,
             Notify: true,

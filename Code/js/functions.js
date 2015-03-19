@@ -40,6 +40,7 @@ window.local = {
       this.App_Version = JSON.parse(localStorage.App_Version);
       this.Following = JSON.parse(localStorage.Following);
       this.Games = JSON.parse(localStorage.Games);
+      setTimeout(local.following.hash, 0);
     } catch(e) { err(e); return false; }
     return true;
   },
@@ -78,22 +79,35 @@ window.local = {
     Notify: true,
     d_name: 'invalid'
   },
-  following: function(id, dt) {
-    try {
-      var tm = this.FollowingList[id];
-      if (typeof tm !== 'undefined')
-        $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
-          if (typeof tm[v] === 'undefined')
-            dt[v] = this.default[v];
-          else if (typeof dt[v] === 'undefined')
-            dt[v] = tm[v];
-          });
+  following: {
+    get: function(n) {
+      // Returns streamer obj
+      return local.FollowingList[local.following.map[n]];
+    },
+    set: function(id, dt) {
+      try {
+        var tm = local.FollowingList[id];
+        if (typeof tm !== 'undefined')
+          $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
+            if (typeof tm[v] === 'undefined')
+              dt[v] = local.default[v];
+            else if (typeof dt[v] === 'undefined')
+              dt[v] = tm[v];
+            });
 
-      this.FollowingList[id] = dt;
-      localStorage.FollowingList = JSON.stringify(this.FollowingList);
-      send({type: 'update', data: 'FollowingList'});
-      return true;
-    } catch (e) { return err(e); }
+        local.FollowingList[id] = dt;
+        localStorage.FollowingList = JSON.stringify(local.FollowingList);
+        send({type: 'update', data: 'FollowingList', who: dt.Name});
+        return true;
+      } catch (e) { return err(e); }
+    },
+    map: { /* String : Int ..*/ },
+    hash: function() {
+      // Hash names and theirs id
+      $.each(local.FollowingList, function(i,v) {
+        local.following.map[v.Name] = i;
+      });
+    }
   },
   game: function(name) {
     setTimeout(function() {
