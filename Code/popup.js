@@ -1,6 +1,29 @@
 {{LICENSE_HEADER}}
 $(function() {
-	var TimersetToUpdate = [];
+	var pcH;
+
+	function add() {
+		if (!isNaN(pcH)) {
+			pcH>=54 ? pcH=54 : pcH+=1;
+		}
+		reloadStyle({size: pcH});
+		$('#size>div').hide();
+	}
+	function sub() {
+		if (!isNaN(pcH)) {
+			pcH<=30 ? pcH=30 : pcH-=1;
+		}
+		reloadStyle({size: pcH});
+		$('#size>div').hide();
+	}
+	function sizeSave() {
+		// Save it
+		local.set('Config.Screen', pcH/100);
+		// Close it
+		Popup.close_();
+		// Reload it
+		location.reload();
+	}
 
 	function reloadStyle(l){
 		/*
@@ -10,49 +33,37 @@ $(function() {
 				*format : string
 			}
 		*/
-		var s = window.screen, w, h, wp, hp;
+		var s = window.screen, w, h, hp, fp, htm;
 		/*
 		Aspect ratio 1.2
 		Original size: 697px by 584px
 
-		Maximum width is 700px
-		Minimum width is 385px
-		Maximum height is 585px
-		Minimum height is 400px
-
-		big: 35% by 54%
-		mini: 25% by 47%
-		micro: 18% by 38%
-		custom: user's decision
+		width [385, 700]
+		height [400, 585]
     */
-		switch (local.Config.Screen) {
-			case 'big':
-			default:
-				hp = .54; break;
-			case 'mini':
-				hp = .47; break;
-			case 'micro':
-				hp = .38; break;
-			case 'custom':
-				hp = (local.Config.ScreenCustom) ? local.Config.ScreenCustom : .35;
-				break;
-		}
-		if (l && l.size) {
-			w = l.size[0];
-			h = l.size[1];
-		}
-		else {
-			h = s.availHeight*hp*1.2;
-			w = h*1.2;
-		}
+
+		hp = (l && l.size) ? l.size/100 : local.Config.Screen;
+		pcH = hp*100;
+
+		h = s.availHeight*hp;
+		w = h*1.2;
 		w = w<385?385:w;
+		w = w>700?700:w;
+		w = Math.floor(w);
 		h = h<400?400:h;
-		$('style').html('html {width:'+(w>700?700:w)+'px;height:'+(h>585?585:h)+'px;}');
+		h = h>585?585:h;
+		h = Math.floor(h);
+		fp = screen.pixelDepth*hp*10;
+
+		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
+		htm+= '#size>span{height:'+(h*.142)+'px;}';
+		$('style').html(htm);
 
 		if (l && l.format)
 			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
 		else
 			$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
+		deb(l);
 	}
 
 	var Popup = {
@@ -70,14 +81,17 @@ $(function() {
 			if (typeof callback === 'function')
 				Popup.onClose = callback;
 
-			Popup.ids = id;
-			$(id).fadeIn(285);
+			Popup.id_ = id;
+			$(id).fadeIn(500);
 			$(Popup.id).fadeOut(284);
 		},
-		change_: function() {
-			$(Popup.id_).fadeOut(285);
+		close_: function() {
+			$(Popup.id_).fadeOut(280);
 			if (Popup.returns)
 				Popup.init(Popup.id, Popup.callback);
+
+			if (typeof Popup.onClose === 'function')
+				Popup.onClose();
 
 			Popup.id_ = '';
 			Popup.onClose = null;
@@ -92,7 +106,7 @@ $(function() {
 		},
 		clicked: function() {
 			if (Popup.id_)
-				return Popup.change_();
+				return Popup.close_();
 			if (Popup.alerted)
 				return Popup.onClose();
 
@@ -417,8 +431,15 @@ $(function() {
 		Popup.close();
 		reLogin(); });
 	ael('button.ChangeSize', function() {
-		Popup.change('#size', true, reloadStyle);
+		Popup.change('#size', true, function() {
+			$('#size>div').show();
+			reloadStyle();
+		});
 	});
+	ael('span.cls', Popup.close_);
+	ael('span.plus', add);
+	ael('span.minus', sub);
+	ael('span.ok', sizeSave);
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;

@@ -150,14 +150,16 @@ div>.checkBox {
 
 #options {
 	display: none;
-  position: relative;
+  position: absolute;
+	top: 2.5%;
+	left: 26.5%;
 	width: 47%;
+	height: 95%;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 1)), to(rgba(87, 87, 87, 1)));
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	border-radius: 14px;
   color: white;
   font-size: 80%;
-	margin: auto;
 }
 
 #popup {
@@ -270,6 +272,59 @@ button.button:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(194,	0,	255,	0.22)), to(rgba(57,	0,	179,	0.49)));
 }
 
+#size {
+	display: none;
+	position: relative;
+	width: 25%;
+	height: 30%;
+	margin: 29% 37.5%;
+}
+#size>div {
+	display: block;
+	position: absolute;
+	top: -84%;
+	left: -82%;
+	width: 278%;
+	height: auto;
+}
+#size>div>a {
+	color: red;
+	font-size: 100%;
+	display: block;
+}
+span {
+	display: inline-block;
+	width: 48%;
+	height: 48%;
+	position: absolute;
+}
+span.cls {
+	background: url(../img/Close.png);
+	background-size: contain;
+	left: -4%;
+	top: -7%;
+}
+span.minus {
+	background: url(../img/ArrowLeft.png);
+	background-size: contain;
+	transform: rotate(-215deg);
+	left: 58%;
+	top: 9%;
+}
+span.plus {
+	background: url(../img/ArrowRight.png);
+	background-size: contain;
+	transform: rotate(145deg);
+	top: 54%;
+	left: -6%;
+}
+span.ok {
+	background: url(../img/OK.png);
+	background-size: contain;
+	top: 70%;
+	left: 56%;
+}
+
 .DashboardButton {
 	position: absolute;
 }
@@ -310,7 +365,7 @@ button.button:hover {
 .style {
 	display: inline-block;
 	width: 16%;
-	height: 8%;
+	height: 8.5%;
 	margin: 0 4%;
 }
 
@@ -341,7 +396,7 @@ button.button:hover {
 }
 
 #UserName {
-  text-align: center!important;
+	text-align: center!important;
 }
 #UserName>p:nth-child(1) {
 	margin-right: 2%;
@@ -433,7 +488,21 @@ button.button:hover {
 }
 .NotificationsOpt:hover {
 	background: rgb(43, 48, 98);
-  color: rgba(255, 255, 255, 0.72);
+	color: rgba(255, 255, 255, 0.72);
+}
+
+.ChangeSize {
+	background: rgb(35, 39, 84);
+	width: 100%;
+	font-size: 100%;
+	color: white;
+	text-align: left;
+	padding: 1.5% 2%;
+	cursor: pointer;
+}
+.ChangeSize:hover {
+	background: rgb(49, 54, 103);
+	color: rgba(255, 255, 255, 0.93);
 }
 
 .Welcome {
@@ -461,7 +530,7 @@ button.button:hover {
 	text-align: center;
 }
 input#SetUpUserNameInp::selection {
-  background: rgba(100, 100, 247, 0.48);
+	background: rgba(100, 100, 247, 0.48);
 }
 
 .fs1 {
@@ -781,7 +850,7 @@ button.dash:hover {
 	z-index: 99;
 }
 #zoomIMG {
-	display: block;
+	display: none;
 	position: relative;
 	width: 100%;
 	height: 74.5%;

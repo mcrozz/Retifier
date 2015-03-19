@@ -24,7 +24,7 @@ if (window.location.pathname === '/background.html') {
     local.set('Config.Format', 'mini');
 
   if (!local.Config.Screen)
-      local.set('Config.Screen', 'big');
+      local.set('Config.Screen', 0.34);
 
   try {
     var j = JSON.parse(localStorage.App_Version),
