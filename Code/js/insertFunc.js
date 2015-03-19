@@ -1,19 +1,20 @@
 {{LICENSE_HEADER}}
-var FirstLoadInsertFunc = 1;
 TimersetToUpdate = [];
 var refresh = false,
 		t, g;
 texts = { d:new Date() };
 
-function snum(){
-	switch (local.Config.Format) {
-		// [T]itle = { [W]idth, [F]ontSize }
-		case 'Grid': t = {w: 46.2, f: 79}; g = {w: 46.2, f: 79}; break;
-		case 'Full': t = {w: 48.2, f: 85}; g = {w: 48.2, f: 85}; break;
-		case 'Mini': t = {w: 73.2, f: 87}; g = {w: 29.201, f: 87}; break;
-	}
-};
-snum();
+
+function snum() {
+	var g = {
+		// [t]itle or [g]ame: { [W]idth, [F]ontSize }
+		'Grid': {t:{w: 46.2, f: 79}, g:{w: 46.2, f: 79}},
+		'Full': {t:{w: 48.2, f: 85}, g:{w: 48.2, f: 85}},
+		'Mini': {t:{w: 73.2, f: 87}, g:{w: 29.201, f: 87}}
+	};
+	// returns: { w:int, f:int }
+	return g[local.Config.Format];
+}
 
 function InsertOnlineList() {
 	if (localStorage.FirstLaunch === 'true')
@@ -23,9 +24,10 @@ function InsertOnlineList() {
 	* n - text
 	* w - width
 	*/
-	function offSet(s,n,w,wp) {
-		var d = $('#textWidth').css({fontSize: s+'%', width: w+'%'}).html(n);
-		return (d.width()>(window.WIDTH*w));
+	function offSet(t,w) {
+		var f = snum()[w];
+		var d = $('#textWidth').css({fontSize: f.f+'%', width: f.w+'%'}).html(t);
+		return (d.width()>(window.WIDTH*f.w));
 	}
 	/*
 	* a : {
@@ -79,18 +81,18 @@ function InsertOnlineList() {
 
 		if (v.Stream) {
 			if (typeof texts[StreamTitle] === 'undefined') {
-				texts[StreamTitle] = offSet(t.f, StreamTitle, t.w);
+				texts[StreamTitle] = offSet(StreamTitle, 't');
 			} else { TitleWidth = texts[StreamTitle] }
 
 			if (typeof texts[StreamGame] === 'undefined') {
-				texts[StreamGame] = offSet(g.f, StreamGame, g.w);
+				texts[StreamGame] = offSet(StreamGame, 'g');
 			} else { GameWidth = texts[StreamGame] }
 		}
 
 		if (TimersetToUpdate.indexOf(i) === -1) {
 		    if (v.Stream) {
-		        if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
-		        	$('#insertContentHere').html('');
+					if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
+						$('#insertContentHere').html('');
 
 				insert({
 					str: StreamerName,

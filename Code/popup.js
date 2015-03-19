@@ -254,7 +254,6 @@ $(function() {
 			local.set('Config.Format', a);
 			reloadStyle(true);
 			texts = { d:new Date() };
-			snum();
 		}
 
 		Popup.close();
