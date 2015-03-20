@@ -1,7 +1,7 @@
 if (window.location.pathname === '/background.html') {
   $.ajaxSetup ({cache:false,crossDomain:true});
   if (!localStorage.Config)
-    localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"offline":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid","Screen":"big","ScreenCustom":[1,1]}';
+    localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"offline":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid","Screen":0.34}';
   if (!localStorage.Status)
     localStorage.Status = '{"update":7,"online":0,"checked":0}';
   if (!localStorage.FirstLaunch)
@@ -21,7 +21,7 @@ if (window.location.pathname === '/background.html') {
     local.set('Config.Format', 'Grid');
 
   if (local.Config.Format == 'Light')
-    local.set('Config.Format', 'mini');
+    local.set('Config.Format', 'Mini');
 
   if (!local.Config.Screen)
       local.set('Config.Screen', 0.34);

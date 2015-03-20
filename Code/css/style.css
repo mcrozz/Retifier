@@ -84,14 +84,16 @@ button {
 .loading {
   position: absolute;
 	display: block;
-	width: 107%;
-	height: 57%;
+	width: 44%;
+	height: 42%;
+	left: 33%;
+	top: 12%;
 }
 .loading>div {
   position: absolute;
   -webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
 	width: 34%;
-  height: 67%;
+  height: 37%;
 }
 .loading>div:nth-of-type(1) {
   background: #4821b8;

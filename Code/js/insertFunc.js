@@ -20,39 +20,11 @@ var online = [];
 
 window.insert = function(name) {
 	deb(name);
-	// Return if already showing
-	if ($.inArray(name, online) !== -1)
-		return;
 
 	var obj = local.following.get(name);
 	// Streamer is offline or invalid input
 	if (!obj || !obj.Stream || obj.Name !== name)
 		return;
-
-	function stream(obj) {
-	  var name = obj.Name;
-	  var divs = {
-	    origin : $('#'+name),
-	    title  : $('#'+name+'>.inf>.title>a'),
-	    name   : $('#'+name+'>.inf>.streamer>a'),
-	    viewers: $('#'+name+'>.inf>.viewers>a'),
-	    game   : $('#'+name+'>.inf>.game>a'),
-	    ST     : $('#'+name+'>.tum>.ST'),
-	    GT1    : $('#'+name+'>.tum>.GT1'),
-	    GT2    : $('#'+name+'>.tum>.GT2')
-	  };
-	  var _this = this;
-	  $.each(divs, function(i,v) {
-	    _this[i] = {
-	      set: function(n) {
-	        v.html(n);
-	      },
-	      get: function() {
-	        return v.html();
-	      }
-	    };
-	  });
-	}
 
 	function offSet(t,w) {
 		// [t]ext, [w]hat(game or title)
@@ -64,33 +36,115 @@ window.insert = function(name) {
 	function insert(a) {
 		/*
 		* a : {
-		*  str : streamer for urls
+		*  str : streamer name for urls
 		*  dsn : display streamer name
 		*  ttl : title
 		*  gme : game
 		*  viw : viewers count
 		*  pos : id
+		*  isG : is game tumb available
 		* }
 		*/
-		var t = '', n = (a.gme !== 'Not Playing');
-		t += '<div class="content" id="'+a.pos+'">'
-			+'<div class="tum"><div class="loading" style="-webkit-transform:scale(0.35)"><div></div><div></div><div></div><div></div></div>'
-			+'<a href="http://www.twitch.tv/'+a.str
-			+'" target="_blank">Launch Stream</a><img class="ST" />'
-			+'<img class="GT1" /><img class="GT2" />'
-			+'<div class="zoom" id="zoom_'+a.pos+'"></div></div>'
-			+'<div class="inf"><div class="title"><a>'+a.ttl+'</a></div>'
-			+'<div class="streamer"><a '
-			+ (n?'target="_blank" href="http://www.twitch.tv/'+a.str+'/profile"':'')
-			+'>'+a.dsn+'</a></div>'
-			+'<div class="viewers"><a>'+a.viw+' viewers</a></div>'
-			+'<div class="game"><a '
-			+(n?'href="http://www.twitch.tv/directory/game/'+a.gme+'" target="_blank"':'')
-			+'>'+a.gme+'</a></div><div class="adds"><div class="page">'
-			+'<a href="http://www.twitch.tv/'+a.str+'/profile" target="_blank">'
-			+'<button type="button" class="button">Channel page</button></a></div>'
-			+'<div class="duration"><a></a></div></div>';
-		_$('insertContentHere').innerHTML += t;
+		function c(n, par) {
+			var el = document.createElement(n);
+			if (par) {
+				$.each(par, function(i,v) {
+					el[i] = v;
+				});
+			}
+			return el;
+		}
+
+		var np = a.gme === 'Not playing';
+		function preview() {
+			var tum = c('div', {className: 'tum'});
+
+			var load = c('div', {className: 'loading'});
+			load.appendChild(c('div'));
+			load.appendChild(c('div'));
+			load.appendChild(c('div'));
+			load.appendChild(c('div'));
+			tum.appendChild(load);
+
+			var launch = c('a', {
+				href: 'http://www.twitch.tv/'+a.str,
+				target: '_blank',
+				innerHTML: 'Launch Stream'});
+			tum.appendChild(launch);
+
+			var ST = c('img', {className: 'ST'});
+			ST.style.background = 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+a.str+'-320x200.jpg)';
+			ST.style.backgroundSize = 'contain';
+			ST.style.cursor = 'pointer';
+			tum.appendChild(ST);
+
+			var GT1 = c('img', {className: 'GT1'});
+			GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
+			GT1.style.backgroundSize = 'contain';
+			GT1.style.cursor = 'pointer';
+			tum.appendChild(GT1);
+
+			var GT2 = c('img', {className: 'GT2'});
+			GT2.style.background = 'url("./img/playing.png")';
+			GT2.style.backgroundSize = 'contain';
+			GT2.style.cursor = 'pointer';
+			tum.appendChild(GT2);
+
+			var zoom = c('div', {className: 'zoom', id: 'zoom_'+a.pos});
+			tum.appendChild(zoom);
+
+			return tum;
+		}
+		function information() {
+			var inf = c('div', {className: 'inf'});
+
+			var title = c('div', {className: 'title'});
+			title.appendChild(c('a', {innerHTML: a.ttl}));
+			inf.appendChild(title);
+
+			var streamer = c('div', {className: 'streamer'});
+			var aStream = c('a', {
+				href: 'http://www.twitch.tv/'+a.str+'/profile',
+				target: '_blank',
+				innerHTML: a.dsn});
+			streamer.appendChild(aStream);
+			inf.appendChild(streamer);
+
+			var viewers = c('div', {className: 'viewers'});
+			var aView = c('a', {innerHTML: a.viw+' viewers'});
+			viewers.appendChild(aView);
+			inf.appendChild(viewers);
+
+			var game = c('div', {className: 'game'});
+			var aGame = c('a', {
+				href: !np?'http://www.twitch.tv/directory/game/'+a.gme:null,
+				target: !np?'_blank':null,
+				innerHTML: a.gme});
+			game.appendChild(aGame);
+			inf.appendChild(game);
+
+			var adds = c('div', {className: 'adds'});
+			var page = c('div', {className: 'page'});
+			var aPag = c('a', {href: 'http://www.twitch.tv/'+a.str+'/profile', target: '_blank'});
+			var abPag = c('button', {
+				type: 'button',
+				className: 'button',
+				innerHTML: 'Channel page'});
+			aPag.appendChild(abPag);
+			page.appendChild(aPag);
+			adds.appendChild(page);
+			var dur = c('div', {className: 'duration'});
+			dur.appendChild(c('a'));
+			adds.appendChild(dur);
+			inf.appendChild(adds);
+
+			return inf;
+		}
+
+		var holder = c('div', {className: 'content', id: a.pos});
+		holder.appendChild(preview());
+		holder.appendChild(information());
+		$('#insertContentHere').append(holder);
 	}
 
 	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
@@ -107,6 +161,40 @@ window.insert = function(name) {
 			b             = '#'+StreamerName+'>',
 			dc;
 
+	function stream(ob) {
+		var name = ob.Name;
+		var divs = {
+			origin  : $('#'+name),
+			title   : $('#'+name+'>.inf>.title>a'),
+			name    : $('#'+name+'>.inf>.streamer>a'),
+			viewers : $('#'+name+'>.inf>.viewers>a'),
+			game    : $('#'+name+'>.inf>.game>a'),
+			ST      : $('#'+name+'>.tum>.ST'),
+			GT1     : $('#'+name+'>.tum>.GT1'),
+			GT2     : $('#'+name+'>.tum>.GT2'),
+			duration: $('#'+name+'>.adds>.duration>a')
+		};
+		var _this = this;
+		$.each(divs, function(i,v) {
+			_this[i] = {
+				set: function(n) {
+					// set value
+					v.html(n);
+				},
+				get: function() {
+					// return innerHTML
+					return v.html();
+				},
+				el: function() {
+					// return element
+					return v;
+				}
+			};
+		});
+	}
+
+	var str = new stream(obj);
+
 	if (typeof texts[StreamTitle] === 'undefined') {
 		texts[StreamTitle] = offSet(StreamTitle, 't');
 	} else { TitleWidth = texts[StreamTitle] }
@@ -118,153 +206,75 @@ window.insert = function(name) {
 	if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
 		$('#insertContentHere').html('');
 
-	insert({
-		str: StreamerName,
-		dsn: ShortStrmName,
-		ttl: StreamTitle,
-		gme: StreamGame,
-		viw: StreamVievers,
-		pos: StreamerName
-	});
-	online.push(StreamerName);
+	// If not in array and is online
+	if ($.inArray(name, online) === -1) {
+		if (!obj.Stream)
+			return;
 
-	TimersetToUpdate.push(ShortStrmName);
-
-	$(b+'.tum>.ST').css({
-		'background':'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-		'background-size':'contain',
-		'cursor':'pointer'
-	});
-	if (isGameThumb)
-		$(b+'.tum>.GT1').css({
-			'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+eStreamGame+'-272x380.jpg")',
-			'background-size': 'contain',
-			'cursor':'pointer'
+		insert({
+			str: StreamerName,
+			dsn: ShortStrmName,
+			ttl: StreamTitle,
+			gme: StreamGame,
+			viw: StreamVievers,
+			pos: StreamerName,
+			isG: isGameThumb
 		});
-	$(b+'.tum>.GT2').css({
-		'background':'url("./img/playing.png")',
-		'background-size': 'contain',
-		'cursor':'pointer'
-	});
-}
+		online.push(StreamerName);
+	} else {
+		// This name is in list
+		if (!obj.Stream) {
+			// Streamer went offline so delete
+			str.origin.remove();
+			online = online.filter(function(e) { return e!=name; });
 
-function InsertOnlineList() {
-	if (localStorage.FirstLaunch === 'true')
-		return false;
-
-
-
-	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
-
-	if (TimersetToUpdate.length >= 1 && $('#'+TimersetToUpdate[0]).length == 0)
-		TimersetToUpdate = [];
-
-	$.each(local.FollowingList, function(i,v) {
-		var StreamTitle   = v.Stream.Title,
-				StreamerName  = v.Name,
-				ShortStrmName = v.d_name,
-				StreamGame    = v.Stream.Game,
-				eStreamGame   = encodeURI(StreamGame),
-				isGameThumb   = local.Games[eStreamGame],
-				StreamVievers = v.Stream.Viewers,
-				TitleWidth    = false,
-				GameWidth     = false,
-				b             = '#'+i+'>',
-				dc;
-
-		if (v.Stream) {
-			if (typeof texts[StreamTitle] === 'undefined') {
-				texts[StreamTitle] = offSet(StreamTitle, 't');
-			} else { TitleWidth = texts[StreamTitle] }
-
-			if (typeof texts[StreamGame] === 'undefined') {
-				texts[StreamGame] = offSet(StreamGame, 'g');
-			} else { GameWidth = texts[StreamGame] }
+			if (local.Status.online == 0 && local.Status.update == 0)
+			    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
+			return;
 		}
 
-		if (TimersetToUpdate.indexOf(i) === -1) {
-		    if (v.Stream) {
-					if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
-						$('#insertContentHere').html('');
+		str.title.set(StreamTitle);
 
-				insert({
-					str: StreamerName,
-					dsn: ShortStrmName,
-					ttl: StreamTitle,
-					gme: StreamGame,
-					viw: StreamVievers,
-					pos: i
-				});
+		str.title.el().attr('show', TitleWidth);
+		str.game.el().attr('show', GameWidth);
 
-				TimersetToUpdate.push(i);
+		str.game.set(StreamGame);
+		str.viewers.set(StreamVievers+" viewers");
 
-				$(b+'.tum>.ST').css({
-					'background':'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+		/*if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
+			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
+		else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
+			$(b+'.inf>.adds>.duration>a').html('');*/
+
+		str.ST.el().css({
+			'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
+			'background-size': 'contain',
+			'cursor': 'pointer'
+		});
+
+		var jl = str.GT1.el().css('background').split('/');
+		if (isGameThumb)
+			if (jl[jl.length-1] != encodeURI(StreamGame)+'-272x380.jpg')
+				str.GT1.el().css({
+					'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
 					'background-size':'contain',
 					'cursor':'pointer'
 				});
-				if (isGameThumb)
-					$(b+'.tum>.GT1').css({
-						'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+eStreamGame+'-272x380.jpg")',
-						'background-size': 'contain',
-						'cursor':'pointer'
-					});
-				$(b+'.tum>.GT2').css({
-					'background':'url("./img/playing.png")',
-					'background-size': 'contain',
+			else
+				str.GT1.el().css({
+					'background-size':'contain',
 					'cursor':'pointer'
 				});
-			}
-		} if (TimersetToUpdate.indexOf(i) !== -1) {
-		    if (!v.Stream && _$(i) !== null) {
-		    	_$(i).remove();
-		    	TimersetToUpdate.splice(TimersetToUpdate.indexOf(i), 1);
-		    } else {
-					$(b+'.inf>.title>a').html(StreamTitle);
-
-					$(b+'.inf>.title>a').attr('show', TitleWidth);
-					$(b+'.inf>.game>a').attr('show', GameWidth);
-
-					$(b+'.inf>.game>a').html(StreamGame);
-					$(b+'.inf>.viewers>a').html(StreamVievers+" viewers");
-
-					if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
-						$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
-	        else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
-						$(b+'.inf>.adds>.duration>a').html('');
-
-					$(b+'.tum>.ST').css({
-						'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',
-						'background-size': 'contain',
-						'cursor': 'pointer'
-					});
-
-					var jl = $(b+'.tum>.GT1').css('background').split('/');
-					if (isGameThumb)
-						if (jl[jl.length-1] != encodeURI(StreamGame)+'-272x380.jpg')
-							$(b+'.tum>.GT1').css({
-								'background':'url("http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(StreamGame)+'-272x380.jpg")',
-								'background-size':'contain',
-								'cursor':'pointer'
-							});
-							else
-							$(b+'.tum>.GT1').css({
-								'background-size':'contain',
-								'cursor':'pointer'
-							});
-					$(b+'.tum>.GT2').css({
-						'background':'url("./img/playing.png")',
-						'background-size': 'contain',
-						'cursor':'pointer'
-					});
-					if (StreamGame == 'Not playing')
-						$(b+'.tum>.GT2, '+b+'.tum>.GT1').hide();
-				}
+		str.GT2.el().css({
+			'background':'url("./img/playing.png")',
+			'background-size': 'contain',
+			'cursor':'pointer'
+		});
+		if (StreamGame == 'Not playing') {
+			str.GT1.el().hide();
+			str.GT2.el().hide();
 		}
-
-		if (local.Status.online == 0 && local.Status.update == 0)
-		    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
-	});
+	}
 }
 
 window.updateStatus = function() {
