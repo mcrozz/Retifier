@@ -320,8 +320,10 @@ window.updateStatus = function() {
 
 $(function() {
 	updateStatus();
-	$.each(local.FollowingList, function(i,v) {
-		if (v.Stream)
-			insert(v.Name);
-	});
+	setTimeout(function() {
+		$.each(local.FollowingList, function(i,v) {
+			if (v.Stream)
+				insert(v.Name);
+		});
+	}, 0)
 });
