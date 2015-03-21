@@ -39,6 +39,8 @@ window.insert = function(obj) {
 		*  viw : viewers count
 		*  pos : id
 		*  isG : is game tumb available
+		*  txw : TitleWidth,
+		*  gmw : GameWidth
 		* }
 		*/
 		function c(n, par) {
@@ -55,6 +57,7 @@ window.insert = function(obj) {
 		function preview() {
 			var tum = c('div', {className: 'tum'});
 
+			// Loading icon
 			var load = c('div', {className: 'loading'});
 			load.appendChild(c('div'));
 			load.appendChild(c('div'));
@@ -62,30 +65,35 @@ window.insert = function(obj) {
 			load.appendChild(c('div'));
 			tum.appendChild(load);
 
+			// 'Launch Stream' on hover
 			var launch = c('a', {
 				href: 'http://www.twitch.tv/'+a.str,
 				target: '_blank',
 				innerHTML: 'Launch Stream'});
 			tum.appendChild(launch);
 
+			// Stream preview
 			var ST = c('img', {className: 'ST'});
 			ST.style.background = 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+a.str+'-320x200.jpg)';
 			ST.style.backgroundSize = 'contain';
 			ST.style.cursor = 'pointer';
 			tum.appendChild(ST);
 
+			// Game poster
 			var GT1 = c('img', {className: 'GT1'});
 			GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
 			GT1.style.backgroundSize = 'contain';
 			GT1.style.cursor = 'pointer';
 			tum.appendChild(GT1);
 
+			// In case game poster is not available
 			var GT2 = c('img', {className: 'GT2'});
 			GT2.style.background = 'url("./img/playing.png")';
 			GT2.style.backgroundSize = 'contain';
 			GT2.style.cursor = 'pointer';
 			tum.appendChild(GT2);
 
+			// Zoomed stream preview
 			var zoom = c('div', {className: 'zoom', id: 'zoom_'+a.pos});
 			tum.appendChild(zoom);
 
@@ -94,10 +102,14 @@ window.insert = function(obj) {
 		function information() {
 			var inf = c('div', {className: 'inf'});
 
+			// Title of stream
 			var title = c('div', {className: 'title'});
-			title.appendChild(c('a', {innerHTML: a.ttl}));
+			var aTitle = c('a', {innerHTML: a.ttl});
+			aTitle.setAttribute('show', a.txw);
+			title.appendChild(aTitle);
 			inf.appendChild(title);
 
+			// Streamer name
 			var streamer = c('div', {className: 'streamer'});
 			var aStream = c('a', {
 				href: 'http://www.twitch.tv/'+a.str+'/profile',
@@ -106,19 +118,23 @@ window.insert = function(obj) {
 			streamer.appendChild(aStream);
 			inf.appendChild(streamer);
 
+			// Viewers count
 			var viewers = c('div', {className: 'viewers'});
 			var aView = c('a', {innerHTML: a.viw+' viewers'});
 			viewers.appendChild(aView);
 			inf.appendChild(viewers);
 
+			// Game name
 			var game = c('div', {className: 'game'});
 			var aGame = c('a', {
 				href: !np?'http://www.twitch.tv/directory/game/'+a.gme:null,
 				target: !np?'_blank':null,
 				innerHTML: a.gme});
+			aGame.setAttribute('show', a.gmw);
 			game.appendChild(aGame);
 			inf.appendChild(game);
 
+			// Additionals (duration and visit channel)
 			var adds = c('div', {className: 'adds'});
 			var page = c('div', {className: 'page'});
 			var aPag = c('a', {href: 'http://www.twitch.tv/'+a.str+'/profile', target: '_blank'});
@@ -155,7 +171,7 @@ window.insert = function(obj) {
 			TitleWidth    = false,
 			GameWidth     = false,
 			b             = '#'+StreamerName+'>',
-			dc;
+			dc, TitleWidth, GameWidth;
 
 	function stream(ob) {
 		var name = ob.Name;
@@ -191,13 +207,13 @@ window.insert = function(obj) {
 
 	var str = new stream(obj);
 
-	if (typeof texts[StreamTitle] === 'undefined') {
+	if (typeof texts[StreamTitle] === 'undefined')
 		texts[StreamTitle] = offSet(StreamTitle, 't');
-	} else { TitleWidth = texts[StreamTitle] }
+	TitleWidth = texts[StreamTitle]
 
-	if (typeof texts[StreamGame] === 'undefined') {
+	if (typeof texts[StreamGame] === 'undefined')
 		texts[StreamGame] = offSet(StreamGame, 'g');
-	} else { GameWidth = texts[StreamGame] }
+	GameWidth = texts[StreamGame]
 
 	if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
 		$('#insertContentHere').html('');
@@ -214,15 +230,17 @@ window.insert = function(obj) {
 			gme: StreamGame,
 			viw: StreamVievers,
 			pos: StreamerName,
-			isG: isGameThumb
+			isG: isGameThumb,
+			txw: TitleWidth,
+			gmw: GameWidth
 		});
 		online.push(StreamerName);
 	} else {
 		// This name is in list
 		if (!obj.Stream) {
-			deb(obj);
 			// Streamer went offline so delete
-			str.origin.remove();
+			// FIXIT: sometimes deletes online
+			str.origin.el().remove();
 			online = online.filter(function(e) { return e!=obj.Name; });
 
 			if (local.Status.online == 0 && local.Status.update == 0)

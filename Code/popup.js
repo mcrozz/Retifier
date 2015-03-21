@@ -462,14 +462,13 @@ $(function() {
 	ael('#zoomIMG', Popup.close);
 	ael('button[name=k]', Popup.clickAlert);
 	ael('button[name=c]', Popup.closeAlert);
+	var popupMsg = $('#message');
 	$(document).on('mousemove', function(p) {
 		function hide() {
-			if (k.css('display') === 'block')
-				k.css('display', 'none');
-			return false;
+			if (popupMsg.css('display') === 'block')
+				return popupMsg.hide();
 		}
 		var j = p.target.attributes.getNamedItem('show');
-		var k = $('#message');
 		if (j === null || typeof j === 'undefined')
 			return hide();
 		if (j.value == 'false')
@@ -477,23 +476,23 @@ $(function() {
 		if (j.value != 'true')
 			return false;
 
-		if (k.css('display') === 'none') {
-			k.html(p.target.innerText);
-			k.css('display', 'block');
+		if (popupMsg.css('display') === 'none') {
+			popupMsg.html(p.target.innerText);
+			popupMsg.show();
 		}
 
-		if (k.html() !== p.target.innerText)
-			k.html(p.target.innerText);
+		if (popupMsg.html() !== p.target.innerText)
+			popupMsg.html(p.target.innerText);
 
 		var left, top,
-			tarH = $('#message').height();
+			tarH = popupMsg.height();
 			width=Math.floor($(window).width()/2),
 			height=$(window).height();
 
-		left = p.pageX<width ? 0 : width;
-		top = (p.pageY+tarH)>height ? p.pageY-tarH-15 : p.pageY+5;
+		left = popupMsg.pageX<width ? 0 : width;
+		top = (popupMsg.pageY+tarH)>height ? popupMsg.pageY-tarH-15 : popupMsg.pageY+5;
 
-		k.css({
+		popupMsg.css({
 			left: left+'px',
 			top: top+'px',
 			width: width+'px'
