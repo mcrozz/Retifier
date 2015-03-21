@@ -389,8 +389,17 @@ $(function() {
 	}
 
 	function ael(id, func) { $(id).on('click', func); }
+	// Init extension size
 	reloadStyle();
+	// Check current version and insert it
 	versionCheck();
+	// Insert current status
+	updateStatus();
+	// Insert online list
+	$.each(local.FollowingList, function(i,v) {
+		if (v.Stream)
+			insert(v);
+	});
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);

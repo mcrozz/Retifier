@@ -97,7 +97,7 @@ window.local = {
 
         local.FollowingList[id] = dt;
         localStorage.FollowingList = JSON.stringify(local.FollowingList);
-        send({type: 'update', data: 'FollowingList', who: (tm!=dt)?dt.Name:'none'});
+        send({type: 'update', data: 'FollowingList', who: (tm!=dt)?dt:'none'});
         return true;
       } catch (e) { return err(e); }
     },
@@ -127,6 +127,8 @@ window.local = {
               isThere = true;
             }
           });
+        // preventing from error on local.set side
+        dname = dname.replace(/./g, '');
         local.set('Games.'+dname, isThere);
       });
     }, 0);

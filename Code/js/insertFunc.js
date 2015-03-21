@@ -18,13 +18,9 @@ function snum() {
 
 var online = [];
 
-window.insert = function(name) {
-	deb(name);
-
-	var obj = local.following.get(name);
-	// Streamer is offline or invalid input
-	if (!obj || !obj.Stream || obj.Name !== name)
-		return;
+window.insert = function(obj) {
+	// invalid input
+	if (!obj) return;
 
 	function offSet(t,w) {
 		// [t]ext, [w]hat(game or title)
@@ -207,7 +203,7 @@ window.insert = function(name) {
 		$('#insertContentHere').html('');
 
 	// If not in array and is online
-	if ($.inArray(name, online) === -1) {
+	if ($.inArray(obj.Name, online) === -1) {
 		if (!obj.Stream)
 			return;
 
@@ -224,9 +220,10 @@ window.insert = function(name) {
 	} else {
 		// This name is in list
 		if (!obj.Stream) {
+			deb(obj);
 			// Streamer went offline so delete
 			str.origin.remove();
-			online = online.filter(function(e) { return e!=name; });
+			online = online.filter(function(e) { return e!=obj.Name; });
 
 			if (local.Status.online == 0 && local.Status.update == 0)
 			    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
@@ -317,13 +314,3 @@ window.updateStatus = function() {
 		_$('CheckingProgress').hidden=true;
 	}*/
 };
-
-$(function() {
-	updateStatus();
-	setTimeout(function() {
-		$.each(local.FollowingList, function(i,v) {
-			if (v.Stream)
-				insert(v.Name);
-		});
-	}, 0)
-});
