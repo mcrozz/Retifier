@@ -2,7 +2,7 @@
 function tm(j) { function g(s) { return s<10 ? '0'+s : s; } var d = new Date(); return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j; }
 function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
 function log(msg) { console.log(tm(': ')+msg); }
-function deb(msg) { console.debug(msg); }
+function deb(msg) { if(!msg)return; console.debug(msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
 function _$(id){
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
