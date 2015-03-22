@@ -16,6 +16,38 @@ function snum() {
 	return g[local.Config.Format];
 }
 
+function stream(ob) {
+	var name = ob.Name;
+	var divs = {
+		origin  : $('#'+name),
+		title   : $('#'+name+'>.inf>.title>a'),
+		name    : $('#'+name+'>.inf>.streamer>a'),
+		viewers : $('#'+name+'>.inf>.viewers>a'),
+		game    : $('#'+name+'>.inf>.game>a'),
+		ST      : $('#'+name+'>.tum>.ST'),
+		GT1     : $('#'+name+'>.tum>.GT1'),
+		GT2     : $('#'+name+'>.tum>.GT2'),
+		duration: $('#'+name+'>.inf>.adds>.duration>a')
+	};
+	var _this = this;
+	$.each(divs, function(i,v) {
+		_this[i] = {
+			set: function(n) {
+				// set value
+				v.html(n);
+			},
+			get: function() {
+				// return innerHTML
+				return v.html();
+			},
+			el: function() {
+				// return element
+				return v;
+			}
+		};
+	});
+}
+
 var online = [];
 
 window.insert = function(obj) {
@@ -39,8 +71,9 @@ window.insert = function(obj) {
 		*  viw : viewers count
 		*  pos : id
 		*  isG : is game tumb available
-		*  txw : TitleWidth,
-		*  gmw : GameWidth
+		*  txw : is title big
+		*  gmw : is game big
+		*  tme : stream duration
 		* }
 		*/
 		function c(n, par) {
@@ -146,7 +179,7 @@ window.insert = function(obj) {
 			page.appendChild(aPag);
 			adds.appendChild(page);
 			var dur = c('div', {className: 'duration'});
-			dur.appendChild(c('a'));
+			dur.appendChild(c('a', {innerHTML: a.tme}));
 			adds.appendChild(dur);
 			inf.appendChild(adds);
 
@@ -172,38 +205,6 @@ window.insert = function(obj) {
 			GameWidth     = false,
 			b             = '#'+StreamerName+'>',
 			dc, TitleWidth, GameWidth;
-
-	function stream(ob) {
-		var name = ob.Name;
-		var divs = {
-			origin  : $('#'+name),
-			title   : $('#'+name+'>.inf>.title>a'),
-			name    : $('#'+name+'>.inf>.streamer>a'),
-			viewers : $('#'+name+'>.inf>.viewers>a'),
-			game    : $('#'+name+'>.inf>.game>a'),
-			ST      : $('#'+name+'>.tum>.ST'),
-			GT1     : $('#'+name+'>.tum>.GT1'),
-			GT2     : $('#'+name+'>.tum>.GT2'),
-			duration: $('#'+name+'>.adds>.duration>a')
-		};
-		var _this = this;
-		$.each(divs, function(i,v) {
-			_this[i] = {
-				set: function(n) {
-					// set value
-					v.html(n);
-				},
-				get: function() {
-					// return innerHTML
-					return v.html();
-				},
-				el: function() {
-					// return element
-					return v;
-				}
-			};
-		});
-	}
 
 	var str = new stream(obj);
 
@@ -232,7 +233,8 @@ window.insert = function(obj) {
 			pos: StreamerName,
 			isG: isGameThumb,
 			txw: TitleWidth,
-			gmw: GameWidth
+			gmw: GameWidth,
+			tme: time(obj.Stream.Time)
 		});
 		online.push(StreamerName);
 	} else {
@@ -332,3 +334,14 @@ window.updateStatus = function() {
 		_$('CheckingProgress').hidden=true;
 	}*/
 };
+
+setInterval(function() {
+	$.each(online, function(i,v) {
+		try {
+			var s = local.following.get(v);
+			if (!s) return;
+			var j = new stream(s);
+			j.duration.set(time(s.Stream.Time));
+		} catch(e) { err(e); }
+	});
+}, 500);

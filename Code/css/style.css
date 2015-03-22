@@ -62,7 +62,7 @@ button {
 	z-index: 3;
 }
 .tum>a {
-	z-index: 1;
+	z-index: 2;
 	position: absolute;
 	text-align: center;
 	color: white;

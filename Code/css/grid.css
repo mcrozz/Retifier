@@ -116,6 +116,7 @@ button:focus {
 	position: absolute;
 	top: 0;
 	text-align: center;
+	z-index: 1;
 }
 .adds>.page {
 	display: none;
