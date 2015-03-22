@@ -8,9 +8,9 @@ texts = { d:new Date() };
 function snum() {
 	var g = {
 		// [t]itle or [g]ame: { [W]idth, [F]ontSize }
-		'Grid': {t:{w: 46.2, f: 79}, g:{w: 46.2, f: 79}},
-		'Full': {t:{w: 48.2, f: 85}, g:{w: 48.2, f: 85}},
-		'Mini': {t:{w: 73.2, f: 87}, g:{w: 29.201, f: 87}}
+		'Grid': {t:{w: 47.2, f: 79}, g:{w: 47.2, f: 79}},
+		'Full': {t:{w: 52.1, f: 85}, g:{w: 52.1, f: 85}},
+		'Mini': {t:{w: 72.4, f: 87}, g:{w: 28.98, f: 87}}
 	};
 	// returns: { w:int, f:int }
 	return g[local.Config.Format];
