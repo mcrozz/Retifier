@@ -151,13 +151,19 @@ div>.checkBox {
 	width: 11%;
 }
 
-#options {
+.options {
 	display: none;
-  position: absolute;
 	top: 2.5%;
 	left: 26.5%;
 	width: 47%;
 	height: 95%;
+	position: absolute;
+	overflow: auto;
+}
+#options {
+	display: block;
+	width: 100%;
+	height: auto;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 1)), to(rgba(87, 87, 87, 1)));
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 	border-radius: 14px;

@@ -57,6 +57,8 @@ $(function() {
 
 		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
 		htm+= '#size>span{height:'+(h*.142)+'px;}';
+		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.038)+'px}';
+		htm+= '.style {height:'+(h*.0832)+'px}';
 		$('style').html(htm);
 
 		if (l && l.format)
@@ -196,7 +198,7 @@ $(function() {
 	}
 
 	function clickChangeUser() {
-		Popup.init('#options', clickChangeUserCls);
+		Popup.init('.options', clickChangeUserCls);
 
 		$('#UserName>p:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
@@ -225,7 +227,6 @@ $(function() {
 				e.className+= ' selected';
 		});
 
-		$('#options_bg').fadeIn(900);
 		anim('options', ['bounceIn', false, 0.9]);
 
 		ga('send', 'event', 'button', 'click', 'Options');

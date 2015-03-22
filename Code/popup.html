@@ -37,57 +37,59 @@
 	 	<span class="ok"></span>
 	</div>
 
-	<div id="options">
-		<div>Options</div>
-		<div id="UserName"><p>Welcome,</p><p></p><p class="Logout">Logout</p></div>
-		<div id="CheckInterval">
-			<a>Check every <input type="text" id="ChgUsrInt"> min.</a>
-		</div>
-		<div>
-			<button type="button" class="ChangeSize">
-				Change size of extension
-			</button>
-		</div>
-		<div id="Notify">
-			<a>Enable notifications</a>
-			<input type="checkbox" class="Check_Box EnNotify">
-			<div>
-				<a>Channel Starts Streaming</a>
-				<input type="checkbox" class="Check_Box_2 NotifyStreamer">
+	<div class="options">
+		<div id="options">
+			<div>Options</div>
+			<div id="UserName"><p>Welcome,</p><p></p><p class="Logout">Logout</p></div>
+			<div id="CheckInterval">
+				<a>Check every <input type="text" id="ChgUsrInt"> min.</a>
 			</div>
 			<div>
-				<a>Channel Stops Streaming</a>
-				<input type="checkbox" class="Check_Box_2 NotifyStreamer2">
-			</div>
-			<div>
-				<a>Channel Changes Title</a>
-				<input type="checkbox" class="Check_Box_2 NotifyStreamerChanged">
-			</div>
-			<div>
-				<a>When Updating List</a>
-				<input type="checkbox" class="Check_Box_2 NotifyUpdate">
-			</div>
-			<div>
-				<a>Play Sound With Notification</a>
-				<input type="checkbox" class="Check_Box SoundCheck">
-			</div>
-			<div>
-				<button type="button" class="NotificationsOpt">
-					Get notificaitons from...
+				<button type="button" class="ChangeSize">
+					Change size of extension
 				</button>
 			</div>
+			<div id="Notify">
+				<a>Enable notifications</a>
+				<input type="checkbox" class="Check_Box EnNotify">
+				<div>
+					<a>Channel Starts Streaming</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamer">
+				</div>
+				<div>
+					<a>Channel Stops Streaming</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamer2">
+				</div>
+				<div>
+					<a>Channel Changes Title</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamerChanged">
+				</div>
+				<div>
+					<a>When Updating List</a>
+					<input type="checkbox" class="Check_Box_2 NotifyUpdate">
+				</div>
+				<div>
+					<a>Play Sound With Notification</a>
+					<input type="checkbox" class="Check_Box SoundCheck">
+				</div>
+				<div>
+					<button type="button" class="NotificationsOpt">
+						Get notificaitons from...
+					</button>
+				</div>
+			</div>
+			<div id="DurationOfStream">
+				<a>Show Stream Duration</a>
+				<input type="checkbox" class="Check_Box StreamDurationCheck">
+			</div>
+			<div class="List_Format">
+				<a>Choose style of online list</a>
+				<div class="style Full"></div>
+				<div class="style Mini"></div>
+				<div class="style Grid"></div>
+			</div>
+			<button type="button" id="ChgUsrSnd">Save / Close</button>
 		</div>
-		<div id="DurationOfStream">
-			<a>Show Stream Duration</a>
-			<input type="checkbox" class="Check_Box StreamDurationCheck">
-		</div>
-		<div class="List_Format">
-			<a>Choose style of online list</a>
-			<div class="style Full"></div>
-			<div class="style Mini"></div>
-			<div class="style Grid"></div>
-		</div>
-		<button type="button" id="ChgUsrSnd">Save / Close</button>
 	</div>
 
 	<div id="AppChanges" style="display:none">
@@ -102,6 +104,7 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 
 <div id="firstScane" style="display:block;overflow:hidden">
