@@ -452,7 +452,7 @@ $(function() {
 	ael('span.ok', sizeSave);
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
-			var n = local.FollowingList[e.target.id.match(/\d+/)[0]].Name;
+			var n = local.following.get(e.target.id.replace('zoom_', '')).Name;
 			$('#zoomIMG').css({
 				background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
 				backgroundSize: 'contain'
