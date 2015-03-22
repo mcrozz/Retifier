@@ -46,13 +46,14 @@ button {
 	cursor: pointer;
 }
 .tum>.ST {
-	z-index: 2;
+	z-index: 1;
+	position: relative;
 }
 .content>.tum {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(211, 192, 239, 1)), to(rgba(114, 113, 131, 1)));
 }
 .tum>.loading {
-	z-index: -1;
+	z-index: 0;
 }
 .tum>.GT1 {
 	z-index: 4;
@@ -61,7 +62,7 @@ button {
 	z-index: 3;
 }
 .tum>a {
-	z-index: 0;
+	z-index: 1;
 	position: absolute;
 	text-align: center;
 	color: white;
