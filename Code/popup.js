@@ -396,10 +396,12 @@ $(function() {
 	// Insert current status
 	updateStatus();
 	// Insert online list
-	$.each(local.FollowingList, function(i,v) {
-		if (v.Stream)
-			insert(v);
-	});
+	setTimeout(function() {
+		$.each(local.FollowingList, function(i,v) {
+			if (v.Stream)
+				insert(v);
+			});
+	}, 0);
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
