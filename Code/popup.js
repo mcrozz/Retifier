@@ -429,6 +429,7 @@ $(function() {
 			reloadStyle();
 		});
 	});
+	ael('.close>span', Popup.close);
 	ael('span.cls', Popup.close_);
 	ael('#size>.plus', add);
 	ael('#size>.minus', sub);
