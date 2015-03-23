@@ -6,8 +6,10 @@
 <body id="body">
 
 <div id="popup">
+	<!-- Tinted background -->
 	<div class="background"></div>
 
+	<!-- Alert model -->
 	<div class="alert">
 		<header>
 			<p></p>
@@ -23,8 +25,10 @@
 		</footer>
 	</div>
 
+	<!-- Zoomed preview -->
 	<div id="zoomIMG"></div>
 
+	<!-- Change size page -->
 	<div id="size">
 	 	<div>
 	 		<a>While you're changing size, height of the window will
@@ -37,6 +41,19 @@
 	 	<span class="ok"></span>
 	</div>
 
+	<!-- Change view style -->
+	<div id="view">
+		<div>
+			<a>You can preview every style</a>
+		</div>
+		<span class="cls"></span>
+		<span class="Full"></span>
+		<span class="Grid"></span>
+		<span class="Light"></span>
+		<span class="ok"></span>
+	</div>
+
+	<!-- Options section -->
 	<div class="options">
 		<div id="options">
 			<div>Options</div>
@@ -83,15 +100,15 @@
 				<input type="checkbox" class="Check_Box StreamDurationCheck">
 			</div>
 			<div class="List_Format">
-				<a>Choose style of online list</a>
-				<div class="style Full"></div>
-				<div class="style Mini"></div>
-				<div class="style Grid"></div>
+				<button type="button" class="OnlineStyle">
+					Choose style of online list
+				</button>
 			</div>
 			<button type="button" id="ChgUsrSnd">Save / Close</button>
 		</div>
 	</div>
 
+	<!-- Extensions'c changelog and about -->
 	<div id="AppChanges" style="display:none">
 		<div class="AppInfoNav">
 			<button type="button" class="AppInfo Changes">Changes</button>

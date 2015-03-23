@@ -264,10 +264,7 @@ button[name=Select1], button[name=Select2] {
 	display: inline-block;
 	margin: 2% 0 4% 0;
 }
-button[name=Select1]:hover {
-	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
-}
-button[name=Select2]:hover {
+button[name=Select1]:hover, button[name=Select2]:hover {
 	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 }
 
@@ -301,7 +298,7 @@ button.button:hover {
 	font-size: 100%;
 	display: block;
 }
-span {
+#size>span {
 	display: inline-block;
 	width: 48%;
 	height: 48%;
@@ -332,6 +329,59 @@ span.ok {
 	background-size: contain;
 	top: 70%;
 	left: 56%;
+}
+
+button.OnlineStyle {
+	background: rgb(40, 47, 118);
+	width: 100%;
+	font-size: 100%;
+	color: white;
+	text-align: left;
+	padding: 1.5% 2%;
+	cursor: pointer;
+}
+button.OnlineStyle:hover {
+	background: rgb(64, 69, 124);
+	color: rgb(176, 176, 176);
+}
+#view {
+	display: none;
+	position: relative;
+	width: 75%;
+	height: 25%;
+	margin: 32.5% 12.5%;
+	text-align: center;
+}
+#view>div {
+	display: block;
+	font-size: 140%;
+	margin-bottom: 5%;
+}
+#view>span {
+	width: 17%;
+	height: 55%;
+	display: inline-block;
+	border-radius: 40%;
+}
+#view>span.selected {
+	border: 4px solid rgb(55, 52, 187);
+	margin: 0 -4px!important;
+}
+span.Grid {
+	background: url(../img/Grid_View.png);
+	background-size: contain;
+}
+span.Light {
+	background: url(../img/Light_View.png);
+	background-size: contain;
+}
+span.Full {
+	background: url(../img/Full_View.png);
+	background-size: contain;
+}
+
+span:hover {
+	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 }
 
 .DashboardButton {

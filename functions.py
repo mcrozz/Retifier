@@ -158,7 +158,7 @@ def build(b, s):
 		'css\\style.css',
 		'css\\full.css',
 		'css\\grid.css',
-		'css\\mini.css',
+		'css\\light.css',
 		'js\\functions.js',
 		'js\\firstStart.js',
 		'js\\whatsNew.js',

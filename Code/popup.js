@@ -65,7 +65,6 @@ $(function() {
 			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
 		else
 			$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
-		deb(l);
 	}
 
 	var Popup = {
@@ -220,12 +219,12 @@ $(function() {
 
 		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
 
-		$('.List_Format>div').each(function(i,e) {
-			if ($.inArray(local.Config.Format, e.classList) === -1)
-				e.className = e.className.replace(/ selected/g, '');
-			else if ($.inArray('selected', e.classList) === -1)
-				e.className+= ' selected';
-		});
+		// $('.List_Format>div').each(function(i,e) {
+		// 	if ($.inArray(local.Config.Format, e.classList) === -1)
+		// 		e.className = e.className.replace(/ selected/g, '');
+		// 	else if ($.inArray('selected', e.classList) === -1)
+		// 		e.className+= ' selected';
+		// });
 
 		anim('options', ['bounceIn', false, 0.9]);
 
@@ -250,12 +249,12 @@ $(function() {
 
 		local.set('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
 
-		var a = _$('.selected').className.split(' ')[1];
-		if (local.Config.Format !== a) {
-			local.set('Config.Format', a);
-			reloadStyle(true);
-			texts = { d:new Date() };
-		}
+		// var a = _$('.selected').className.split(' ')[1];
+		// if (local.Config.Format !== a) {
+		// 	local.set('Config.Format', a);
+		// 	reloadStyle(true);
+		// 	texts = { d:new Date() };
+		// }
 
 		Popup.close();
 	}
@@ -408,12 +407,12 @@ $(function() {
 	ael('#ChgUsrSnd', changeScriptStarter);
 	ael('.following', function(){
 		FollowedList(false); });
-	ael('.style', function(t){
-		var a = t.target.className.split(' ')[1],
-			b = _$('.selected').className.split(' ')[1];
-		_$('.selected').className = 'style '+b;
-		_$('.'+a).className += ' selected';
-		reloadStyle({format: a}); });
+	// ael('.style', function(t){
+	// 	var a = t.target.className.split(' ')[1],
+	// 		b = _$('.selected').className.split(' ')[1];
+	// 	_$('.selected').className = 'style '+b;
+	// 	_$('.'+a).className += ' selected';
+	// 	reloadStyle({format: a}); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
 			$('#Notify>div').css('color', '');
@@ -448,9 +447,43 @@ $(function() {
 		});
 	});
 	ael('span.cls', Popup.close_);
-	ael('span.plus', add);
-	ael('span.minus', sub);
-	ael('span.ok', sizeSave);
+	ael('#size>.plus', add);
+	ael('#size>.minus', sub);
+	ael('#size>.ok', sizeSave);
+	ael('button.OnlineStyle', function() {
+		// Show current style of online list
+		$('#view>span').each(function(i,v) {
+			if (v.className === local.Config.Format)
+				v.className = v.className+' selected';
+		});
+		Popup.change('#view', true, function() {
+			$('#view>span').each(function(i,v) {
+				v.className = v.className.replace(' selected', '');
+			});
+			reloadStyle();
+		});
+	});
+	ael('#view>span', function(e) {
+		// Execute Close and Ok buttons
+		e = e.target;
+		if ($.inArray(e.className, ['cls', 'ok']) !== -1)
+			return;
+
+		// Delete selected property from others
+		$('#view>span').each(function(i,v) {
+			if (v.className !== e.className)
+				v.className = v.className.replace(' selected', '');
+		});
+		reloadStyle({format: e.className});
+		e.className = e.className+' selected';
+
+		return true;
+	});
+	ael('#view>.ok', function() {
+		local.set('Config.Format', $('#view>span.selected')[0].classList[0]);
+		reloadStyle(); // Just in case
+		Popup.close_();
+	});
 	ael(window, function(e) {
 		if (e.target.className === 'zoom') {
 			var n = local.following.get(e.target.id.replace('zoom_', '')).Name;
