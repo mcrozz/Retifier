@@ -57,8 +57,7 @@ $(function() {
 
 		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
 		htm+= '#size>span{height:'+(h*.142)+'px;}';
-		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.038)+'px}';
-		htm+= '.style {height:'+(h*.0832)+'px}';
+		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
 		$('style').html(htm);
 
 		if (l && l.format)
@@ -199,7 +198,7 @@ $(function() {
 	function clickChangeUser() {
 		Popup.init('.options', clickChangeUserCls);
 
-		$('#UserName>p:nth-child(2)').html(local.Config.User_Name);
+		$('#user>a:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
 
 		var a = !local.Config.Notifications.status;
@@ -397,11 +396,13 @@ $(function() {
 		FollowedList(false); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
-			$('#Notify>div').css('color', '');
-			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = false;});
+			$('.options>div>li>a').css('color', '');
+			$('li>input.Check_Box_2').each(function(e) {
+				this.disabled = false;});
 		} else {
-			$('#Notify>div').css('color', 'grey');
-			$('#Notify>div>input[type=checkbox]').each(function(e){this.disabled = true;});
+			$('.options>div>li>a').css('color', 'grey');
+			$('li>input.Check_Box_2').each(function(e) {
+				this.disabled = true;});
 		} });
 	ael('#AppVersion', AppVersion.init);
 	ael('button.About', AppVersion.about);
