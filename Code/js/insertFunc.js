@@ -241,7 +241,6 @@ window.insert = function(obj) {
 		// This name is in list
 		if (!obj.Stream) {
 			// Streamer went offline so delete
-			// FIXIT: sometimes deletes online
 			str.origin.el().remove();
 			online = online.filter(function(e) { return e!=obj.Name; });
 
@@ -257,11 +256,6 @@ window.insert = function(obj) {
 
 		str.game.set(StreamGame);
 		str.viewers.set(StreamVievers+" viewers");
-
-		/*if (local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a') != null)
-			$(b+'.inf>.adds>.duration>a').html(time(v.Stream.Time))
-		else if (!local.Config.Duration_of_stream && $(b+'.inf>.adds>.duration>a').html() !== '')
-			$(b+'.inf>.adds>.duration>a').html('');*/
 
 		str.ST.el().css({
 			'background': 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+StreamerName+'-320x200.jpg)',

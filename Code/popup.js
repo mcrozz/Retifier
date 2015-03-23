@@ -53,7 +53,12 @@ $(function() {
 		h = h<400?400:h;
 		h = h>585?585:h;
 		h = Math.floor(h);
-		fp = screen.pixelDepth*hp*10;
+
+		var add = 0;
+		// normalize font size for Linux users
+		if (navigator.platform[0].toLowerCase() === 'l')
+		 add = -21;
+		fp = (screen.pixelDepth*hp*10)+add;
 
 		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
 		htm+= '#size>span{height:'+(h*.142)+'px;}';
