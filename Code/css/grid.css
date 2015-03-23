@@ -8,7 +8,7 @@ button:focus {
 	outline-color: rgba(0, 0, 0, 0);
 }
 .inf>.streamer {
-	width: 60%;
+	width: 55%;
 	display: inline-table;
 }
 .inf>.streamer>a {
@@ -19,7 +19,7 @@ button:focus {
 	margin-left: 3;
 }
 .inf>.viewers {
-	width: 40%;
+	width: 45%;
 	text-align: right;
 	cursor: default;
 	display: inline-table;
