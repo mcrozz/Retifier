@@ -219,13 +219,6 @@ $(function() {
 
 		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
 
-		// $('.List_Format>div').each(function(i,e) {
-		// 	if ($.inArray(local.Config.Format, e.classList) === -1)
-		// 		e.className = e.className.replace(/ selected/g, '');
-		// 	else if ($.inArray('selected', e.classList) === -1)
-		// 		e.className+= ' selected';
-		// });
-
 		anim('options', ['bounceIn', false, 0.9]);
 
 		ga('send', 'event', 'button', 'click', 'Options');
@@ -249,18 +242,7 @@ $(function() {
 
 		local.set('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
 
-		// var a = _$('.selected').className.split(' ')[1];
-		// if (local.Config.Format !== a) {
-		// 	local.set('Config.Format', a);
-		// 	reloadStyle(true);
-		// 	texts = { d:new Date() };
-		// }
-
 		Popup.close();
-	}
-
-	function ReportAbug() {
-		ga('send', 'event', 'button', 'click', 'Report a bug');
 	}
 
 	function FollowedList(chk) {
@@ -397,22 +379,22 @@ $(function() {
 	updateStatus();
 	// Insert online list
 	setTimeout(function() {
+		var curOnline = 0;
 		$.each(local.FollowingList, function(i,v) {
-			if (v.Stream)
+			if (v.Stream) {
 				insert(v);
-			});
+				curOnline++;
+			}
+		});
+		// In case of incorrect online count
+		if (local.Status.online !== curOnline)
+			local.set('Status.online', curOnline);
 	}, 0);
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
 	ael('.following', function(){
 		FollowedList(false); });
-	// ael('.style', function(t){
-	// 	var a = t.target.className.split(' ')[1],
-	// 		b = _$('.selected').className.split(' ')[1];
-	// 	_$('.selected').className = 'style '+b;
-	// 	_$('.'+a).className += ' selected';
-	// 	reloadStyle({format: a}); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
 			$('#Notify>div').css('color', '');
