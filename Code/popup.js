@@ -166,7 +166,7 @@ $(function() {
 			$('.alert').fadeOut(285);
 			if (Popup.returns) {
 				Popup.returns = false;
-				Popup.init(Popup.id, Popup.callback);
+				return Popup.init(Popup.id, Popup.callback);
 			} else
 				$('#popup').fadeOut(300);
 
