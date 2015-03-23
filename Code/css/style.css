@@ -431,6 +431,7 @@ button.button:hover {
 	display: inline-block;
 	width: 48%;
 	height: 48%;
+	border-radius: 25px;
 	position: absolute;
 }
 span.cls {
