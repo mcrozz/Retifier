@@ -388,6 +388,9 @@ $(function() {
 		// In case of incorrect online count
 		if (local.Status.online !== curOnline)
 			local.set('Status.online', curOnline);
+
+		if (local.Status.online === 0)
+			$('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	}, 0);
 	$('#AppVersion').html(local.App_Version.Ver);
 	ael('.settings', clickChangeUser);

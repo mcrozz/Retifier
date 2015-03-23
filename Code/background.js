@@ -132,15 +132,14 @@ var CheckStatus = function() {
       }
 
       if (local.Status.checked==local.Following || key===local.Following) {
-        if (reCount || local.Status.online < 0) {
-          var onl = 0;
-          $.each(local.FollowingList, function(i,v) {
-            if (v.Stream)
-              onl++;
-          });
-          local.set('Status.online', onl);
-          reCount = false;
-        }
+        // double check...
+        var onl = 0;
+        $.each(local.FollowingList, function(i,v) {
+          if (v.Stream)
+            onl++;
+        });
+        local.set('Status.online', onl);
+        reCount = false;
 
         if (local.Status.online === 0 && NowOnline.length !== 0)
           local.set('Status.online', NowOnline.length);
