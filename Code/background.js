@@ -104,7 +104,7 @@ var CheckStatus = function() {
 
         local.game(Game);
 
-        local.following.set(key, {
+        var s = {
           Name    : Name,
           d_name  : d_name,
           Stream  : {
@@ -113,7 +113,9 @@ var CheckStatus = function() {
             Viewers: d.stream.viewers,
             Time   : Time
           }
-        });
+        };
+        local.following.set(key, s);
+        send({type:'following', data:s});
       } else if (FoLi.Stream) {
         // Channel went offline
         if (FoLi.Notify)
@@ -126,6 +128,7 @@ var CheckStatus = function() {
         BadgeOnlineCount(local.Status.online);
         NowOnline = NowOnline.filter(function(e){ return e !== FoLi.Name; });
         local.following.set(key, {Stream: false});
+        send({type:'following', data: {Name:FoLi.Name, Stream:false}});
       }
 
       if (local.Status.checked==local.Following || key===local.Following) {

@@ -97,7 +97,7 @@ window.local = {
 
         local.FollowingList[id] = dt;
         localStorage.FollowingList = JSON.stringify(local.FollowingList);
-        send({type: 'update', data: 'FollowingList', who: (tm!=dt)?dt:'none'});
+        send({type: 'update', data: 'FollowingList'});
         return true;
       } catch (e) { return err(e); }
     },
