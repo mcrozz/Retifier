@@ -377,12 +377,39 @@ $(function() {
 	function ael(id, func) { $(id).on('click', func); }
 	// Init extension size
 	reloadStyle();
-	// Check current version and insert it
-	versionCheck();
 	// Insert current status
 	updateStatus();
 	// Insert online list
 	setTimeout(function() {
+		// Get working code of background script
+		send({type: "getInf"}, function(e) {
+			if (!e) return;
+			switch(e.data) {
+				case 777:
+					// Invalid token
+					var htm = "<a>Your access token is invalid, but don't worry.</a>";
+							htm+= "<a>Something may happen at TwitchTV</a>";
+							htm+= "<a>Just click 'Ok' and relogin into your account</a>";
+					Popup.alert({
+						header: "Token is invalid",
+						content: htm,
+						onOk: reLogin,
+						onClose: reLogin,
+						showClose: false
+					});
+					break;
+				case 123:
+					// Update
+					Popup.alert({
+						header: newUpdate.msg,
+						content: newUpdate.content,
+						showClose: false
+					});
+					break;
+			}
+		});
+
+		// Insert online list
 		var curOnline = 0;
 		$.each(local.FollowingList, function(i,v) {
 			if (v.Stream) {
