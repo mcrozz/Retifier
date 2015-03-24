@@ -20,22 +20,27 @@ if (window.location.pathname === '/background.html') {
   if (!local.Config.Format)
     local.set('Config.Format', 'Grid');
 
-  if (local.Config.Format == 'Light')
-    local.set('Config.Format', 'Mini');
+  if (local.Config.Format == 'Mini')
+    local.set('Config.Format', 'Light');
 
   if (!local.Config.Screen)
       local.set('Config.Screen', 0.34);
 
-  try {
-    var j = JSON.parse(localStorage.App_Version),
-        k = chrome.runtime.getManifest().version;
-    if (k != j.Ver) {
-      Notify({title:"Extension has been updated", msg:"From "+j.Ver+" to "+k, type:"sys"});
-      j.Try = 0;
-      local.set('App_Version.Ver', k);
-    }
-  } catch(e) {
-    localStorage.App_Version = '{"Ver": "'+chrome.runtime.getManifest().version+'", "Got": "'+chrome.runtime.getManifest().version+'","Try":0}';
+
+  var j = localStorage.App_Version,
+      k = chrome.runtime.getManifest().version;
+
+  if (!j || localStorage.App_Version[0]==='{')
+    localStorage.App_Version = k;
+
+  if (k != j) {
+    Notify({
+      title:"Extension has been updated",
+      msg:"From "+j+" to "+k,
+      type:"sys"});
+
+    localStorage.App_Version = k;
+    window.toShow = 123;
   }
 } else
   local.init();
