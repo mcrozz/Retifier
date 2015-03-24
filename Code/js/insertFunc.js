@@ -316,17 +316,6 @@ window.updateStatus = function() {
 		case 5: j.innerHTML = 'App have a problem with update'; break;
 		case 6: j.innerHTML = "Name doesn't set up yet!"; break;
 	}
-	/*var pg = (Upd!==0);
-	if (pg) {
-		if (_$('CheckingProgress').hidden) {
-			$('#CheckingProgress').show();
-			_$('CheckingProgress').hidden=false;
-		}
-		_$('CheckingProgress').value = Math.floor( (100 / local.Following) * local.Status.checked);
-	} else if (!_$('CheckingProgress').hidden) {
-		$('#CheckingProgress').hide();
-		_$('CheckingProgress').hidden=true;
-	}*/
 };
 
 setInterval(function() {

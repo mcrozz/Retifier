@@ -1,4 +1,4 @@
-﻿{{LICENSE_HEADER}}
+{{LICENSE_HEADER}}
 
 // What's new in update
 newUpdate = {

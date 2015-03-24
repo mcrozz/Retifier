@@ -379,7 +379,6 @@ $(function() {
 	reloadStyle();
 	// Insert current status
 	updateStatus();
-	// Insert online list
 	setTimeout(function() {
 		// Get working code of background script
 		send({type: "getInf"}, function(e) {
