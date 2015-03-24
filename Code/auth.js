@@ -8,8 +8,10 @@ function init() {
 			var r = $('p>code');
 
 			r[0].innerText = f.msg;
-			if (!f.expl) delete r[1]
-			else r[1].innerText = f.expl;
+			if (!f.expl) {
+				delete r[1]; }
+			else
+				r[1].innerText = f.expl;
 
 			$('.pending').hide();
 			$('.failed').show();
@@ -37,12 +39,12 @@ function init() {
 
 	local.set('Config.token', tkn);
 	$.ajax({
-		url:'https://api.twitch.tv/kraken/user?oauth_token='+tkn,
+		url:'https://api.twitch.tv/kraken/?oauth_token='+tkn,
 		dataType:'JSONP',
 		complete: function(e){
 			log('Got user');
-			if (e.responseJSON.name !== undefined) {
-				local.set('Config.User_Name', e.responseJSON.name);
+			if (e.responseJSON.token.user_name !== undefined && e.responseJSON.token.valid) {
+				local.set('Config.User_Name', e.responseJSON.token.user_name);
 				localStorage.FirstLaunch = false;
 				local.set('Status.StopInterval', true);
 				show({type: 'ok'});
@@ -58,4 +60,4 @@ function init() {
 	$('button').on('click', function(){window.close();});
 }
 deb("Initializing...");
-$(window).load(function(){setTimeout(init, 250)});
+$(window).load(function(){setTimeout(init, 250);});
