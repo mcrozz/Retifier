@@ -37,7 +37,6 @@ window.local = {
       this.Config = JSON.parse(localStorage.Config);
       this.Status = JSON.parse(localStorage.Status);
       this.FollowingList = JSON.parse(localStorage.FollowingList);
-      this.App_Version = JSON.parse(localStorage.App_Version);
       this.Following = JSON.parse(localStorage.Following);
       this.Games = JSON.parse(localStorage.Games);
       setTimeout(local.following.hash, 0);
