@@ -553,8 +553,10 @@ $(function() {
 		});
 	});
 	window.HEIGHT = $(window).height();
+	window.WIDTH = $(window).width();
 	$(window).on('resize', function(e) {
 		HEIGHT = $(window).height();
+		WIDTH = $(window).width();
 	});
 
 	{{MSG_PARSER_POP_FUNC}}
