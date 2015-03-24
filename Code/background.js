@@ -188,9 +188,21 @@ var CheckFollowingList = function() {
   Notify({title:'Status', msg:'Checking following list...', type:'update'});
   local.set('Status.update', 2);
 
-  var uri = 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=500&offset=0';
-  if (local.Config.token !== "")
-    uri += '&oauth_token='+local.Config.token;
+  var uri = 'https://api.twitch.tv/kraken/';
+
+  if (local.Config.token) {
+    // Check token
+    $.getJSON(uri+'?oauth_token='+local.Config.token)
+    .done(function(e) {
+      if (!e.token.valid) {
+        // token is invalid, inform user
+        window.toShow = 777;
+      }
+    });
+
+    uri+= 'streams/followed?limit=100&offset=0&oauth_token='+local.Config.token;
+  } else
+    uri+= 'users/'+local.Config.User_Name+'/follows/channels?limit=100&offset=0';
 
   $.getJSON(uri)
   .fail(function(j) {
