@@ -4,16 +4,22 @@ var refresh = false,
 		t, g;
 texts = { d:new Date() };
 
+function offSet(t,w) {
+	function snum() {
+		var g = {
+			// [t]itle or [g]ame: { [W]idth, [F]ontSize }
+			'Grid' : {t:{w: .4535, f: 79}, g:{w: .4535, f: 79}},
+			'Full' : {t:{w: .4710, f: 85}, g:{w: .4710, f: 85}},
+			'Light': {t:{w: .7100, f: 87}, g:{w: .2840, f: 87}}
+		};
+		// returns: { w:int, f:int }
+		return g[local.Config.Format];
+	}
 
-function snum() {
-	var g = {
-		// [t]itle or [g]ame: { [W]idth, [F]ontSize }
-		'Grid' : {t:{w: 45.35, f: 79}, g:{w: 45.35, f: 79}},
-		'Full' : {t:{w: 47.10, f: 85}, g:{w: 47.10, f: 85}},
-		'Light': {t:{w: 71.00, f: 87}, g:{w: 28.40, f: 87}}
-	};
-	// returns: { w:int, f:int }
-	return g[local.Config.Format];
+	// [t]ext, [w]hat(game or title)
+	var f = snum()[w];
+	var d = $('#textWidth').css('fontSize', f.f+'%').html(t);
+	return (d.width()>(window.WIDTH*f.w));
 }
 
 function stream(ob) {
@@ -53,13 +59,6 @@ var online = [];
 window.insert = function(obj) {
 	// invalid input
 	if (!obj) return;
-
-	function offSet(t,w) {
-		// [t]ext, [w]hat(game or title)
-		var f = snum()[w];
-		var d = $('#textWidth').css({fontSize: f.f+'%', width: f.w+'%'}).html(t);
-		return (d.width()>(window.WIDTH*f.w));
-	}
 
 	function insert(a) {
 		/*
@@ -318,12 +317,25 @@ window.updateStatus = function() {
 	}
 };
 
+// Duration of stream
 setInterval(function() {
 	$.each(online, function(i,v) {
 		try {
 			var s = local.following.get(v);
 			if (!s) return;
+
 			var j = new stream(s);
+
+			var title = j.title.get();
+			if (typeof texts[title] === 'undefined')
+				texts[title] = offSet(title, 't');
+			j.title.el().attr('show', texts[title]);
+
+			var game = j.game.get();
+			if (typeof texts[game] === 'undefined')
+				texts[game] = offSet(game, 'g');
+			j.game.el().attr('show', texts[game]);
+
 			j.duration.set(time(s.Stream.Time));
 		} catch(e) { err(e); }
 	});

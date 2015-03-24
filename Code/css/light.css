@@ -95,6 +95,7 @@ button:focus {
 	display: inline-block;
 	position: absolute;
 	right: 1%;
+	margin-left: 39%;
 }
 .adds>.duration>a {
 	color: black;
