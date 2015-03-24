@@ -30,7 +30,16 @@ if (window.location.pathname === '/background.html') {
   var j = localStorage.App_Version,
       k = chrome.runtime.getManifest().version;
 
-  if (!j || localStorage.App_Version[0]==='{')
+  // Fallback for old versions
+  if (j[0] === '{') {
+    try {
+      var te = JSON.parse(j);
+      local.App_Version = te.Ver;
+      j = te.Ver;
+    } catch(e) {}
+  }
+
+  if (!j)
     localStorage.App_Version = k;
 
   if (k != j) {
