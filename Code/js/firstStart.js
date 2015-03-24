@@ -68,15 +68,22 @@ function lgin() {
 			if (_$('SetUpUserNameInp').value !== undefined
 			&& _$('SetUpUserNameInp').value != ' '
 			&& _$('SetUpUserNameInp').value != '') {
-				local.set('Config.User_Name', _$('SetUpUserNameInp').value);
-				local.set('Status.update',0);
-		    localStorage.FirstLaunch = false;
-				send('refresh');
-				$('#FollowedChannelsOnline').html("Please wait a moment");
-				$('button.dash').each(function(i,v) {v.disabled = false;});
-				_$('SetUpUserNameInp').onkeyup = function(){};
-				_$("SetUpUserName").onclick = function(){};
-				_$('insertContentHere').innerHTML = null;
+				// Check if user on Twitch
+				$.getJSON('https://api.twitch.tv/kraken/users/'+_$('SetUpUserNameInp').value+'/follows')
+				.done(function(e) {
+					local.set('Config.User_Name', _$('SetUpUserNameInp').value);
+					local.set('Status.update',0);
+			    localStorage.FirstLaunch = false;
+					send('refresh');
+					$('#FollowedChannelsOnline').html("Please wait a moment");
+					$('button.dash').each(function(i,v) {v.disabled = false;});
+					_$('SetUpUserNameInp').onkeyup = function(){};
+					_$("SetUpUserName").onclick = function(){};
+					_$('insertContentHere').innerHTML = null;
+				})
+				.error(function(e) {
+					$('#FollowedChannelsOnline').html('Could not find such name');
+				});
 			} else { $('#FollowedChannelsOnline').html('Invalid name!'); }
 		}
 		$('#FollowedChannelsOnline').html("Sign in by a Twicth Name");
