@@ -125,12 +125,18 @@ function Notify(d) {
 	}
 
 	if (local.Config.Notifications.status) {
+		// If system update
+		if (d.type === 'sys')
+			return sendNotify(d);
+
+		// If user in timoue
 		if (!timeOut.find(d.name))
 			return false;
 
 		var j = local.Config.Notifications;
 
-		if (!j[d.type] && d.type !== 'sys')
+		// If notification disabled
+		if (!j[d.type])
 			return false;
 
 		sendNotify(d);
