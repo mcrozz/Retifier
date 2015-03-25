@@ -143,7 +143,7 @@ function Notify(d) {
 				iconUrl        : "/img/notification_icon.png"
 			};
 
-		if (typeof d.button === 'boolean')
+		if (typeof d.button === 'boolean' && d.button)
 			config.buttons = [{ title:"Watch now!" }];
 		else if (typeof d.button === 'string')
 			config.buttons = [{ title:d.button }];

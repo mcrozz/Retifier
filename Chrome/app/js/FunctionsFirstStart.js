@@ -32,16 +32,18 @@
         k = chrome.runtime.getManifest().version;
 
     // Fallback for old versions
-    if (j[0] === '{') {
-      try {
+    try{
+      if (j[0] === '{') {
         var te = JSON.parse(j);
         localStorage.App_Version = te.Ver;
         j = te.Ver;
-      } catch(e) { err(e); }
-    }
+      }
+    } catch(e) {}
 
-    if (!j)
+    if (!j) {
       localStorage.App_Version = k;
+      j = k;
+    }
 
     if (k != j) {
       Notify({

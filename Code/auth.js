@@ -1,3 +1,4 @@
+window.parseMsg = function() {};
 function init() {
 	deb("Script loaded... "+document.readyState);
 	function show(f) {
