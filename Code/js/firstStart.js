@@ -1,8 +1,5 @@
 {{LICENSE_HEADER}}
 function reLogin() {
-	$('#options, #options_bg').fadeOut(500, function(){
-		$('#AppVersion').fadeIn(200)
-	});
 	local.set('Config.User_Name', 'Guest');
 	local.set('Config.token', '');
 	local.set('Status.update', 7);
@@ -69,9 +66,9 @@ function lgin() {
 			&& _$('SetUpUserNameInp').value != ' '
 			&& _$('SetUpUserNameInp').value != '') {
 				// Check if user on Twitch
-				$.getJSON('https://api.twitch.tv/kraken/users/'+_$('SetUpUserNameInp').value+'/follows')
+				$.getJSON('https://api.twitch.tv/kraken/users/'+_$('SetUpUserNameInp').value)
 				.done(function(e) {
-					local.set('Config.User_Name', _$('SetUpUserNameInp').value);
+					local.set('Config.User_Name', e.display_name);
 					local.set('Status.update',0);
 			    localStorage.FirstLaunch = false;
 					send('refresh');

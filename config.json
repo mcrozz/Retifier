@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 1405,
+        "Build": 1408,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -11,7 +11,7 @@
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.4.3"
+        "Ver": "1.4.5"
     },
     "Copy": [
         "DinDon.ogg",

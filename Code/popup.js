@@ -380,6 +380,9 @@ $(function() {
 	// Insert current status
 	updateStatus();
 	setTimeout(function() {
+		if (localStorage.FirstLaunch === 'true')
+			return;
+
 		// Get working code of background script
 		send({type: "getInf"}, function(e) {
 			if (!e) return;
@@ -450,7 +453,7 @@ $(function() {
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('#SoundCheck', function(){
 		_$('SoundSelect').disabled = !_$('SoundCheck').checked; });
-	ael('.NotificationsOpt', function() {
+	ael('button.NotificationsOpt', function() {
 		FollowedList(true);} );
 	ael('.refresh', function(){
 		send('refresh'); });
@@ -462,6 +465,10 @@ $(function() {
 			$('#size>div').show();
 			reloadStyle();
 		});
+	});
+	ael('p.Logout', function() {
+		Popup.close();
+		reLogin();
 	});
 	ael('.close>span', Popup.close);
 	ael('span.cls', Popup.close_);
