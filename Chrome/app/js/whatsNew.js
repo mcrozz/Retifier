@@ -3,12 +3,12 @@
 // What's new in update
 newUpdate = {
   msg: "New update!",
-  content: "<a>Hello</a>"
+  content: "<p>What's new in this update:</p><li>Changed layout, right now it's resizable</li><li>Changed style of options</li><li>Notifications won't 'attack' you on restart of your browser</li><li>Now you can disable/enable notifications for certain streamers</li><li>A lot of optimizations</li><p>Right now I'm pretty busy, so next update (1.5) will be done at summer</p>"
 };
 
 // Changelog
 changes = [
-  "-1.4.5 a lot of UI improvements, script optimizations",
+  "-1.4.5 a lot of UI improvements, script optimizations, added notifications settings for each streamer, resizable extension's window",
   "-1.4.2 hotfix, fixed auth by twitch's account, fixed game links",
   "-1.4.1 changed font to PermianSans Typeface, fixed ON/OFF statements, added notify on offline, optimized network code",
   "-1.4 Fresh look, fixed 'Following List' page, various improvements",
