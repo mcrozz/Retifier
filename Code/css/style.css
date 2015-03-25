@@ -202,11 +202,11 @@ div>.checkBox {
 	border-radius: 5px;
 	padding: 1%;
 	margin: 0;
+	cursor: pointer;
 }
 .Logout:hover {
 	background: rgb(115, 9, 9);
 	border-color: rgba(71, 71, 71, 0.96);
-	cursor: default;
 }
 header>.close {
 	width: 10%;
@@ -254,8 +254,7 @@ header>.close {
 	color: lightgrey;
 }
 
-.NotificationsOpt {
-	background: rgb(22, 25, 58);
+.goto>button {
 	width: 100%;
 	font-size: 100%;
 	color: white;
@@ -263,23 +262,18 @@ header>.close {
 	padding: 1.5% 2%;
 	cursor: pointer;
 }
-.NotificationsOpt:hover {
+.goto>button:hover {
 	background: rgb(43, 48, 98);
 	color: rgba(255, 255, 255, 0.72);
 }
-
-.ChangeSize {
-	background: rgb(35, 39, 84);
-	width: 100%;
-	font-size: 100%;
-	color: white;
-	text-align: left;
-	padding: 1.5% 2%;
-	cursor: pointer;
+.NotificationsOpt {
+	background: rgb(22, 25, 58);
 }
-.ChangeSize:hover {
-	background: rgb(49, 54, 103);
-	color: rgba(255, 255, 255, 0.93);
+.ChangeSize {
+	background: rgb(8, 13, 60);
+}
+button.OnlineStyle {
+	background: rgb(8, 13, 60);
 }
 
 #ChgUsrSnd {
@@ -289,11 +283,11 @@ header>.close {
 	border-radius: 0 0 12px 12px;
 	width: 100%;
 	height: 7%;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(116, 152, 247, 0.03)), to(rgba(65, 45, 190, 0.34)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(9, 30, 84, 0.49)), to(rgba(0, 0, 0, 0.44)));
 }
 #ChgUsrSnd:hover {
 	color: rgb(228, 228, 228);
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(211, 223, 255, 0.03)), to(rgba(47, 33, 136, 0.34)));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(27, 51, 113, 0.77)), to(rgba(7, 0, 50, 0.61)));
 }
 
 #popup {
@@ -461,19 +455,6 @@ span.ok {
 	left: 56%;
 }
 
-button.OnlineStyle {
-	background: rgb(40, 47, 118);
-	width: 100%;
-	font-size: 100%;
-	color: white;
-	text-align: left;
-	padding: 1.5% 2%;
-	cursor: pointer;
-}
-button.OnlineStyle:hover {
-	background: rgb(64, 69, 124);
-	color: rgb(176, 176, 176);
-}
 #view {
 	display: none;
 	position: relative;
@@ -844,9 +825,9 @@ button.dash:hover {
 	display: none;
 	position: absolute;
 	z-index: 99;
-	width: 310px;
-	font-size: 18px;
-	padding: 5 15 5 15;
+	width: 45%;
+	font-size: 85%;
+	padding: 1% 1%;
 	background: white;
 	text-align: center;
 	-webkit-animation: fadeIn 0.3s both;
