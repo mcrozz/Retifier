@@ -28,6 +28,10 @@ button {
 	cursor: default;
 }
 
+*::selection {
+	background: rgba(0,	0,	0,	0);
+}
+
 ::-webkit-scrollbar {
 	width: 13px;
 }
@@ -129,6 +133,17 @@ button {
 	display: block;
 }
 
+.inf>.game, .inf>.title{
+	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.inf>.game>a, .inf>.title>a {
+	white-space: inherit;
+  overflow: inherit;
+  text-overflow: inherit;
+}
+
 #nowONline {
 	display: block;
 	position: absolute;
@@ -159,6 +174,7 @@ div>.checkBox {
 	overflow: auto;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(15, 15, 15, 1)), to(rgba(68, 65, 65, 1)));
 	border: 1px solid rgb(82, 82, 82);
+	border-bottom: none;
 	border-radius: 14px;
   color: white;
   font-size: 90%;
@@ -474,6 +490,9 @@ span.ok {
 	display: inline-block;
 	border-radius: 40%;
 }
+#view>div>a {
+	color: white;
+}
 #view>span.selected {
 	border: 4px solid rgb(55, 52, 187);
 	margin: 0 -4px!important;
@@ -504,10 +523,6 @@ span:hover {
 	border-right: none;
 	font-size: 98%;
 	margin: 0;
-}
-
-*::selection {
-	background: rgba(0,	0,	0,	0);
 }
 
 .selected {
@@ -677,6 +692,7 @@ button.AppInfo:hover {
 	position: relative;
 	height: 90%;
 	padding: 1% 4% 0 4%;
+	color: white;
 }
 .AppVersionContent3 {
 	max-height: 100%;
@@ -701,6 +717,12 @@ button.AppInfo:hover {
 }
 .AppInfoAbout>a {
 	display: block;
+}
+.AppInfoAbout>a[href] {
+	color: rgb(128, 156, 199);
+}
+.AppInfoAbout>a[href]:hover {
+	color: rgb(93, 124, 171);
 }
 .AppInfoAbout>a:nth-child(1) {
 	margin-top: 2%;

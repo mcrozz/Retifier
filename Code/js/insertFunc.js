@@ -116,6 +116,11 @@ window.insert = function(obj) {
 			GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
 			GT1.style.backgroundSize = 'contain';
 			GT1.style.cursor = 'pointer';
+			if (np) {
+				GT1.onclick = function() {
+					window.open('http://www.twitch.tv/directory/game/'+a.gme);
+				};
+			}
 			tum.appendChild(GT1);
 
 			// In case game poster is not available

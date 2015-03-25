@@ -148,6 +148,7 @@ function time(t) {
   }
   var SubtractTimes, Days, Hours, Minutes, Seconds, Time
 
+  if (isNaN((new Date(t)).getTime())) throw new Error('NaN at function time');
   SubtractTimes = (((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
 
   Days = Math.floor(SubtractTimes/86400);
