@@ -523,7 +523,7 @@ $(function() {
 				return popupMsg.hide();
 		}
 		var j = p.target.attributes.getNamedItem('show');
-		if (j === null || typeof j === 'undefined')
+		if (!j)
 			return hide();
 		if (j.value == 'false')
 			return hide();
@@ -538,18 +538,14 @@ $(function() {
 		if (popupMsg.html() !== p.target.innerText)
 			popupMsg.html(p.target.innerText);
 
-		var left, top,
-			tarH = popupMsg.height();
-			width=Math.floor($(window).width()/2),
-			height=$(window).height();
+		var left, top, tarH = popupMsg.height();
 
-		left = popupMsg.pageX<width ? 0 : width;
-		top = (popupMsg.pageY+tarH)>height ? popupMsg.pageY-tarH-15 : popupMsg.pageY+5;
+		left = p.pageX<(WIDTH/2) ? 1.5 : 50;
+		tops = (p.pageY+tarH)>HEIGHT ? p.pageY-tarH-15 : p.pageY+5;
 
 		popupMsg.css({
-			left: left+'px',
-			top: top+'px',
-			width: width+'px'
+			top: tops+'px',
+			left: left+'%'
 		});
 	});
 	window.HEIGHT = $(window).height();
