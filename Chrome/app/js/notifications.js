@@ -9,13 +9,32 @@ function clear(i) {
 	});
 }
 chrome.notifications.onButtonClicked.addListener(function(id){
+	// If user clicked button 'Install' in notification
+	if (StrNames[id] === 'update')
+		return chrome.runtime.reload();
+
+	// Clicked 'Watch now'
 	window.open('http://www.twitch.tv/'+StrNames[id]);
 	clear(id);
-	return true; });
+	return true;
+});
 chrome.notifications.onClosed.addListener(function(id,u){
-	if(u) clear(id); });
+	if(u)
+		clear(id);
+});
 chrome.notifications.onClicked.addListener(function(id) {
-	clear(id); });
+	clear(id);
+});
+chrome.runtime.onUpdateAvailable.addListener(function(m) {
+	// Update available, informate user
+	Notify({
+		type: 'sys',
+		msg: 'Install update right now?',
+		title: 'New update available!',
+		button: 'Reload extension',
+		name: 'update'
+	});
+});
 
 var ncnt = 0;
 var StrNames = {};
@@ -69,14 +88,26 @@ var timeOut = {
 };
 timeOut.init();
 
+/*
+* Input: d {
+*  type: system, update, change etc
+*  name: name for storage
+*  msg
+*  title
+*  context
+*  button: Boolean or String
+* }
+*/
 function Notify(d) {
 	if (window.location.pathname !== '/background.html')
 		return false;
 
 	if (d.type === 'sys' || d.type === 'update')
-		d.name = 'd'+Math.floor(Math.random(100)*100);
+		if (!d.name) {
+			d.name = 'd'+Math.floor(Math.random(100)*100);
+		}
 
-	$.each(['type', 'name', 'msg', 'title', 'context', 'button'], function(i,v) {
+	$.each(['type', 'name', 'context', 'button'], function(i,v) {
 		d[v] = (typeof d[v] === 'undefined') ? '' : d[v];
 	});
 
@@ -111,8 +142,12 @@ function Notify(d) {
 				contextMessage : d.context,
 				iconUrl        : "/img/notification_icon.png"
 			};
-		if (d.button)
+
+		if (typeof d.button === 'boolean')
 			config.buttons = [{ title:"Watch now!" }];
+		else if (typeof d.button === 'string')
+			config.buttons = [{ title:d.button }];
+
 		chrome.notifications.create('n'+ncnt, config, function(){
 			StrNames['n'+ncnt] = d.name;
 			if (d.type != 'sys')
