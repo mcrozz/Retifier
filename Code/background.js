@@ -70,7 +70,7 @@ var CheckStatus = function() {
           Status = d.stream.channel.status,
           Name   = d.stream.channel.name,
           d_name = d.stream.channel.display_name,
-          Time   = d.stream.channel.updated_at;
+          Time   = d.stream.created_at;
 
         if (Status == null && FoLi.Stream.Title !== "")
           Status = FoLi.Stream.Title
@@ -84,12 +84,13 @@ var CheckStatus = function() {
 
         if (!FoLi.Stream && NowOnline.indexOf(Name) === -1) {
           if (FoLi.Notify)
+            var dd = (new Date()-new Date(Time)<60000)?' just went live!':' is live!';
             Notify({
-              name:Name,
-              title:Name+' just went live!',
-              msg:Status,
-              type:'online',
-              button:true
+              name: Name,
+              title: Name+dd,
+              msg: Status,
+              type: 'online',
+              button: true
             });
           local.set('Status.online', '+1');
           NowOnline.push(Name);
@@ -99,7 +100,7 @@ var CheckStatus = function() {
         if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
           Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
 
-        if (new Date(FoLi.Stream.Time) - new Date(Time))
+        if (new Date(FoLi.Stream.Time) - new Date(Time) > 0)
           Time = FoLi.Stream.Time;
 
         local.game(Game);
