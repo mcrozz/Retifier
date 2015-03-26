@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 926,
+        "Build": 1494,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -11,7 +11,7 @@
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.4.3"
+        "Ver": "1.4.5"
     },
     "Copy": [
         "DinDon.ogg",
@@ -28,19 +28,24 @@
         "img\\Check_Box.png",
         "img\\Check_Box_2.png",
         "img\\playing.png",
-        "img\\StillDownloading.gif",
-        "img\\Grid.png",
-        "img\\Full.png",
-        "img\\Mini.png",
+        "img\\Grid_View.png",
+        "img\\Full_View.png",
+        "img\\Light_View.png",
         "img\\TwitchLogo.png",
         "img\\zoom.png",
-        "img\\Buttons.png",
         "img\\refresh.png",
+        "img\\Setting.png",
+        "img\\ArrowLeft.png",
+        "img\\ArrowRight.png",
+        "img\\Close.png",
+        "img\\OK.png",
+        "img\\Following.png",
+        "img\\Home.png",
         "css\\full.css",
         "css\\grid.css",
-        "css\\mini.css",
+        "css\\light.css",
         "css\\style.css",
-        "js\\jquery-1.11.0.min.js",
+        "js\\jquery-2.1.3.min.js",
         "js\\insertFunc.js",
         "js\\firstStart.js",
         "js\\functions.js"
@@ -61,9 +66,13 @@
         "UpdateLocal": "false",
         "Ver": "0.9.1.1"
     },
+    "GlobalVar": {
+        "Parse": "parse-1.3.5.min.js",
+        "jQuery": "jquery-2.1.3.min.js"
+    },
     "Opera": {
         "Browser": "Opera",
-        "Build": 60,
+        "Build": 63,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -73,7 +82,7 @@
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.1.1"
+        "Ver": "1.1.5"
     },
     "Safari": {
         "Build": 0,
@@ -82,7 +91,6 @@
         "Ver": "0.9.0.0"
     },
     "Scripts": [
-        "./js/jquery-1.11.0.min.js",
         "./js/functions.js",
         "background.js",
         "./js/firstStart.js",
@@ -91,7 +99,6 @@
         "popup.js"
     ],
     "ScriptsBack": [
-        "./js/jquery-1.11.0.min.js",
         "./js/functions.js",
         "background.js"
     ],
@@ -110,7 +117,6 @@
         "PLATFORM": "var(Platform) in deb(css\\style.css)",
         "PLATFORM_": "var(Platform) in deb(js\\functions.js)",
         "SEND_MSG": "file(app\\js\\sendMsg.js) in deb(js\\functions.js)",
-        "UPDATE_LOCAL_VAR_CALL": "var(UpdCall) in deb(js\\functions.js)",
-        "UPDATE_LOCAL_VAR_FUNC": "file(app\\js\\UpdateLocalVar.js) in deb(js\\functions.js)"
+        "WHATSNEW": "file(app\\js\\whatsNew.js) in deb(js\\whatsNew.js)"
     }
 }

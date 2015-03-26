@@ -1,106 +1,187 @@
-<meta charset='utf-8'> 
+<meta charset='utf-8'>
 <link rel="stylesheet" href="./css/style.css" type="text/css" />
 <link rel="stylesheet" id="cust" href="./css/full.css" type="text/css" />
+<style type="text/css"></style>
 {{INSERT_SCRIPTS_HERE}}
 <body id="body">
 
-<div id="FollowedChannelsList" style="display:none">
-	<div class="close">
-		<a>Following list</a>
-		<button type="button" id="ClsFlwdChnlsLst" class="button">Close</button>
+<div id="popup">
+	<!-- Tinted background -->
+	<div class="background"></div>
+
+	<!-- Alert model -->
+	<div class="alert">
+		<header>
+			<p></p>
+		</header>
+
+		<div>
+			<div></div>
+		</div>
+
+		<footer class="footer">
+			<button name="k">Ok</button>
+			<button name="c">Cancel</button>
+		</footer>
 	</div>
-	<div id="FollowingList"></div>
+
+	<!-- Zoomed preview -->
+	<div id="zoomIMG"></div>
+
+	<!-- Change size page -->
+	<div id="size">
+	 	<div>
+	 		<a>While you're changing size, height of the window will
+				 NOT change, but after pressing 'OK' it will be normalized</a>
+			<a>Buttons may be visually broken, but they are working!</a>
+	 	</div>
+		<span class="cls"></span>
+	 	<span class="plus"></span>
+	 	<span class="minus"></span>
+	 	<span class="ok"></span>
+	</div>
+
+	<!-- Change view style -->
+	<div id="view">
+		<div>
+			<a>Choose style</a>
+		</div>
+		<span class="cls"></span>
+		<span class="Full"></span>
+		<span class="Grid"></span>
+		<span class="Light"></span>
+		<span class="ok"></span>
+	</div>
+
+	<!-- Options section -->
+	<div class="options">
+		<!-- Header -->
+		<header>
+			<div>
+				<a>Options</a>
+			</div>
+
+			<div id="user">
+				<a>User: </a><a></a>
+				<p class="Logout">logout</p>
+			</div>
+
+			<div class="close">
+				<span>x</span>
+			</div>
+		</header>
+
+		<!-- First row -->
+		<div class="r1">
+			<!-- Check interval -->
+			<div class="check">
+				<a>Check every</a>
+				<input type="text" id="ChgUsrInt">
+				<a>.min</a>
+			</div>
+			<!-- Change size -->
+			<div class="goto">
+				<button type="button" class="ChangeSize">
+					Change size of extension
+				</button>
+			</div>
+			<!-- Get notifications from -->
+			<div class="goto">
+				<button type="button" class="NotificationsOpt">
+					Get notificaitons from...
+				</button>
+			</div>
+			<!-- Choose style of online list -->
+			<div class="goto">
+				<button type="button" class="OnlineStyle">
+					Choose style of online list
+				</button>
+			</div>
+			<!-- Show duration -->
+			<div class="toggle">
+				<a>Show Stream Duration</a>
+				<input type="checkbox" class="Check_Box StreamDurationCheck">
+			</div>
+		</div>
+
+		<!-- Second row -->
+		<div class="r2">
+			<!-- Notifications settings -->
+			<div class="toggle">
+				<a>Enable notifications</a>
+				<input type="checkbox" class="Check_Box EnNotify">
+			</div>
+			<div>
+				<a>Receive notification when,</a>
+			</div>
+			<li>
+				<a>Channel Starts Streaming</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamer">
+			</li>
+			<li>
+				<a>Channel Stops Streaming</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamer2">
+			</li>
+			<li>
+				<a>Channel Changes Title</a>
+				<input type="checkbox" class="Check_Box_2 NotifyStreamerChanged">
+			</li>
+			<li>
+				<a>Script notifications</a>
+				<input type="checkbox" class="Check_Box_2 NotifyUpdate">
+			</li>
+			<!-- Play sound with notification -->
+			<div class="toggle">
+				<a>Play Sound With Notification</a>
+				<input type="checkbox" class="Check_Box SoundCheck">
+			</div>
+		</div>
+
+		<footer>
+			<button type="button" id="ChgUsrSnd">Save / Close</button>
+		</footer>
+	</div>
+
+	<!-- Extensions'c changelog and about -->
+	<div id="AppChanges" style="display:none">
+		<div class="AppInfoNav">
+			<button type="button" class="AppInfo Changes">Changes</button>
+			<button type="button" class="AppInfo About">About</button>
+			<button type="button" class="AppInfo Close">Close</button>
+		</div>
+		<div class="AppVersionContent2">
+			<div class="AppVersionContent3">
+				<div id="AppVersionContent"></div>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <div id="firstScane" style="display:block;overflow:hidden">
 	<div id="message"></div>
 	<div id="textWidth"></div>
-	
-	<div id="zoomContent">
-		<div id="zoomIMG"></div>
-	</div>
-
-	<div id="FoundAbugText" style="display:none">
-		<a href="https://github.com/mcrozz/Twitch.tv_Notifier/issues" target="_blank">Open new issue on GitHub</a>
-	</div>
-	<button type="button" id="fndAbug" name="Found a bug?" style="display:none">Found a bug?</button>
-
-	<div id="options_bg"></div>
-	<div id="options">
-		<div class="popHead">Options</div>
-		
-		<div id="UserName">Welcome,<a></a><p class="Logout">Logout</p></div>
-		
-		<div id="CheckInterval">Check every <input type="text" id="ChgUsrInt"> min.</div>
-
-		<div id="Notify">Enable notifications <input type="checkbox" class="Check_Box EnNotify">
-		
-			<div>Channel Starts Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer"></div>
-
-			<div>Channel Stops Streaming <input type="checkbox" class="Check_Box_2 NotifyStreamer2"></div>
-			
-			<div>Channel Changes Title <input type="checkbox" class="Check_Box_2 NotifyStreamerChanged"></div>
-			
-			<div>When Updating List <input type="checkbox" class="Check_Box_2 NotifyUpdate"></div>
-			
-			<div>Play Sounds With Notifications <input type="checkbox" class="Check_Box SoundCheck"></div>
-
-		</div>
-		
-		<div id="DurationOfStream">Show Stream Duration <input type="checkbox" class="Check_Box StreamDurationCheck"></div>
-		
-		<div class="List_Format">
-			Choose style of online list
-			<div class="style Full"></div>
-			<div class="style Light"></div>
-			<div class="style Grid"></div>
-		</div>
-		
-		<button type="button" id="ChgUsrSnd">Save / Close</button>
-	</div>
 
 	<div id="header">
-	    <div id="controls">
-	        <div class="DashboardButton">
-	            <button type="button" id="Dashboard" class="dash">Dashboard</button>
-	        </div>
-	        <div class="ProbablyNothing">
-	            <button type="button" id="Direct" class="dash">Directory</button>
-	        </div>
-
-	        <div>
-	            <a class="TwitchLogo" href="http://www.twitch.tv/" target="_blank">Twitch.TV site</a>
-	        </div>
-
-	        <span id="refresh"></span>
-
-	        <div class="LoginORoutButton">
-	            <button type="button" id="ChgUsr" class="dash">Options</button>
-	        </div>
-	        <div class="ListOfFollowed">
-	            <button type="button" id="LstFlwdChnls" class="dash">Following List</button>
-	        </div>
-	    </div>
+    	<div class="dashL">
+			<button type="button" class="dash directory"></button>
+			<button type="button" class="dash following"></button>
+		</div>
 
 		<div id="nowONline"><p id="FollowedChannelsOnline"></p></div>
 
+		<div class="dashL">
+			<button type="button" class="dash refresh"></button>
+      <button type="button" class="dash settings"></button>
+		</div>
 	</div>
 
-	<div id="News"></div>
-	<div id="WhatsNew"></div>
 	<progress style="display:none" id="CheckingProgress" max="100" value="0"></progress>
 
-	<div id="content3"><div id="insertContentHere"></div></div>
-
-	<div id="AppInfoBack"></div>
-	<div id="AppVersion"></div>
-	<div id="AppChanges" style="display:none">
-		<div class="AppInfoNav">
-			<button type="button" id="AppFirst" class="AppInfo">Changes</button>
-			<button type="button" id="AppThird" class="AppInfo">About</button>
-			<button type="button" id="AppInfoClose" class="AppInfo">Close</button>
-		</div>
-		<div class="AppVersionContent2"><div class="AppVersionContent3"><div id="AppVersionContent"></div></div></div>
+	<div id="content3">
+		<div id="insertContentHere"></div>
 	</div>
+
+	<div id="AppVersion"></div>
 </div>
 </body>

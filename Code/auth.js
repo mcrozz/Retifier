@@ -1,16 +1,19 @@
+window.parseMsg = function() {};
 function init() {
 	deb("Script loaded... "+document.readyState);
 	function show(f) {
 		if (f.type == 'error') {
 			// Something happen
 			// err({message: f.msg, stack: f.e});
-		
+
 			var r = $('p>code');
-		
+
 			r[0].innerText = f.msg;
-			if (!f.expl) delete r[1]
-			else r[1].innerText = f.expl;
-		
+			if (!f.expl) {
+				delete r[1]; }
+			else
+				r[1].innerText = f.expl;
+
 			$('.pending').hide();
 			$('.failed').show();
 		} else {
@@ -35,18 +38,18 @@ function init() {
 	}
 	var tkn = loc.hash.split('&')[0].split('=')[1];
 
-	localJSON('Config.token', tkn);
+	local.set('Config.token', tkn);
 	$.ajax({
-		url:'https://api.twitch.tv/kraken/user?oauth_token='+tkn,
+		url:'https://api.twitch.tv/kraken/?oauth_token='+tkn,
 		dataType:'JSONP',
 		complete: function(e){
 			log('Got user');
-			if (e.responseJSON.name !== undefined) {
-				localJSON('Config.User_Name', e.responseJSON.name);
+			if (e.responseJSON.token.user_name !== undefined && e.responseJSON.token.valid) {
+				local.set('Config.User_Name', e.responseJSON.token.user_name);
 				localStorage.FirstLaunch = false;
-				localJSON('Status.StopInterval', true);
+				local.set('Status.StopInterval', true);
 				show({type: 'ok'});
-				send('refresh');
+				send({type: 'reload'});
 			} else {
 				show({type: 'error', msg:'Cannot get user name from response',stack:e});
 			}
@@ -58,4 +61,4 @@ function init() {
 	$('button').on('click', function(){window.close();});
 }
 deb("Initializing...");
-$(window).load(function(){setTimeout(init, 250)});
+$(window).load(function(){setTimeout(init, 250);});

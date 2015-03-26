@@ -1,9 +1,15 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.2**
-- [_Opera_](#opera) - **1.1.1**
+- [_Google Chrome_](#google-chrome) - **1.4.5**
+- [_Opera_](#opera) - **1.1.5**
 
 # _Google Chrome_
+* **1.4.5**
+	* Changed layout, right now it's resizable
+	* Changed style of options
+	* Notifications won't 'attack' you on restart of your browser
+	* Now you can disable/enable notifications for certain streamers
+	* A lot of optimizations
 * **1.4.2**
 	* hotfix
 	* fixed auth by twitch's account
@@ -23,7 +29,7 @@ Current versions:
 	* fixed Donation tab
 	* various improvements
 * **1.3.9.2**
-	* added authification by [TwitchTV](https://www.twitch.tv) account
+	* added authentication by [TwitchTV](https://www.twitch.tv) account
 	* fixed sound on notifications
 * **1.3.9.1**
 	* bug fix
@@ -106,6 +112,12 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1.5**
+	* Changed layout, right now it's resizable
+	* Changed style of options
+	* Notifications won't 'attack' you on restart of your browser
+	* Now you can disable/enable notifications for certain streamers
+	* A lot of optimizations
 * **1.1.1**
 	* hotfix
 	* fixed auth by twitch's account

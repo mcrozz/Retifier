@@ -9,21 +9,25 @@
 
 # Installation
 * Clone https://github.com/mcrozz/Twitch.tv_Notifier
-* Start build.py or build.bat
+* Start build.py
 * Choose platform
 * Enable developer mode in browser
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.2**
-	* hotfix
-	* fixed auth by twitch's account
-	* fixed game links
+_Google Chrome_ - **1.4.5**
+>* Changed layout, right now it's resizable
+>* Changed style of options
+>* Notifications won't 'attack' you on restart of your browser
+>* Now you can disable/enable notifications for certain streamers
+>* A lot of optimizations
 
-_Opera_ - **1.1.1**
-	* hotfix
-	* fixed auth by twitch's account
-	* fixed game links
+_Opera_ - **1.1.5**
+>* Changed layout, right now it's resizable
+>* Changed style of options
+>* Notifications won't 'attack' you on restart of your browser
+>* Now you can disable/enable notifications for certain streamers
+>* A lot of optimizations
 
 [Show full changelog](CHANGELOG.md)
 
