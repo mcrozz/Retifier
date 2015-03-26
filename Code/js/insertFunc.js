@@ -196,8 +196,6 @@ window.insert = function(obj) {
 		$('#insertContentHere').append(holder);
 	}
 
-	$('#insertContentHere').css('overflow', (local.Status.online <= 2)?'hidden':'auto');
-
 	var StreamTitle   = obj.Stream.Title,
 			StreamerName  = obj.Name,
 			ShortStrmName = obj.d_name,
@@ -212,13 +210,15 @@ window.insert = function(obj) {
 
 	var str = new stream(obj);
 
-	if (typeof texts[StreamTitle] === 'undefined')
-		texts[StreamTitle] = offSet(StreamTitle, 't');
-	TitleWidth = texts[StreamTitle]
+	if (obj.Stream) {
+		if (typeof texts[StreamTitle] === 'undefined')
+			texts[StreamTitle] = offSet(StreamTitle, 't');
+		TitleWidth = texts[StreamTitle]
 
-	if (typeof texts[StreamGame] === 'undefined')
-		texts[StreamGame] = offSet(StreamGame, 'g');
-	GameWidth = texts[StreamGame]
+		if (typeof texts[StreamGame] === 'undefined')
+			texts[StreamGame] = offSet(StreamGame, 'g');
+		GameWidth = texts[StreamGame]
+	}
 
 	if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
 		$('#insertContentHere').html('');
@@ -325,6 +325,8 @@ window.updateStatus = function() {
 // Duration of stream
 setInterval(function() {
 	$.each(online, function(i,v) {
+		if ($('#'+v).length === 0)
+			return online = online.filter(function(e) { return e!=v; });
 		try {
 			var s = local.following.get(v);
 			if (!s) return;

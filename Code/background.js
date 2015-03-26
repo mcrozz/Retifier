@@ -329,12 +329,15 @@ var bck = {
         };
         local.following.set(Name, s);
         send({type:'following', data:s});
-      } else if (FoLi.Stream && !token) {
-        // Channel went offline
-        var FoLi = local.following.get[d._links.self.split('/').pop(-1)];
+      } else if (!token) {
+        var FoLi = local.following.get(d._links.self.split('/').pop(1));
         if (!FoLi)
           return err('Could not find streamer in base, '+d.stream.channel.name);
 
+        if (!FoLi.Stream)
+          return;
+
+        // Channel went offline
         if (FoLi.Notify)
           notify.send({
             title: FoLi.Name+" went offline",
