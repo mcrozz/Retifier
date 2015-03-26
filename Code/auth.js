@@ -49,7 +49,7 @@ function init() {
 				localStorage.FirstLaunch = false;
 				local.set('Status.StopInterval', true);
 				show({type: 'ok'});
-				send('refresh');
+				send({type: 'reload'});
 			} else {
 				show({type: 'error', msg:'Cannot get user name from response',stack:e});
 			}

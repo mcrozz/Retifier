@@ -52,6 +52,15 @@ var bck = {
       return (this.data.indexOf(n))!==-1;
     }
   },
+  promise: {
+    inWork: false, // is getList or getOnline in work?
+    after: null, // call it after ending
+    done: function() {
+      bck.promise.inWork = false;
+      if (typeof bck.promise.after === 'function')
+        return bck.promise.after();
+    }
+  },
   check: function() {
     if (!localStorage.Following)
       localStorage.Following = 0;
@@ -71,6 +80,16 @@ var bck = {
   },
   getList: function() {
     // Getting following list of user
+
+    // Check if another script in work
+    if (!bck.promise.inWork) {
+      bck.promise.inWork = true;
+      bck.promise.after = null;
+    } else {
+      bck.promise.after = bck.getList;
+      return;
+    }
+
     if (!bck.check())
       return;
     local.set('Status.update', 1);
@@ -88,7 +107,7 @@ var bck = {
       if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
         local.set('Following', 0);
       else if (local.Following === j._total)
-        return;
+        return bck.promise.done();
 
       log('Updating list of following channels');
 
@@ -104,6 +123,7 @@ var bck = {
         });
         local.set('Following', j._total);
         local.following.hash();
+        bck.promise.done();
         bck.getOnline();
       } else {
         local.set('Following', j._total);
@@ -118,13 +138,23 @@ var bck = {
         });
         local.set('Status.online', 0);
         local.following.hash();
+        bck.promise.done();
         bck.getOnline();
       }
     });
-    if (local.Status.update !== 5)
-      local.set('Status.update', 0);
   },
   getOnline: function() {
+    // Get online list
+
+    // Check if another script in work
+    if (!bck.promise.inWork) {
+      bck.promise.inWork = true;
+      bck.promise.after = null;
+    } else {
+      bck.promise.after = bck.getOnline;
+      return;
+    }
+
     if (!bck.check())
       return;
     local.set('Status.update', 1);
@@ -230,6 +260,8 @@ var bck = {
         log('Every channel checked');
         if (local.Status.update !== 5)
           local.set('Status.update', 0);
+
+        return bck.promise.done();
       })():function(){});
     });
 
