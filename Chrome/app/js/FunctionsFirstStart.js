@@ -15,6 +15,9 @@
       localStorage.FollowingList='{}';
     if (!localStorage.Games)
       localStorage.Games = '{}';
+    if (!localStorage.Following)
+      localStorage.Following = 0;
+
 
     local.init();
 

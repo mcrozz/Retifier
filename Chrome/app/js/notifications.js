@@ -180,7 +180,7 @@ var notify = {
 
 				sendNotify(d);
 			}
-		}, Math.floor(Math.random()*10000));
+		}, Math.floor(Math.random()*1000));
 	},
 	list: [/* notify queue goes here */],
 	last: function() {

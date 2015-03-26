@@ -95,7 +95,7 @@ var bck = {
       if (local.Following == 0) {
         // If new user
         $.each(j.follows, function(i,v) {
-          local.following.set(v.channel.name, {
+          local.following.set(i, {
             Name: v.channel.name,
             Stream: false,
             Notify: true,
@@ -103,22 +103,21 @@ var bck = {
           });
         });
         local.set('Following', j._total);
+        local.following.hash();
         bck.getOnline();
       } else {
-        // TODO
         local.set('Following', j._total);
-        var NewJson = [];
         $.each(local.FollowingList, function(i,v) {
           var del = true;
           $.each(j.follows, function(j,k) {
             if (k.channel.name === v.Name)
               del = false;
           });
-          if (!del)
-            NewJson[i] = v;
+          if (del)
+            local.following.del(v.Name);
         });
-        local.set('FollowingList', NewJson);
         local.set('Status.online', 0);
+        local.following.hash();
         bck.getOnline();
       }
     });
@@ -249,14 +248,14 @@ var bck = {
           d_name = d.stream.channel.display_name,
           Time   = d.stream.created_at;
 
-        if (Status == null && FoLi.Stream.Title !== "")
+        if (!Status && FoLi.Stream.Title)
           Status = FoLi.Stream.Title
-        else if (Status == null && FoLi.Stream.Title === "")
+        else if (!Status && !FoLi.Stream.Title)
           Status = 'Untitled stream';
 
-        if (Game == null && FoLi.Stream.Game !== "")
+        if (!Game && FoLi.Stream.Game)
           Game = FoLi.Stream.Game
-        else if (Game == null && FoLi.Stream.Game === "")
+        else if (!Game && !FoLi.Stream.Game)
           Game = 'Not playing';
 
         if (!FoLi.Stream && !bck.online.is(Name)) {
@@ -273,8 +272,13 @@ var bck = {
           bck.online.add(Name);
         }
 
-        if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
-          notify.send({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+        if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
+          notify.send({
+            name: Name,
+            title: d_name+' changed stream title on',
+            msg: Status,
+            type: 'follow'
+          });
 
         if (new Date(FoLi.Stream.Time) - new Date(Time) > 0)
           Time = FoLi.Stream.Time;
