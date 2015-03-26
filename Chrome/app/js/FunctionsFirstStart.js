@@ -46,7 +46,7 @@
     }
 
     if (k != j) {
-      Notify({
+      notify.send({
         title:"Extension has been updated",
         msg:"From "+j+" to "+k,
         type:"sys"});

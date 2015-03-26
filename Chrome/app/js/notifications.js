@@ -98,82 +98,94 @@ timeOut.init();
 *  button: Boolean or String
 * }
 */
-function Notify(d) {
-	if (window.location.pathname !== '/background.html')
-		return false;
+var notify = {
+	send: function(d) {
+		this.list.push(d);
+		setTimeout(function() {
+			var d = notify.last();
+			if (window.location.pathname !== '/background.html')
+				return false;
 
-	if (d.type === 'sys' || d.type === 'update')
-		if (!d.name) {
-			d.name = 'd'+Math.floor(Math.random(100)*100);
-		}
+			if (d.type === 'sys' || d.type === 'update')
+				if (!d.name) {
+					d.name = 'd'+Math.floor(Math.random(100)*100);
+				}
 
-	$.each(['type', 'name', 'context', 'button'], function(i,v) {
-		d[v] = (typeof d[v] === 'undefined') ? '' : d[v];
-	});
+			$.each(['type', 'name', 'context', 'button'], function(i,v) {
+				d[v] = (typeof d[v] === 'undefined') ? '' : d[v];
+			});
 
-	if (!d.msg || !d.title)
-		return Error("Invalid input");
+			if (!d.msg || !d.title)
+				return Error("Invalid input");
 
-	deb(d);
-	function delNotify(i,t) {
-		var idToDel = i, times = 60000;
-		switch (t) {
-			case 'online':
-				times *= 30; break;
-			case 'offline':
-				times *= 30; break;
-			case 'changed':
-				times *= 10; break;
-			case 'follow':
-				times *= 3; break;
-			default:
-				times *= 5; break;
-		}
-		setTimeout(function(){
-			chrome.notifications.clear(idToDel, function(){});}, times);
+			deb(d);
+			function delNotify(i,t) {
+				var idToDel = i, times = 60000;
+				switch (t) {
+					case 'online':
+						times *= 30; break;
+					case 'offline':
+						times *= 30; break;
+					case 'changed':
+						times *= 10; break;
+					case 'follow':
+						times *= 3; break;
+					default:
+						times *= 5; break;
+				}
+				setTimeout(function(){
+					chrome.notifications.clear(idToDel, function(){});}, times);
+			}
+
+			function sendNotify(d) {
+				var k = d.name,
+					config = {
+						type           : "basic",
+						title          : d.title,
+						message        : d.msg,
+						contextMessage : d.context,
+						iconUrl        : "/img/notification_icon.png"
+					};
+
+				if (typeof d.button === 'boolean' && d.button)
+					config.buttons = [{ title:"Watch now!" }];
+				else if (typeof d.button === 'string')
+					config.buttons = [{ title:d.button }];
+
+				chrome.notifications.create('n'+ncnt, config, function(){
+					StrNames['n'+ncnt] = d.name;
+					if (d.type != 'sys')
+						timeOut.set(d.name);
+					delNotify('n'+ncnt, d.type);
+					ncnt++;
+					if (local.Config.Notifications.sound_status)
+						new Audio('DinDon.ogg').play();
+				});
+			}
+
+			if (local.Config.Notifications.status) {
+				// If system update
+				if (d.type === 'sys')
+					return sendNotify(d);
+
+				// If user in timoue
+				if (!timeOut.find(d.name))
+					return false;
+
+				var j = local.Config.Notifications;
+
+				// If notification disabled
+				if (!j[d.type])
+					return false;
+
+				sendNotify(d);
+			}
+		}, Math.floor(Math.random()*10000));
+	},
+	list: [/* notify queue goes here */],
+	last: function() {
+		var t = this.list[0];
+		this.list.shift();
+		return t;
 	}
-
-	function sendNotify(d) {
-		var k = d.name,
-			config = {
-				type           : "basic",
-				title          : d.title,
-				message        : d.msg,
-				contextMessage : d.context,
-				iconUrl        : "/img/notification_icon.png"
-			};
-
-		if (typeof d.button === 'boolean' && d.button)
-			config.buttons = [{ title:"Watch now!" }];
-		else if (typeof d.button === 'string')
-			config.buttons = [{ title:d.button }];
-
-		chrome.notifications.create('n'+ncnt, config, function(){
-			StrNames['n'+ncnt] = d.name;
-			if (d.type != 'sys')
-				timeOut.set(d.name);
-			delNotify('n'+ncnt, d.type);
-			ncnt++;
-			if (local.Config.Notifications.sound_status)
-				new Audio('DinDon.ogg').play();
-		});
-	}
-
-	if (local.Config.Notifications.status) {
-		// If system update
-		if (d.type === 'sys')
-			return sendNotify(d);
-
-		// If user in timoue
-		if (!timeOut.find(d.name))
-			return false;
-
-		var j = local.Config.Notifications;
-
-		// If notification disabled
-		if (!j[d.type])
-			return false;
-
-		sendNotify(d);
-	}
-}
+};

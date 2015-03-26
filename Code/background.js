@@ -75,14 +75,14 @@ var bck = {
       return;
     local.set('Status.update', 1);
     log("Checking following list");
-    Notify({title:'Status', msg:'Checking following list...', type:'update'});
+    notify.send({title:'Status', msg:'Checking following list...', type:'update'});
     local.set('Status.update', 2);
 
     $.getJSON('https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=100&offset=0')
     .fail(function(j) {
       err({message:"Can't get following list",stack:j});
       local.set('Status.update', 5);
-      Notify({title:"Error happen", msg:"Cannot update following list", type:"update"});
+      notify.send({title:"Error happen", msg:"Cannot update following list", type:"update"});
     })
     .done(function(j) {
       if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
@@ -130,7 +130,7 @@ var bck = {
       return;
     local.set('Status.update', 1);
     log("Checking status of streamers");
-    Notify({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
+    notify.send({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
     local.set('Status.update', 4);
     local.set('Status.checked', 0);
 
@@ -192,7 +192,7 @@ var bck = {
               var str = local.following.get(v);
 
               if (str.Notify)
-                Notify({
+                notify.send({
                   title: v+" went offline",
                   msg: "Been online for "+time(str.Stream.Time),
                   type: "offline"
@@ -220,11 +220,11 @@ var bck = {
           if (local.Config.Notifications.update) {
             switch (local.Status.online) {
               case 0:
-                Notify({title:'Update finished!', msg:'No one online right now :(', type:'update'}); break;
+                notify.send({title:'Update finished!', msg:'No one online right now :(', type:'update'}); break;
               case 1:
-                Notify({title:'Update finished!', msg:'Now online one channel', type:'update'}); break;
+                notify.send({title:'Update finished!', msg:'Now online one channel', type:'update'}); break;
               default:
-                Notify({title:'Update finished!', msg:'Now online '+local.Status.online+' channels', type:'update'}); break;
+                notify.send({title:'Update finished!', msg:'Now online '+local.Status.online+' channels', type:'update'}); break;
             }
           }
         }
@@ -262,7 +262,7 @@ var bck = {
         if (!FoLi.Stream && !bck.online.is(Name)) {
           if (FoLi.Notify) {
             var dd = (new Date()-new Date(Time)<60000)?' just went live!':' is live!';
-            Notify({
+            notify.send({
               name: Name,
               title: Name+dd,
               msg: Status,
@@ -274,7 +274,7 @@ var bck = {
         }
 
         if (FoLi.Stream.Title !== Status && FoLi.Stream.Title !== undefined)
-          Notify({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
+          notify.send({name:Name, title:d_name+' changed stream title on', msg:Status, type:'follow'});
 
         if (new Date(FoLi.Stream.Time) - new Date(Time) > 0)
           Time = FoLi.Stream.Time;
@@ -300,7 +300,7 @@ var bck = {
           return err('Could not find streamer in base, '+d.stream.channel.name);
 
         if (FoLi.Notify)
-          Notify({
+          notify.send({
             title: FoLi.Name+" went offline",
             msg: "Been online for "+time(FoLi.Stream.Time),
             type: "offline"
