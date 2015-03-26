@@ -24,6 +24,7 @@ function anim(id, n, f) {
 }
 
 window.local = {
+  tried: 0,
   init: function(w) {
     if (typeof w !== 'undefined') {
       if (typeof this[w] !== 'undefined' && w !== -1) {
@@ -33,14 +34,20 @@ window.local = {
         return true;
       }
     }
+    this.tried++;
     try {
       this.Config = JSON.parse(localStorage.Config);
       this.Status = JSON.parse(localStorage.Status);
       this.FollowingList = JSON.parse(localStorage.FollowingList);
       this.Following = JSON.parse(localStorage.Following);
       this.Games = JSON.parse(localStorage.Games);
-      setTimeout(local.following.hash, 0);
-    } catch(e) { err(e); return false; }
+      this.following.hash();
+      this.tried = 0;
+    } catch(e) {
+      err(e);
+      if (tried < 25)
+        local.init();
+    }
     return true;
   },
   set: function(pth, val) {
@@ -81,7 +88,10 @@ window.local = {
   following: {
     get: function(n) {
       // Returns streamer obj
-      return local.FollowingList[local.following.map[n]];
+      if (isNaN(n))
+        return local.FollowingList[local.following.map[n]];
+      else
+        return local.FollowingList[n];
     },
     set: function(id, dt) {
       try {
@@ -103,9 +113,21 @@ window.local = {
         return true;
       } catch (e) { return err(e); }
     },
+    del: function(name) {
+      var newObj = {};
+      $.each(local.FollowingList, function(i,v) {
+        if (v.Name !== name)
+          newObj[i] = v;
+      });
+      try {
+        localStorage.FollowingList = JSON.parse(newObj);
+        local.init('FollowingList');
+      } catch(e) {}
+    },
     map: { /* String : Int ..*/ },
     hash: function() {
       // Hash names and theirs id
+      local.following.map = {};
       $.each(local.FollowingList, function(i,v) {
         local.following.map[v.Name] = i;
       });
