@@ -1,9 +1,11 @@
-chrome.runtime.onMessage.addListener(function(msg) {
-	if (msg.type == "update")
-		loc();
-	else
-		window.parseMsg(msg);
-		// Background and popup pages will have different parseMsg
-		// BUG: function reference is working, but chromium thinks
-		// that is not...
+/*
+* msg : object {
+*  type : String [ update,  ],
+*  data : String or object
+* }
+*/
+chrome.runtime.onMessage.addListener(function(msg, s, resp) {
+	if (msg === 'refresh')
+		msg = {type: msg};
+	window.parseMsg(msg, resp);
 });
