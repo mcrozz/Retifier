@@ -56,7 +56,6 @@ function lgin() {
 	TwAcc.onclick = AuthByAcc;
 	var a3 = cr('a');
 	a3.innerHTML = 'Using TwitchTV account';
-	a3.onclick = AuthByAcc;
 	TwAcc.appendChild(a3);
 
 	// AUTH BY TWICH NAME
