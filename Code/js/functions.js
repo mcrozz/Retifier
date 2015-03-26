@@ -85,6 +85,9 @@ window.local = {
     },
     set: function(id, dt) {
       try {
+        if (isNaN(id))
+          id = local.following.map[id];
+
         var tm = local.FollowingList[id];
         if (typeof tm !== 'undefined')
           $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {

@@ -8,8 +8,9 @@ if (!window.toShow)
 
 window.parseMsg = function(msg, resp) {
 	switch(msg.type) {
-		case "refresh": initTwitch(); break;
+		case "refresh": bck.init(); break;
 		case "update": local.init(msg.data); break;
 		case "getInf": resp({type:"inf", data:toShow}); toShow=-1; break;
+		case "reload": chrome.runtime.reload(); break;
 	}
 };
