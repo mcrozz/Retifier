@@ -58,14 +58,15 @@ var bck = {
     done: function() {
       // Script done
       bck.promise.inWork = false;
-      if (typeof bck.promise.after === 'function')
-        return bck.promise.after();
+      var t = bck.promise.after;
+      bck.promise.after = null;
+      if (typeof t === 'function')
+        return t();
     },
     check: function(callback) {
       // Check if another script in work
       if (!bck.promise.inWork) {
         bck.promise.inWork = true;
-        bck.promise.after = null;
         return false;
       } else {
         bck.promise.after = callback;
@@ -108,6 +109,7 @@ var bck = {
       err({message:"Can't get following list",stack:j});
       local.set('Status.update', 5);
       notify.send({title:"Error happen", msg:"Cannot update following list", type:"update"});
+      return bck.promise.done();
     })
     .done(function(j) {
       if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
@@ -171,7 +173,8 @@ var bck = {
         }
       })
       .error(function(e) {
-        throw new Error(e);
+        err(e);
+        return bck.promise.done();
       });
 
       if (toShow === 777)
@@ -224,10 +227,11 @@ var bck = {
       $.getJSON('https://api.twitch.tv/kraken/streams/'+v)
       .fail(function(d) {
         err({message:'checkStatus() ended with error', stack:d});
+        return bck.promise.done();
       })
       .done(chk)
       // looks odd, but it works :)
-      .always((i == list.length-1)?(function(){
+      .always(function() {
         // must be checked everything
         if (token) {
           // 'list' is already is online list
@@ -251,16 +255,21 @@ var bck = {
           local.set('Status.online', list.length);
           BadgeOnlineCount(list.length);
         } else {
-          var onl = 0;
-          $.each(local.FollowingList, function(i,v) {
-            if (v.Stream)
-              onl++;
-          });
+          local.set('Status.online', bck.online.get().length);
+
+          var onl = bck.online.get().length;
+
+          if (onl <= 0) {
+            onl = 0;
+            $.each(local.FollowingList, function(i,v) {
+              if (v.Stream)
+                onl++;
+            });
+          }
+
           local.set('Status.online', onl);
-          if (local.Status.online === 0 && bck.online.get().length !== 0)
-            local.set('Status.online', bck.online.get().length);
           BadgeOnlineCount(local.Status.online);
-          log('Every channel checked ('+local.Status.checked+')');
+
           local.set('Status.update', 0);
           timeOut.check();
           if (local.Config.Notifications.update) {
@@ -275,13 +284,13 @@ var bck = {
           }
         }
 
-        log('Every channel checked');
-
-        if (local.Status.update !== 5)
-          local.set('Status.update', 0);
-
-        return bck.promise.done();
-      })():function(){});
+        if (i == list.length-1) {
+          if (local.Status.update !== 5)
+            local.set('Status.update', 0);
+          log('Every channel checked');
+          return bck.promise.done();
+        }
+      });
     });
 
     function chk(d) {
@@ -390,6 +399,7 @@ var bck = {
     bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
     bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking)+30000);
     bck.getList();
+    bck.promise.after = bck.getOnline;
   },
   intFollowing: -1,
   intStatus: -1
