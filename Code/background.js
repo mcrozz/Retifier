@@ -372,7 +372,9 @@ var bck = {
   init: function() {
     if (bck.intFollowing !== -1 || bck.intStatus !== -1) {
       clearInterval(bck.intFollowing);
+      bck.intFollowing = -1;
       clearInterval(bck.intStatus);
+      bck.intStatus = -1;
 
       return bck.init();
     }
