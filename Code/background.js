@@ -56,9 +56,21 @@ var bck = {
     inWork: false, // is getList or getOnline in work?
     after: null, // call it after ending
     done: function() {
+      // Script done
       bck.promise.inWork = false;
       if (typeof bck.promise.after === 'function')
         return bck.promise.after();
+    },
+    check: function(callback) {
+      // Check if another script in work
+      if (!bck.promise.inWork) {
+        bck.promise.inWork = true;
+        bck.promise.after = null;
+        return false;
+      } else {
+        bck.promise.after = callback;
+        return true;
+      }
     }
   },
   check: function() {
@@ -81,14 +93,8 @@ var bck = {
   getList: function() {
     // Getting following list of user
 
-    // Check if another script in work
-    if (!bck.promise.inWork) {
-      bck.promise.inWork = true;
-      bck.promise.after = null;
-    } else {
-      bck.promise.after = bck.getList;
+    if (bck.promise.check(bck.getList))
       return;
-    }
 
     if (!bck.check())
       return;
@@ -123,8 +129,7 @@ var bck = {
         });
         local.set('Following', j._total);
         local.following.hash();
-        bck.promise.done();
-        bck.getOnline();
+        return bck.promise.done();
       } else {
         local.set('Following', j._total);
         $.each(local.FollowingList, function(i,v) {
@@ -138,22 +143,15 @@ var bck = {
         });
         local.set('Status.online', 0);
         local.following.hash();
-        bck.promise.done();
-        bck.getOnline();
+        return bck.promise.done();
       }
     });
   },
   getOnline: function() {
     // Get online list
 
-    // Check if another script in work
-    if (!bck.promise.inWork) {
-      bck.promise.inWork = true;
-      bck.promise.after = null;
-    } else {
-      bck.promise.after = bck.getOnline;
+    if (bck.promise.check(bck.getOnline))
       return;
-    }
 
     if (!bck.check())
       return;
@@ -176,11 +174,34 @@ var bck = {
         throw new Error(e);
       });
 
+      if (toShow === 777)
+        return bck.promise.done();
+
       $.getJSON('https://api.twitch.tv/kraken/streams/followed?limit=100&offset=0&oauth_token='+local.Config.token)
       .done(function(d) {
         if (d._total === 0) {
           // nobody online...
-          return false;
+
+          log('Every channel checked');
+
+          if (bck.online.get().length !== 0) {
+            $.each(bck.online.get(), function(i,v) {
+              // streamer gone offline
+              bck.online.del(v);
+              var str = local.following.get(v);
+
+              if (str.Notify)
+                notify.send({
+                  title: v+" went offline",
+                  msg: "Been online for "+time(str.Stream.Time),
+                  type: "offline"
+                });
+
+              local.following.set(v, {Stream: false});
+              send({type:'following', data: {Name:v, Stream:false}});
+            });
+          }
+          return bck.promise.done();
         }
 
         var onl = [];
@@ -189,18 +210,14 @@ var bck = {
         });
 
         return bck.checkStatus(onl, true);
-      }).error(function(e) { err(e); });
+      }).error(function(e) { err(e); return bck.promise.done(); });
     } else {
       var lst = [];
       $.each(local.FollowingList, function(i,v) {
         lst.push(v.Name);
       });
-      bck.checkStatus(lst, false);
+      return bck.checkStatus(lst, false);
     }
-
-
-    if (local.Status.update !== 5)
-      local.set('Status.update', 0);
   },
   checkStatus: function(list, token) {
     $.each(list, function(i,v) {
@@ -257,7 +274,9 @@ var bck = {
             }
           }
         }
+
         log('Every channel checked');
+
         if (local.Status.update !== 5)
           local.set('Status.update', 0);
 
@@ -351,18 +370,24 @@ var bck = {
     }
   },
   init: function() {
-    function setIntervals() {
-      bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
-      bck.intStatus = setInterval(function(){bck.getOnline()}, 60000*local.Config.Interval_of_Checking);
-      bck.getList();
-    }
-    if (bck.intFollowing == -1 && bck.intStatus == -1)
-      setIntervals()
-    else {
+    if (bck.intFollowing !== -1 || bck.intStatus !== -1) {
       clearInterval(bck.intFollowing);
       clearInterval(bck.intStatus);
-      setIntervals();
+
+      return bck.init();
     }
+
+    // Double check user interval
+    if (local.Config.token && local.Config.Interval_of_Checking < .5)
+      local.set('Config.Interval_of_Checking', .5);
+    else if (!local.Config.token && local.Config.Interval_of_Checking < 1)
+      local.set('Config.Interval_of_Checking', 1);
+
+    // getting following list every 2 min
+    // checking for online streamers every {USER} min + 30s
+    bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
+    bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking)+30000);
+    bck.getList();
   },
   intFollowing: -1,
   intStatus: -1
