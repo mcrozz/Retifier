@@ -530,7 +530,6 @@ $(function() {
 	ael('button[name=c]', Popup.closeAlert);
 	$('input#ChgUsrInt').on('change', function(e) {
 		var v = Math.abs(e.target.value);
-		deb(v);
 		if (isNaN(v) || v === 0)
 			return $('input#ChgUsrInt').anim('pulse', 2.5);
 

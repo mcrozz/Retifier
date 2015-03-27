@@ -918,8 +918,7 @@ button.dash:hover {
 }
 @-{{PLATFORM}}-keyframes bounceInUp {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
-	99% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }
-	100% { -{{PLATFORM}}-transform:translateY(0) }
+	100% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }
 }
 @-{{PLATFORM}}-keyframes bounceOutDown {
 	0% { -{{PLATFORM}}-transform:translateY(0) }

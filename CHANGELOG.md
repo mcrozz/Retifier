@@ -4,6 +4,8 @@ Current versions:
 - [_Opera_](#opera) - **1.1.5**
 
 # _Google Chrome_
+* **1.4.6**
+	* Fixed background script
 * **1.4.5**
 	* Changed layout, right now it's resizable
 	* Changed style of options
