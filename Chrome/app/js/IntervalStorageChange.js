@@ -5,7 +5,7 @@
 * }
 */
 chrome.runtime.onMessage.addListener(function(msg, s, resp) {
-	if (msg === 'refresh')
+	if (typeof msg === 'string')
 		msg = {type: msg};
 	window.parseMsg(msg, resp);
 });

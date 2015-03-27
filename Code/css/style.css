@@ -206,6 +206,7 @@ div>.checkBox {
 	min-width: 10%;
 	font-size: 160%;
 	border-color: rgba(0, 0, 0, 0);
+	border-radius: 20px;
 	color: white;
 	background: none;
 	text-align: center;
@@ -908,6 +909,13 @@ button.dash:hover {
 		based on Animate.css
 	http://daneden.me/animate
 */
+@-{{PLATFORM}}-keyframes pulse {
+	0% { background: red; }
+	25% { background: none; }
+	50% { background: red; }
+	75% { background: none; }
+	100% { background: none; }
+}
 @-{{PLATFORM}}-keyframes bounceInUp {
 	0% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
 	99% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }

@@ -10,18 +10,20 @@ function _$(id){
 }
 {{BADGE_ONLINE_COUNT}}
 {{SEND_MSG}}
-function anim(id, n, f) {
-    if (_$(id)) {
-        var ci = $('#'+id);
-        if (!n[1]) ci.show();
-        if (!n[2]) n[2]=1;
-        ci.css('-{{PLATFORM_}}-animation', n[0]+' both '+n[2]+'s');
-        setTimeout(function(){
-            if (n[1]) ci.hide();
-            if (typeof f === 'function') f();
-        }, 1000*n[2]);
-    }
-}
+jQuery.fn.extend({
+  anim: function(name, dur, hide) {
+    var _this = this;
+
+    if (this.css('display') === 'none' || !this.css('display'))
+      this.show();
+
+    this.css('-{{PLATFORM_}}-animation', name+' both '+dur+'s');
+    setTimeout(function() {
+      if (hide)
+        _this.hide();
+    }, dur);
+  }
+});
 
 window.local = {
   tried: 0,

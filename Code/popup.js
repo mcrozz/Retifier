@@ -223,18 +223,12 @@ $(function() {
 
 		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
 
-		anim('options', ['bounceIn', false, 0.9]);
+		$('.options').anim('bounceIn', .9);
 
 		ga('send', 'event', 'button', 'click', 'Options');
 	}
 
 	function changeScriptStarter() {
-		var g = Math.floor(_$('ChgUsrInt').value);
-		if (!isNaN(g) && local.Config.Interval_of_Checking !== g && g >= 1) {
-			local.set('Config.Interval_of_Checking', g);
-			send('refresh');
-		}
-
 		local.set('Config.Notifications.status', _$('.EnNotify').checked);
 
 		local.set('Config.Notifications.online', _$('.NotifyStreamer').checked);
@@ -246,6 +240,16 @@ $(function() {
 
 		local.set('Config.Duration_of_stream', _$('.StreamDurationCheck').checked);
 
+		var g = Math.abs(_$('ChgUsrInt').value);
+		if (isNaN(g))
+			return Popup.close();
+		if (local.Config.token && g < 0.5)
+			return Popup.close();
+		if (!local.Config.token && g < 1)
+			return Popup.close();
+
+		local.set('Config.Interval_of_Checking', g);
+		send('refresh');
 		Popup.close();
 	}
 
@@ -356,8 +360,9 @@ $(function() {
 		init: function() {
 			AppVersion.changes();
 			Popup.init('#AppChanges', function() {
-				// $('')
+				$('#AppChanges').anim('bounceOutUp', 1.2);
 			});
+			$('#AppChanges').anim('bounceInUp', 1.2);
 		},
 		changes: function() {
 			var data = '';
@@ -453,12 +458,10 @@ $(function() {
 	ael('.directory', function(){
 		ga('send', 'event', 'button', 'click', 'Direct');
 		window.open('http://www.twitch.tv/directory/following'); });
-	ael('#SoundCheck', function(){
-		_$('SoundSelect').disabled = !_$('SoundCheck').checked; });
 	ael('button.NotificationsOpt', function() {
 		FollowedList(true);} );
 	ael('.refresh', function(){
-		send('refresh'); });
+		send('getOnline'); });
 	ael('#UserName>p', function(){
 		Popup.close();
 		reLogin(); });
@@ -525,6 +528,20 @@ $(function() {
 	ael('#zoomIMG', Popup.close);
 	ael('button[name=k]', Popup.clickAlert);
 	ael('button[name=c]', Popup.closeAlert);
+	$('input#ChgUsrInt').on('change', function(e) {
+		var v = Math.abs(e.target.value);
+		deb(v);
+		if (isNaN(v) || v === 0)
+			return $('input#ChgUsrInt').anim('pulse', 2.5);
+
+		if (local.Config.token && v < .5) {
+			e.target.value = 0.5;
+			$('input#ChgUsrInt').anim('pulse', 2.5);
+		} else if (!local.Config.token && v < 1) {
+			e.target.value = 1;
+			$('input#ChgUsrInt').anim('pulse', 2.5);
+		}
+	});
 	var popupMsg = $('#message');
 	$(document).on('mousemove', function(p) {
 		function hide() {
