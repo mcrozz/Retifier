@@ -72,7 +72,7 @@
     },
     "Opera": {
         "Browser": "Opera",
-        "Build": 63,
+        "Build": 64,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
