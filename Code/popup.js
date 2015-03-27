@@ -579,6 +579,4 @@ $(function() {
 		HEIGHT = $(window).height();
 		WIDTH = $(window).width();
 	});
-
-	{{MSG_PARSER_POP_FUNC}}
 });

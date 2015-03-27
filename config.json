@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 1510,
+        "Build": 1521,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -111,8 +111,6 @@
         "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
         "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
         "LINK_REVIEW": "var(Review) in deb(popup.js)",
-        "MSG_PARSER_BAC_FUNC": "file(app\\js\\parseMsgBack.js) in deb(background.js)",
-        "MSG_PARSER_POP_FUNC": "file(app\\js\\parseMsgPopup.js) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
         "PLATFORM": "var(Platform) in deb(css\\style.css)",
         "PLATFORM_": "var(Platform) in deb(js\\functions.js)",

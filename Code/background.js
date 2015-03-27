@@ -98,7 +98,7 @@ var bck = {
       return;
 
     if (!bck.check())
-      return;
+      return bck.promise.done();
     local.set('Status.update', 1);
     log("Checking following list");
     notify.send({title:'Status', msg:'Checking following list...', type:'update'});
@@ -156,7 +156,7 @@ var bck = {
       return;
 
     if (!bck.check())
-      return;
+      return bck.promise.done();
     local.set('Status.update', 1);
     log("Checking status of streamers");
     notify.send({title:'Behold! Update!', msg:'Checking status of streamers...', type:'update'});
@@ -406,5 +406,3 @@ var bck = {
 };
 
 bck.init();
-
-{{MSG_PARSER_BAC_FUNC}}
