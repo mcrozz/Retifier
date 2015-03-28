@@ -239,11 +239,8 @@ header>.close {
 .options>div>div {
 	margin: 3% 0;
 }
-.r1 {
-	position: absolute;
-}
 .r2 {
-	margin-left: 50%!important;
+	position: absolute;
 }
 .options>div>li>a {
 	width: 82%;

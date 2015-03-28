@@ -405,7 +405,9 @@ var bck = {
     // getting following list every 2 min
     // checking for online streamers every {USER} min + 30s
     bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
-    bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking)+30000);
+    setTimeout(function() {
+      bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking));}
+    , 30000);
     bck.getList();
     bck.promise.after = bck.getOnline;
   },
