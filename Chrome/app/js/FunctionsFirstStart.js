@@ -18,7 +18,6 @@
     if (!localStorage.Following)
       localStorage.Following = 0;
 
-
     local.init();
 
     if (!local.Config.Format)
@@ -49,10 +48,13 @@
     }
 
     if (k != j) {
-      notify.send({
-        title:"Extension has been updated",
-        msg:"From "+j+" to "+k,
-        type:"sys"});
+      chrome.notifications.create("new_update", {
+        type   : "basic",
+        title  : "Extension has been updated",
+        message: "From "+j+" to "+k,
+        iconUrl: "/img/notification_icon.png",
+        buttons: [{title: "Apply update"}]
+      }, function() {});
 
       localStorage.App_Version = k;
       window.toShow = 123;

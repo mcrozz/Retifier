@@ -1,9 +1,12 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.5**
-- [_Opera_](#opera) - **1.1.5**
+- [_Google Chrome_](#google-chrome) - **1.4.6**
+- [_Opera_](#opera) - **1.1.6**
 
 # _Google Chrome_
+* **1.4.6**
+	* Fixed background script
+	* Fixed bug with zero followed channels
 * **1.4.5**
 	* Changed layout, right now it's resizable
 	* Changed style of options
@@ -112,6 +115,9 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1.6**
+	* Fixed background script
+	* Fixed bug with zero followed channels
 * **1.1.5**
 	* Changed layout, right now it's resizable
 	* Changed style of options

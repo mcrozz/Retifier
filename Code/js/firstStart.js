@@ -69,7 +69,7 @@ function lgin() {
 				.done(function(e) {
 					local.set('Config.User_Name', e.display_name);
 					local.set('Status.update',0);
-			    localStorage.FirstLaunch = false;
+					localStorage.FirstLaunch = false;
 					send('refresh');
 					$('#FollowedChannelsOnline').html("Please wait a moment");
 					$('button.dash').each(function(i,v) {v.disabled = false;});

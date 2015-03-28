@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 1494,
+        "Build": 1549,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -11,7 +11,7 @@
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.4.5"
+        "Ver": "1.4.6"
     },
     "Copy": [
         "DinDon.ogg",
@@ -72,7 +72,7 @@
     },
     "Opera": {
         "Browser": "Opera",
-        "Build": 63,
+        "Build": 80,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -82,7 +82,7 @@
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.1.5"
+        "Ver": "1.1.6"
     },
     "Safari": {
         "Build": 0,
@@ -111,8 +111,6 @@
         "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
         "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
         "LINK_REVIEW": "var(Review) in deb(popup.js)",
-        "MSG_PARSER_BAC_FUNC": "file(app\\js\\parseMsgBack.js) in deb(background.js)",
-        "MSG_PARSER_POP_FUNC": "file(app\\js\\parseMsgPopup.js) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
         "PLATFORM": "var(Platform) in deb(css\\style.css)",
         "PLATFORM_": "var(Platform) in deb(js\\functions.js)",
