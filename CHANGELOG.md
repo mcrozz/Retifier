@@ -7,6 +7,7 @@ Current versions:
 * **1.4.6**
 	* Fixed background script
 	* Fixed bug with zero followed channels
+	* Added button in options 'in case of bugs'
 * **1.4.5**
 	* Changed layout, right now it's resizable
 	* Changed style of options
@@ -118,6 +119,7 @@ Current versions:
 * **1.1.6**
 	* Fixed background script
 	* Fixed bug with zero followed channels
+	* Added button in options 'in case of bugs'
 * **1.1.5**
 	* Changed layout, right now it's resizable
 	* Changed style of options

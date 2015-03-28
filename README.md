@@ -15,19 +15,15 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.5**
->* Changed layout, right now it's resizable
->* Changed style of options
->* Notifications won't 'attack' you on restart of your browser
->* Now you can disable/enable notifications for certain streamers
->* A lot of optimizations
+_Google Chrome_ - **1.4.6**
+>* Fixed background script
+>* Fixed bug with zero followed channels
+>* Added button in options 'in case of bugs'
 
-_Opera_ - **1.1.5**
->* Changed layout, right now it's resizable
->* Changed style of options
->* Notifications won't 'attack' you on restart of your browser
->* Now you can disable/enable notifications for certain streamers
->* A lot of optimizations
+_Opera_ - **1.1.6**
+>* Fixed background script
+>* Fixed bug with zero followed channels
+>* Added button in options 'in case of bugs'
 
 [Show full changelog](CHANGELOG.md)
 
