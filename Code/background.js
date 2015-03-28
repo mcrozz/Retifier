@@ -60,6 +60,10 @@ var bck = {
       bck.promise.inWork = false;
       var t = bck.promise.after;
       bck.promise.after = null;
+
+      if (local.Status.update !== 5)
+        local.set('Status.update', 0);
+
       if (typeof t === 'function')
         return t();
     },
@@ -112,7 +116,7 @@ var bck = {
       return bck.promise.done();
     })
     .done(function(j) {
-      if (typeof local.FollowingList.length === 'undefined' && local.Following !== 0)
+      if (typeof local.FollowingList[0] === 'undefined' && local.Following !== 0)
         local.set('Following', 0);
       else if (local.Following === j._total)
         return bck.promise.done();
@@ -131,8 +135,6 @@ var bck = {
         });
         local.set('Following', j._total);
         local.set('Status.online', 0);
-        local.following.hash();
-        return bck.promise.done();
       } else {
         local.set('Following', j._total);
         $.each(local.FollowingList, function(i,v) {
@@ -144,10 +146,9 @@ var bck = {
           if (del)
             local.following.del(v.Name);
         });
-        local.set('Status.online', 0);
-        local.following.hash();
-        return bck.promise.done();
       }
+      local.following.hash();
+      return bck.promise.done();
     });
   },
   getOnline: function() {
@@ -285,8 +286,6 @@ var bck = {
 
         if (i == list.length-1) {
           timeOut.check();
-          if (local.Status.update !== 5)
-            local.set('Status.update', 0);
           log('Every channel checked');
           return bck.promise.done();
         }

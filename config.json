@@ -1,7 +1,7 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 1534,
+        "Build": 1549,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -72,7 +72,7 @@
     },
     "Opera": {
         "Browser": "Opera",
-        "Build": 74,
+        "Build": 80,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "IfBackA": "if(window.location.pathname==='/background.html'){",
@@ -82,7 +82,7 @@
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
         "UpdCall": "ch();",
         "UpdateLocal": "true",
-        "Ver": "1.1.5"
+        "Ver": "1.1.6"
     },
     "Safari": {
         "Build": 0,
