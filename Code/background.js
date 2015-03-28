@@ -378,6 +378,14 @@ var bck = {
       }
     }
   },
+  flush: function() {
+    // in case of stuck
+    bck.promise.inWork = false;
+    bck.promise.after = null;
+    bck.intFollowing = -1;
+    bck.intStatus = -1;
+    bck.init();
+  },
   init: function() {
     if (bck.intFollowing !== -1 || bck.intStatus !== -1) {
       clearInterval(bck.intFollowing);

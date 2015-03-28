@@ -462,6 +462,9 @@ $(function() {
 		FollowedList(true);} );
 	ael('.refresh', function(){
 		send('getOnline'); });
+	ael('button.Flush', function() {
+		send('flush');
+	});
 	ael('#UserName>p', function(){
 		Popup.close();
 		reLogin(); });

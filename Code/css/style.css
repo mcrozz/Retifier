@@ -283,14 +283,17 @@ header>.close {
 	background: rgb(43, 48, 98);
 	color: rgba(255, 255, 255, 0.72);
 }
-.NotificationsOpt {
+button.NotificationsOpt {
 	background: rgb(22, 25, 58);
 }
-.ChangeSize {
+button.ChangeSize {
 	background: rgb(8, 13, 60);
 }
 button.OnlineStyle {
 	background: rgb(8, 13, 60);
+}
+button.Flush {
+	background: rgb(22, 25, 58);
 }
 
 #ChgUsrSnd {
