@@ -130,6 +130,7 @@ var bck = {
           });
         });
         local.set('Following', j._total);
+        local.set('Status.online', 0);
         local.following.hash();
         return bck.promise.done();
       } else {
@@ -270,8 +271,6 @@ var bck = {
           local.set('Status.online', onl);
           BadgeOnlineCount(local.Status.online);
 
-          local.set('Status.update', 0);
-          timeOut.check();
           if (local.Config.Notifications.update) {
             switch (local.Status.online) {
               case 0:
@@ -285,6 +284,7 @@ var bck = {
         }
 
         if (i == list.length-1) {
+          timeOut.check();
           if (local.Status.update !== 5)
             local.set('Status.update', 0);
           log('Every channel checked');

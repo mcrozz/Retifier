@@ -1,5 +1,5 @@
 function clear(i) {
-	chrome.notifications.clear(i,function() {
+	chrome.notifications.clear(i, function() {
 		var j = {};
 		$.each(StrNames, function(k,v) {
 			if (k!==i)
@@ -10,7 +10,7 @@ function clear(i) {
 }
 /*chrome.notifications.onButtonClicked.addListener(function(id){
 	// If user clicked button 'Install' in notification
-	if (StrNames[id] === 'update')
+	if (id === 'new_update')
 		return chrome.runtime.reload();
 
 	// Clicked 'Watch now'
@@ -27,7 +27,7 @@ chrome.notifications.onClicked.addListener(function(id) {
 });
 chrome.runtime.onUpdateAvailable.addListener(function(m) {
 	// Update available, informate user
-	Notify({
+	notify.send({
 		type: 'sys',
 		msg: 'Install update right now?',
 		title: 'New update available!',
@@ -98,7 +98,7 @@ timeOut.init();
 *  button: Boolean or String
 * }
 */
-var notify = {
+window.notify = {
 	send: function(d) {
 		this.list.push(d);
 		setTimeout(function() {
