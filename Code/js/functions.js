@@ -25,6 +25,8 @@ jQuery.fn.extend({
   }
 });
 
+{{FUNCTIONS_FIRST_START}}
+
 window.local = {
   tried: 0,
   init: function(w) {
@@ -47,7 +49,7 @@ window.local = {
       this.tried = 0;
     } catch(e) {
       err(e);
-      if (tried < 25)
+      if (this.tried < 25)
         local.init();
     }
     return true;
@@ -160,8 +162,6 @@ window.local = {
     }, 0);
   }
 };
-
-{{FUNCTIONS_FIRST_START}}
 
 {{INTERVAL_STORAGE_CHANGE}}
 
