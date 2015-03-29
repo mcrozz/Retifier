@@ -83,7 +83,10 @@ def build(b, s):
 	config = cf()
 	browser = b
 	currDir = os.getcwd()
-	dbDir = pj([currDir, browser, "debug"])
+	if browser == "Safari":
+		dbDir = pj([currDir, browser, "debug.safariextension"])
+	else:
+		dbDir = pj([currDir, browser, "debug"])
 	p("     Build extension for "+browser)
 	p("     Destination path: "+dbDir)
 	p(tld)
@@ -97,6 +100,10 @@ def build(b, s):
 		shutil.copy2(pj([currDir, 'Code', t]), pj([dbDir, t]))
 		if not s:
 			p("	Copy "+t);
+	# Copy browser additionals
+	if config[browser]['Add']:
+		for adds in config[browser]['Add']:
+			shutil.copy2(pj([currDir, browser, 'app', adds]), pj([dbDir, adds]))
 	# Copy whatsNew.js
 	shutil.copy2(pj([currDir, browser, 'app', 'js', 'whatsNew.js']), pj([dbDir, 'js', 'whatsNew.js']))
 	# Copy background.html
@@ -153,6 +160,8 @@ def build(b, s):
 			p("    [ERROR]")
 			sys.exit(0);
 		rp("{{"+h+"}}", outf[0], outf[1]);
+	# Inserting app version
+	rp("{{APP_VERSION_CURRENT}}", config[browser]['Ver'], pj([dbDir, config[browser]['Config']]))
 	# Inserting LICENSE_HEADER
 	toR = [
 		'css\\style.css',

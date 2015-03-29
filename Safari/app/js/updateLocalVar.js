@@ -1,0 +1,3 @@
+function ch() {
+	send("update");
+}

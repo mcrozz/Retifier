@@ -1,11 +1,9 @@
 {
     "Chrome": {
         "Browser": "Chrome",
-        "Build": 1549,
+        "Build": 1550,
         "Config": "manifest.json",
         "CopyBackgound": "true",
-        "IfBackA": "if(window.location.pathname==='/background.html'){",
-        "IfBackB": "}",
         "Parse": "site",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
@@ -85,10 +83,20 @@
         "Ver": "1.1.6"
     },
     "Safari": {
-        "Build": 0,
+        "Add": [
+            "img\\icon.png",
+            "img\\icon@2.png"
+        ],
+        "Browser": "Safari",
+        "Build": 7,
+        "Config": "Info.plist",
+        "CopyBackgound": "true",
+        "Parse": "site",
         "Platform": "webkit",
         "Review": "",
-        "Ver": "0.9.0.0"
+        "UpdCall": "ch();",
+        "UpdateLocal": "true",
+        "Ver": "1.0.0"
     },
     "Scripts": [
         "./js/functions.js",
@@ -103,12 +111,9 @@
         "background.js"
     ],
     "Variables": {
-        "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
         "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
         "BROWSER": "var(Browser) in deb(auth.html)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
-        "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
-        "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
         "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
         "LINK_REVIEW": "var(Review) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",
