@@ -22,7 +22,8 @@ $(function() {
 		// Close it
 		Popup.close_();
 		// Reload it
-		location.reload();
+		if (!safari)
+			location.reload();
 	}
 
 	function reloadStyle(l){
@@ -385,6 +386,13 @@ $(function() {
 	}
 
 	function ael(id, func) { $(id).on('click', func); }
+
+	if (safari) {
+		safari.application.addEventListener('popover', function(event) {
+			event.target.contentWindow.location.reload();
+		}, true);
+	}
+
 	// Init extension size
 	reloadStyle();
 	// Insert current status

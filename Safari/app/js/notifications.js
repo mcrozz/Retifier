@@ -87,6 +87,7 @@ timeOut.init();
 * }
 */
 window.notify = {
+	ncnt: 0,
 	send: function(d) {
 		this.list.push(d);
 		setTimeout(function() {
@@ -137,7 +138,7 @@ window.notify = {
 
 				new Notification(d.title, {
 					body: d.msg,
-					tag: 'n'+ncnt
+					tag: 'n'+this.ncnt
 				})
 				.onshow(function() {
 					if (local.Config.Notifications.sound_status)

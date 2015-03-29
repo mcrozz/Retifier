@@ -38,6 +38,8 @@
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
+				<key>Command</key>
+				<string>popupd</string>
 				<key>Identifier</key>
 				<string>popup</string>
 				<key>Image</key>

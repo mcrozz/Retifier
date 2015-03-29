@@ -82,7 +82,7 @@
             "img\\icon@2.png"
         ],
         "Browser": "Safari",
-        "Build": 28,
+        "Build": 34,
         "Config": "Info.plist",
         "CopyBackgound": "true",
         "Parse": "site",
