@@ -65,6 +65,11 @@ $(function() {
 		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
 		$('style').html(htm);
 
+		if (safari) {
+			safari.self.width = w;
+			safari.self.height = h;
+		}
+
 		if (l && l.format)
 			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
 		else

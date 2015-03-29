@@ -1,14 +1,15 @@
 function clear(i) {
-	chrome.notifications.clear(i, function() {
+	return null;
+	/*chrome.notifications.clear(i, function() {
 		var j = {};
 		$.each(StrNames, function(k,v) {
 			if (k!==i)
 				j[k] = v;
 		});
 		StrNames = j;
-	});
+	});*/
 }
-chrome.notifications.onButtonClicked.addListener(function(id){
+/*chrome.notifications.onButtonClicked.addListener(function(id){
 	// If user clicked button 'Install' in notification
 	if (id === 'new_update')
 		return chrome.runtime.reload();
@@ -24,7 +25,7 @@ chrome.notifications.onClosed.addListener(function(id,u){
 });
 chrome.notifications.onClicked.addListener(function(id) {
 	clear(id);
-});
+});*/
 
 if (!localStorage.timeOut)
 	localStorage.timeOut = '{}';

@@ -7,8 +7,6 @@
         "Parse": "site",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
-        "UpdCall": "ch();",
-        "UpdateLocal": "true",
         "Ver": "1.4.6"
     },
     "Copy": [
@@ -73,13 +71,9 @@
         "Build": 80,
         "Config": "manifest.json",
         "CopyBackgound": "true",
-        "IfBackA": "if(window.location.pathname==='/background.html'){",
-        "IfBackB": "}",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
-        "UpdCall": "ch();",
-        "UpdateLocal": "true",
         "Ver": "1.1.6"
     },
     "Safari": {
@@ -88,14 +82,12 @@
             "img\\icon@2.png"
         ],
         "Browser": "Safari",
-        "Build": 7,
+        "Build": 28,
         "Config": "Info.plist",
         "CopyBackgound": "true",
         "Parse": "site",
         "Platform": "webkit",
         "Review": "",
-        "UpdCall": "ch();",
-        "UpdateLocal": "true",
         "Ver": "1.0.0"
     },
     "Scripts": [

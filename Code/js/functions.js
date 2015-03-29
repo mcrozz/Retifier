@@ -5,9 +5,13 @@ function log(msg) { console.log(tm(': ')+msg); }
 function deb(msg) { if(!msg)return; console.debug(msg); }
 function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
 function _$(id){
+    // Do not try element selector e.g. button.Yup
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
     return $('#'+id)[0];
 }
+
+window.local = new modelLocal();
+
 {{BADGE_ONLINE_COUNT}}
 {{SEND_MSG}}
 jQuery.fn.extend({
@@ -27,9 +31,9 @@ jQuery.fn.extend({
 
 {{FUNCTIONS_FIRST_START}}
 
-window.local = {
-  tried: 0,
-  init: function(w) {
+function modelLocal() {
+  this.tried = 0;
+  this.init = function(w) {
     if (typeof w !== 'undefined') {
       if (typeof this[w] !== 'undefined' && w !== -1) {
         try {
@@ -53,8 +57,8 @@ window.local = {
         local.init();
     }
     return true;
-  },
-  set: function(pth, val) {
+  };
+  this.set = function(pth, val) {
     if (!pth || typeof val==='undefined')
       return err("Invalid input @ function local.set()");
     try {
@@ -82,14 +86,14 @@ window.local = {
       localStorage[pth[0]] = JSON.stringify(this[pth[0]]);
       send({type:'update', data:pth[0]});
     } catch(e) { return err(e); }
-  },
-  default: {
+  }
+  this.default = {
     Name: 'invalid',
     Stream: false,
     Notify: true,
     d_name: 'invalid'
-  },
-  following: {
+  }
+  this.following = {
     get: function(n) {
       // Returns streamer obj
       if (isNaN(n))
@@ -136,8 +140,8 @@ window.local = {
         local.following.map[v.Name] = i;
       });
     }
-  },
-  game: function(name) {
+  }
+  this.game = function(name) {
     setTimeout(function() {
       if (local.Games.length > 50) {
         localStorage.Games = '{}';
@@ -216,25 +220,25 @@ function time(t) {
   });
 
 // https://www.parsecdn.com
-{{IF_BACKGROUND_BEGIN}}
-(function(){
-  var p=document.createElement('script'),
-    s=document.getElementsByTagName('script')[0];
-  p.async=1; p.src='{{PARSE_COM_SRC}}';
-  p.onload = function(){
-    parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
-    var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
-  }
-  s.parentNode.insertBefore(p,s);
-})();
+if (location.href.split('/').pop(1) === 'background.html') {
+  (function(){
+    var p=document.createElement('script'),
+      s=document.getElementsByTagName('script')[0];
+    p.async=1; p.src='{{PARSE_COM_SRC}}';
+    p.onload = function(){
+      parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
+      var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
+      var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+    }
+    s.parentNode.insertBefore(p,s);
+  })();
 
-setInterval(function(){
-  if (parse) {
-    // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
-    var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
-    // Getting usernames from table 'Donators'
-    var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
-  }
-}, 600000);
-{{IF_BACKGROUND_END}}
+  setInterval(function(){
+    if (parse) {
+      // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
+      var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+      // Getting usernames from table 'Donators'
+      var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
+    }
+  }, 600000);
+}

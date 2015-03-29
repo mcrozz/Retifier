@@ -1,3 +1,0 @@
-function ch() {
-	send("update");
-}

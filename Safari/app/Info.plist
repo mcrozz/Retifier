@@ -15,7 +15,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>{{APP_VERSION_CURRENT}}</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>{{BUILD}}</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -28,11 +28,11 @@
 				<key>Filename</key>
 				<string>popup.html</string>
 				<key>Height</key>
-				<string></string>
+				<real>486</real>
 				<key>Identifier</key>
 				<string>main</string>
 				<key>Width</key>
-				<string></string>
+				<real>583</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>

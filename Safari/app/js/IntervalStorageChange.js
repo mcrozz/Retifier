@@ -1,14 +1,14 @@
 /*
 * msg : object {
-*  type : String [ update,  ],
-*  data : String or object
+*  type : String,
+*  *data : String or object
 * }
 */
-var receive = function(msg, resp) {
+window.receive = function(msg, resp) {
 	if (typeof msg === 'string')
 		msg = {type: msg};
 
-	if (window.location.pathname === '/background.html') {
+	if (window.location.href.split('/').pop(1) === 'background.html') {
 		// If something is wrong or new update
 		// This object will be indicate what's
 		// went wrong:

@@ -1,5 +1,5 @@
 (function() {
-  if (window.location.pathname === '/background.html') {
+  if (location.href.split('/').pop(1) === 'background.html') {
     $.ajaxSetup ({cache:false,crossDomain:true});
     if (!localStorage.Config)
       localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"offline":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid","Screen":0.34}';
