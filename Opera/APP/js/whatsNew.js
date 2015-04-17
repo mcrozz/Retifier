@@ -2,12 +2,13 @@
 
 // What's new in update
 newUpdate = {
-  msg: "Hotfix",
-  content: "<p>What's new in this update:</p><li>Fixed background script</li><li>Fixed bug with zero followed channels</li><li>Added button in options 'in case of bugs'</li><br><p>My apologies for wrecking everything, if something not yet fixed you can contact me via Twitter <a href='https://twitter.com/iZarudny' target='_blank'>@iZarudny</a></p>"
+  msg: "Fixes",
+  content: "<p>What's new in this update:</p><li>Fixed 'Get notifications from'</li><li>Various style improvements</li>"
 };
 
 // Changelog
 changes = [
+  "-1.1.7 fixed 'Get notifications from', various style improvements",
   "-1.1.6 hotfix, fixed background script, fixed bug with zero followed channels",
   "-1.1.5 a lot of UI improvements, script optimizations, added notifications settings for each streamer, resizable extension's window",
   "-1.1.1 hotfix, fixed auth by twitch's account, fixed game links",

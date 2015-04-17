@@ -1,9 +1,14 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.6**
-- [_Opera_](#opera) - **1.1.6**
+- [_Google Chrome_](#google-chrome) - **1.4.8**
+- [_Opera_](#opera) - **1.1.7**
 
 # _Google Chrome_
+* **1.4.8**
+	* Hotfix
+* **1.4.7**
+	* Fixed 'Get notifications from'
+	* Various style improvements
 * **1.4.6**
 	* Fixed background script
 	* Fixed bug with zero followed channels
@@ -116,6 +121,9 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1.7**
+	* Fixed 'Get notifications from'
+	* Various style improvements
 * **1.1.6**
 	* Fixed background script
 	* Fixed bug with zero followed channels
