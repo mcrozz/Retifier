@@ -10,13 +10,6 @@ $(function() {
 				}
 			*/
 			var s = window.screen, w, h, hp, fp, htm;
-			/*
-			Aspect ratio 1.2
-			Original size: 697px by 584px
-
-			width [385, 700]
-			height [400, 585]
-	    */
 
 			hp = (l && l.size) ? l.size/100 : local.Config.Screen;
 			style.size.current = hp*100;
@@ -35,7 +28,6 @@ $(function() {
 
 			htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
 			htm+= '#size>span{height:'+(h*.142)+'px;}';
-			htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
 			$('style').html(htm);
 
 			if (typeof safari !== 'undefined') {
@@ -215,6 +207,10 @@ $(function() {
 
 	function clickChangeUser() {
 		Popup.init('.options', clickChangeUserCls);
+
+		// Fix height of custom check boxes
+		$('.Check_Box').css('height', $('.Check_Box')[0].offsetWidth*.43+'px');
+		$('.Check_Box_2').css('height', $('.Check_Box_2')[0].offsetWidth+'px');
 
 		$('#user>a:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
@@ -404,6 +400,7 @@ $(function() {
 	style.reload();
 	// Insert current status
 	updateStatus();
+
 	setTimeout(function() {
 		if (localStorage.FirstLaunch === 'true')
 			return;

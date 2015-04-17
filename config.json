@@ -2,7 +2,7 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1589,
+        "Build": 1605,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "site",
@@ -23,7 +23,9 @@
         "img\\icon.png",
         "img\\notification_icon.png",
         "img\\Check_Box.png",
+        "img\\Check_Box_ch.png",
         "img\\Check_Box_2.png",
+        "img\\Check_Box_2_ch.png",
         "img\\playing.png",
         "img\\Grid_View.png",
         "img\\Full_View.png",
