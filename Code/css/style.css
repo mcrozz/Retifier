@@ -461,16 +461,14 @@ span.cls {
 	top: -7%;
 }
 span.minus {
-	background: url(../img/ArrowLeft.png);
+	background: url(../img/minus.png);
 	background-size: contain;
-	transform: rotate(-215deg);
 	left: 58%;
 	top: 9%;
 }
 span.plus {
-	background: url(../img/ArrowRight.png);
+	background: url(../img/plus.png);
 	background-size: contain;
-	transform: rotate(145deg);
 	top: 54%;
 	left: -6%;
 }
