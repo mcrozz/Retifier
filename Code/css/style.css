@@ -461,16 +461,14 @@ span.cls {
 	top: -7%;
 }
 span.minus {
-	background: url(../img/ArrowLeft.png);
+	background: url(../img/minus.png);
 	background-size: contain;
-	transform: rotate(-215deg);
 	left: 58%;
 	top: 9%;
 }
 span.plus {
-	background: url(../img/ArrowRight.png);
+	background: url(../img/plus.png);
 	background-size: contain;
-	transform: rotate(145deg);
 	top: 54%;
 	left: -6%;
 }
@@ -561,21 +559,21 @@ span:hover {
 	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
 }
 .Check_Box {
-	background: url(/img/Check_Box.png) no-repeat 0 -22px;
+	background: url(../img/Check_Box.png) no-repeat;
 	background-size: cover;
 	width: 16.5%;
 }
 .Check_Box:checked {
-	background: url(/img/Check_Box.png) no-repeat 0 0;
+	background: url(../img/Check_Box_ch.png) no-repeat;
 		background-size: cover;
 }
 .Check_Box_2 {
-	background: url(/img/Check_Box_2.png) no-repeat 0 -22px;
+	background: url(../img/Check_Box_2.png) no-repeat;
 		background-size: cover;
 	width: 7.4%;
 }
 .Check_Box_2:checked {
-	background: url(/img/Check_Box_2.png) no-repeat 0 0;
+	background: url(../img/Check_Box_2_ch.png) no-repeat;
 		background-size: cover;
 }
 
@@ -818,19 +816,19 @@ button.WelcomOK:hover {
 }
 
 button.refresh {
-	background: url(/img/refresh.png) no-repeat;
+	background: url(../img/refresh.png) no-repeat;
 	background-size: contain;
 }
 button.directory {
-	background: url(/img/Home.png) no-repeat;
+	background: url(../img/Home.png) no-repeat;
 	background-size: contain;
 }
 button.following {
-	background: url(/img/Following.png) no-repeat;
+	background: url(../img/Following.png) no-repeat;
 	background-size: contain;
 }
 button.settings {
-	background: url(/img/Setting.png) no-repeat;
+	background: url(../img/Setting.png) no-repeat;
 	background-size: contain;
 }
 #header>.dashL {
@@ -879,7 +877,7 @@ button.dash:hover {
 	color: black;
 }
 .zoom {
-	background: url(/img/zoom.png) no-repeat;
+	background: url(../img/zoom.png) no-repeat;
 	background-size: contain;
 	display: block;
 	position: absolute;

@@ -1,17 +1,14 @@
 {
     "Chrome": {
+        "Add": null,
         "Browser": "Chrome",
-        "Build": 1549,
+        "Build": 1612,
         "Config": "manifest.json",
         "CopyBackgound": "true",
-        "IfBackA": "if(window.location.pathname==='/background.html'){",
-        "IfBackB": "}",
         "Parse": "site",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
-        "UpdCall": "ch();",
-        "UpdateLocal": "true",
-        "Ver": "1.4.6"
+        "Ver": "1.4.8"
     },
     "Copy": [
         "DinDon.ogg",
@@ -26,7 +23,9 @@
         "img\\icon.png",
         "img\\notification_icon.png",
         "img\\Check_Box.png",
+        "img\\Check_Box_ch.png",
         "img\\Check_Box_2.png",
+        "img\\Check_Box_2_ch.png",
         "img\\playing.png",
         "img\\Grid_View.png",
         "img\\Full_View.png",
@@ -35,8 +34,8 @@
         "img\\zoom.png",
         "img\\refresh.png",
         "img\\Setting.png",
-        "img\\ArrowLeft.png",
-        "img\\ArrowRight.png",
+        "img\\plus.png",
+        "img\\minus.png",
         "img\\Close.png",
         "img\\OK.png",
         "img\\Following.png",
@@ -56,6 +55,7 @@
         "css"
     ],
     "Firefox": {
+        "Add": null,
         "Build": 40,
         "CopyBackgound": "false",
         "IfBackA": "",
@@ -71,24 +71,29 @@
         "jQuery": "jquery-2.1.3.min.js"
     },
     "Opera": {
+        "Add": null,
         "Browser": "Opera",
-        "Build": 80,
+        "Build": 83,
         "Config": "manifest.json",
         "CopyBackgound": "true",
-        "IfBackA": "if(window.location.pathname==='/background.html'){",
-        "IfBackB": "}",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
-        "UpdCall": "ch();",
-        "UpdateLocal": "true",
-        "Ver": "1.1.6"
+        "Ver": "1.1.7"
     },
     "Safari": {
-        "Build": 0,
+        "Add": [
+            "img\\icon.png",
+            "img\\icon@2.png"
+        ],
+        "Browser": "Safari",
+        "Build": 34,
+        "Config": "Info.plist",
+        "CopyBackgound": "true",
+        "Parse": "site",
         "Platform": "webkit",
         "Review": "",
-        "Ver": "0.9.0.0"
+        "Ver": "1.0.0"
     },
     "Scripts": [
         "./js/functions.js",
@@ -103,12 +108,9 @@
         "background.js"
     ],
     "Variables": {
-        "APP_VERSION_CURRENT": "var(Ver) in deb(manifest.json)",
         "BADGE_ONLINE_COUNT": "file(app\\js\\BadgeOnlineCount.js) in deb(js\\functions.js)",
         "BROWSER": "var(Browser) in deb(auth.html)",
         "FUNCTIONS_FIRST_START": "file(app\\js\\FunctionsFirstStart.js) in deb(js\\functions.js)",
-        "IF_BACKGROUND_BEGIN": "var(IfBackA) in deb(js\\functions.js)",
-        "IF_BACKGROUND_END": "var(IfBackB) in deb(js\\functions.js)",
         "INTERVAL_STORAGE_CHANGE": "file(app\\js\\IntervalStorageChange.js) in deb(js\\functions.js)",
         "LINK_REVIEW": "var(Review) in deb(popup.js)",
         "NOTIFY_USER_FUNCTION": "file(app\\js\\notifications.js) in deb(js\\functions.js)",

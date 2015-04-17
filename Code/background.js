@@ -319,7 +319,7 @@ var bck = {
 
         if (!FoLi.Stream && !bck.online.is(Name)) {
           if (FoLi.Notify) {
-            var dd = (new Date()-new Date(Time)<60000)?' just went live!':' is live!';
+            var dd = (new Date()-new Date(Time)<=1000*local.Config.Interval_of_Checking)?' just went live!':' is live!';
             notify.send({
               name: Name,
               title: Name+dd,

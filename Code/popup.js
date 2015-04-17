@@ -1,75 +1,80 @@
 {{LICENSE_HEADER}}
 $(function() {
-	var pcH;
+	var style = {
+		reload: function(l) {
+			/*
+				Optional input
+				l :: object {
+					*size : array of integers,
+					*format : string
+				}
+			*/
+			var s = window.screen, w, h, hp, fp, htm;
 
-	function add() {
-		if (!isNaN(pcH)) {
-			pcH>=54 ? pcH=54 : pcH+=1;
-		}
-		reloadStyle({size: pcH});
-		$('#size>div').hide();
-	}
-	function sub() {
-		if (!isNaN(pcH)) {
-			pcH<=30 ? pcH=30 : pcH-=1;
-		}
-		reloadStyle({size: pcH});
-		$('#size>div').hide();
-	}
-	function sizeSave() {
-		// Save it
-		local.set('Config.Screen', pcH/100);
-		// Close it
-		Popup.close_();
-		// Reload it
-		location.reload();
-	}
+			hp = (l && l.size) ? l.size/100 : local.Config.Screen;
+			style.size.current = hp*100;
 
-	function reloadStyle(l){
-		/*
-			Optional input
-			l :: object {
-				*size : array of integers,
-				*format : string
+			h = s.availHeight*hp;
+			h = Math.floor(h);
+
+			w = h*1.2;
+			w = Math.floor(w);
+
+			var add = 0;
+			// normalize font size for Linux users
+			if (navigator.platform[0].toLowerCase() === 'l')
+			 add = -21;
+			fp = (screen.pixelDepth*hp*10)+add;
+
+			htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
+			htm+= '#size>span{height:'+(h*.142)+'px;}';
+			$('style').html(htm);
+
+			if (typeof safari !== 'undefined') {
+				safari.self.width = w;
+				safari.self.height = h;
 			}
-		*/
-		var s = window.screen, w, h, hp, fp, htm;
-		/*
-		Aspect ratio 1.2
-		Original size: 697px by 584px
 
-		width [385, 700]
-		height [400, 585]
-    */
+			var css = local.Config.Format.toLowerCase();
+			if (l && l.format)
+				css = l.format.toLowerCase();
+			$('#cust')[0].href = "./css/"+css+".css";
+		},
+		size: {
+			current: 0,
+			// auto detected maximum and minimum size of extension
+			MaxMin: [-1, -1],
+			add: function() {
+				_this = style.size;
+				if (isNaN(_this.current))
+					_this.current = 0;
 
-		hp = (l && l.size) ? l.size/100 : local.Config.Screen;
-		pcH = hp*100;
+				_this.current>=_this.MaxMin[0] ? _this.current=_this.MaxMin[0] : _this.current+=1;
 
-		h = s.availHeight*hp;
-		w = h*1.2;
-		w = w<385?385:w;
-		w = w>700?700:w;
-		w = Math.floor(w);
-		h = h<400?400:h;
-		h = h>585?585:h;
-		h = Math.floor(h);
+				style.reload({size: _this.current});
+				$('#size>div').hide();
+			},
+			sub: function() {
+				_this = style.size;
+				if (isNaN(_this.current))
+					_this.current = 0;
 
-		var add = 0;
-		// normalize font size for Linux users
-		if (navigator.platform[0].toLowerCase() === 'l')
-		 add = -21;
-		fp = (screen.pixelDepth*hp*10)+add;
+				_this.current<=_this.MaxMin[1] ? _this.current=_this.MaxMin[1] : _this.current-=1;
 
-		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
-		htm+= '#size>span{height:'+(h*.142)+'px;}';
-		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
-		$('style').html(htm);
-
-		if (l && l.format)
-			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
-		else
-			$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
-	}
+				style.reload({size: _this.current});
+				$('#size>div').hide();
+			},
+			save: function() {
+				// Save it
+				local.set('Config.Screen', style.size.current/100);
+				// Close it
+				Popup.close_();
+				// Reload it
+				if (typeof safari === 'undefined')
+					location.reload();
+			}
+		}
+	};
 
 	var Popup = {
 		init: function(id, callback) {
@@ -197,11 +202,15 @@ $(function() {
 	};
 
 	function clickChangeUserCls() {
-		reloadStyle();
+		style.reload();
 	}
 
 	function clickChangeUser() {
 		Popup.init('.options', clickChangeUserCls);
+
+		// Fix height of custom check boxes
+		$('.toggle>.Check_Box').css('height', $('.toggle>.Check_Box')[0].offsetWidth*.43+'px');
+		$('li>.Check_Box_2').css('height', $('li>.Check_Box_2')[0].offsetWidth+'px');
 
 		$('#user>a:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
@@ -327,9 +336,6 @@ $(function() {
 					check.id = i;
 					check.className = 'Check_Box_2';
 					check.checked = v.Notify;
-					check.onClick = function(e) {
-						local.following(e.target.id, {Notify: e.target.checked});
-					};
 					ch.appendChild(check);
 					hld.appendChild(ch);
 				}
@@ -340,8 +346,11 @@ $(function() {
 
 		function saveList() {
 			$('input[id].Check_Box_2').each(function(i,v) {
-				if (local.FollowingList[v.id].Notify !== v.checked)
-					local.following(v.id, {Notify: v.checked});
+				// if streeamer not in following list (e.g. somehow deleted)
+				if (local.following.get(v.id) == null)
+					return;
+
+				local.following.set(v.id, {Notify: v.checked});
 			});
 		}
 
@@ -354,6 +363,8 @@ $(function() {
 			returns: chk,
 			showClose: chk
 		});
+		if (chk)
+			$('.Check_Box_2[id]').css('height', $('.Check_Box_2[id]')[0].offsetWidth+'px');
 	}
 
 	var AppVersion = {
@@ -380,10 +391,18 @@ $(function() {
 	}
 
 	function ael(id, func) { $(id).on('click', func); }
+
+	if (typeof safari !== 'undefined') {
+		safari.application.addEventListener('popover', function(event) {
+			event.target.contentWindow.location.reload();
+		}, true);
+	}
+
 	// Init extension size
-	reloadStyle();
+	style.reload();
 	// Insert current status
 	updateStatus();
+
 	setTimeout(function() {
 		if (localStorage.FirstLaunch === 'true')
 			return;
@@ -469,9 +488,13 @@ $(function() {
 		Popup.close();
 		reLogin(); });
 	ael('button.ChangeSize', function() {
+		style.size.MaxMin = [
+			(600/screen.availHeight)*100,
+			20
+		];
 		Popup.change('#size', true, function() {
 			$('#size>div').show();
-			reloadStyle();
+			style.reload();
 		});
 	});
 	ael('p.Logout', function() {
@@ -480,9 +503,9 @@ $(function() {
 	});
 	ael('.close>span', Popup.close);
 	ael('span.cls', Popup.close_);
-	ael('#size>.plus', add);
-	ael('#size>.minus', sub);
-	ael('#size>.ok', sizeSave);
+	ael('#size>.plus', style.size.add);
+	ael('#size>.minus', style.size.sub);
+	ael('#size>.ok', style.size.save);
 	ael('button.OnlineStyle', function() {
 		// Show current style of online list
 		$('#view>span').each(function(i,v) {
@@ -493,7 +516,7 @@ $(function() {
 			$('#view>span').each(function(i,v) {
 				v.className = v.className.replace(' selected', '');
 			});
-			reloadStyle();
+			style.reload();
 		});
 	});
 	ael('#view>span', function(e) {
@@ -507,14 +530,14 @@ $(function() {
 			if (v.className !== e.className)
 				v.className = v.className.replace(' selected', '');
 		});
-		reloadStyle({format: e.className});
+		style.reload({format: e.className});
 		e.className = e.className+' selected';
 
 		return true;
 	});
 	ael('#view>.ok', function() {
 		local.set('Config.Format', $('#view>span.selected')[0].classList[0]);
-		reloadStyle(); // Just in case
+		style.reload(); // Just in case
 		Popup.close_();
 	});
 	ael(window, function(e) {
