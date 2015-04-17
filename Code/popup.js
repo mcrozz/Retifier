@@ -1,81 +1,88 @@
 {{LICENSE_HEADER}}
 $(function() {
-	var pcH;
+	var style = {
+		reload: function(l) {
+			/*
+				Optional input
+				l :: object {
+					*size : array of integers,
+					*format : string
+				}
+			*/
+			var s = window.screen, w, h, hp, fp, htm;
+			/*
+			Aspect ratio 1.2
+			Original size: 697px by 584px
 
-	function add() {
-		if (!isNaN(pcH)) {
-			pcH>=54 ? pcH=54 : pcH+=1;
-		}
-		reloadStyle({size: pcH});
-		$('#size>div').hide();
-	}
-	function sub() {
-		if (!isNaN(pcH)) {
-			pcH<=30 ? pcH=30 : pcH-=1;
-		}
-		reloadStyle({size: pcH});
-		$('#size>div').hide();
-	}
-	function sizeSave() {
-		// Save it
-		local.set('Config.Screen', pcH/100);
-		// Close it
-		Popup.close_();
-		// Reload it
-		if (typeof safari === 'undefined')
-			location.reload();
-	}
+			width [385, 700]
+			height [400, 585]
+	    */
 
-	function reloadStyle(l){
-		/*
-			Optional input
-			l :: object {
-				*size : array of integers,
-				*format : string
+			hp = (l && l.size) ? l.size/100 : local.Config.Screen;
+			style.size.current = hp*100;
+
+			h = s.availHeight*hp;
+			h = Math.floor(h);
+
+			w = h*1.2;
+			w = Math.floor(w);
+
+			var add = 0;
+			// normalize font size for Linux users
+			if (navigator.platform[0].toLowerCase() === 'l')
+			 add = -21;
+			fp = (screen.pixelDepth*hp*10)+add;
+
+			htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
+			htm+= '#size>span{height:'+(h*.142)+'px;}';
+			htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
+			$('style').html(htm);
+
+			if (typeof safari !== 'undefined') {
+				safari.self.width = w;
+				safari.self.height = h;
 			}
-		*/
-		var s = window.screen, w, h, hp, fp, htm;
-		/*
-		Aspect ratio 1.2
-		Original size: 697px by 584px
 
-		width [385, 700]
-		height [400, 585]
-    */
+			var css = local.Config.Format.toLowerCase();
+			if (l && l.format)
+				css = l.format.toLowerCase();
+			$('#cust')[0].href = "./css/"+css+".css";
+		},
+		size: {
+			current: 0,
+			// auto detected maximum and minimum size of extension
+			MaxMin: [-1, -1],
+			add: function() {
+				_this = style.size;
+				if (isNaN(_this.current))
+					_this.current = 0;
 
-		hp = (l && l.size) ? l.size/100 : local.Config.Screen;
-		pcH = hp*100;
+				_this.current>=_this.MaxMin[0] ? _this.current=_this.MaxMin[0] : _this.current+=1;
 
-		h = s.availHeight*hp;
-		w = h*1.2;
-		w = w<385?385:w;
-		w = w>700?700:w;
-		w = Math.floor(w);
-		h = h<400?400:h;
-		h = h>585?585:h;
-		h = Math.floor(h);
+				style.reload({size: _this.current});
+				$('#size>div').hide();
+			},
+			sub: function() {
+				_this = style.size;
+				if (isNaN(_this.current))
+					_this.current = 0;
 
-		var add = 0;
-		// normalize font size for Linux users
-		if (navigator.platform[0].toLowerCase() === 'l')
-		 add = -21;
-		fp = (screen.pixelDepth*hp*10)+add;
+				_this.current<=_this.MaxMin[1] ? _this.current=_this.MaxMin[1] : _this.current-=1;
 
-		htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
-		htm+= '#size>span{height:'+(h*.142)+'px;}';
-		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
-		$('style').html(htm);
-
-		if (typeof safari !== 'undefined') {
-			safari.self.width = w;
-			safari.self.height = h;
+				style.reload({size: _this.current});
+				$('#size>div').hide();
+			},
+			save: function() {
+				// Save it
+				local.set('Config.Screen', style.size.current/100);
+				// Close it
+				Popup.close_();
+				// Reload it
+				if (typeof safari === 'undefined')
+					location.reload();
+			}
 		}
-
-		if (l && l.format)
-			$('#cust')[0].href = "./css/"+l.format.toLowerCase()+".css";
-		else
-			$('#cust')[0].href = "./css/"+local.Config.Format.toLowerCase()+".css";
-	}
+	};
 
 	var Popup = {
 		init: function(id, callback) {
@@ -394,7 +401,7 @@ $(function() {
 	}
 
 	// Init extension size
-	reloadStyle();
+	style.reload();
 	// Insert current status
 	updateStatus();
 	setTimeout(function() {
@@ -482,9 +489,13 @@ $(function() {
 		Popup.close();
 		reLogin(); });
 	ael('button.ChangeSize', function() {
+		style.size.MaxMin = [
+			(600/screen.availHeight)*100,
+			20
+		];
 		Popup.change('#size', true, function() {
 			$('#size>div').show();
-			reloadStyle();
+			style.reload();
 		});
 	});
 	ael('p.Logout', function() {
@@ -493,9 +504,9 @@ $(function() {
 	});
 	ael('.close>span', Popup.close);
 	ael('span.cls', Popup.close_);
-	ael('#size>.plus', add);
-	ael('#size>.minus', sub);
-	ael('#size>.ok', sizeSave);
+	ael('#size>.plus', style.size.add);
+	ael('#size>.minus', style.size.sub);
+	ael('#size>.ok', style.size.save);
 	ael('button.OnlineStyle', function() {
 		// Show current style of online list
 		$('#view>span').each(function(i,v) {
