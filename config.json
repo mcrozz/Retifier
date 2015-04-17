@@ -2,13 +2,13 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1608,
+        "Build": 1612,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "site",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
-        "Ver": "1.4.7"
+        "Ver": "1.4.8"
     },
     "Copy": [
         "DinDon.ogg",
@@ -73,13 +73,13 @@
     "Opera": {
         "Add": null,
         "Browser": "Opera",
-        "Build": 80,
+        "Build": 83,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
-        "Ver": "1.1.6"
+        "Ver": "1.1.7"
     },
     "Safari": {
         "Add": [

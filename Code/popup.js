@@ -202,15 +202,15 @@ $(function() {
 	};
 
 	function clickChangeUserCls() {
-		reloadStyle();
+		style.reload();
 	}
 
 	function clickChangeUser() {
 		Popup.init('.options', clickChangeUserCls);
 
 		// Fix height of custom check boxes
-		$('.Check_Box').css('height', $('.Check_Box')[0].offsetWidth*.43+'px');
-		$('.Check_Box_2').css('height', $('.Check_Box_2')[0].offsetWidth+'px');
+		$('.toggle>.Check_Box').css('height', $('.toggle>.Check_Box')[0].offsetWidth*.43+'px');
+		$('li>.Check_Box_2').css('height', $('li>.Check_Box_2')[0].offsetWidth+'px');
 
 		$('#user>a:nth-child(2)').html(local.Config.User_Name);
 		_$('ChgUsrInt').value = local.Config.Interval_of_Checking;
@@ -363,6 +363,8 @@ $(function() {
 			returns: chk,
 			showClose: chk
 		});
+		if (chk)
+			$('.Check_Box_2[id]').css('height', $('.Check_Box_2[id]')[0].offsetWidth+'px');
 	}
 
 	var AppVersion = {
@@ -514,7 +516,7 @@ $(function() {
 			$('#view>span').each(function(i,v) {
 				v.className = v.className.replace(' selected', '');
 			});
-			reloadStyle();
+			style.reload();
 		});
 	});
 	ael('#view>span', function(e) {
@@ -528,14 +530,14 @@ $(function() {
 			if (v.className !== e.className)
 				v.className = v.className.replace(' selected', '');
 		});
-		reloadStyle({format: e.className});
+		style.reload({format: e.className});
 		e.className = e.className+' selected';
 
 		return true;
 	});
 	ael('#view>.ok', function() {
 		local.set('Config.Format', $('#view>span.selected')[0].classList[0]);
-		reloadStyle(); // Just in case
+		style.reload(); // Just in case
 		Popup.close_();
 	});
 	ael(window, function(e) {

@@ -8,6 +8,7 @@ newUpdate = {
 
 // Changelog
 changes = [
+  "-1.4.8 hotfix",
   "-1.4.7 fixed 'Get notifications from', various style improvements",
   "-1.4.6 hotfix, fixed background script, fixed bug with zero followed channels",
   "-1.4.5 a lot of UI improvements, script optimizations, added notifications settings for each streamer, resizable extension's window",
