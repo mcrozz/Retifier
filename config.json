@@ -1,7 +1,8 @@
 {
     "Chrome": {
+        "Add": null,
         "Browser": "Chrome",
-        "Build": 1550,
+        "Build": 1555,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "site",
@@ -52,6 +53,7 @@
         "css"
     ],
     "Firefox": {
+        "Add": null,
         "Build": 40,
         "CopyBackgound": "false",
         "IfBackA": "",
@@ -67,6 +69,7 @@
         "jQuery": "jquery-2.1.3.min.js"
     },
     "Opera": {
+        "Add": null,
         "Browser": "Opera",
         "Build": 80,
         "Config": "manifest.json",

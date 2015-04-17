@@ -22,7 +22,7 @@ $(function() {
 		// Close it
 		Popup.close_();
 		// Reload it
-		if (!safari)
+		if (typeof safari === 'undefined')
 			location.reload();
 	}
 
@@ -66,7 +66,7 @@ $(function() {
 		htm+= '.Check_Box, .Check_Box_2 {height:'+(h*.0379)+'px}';
 		$('style').html(htm);
 
-		if (safari) {
+		if (typeof safari !== 'undefined') {
 			safari.self.width = w;
 			safari.self.height = h;
 		}
@@ -333,9 +333,6 @@ $(function() {
 					check.id = i;
 					check.className = 'Check_Box_2';
 					check.checked = v.Notify;
-					check.onClick = function(e) {
-						local.following(e.target.id, {Notify: e.target.checked});
-					};
 					ch.appendChild(check);
 					hld.appendChild(ch);
 				}
@@ -346,8 +343,11 @@ $(function() {
 
 		function saveList() {
 			$('input[id].Check_Box_2').each(function(i,v) {
-				if (local.FollowingList[v.id].Notify !== v.checked)
-					local.following(v.id, {Notify: v.checked});
+				// if streeamer not in following list (e.g. somehow deleted)
+				if (local.following.get(v.id) == null)
+					return;
+
+				local.following.set(v.id, {Notify: v.checked});
 			});
 		}
 
@@ -387,7 +387,7 @@ $(function() {
 
 	function ael(id, func) { $(id).on('click', func); }
 
-	if (safari) {
+	if (typeof safari !== 'undefined') {
 		safari.application.addEventListener('popover', function(event) {
 			event.target.contentWindow.location.reload();
 		}, true);
