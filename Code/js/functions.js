@@ -96,10 +96,11 @@ function modelLocal() {
   this.following = {
     get: function(n) {
       // Returns streamer obj
-      if (isNaN(n))
-        return local.FollowingList[local.following.map[n]];
-      else
-        return local.FollowingList[n];
+      var itm = isNaN(n) ?
+        local.FollowingList[local.following.map[n]] :
+        local.FollowingList[n];
+
+      return (typeof itm === 'undefined') ? null : itm;
     },
     set: function(id, dt) {
       try {
@@ -117,7 +118,9 @@ function modelLocal() {
 
         local.FollowingList[id] = dt;
         localStorage.FollowingList = JSON.stringify(local.FollowingList);
-        send({type: 'update', data: 'FollowingList'});
+        // if something changed inform popup window
+        if (tm !== dt)
+          send({type: 'update', data: 'FollowingList'});
         return true;
       } catch (e) { return err(e); }
     },
