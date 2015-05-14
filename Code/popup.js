@@ -45,7 +45,7 @@ $(function() {
 			// auto detected maximum and minimum size of extension
 			MaxMin: [-1, -1],
 			add: function() {
-				_this = style.size;
+				var _this = style.size;
 				if (isNaN(_this.current))
 					_this.current = 0;
 
@@ -55,7 +55,7 @@ $(function() {
 				$('#size>div').hide();
 			},
 			sub: function() {
-				_this = style.size;
+				var _this = style.size;
 				if (isNaN(_this.current))
 					_this.current = 0;
 
@@ -589,7 +589,7 @@ $(function() {
 		if (popupMsg.html() !== p.target.innerText)
 			popupMsg.html(p.target.innerText);
 
-		var left, top, tarH = popupMsg.height();
+		var left, tops, tarH = popupMsg.height();
 
 		left = p.pageX<(WIDTH/2) ? 1.5 : 50;
 		tops = (p.pageY+tarH)>HEIGHT ? p.pageY-tarH-15 : p.pageY+5;
