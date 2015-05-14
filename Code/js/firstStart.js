@@ -49,7 +49,7 @@ function lgin() {
 		* www.rozz.me ->
 		* extension
 		*/
-		window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=https://www.rozz.me/app/Twitch.tv_Notifier/auth.html&scope=user_follows_edit+user_read');
+		window.open('https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=2p0gptvg3t1erx2h8fhbo9cwv8k5zq0&redirect_uri=https://mcrozz.github.io/backupsite/auth/twitch.html&scope=user_follows_edit+user_read');
 	};
 	var TwAcc = cr('div');
 	TwAcc.id = 'TwitchAccount';
