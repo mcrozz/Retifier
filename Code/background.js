@@ -311,7 +311,6 @@ var bck = {
         }
 
         if (i == list.length-1) {
-          timeOut.check();
           log('Every channel checked');
           return bck.promise.done();
         }
