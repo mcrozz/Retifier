@@ -15,15 +15,15 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.6**
->* Fixed background script
->* Fixed bug with zero followed channels
->* Added button in options 'in case of bugs'
+_Google Chrome_ - **1.4.9**
+>* Fixed auth by Twitch account
+>* Fixed time out for notifications
+>* Notifications will not attack you after restart (improved)
+>* Various improvements
 
-_Opera_ - **1.1.6**
->* Fixed background script
->* Fixed bug with zero followed channels
->* Added button in options 'in case of bugs'
+_Opera_ - **1.1.7**
+>* Fixed 'Get notifications from'
+>* Various style improvements
 
 [Show full changelog](CHANGELOG.md)
 

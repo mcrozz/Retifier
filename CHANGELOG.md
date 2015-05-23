@@ -1,9 +1,14 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.8**
+- [_Google Chrome_](#google-chrome) - **1.4.9**
 - [_Opera_](#opera) - **1.1.7**
 
 # _Google Chrome_
+* **1.4.9**
+	* Fixed auth by Twitch account
+	* Fixed time out for notifications
+	* Notifications will not attack you after restart (improved)
+	* Various improvements
 * **1.4.8**
 	* Hotfix
 * **1.4.7**
