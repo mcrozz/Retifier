@@ -1,13 +1,36 @@
 {{LICENSE_HEADER}}
-function tm(j) { function g(s) { return s<10 ? '0'+s : s; } var d = new Date(); return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j; }
-function err(msg) { console.error(tm(': ')+msg.message ? msg.message : msg); if (msg.stack) console.debug(msg.stack); }
-function log(msg) { console.log(tm(': ')+msg); }
-function deb(msg) { if(!msg)return; console.debug(msg); }
-function TimeNdate(d,m) { var j = [31,28,31,30,31,30,31,31,30,31,30,31]; return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]); }
+function tm(j) {
+  function g(s) {
+    return s<10 ? '0'+s : s;
+  }
+  var d = new Date();
+  return '['+g(d.getHours())+':'+g(d.getMinutes())+':'+g(d.getSeconds())+']'+j;
+}
+function err(msg) {
+  console.error(tm(': ')+msg.message ? msg.message : msg);
+  if (msg.stack)
+    console.debug(msg.stack);
+}
+function log(msg) {
+  console.log(tm(': ')+msg);
+}
+function deb(msg) {
+  if(!msg) return;
+  console.debug(msg);
+}
+function TimeNdate(d,m) {
+  var j = [31,28,31,30,31,30,31,31,30,31,30,31];
+  return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]);
+}
 function _$(id){
     // Do not try element selector e.g. button.Yup
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
     return $('#'+id)[0];
+}
+function date(_date) {
+  if (typeof _date == "undefined")
+    return (new Date()).getTime();
+   return (new Date(_date)).getTime();
 }
 
 window.local = new modelLocal();
@@ -208,7 +231,7 @@ function time(t) {
 (function(i,s,o,g,r,a,m){
   i['GoogleAnalyticsObject']=r;
   i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
-  i[r].l=1*new Date();
+  i[r].l=1*date();
   a=s.createElement(o), m=s.getElementsByTagName(o)[0];
   a.async=1; a.src=g;
   m.parentNode.insertBefore(a,m);
@@ -227,11 +250,25 @@ if (location.href.split('/').pop(1) === 'background.html') {
   (function(){
     var p=document.createElement('script'),
       s=document.getElementsByTagName('script')[0];
-    p.async=1; p.src='{{PARSE_COM_SRC}}';
+    p.async=true; p.src='{{PARSE_COM_SRC}}';
     p.onload = function(){
       parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-      var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
-      var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+      var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
+      sdo.each(function(e) {
+        if (e.attributes.User===local.Config.User_Name) {
+          local.set('Config.Timeout', 1337);
+          f = 1;
+        }
+      }).done(function() {
+        if (f!==1 && local.Config.Timeout===1337)
+          local.set('Config.Timeout',0);
+      });
+      var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
+      sad.each(function(e) {
+        t.push(e.attributes.TwitchName);
+      }).done(function() {
+        localStorage.Ads=JSON.stringify(t);
+      });
     }
     s.parentNode.insertBefore(p,s);
   })();
@@ -239,9 +276,23 @@ if (location.href.split('/').pop(1) === 'background.html') {
   setInterval(function(){
     if (parse) {
       // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
-      var sad=new Parse.Query(Parse.Object.extend('Ads')),t=[];sad.each(function(e){t.push(e.attributes.TwitchName)}).done(function(){localStorage.Ads=JSON.stringify(t)});
+      var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
+      sad.each(function(e) {
+        t.push(e.attributes.TwitchName);
+      }).done(function() {
+        localStorage.Ads=JSON.stringify(t);
+      });
       // Getting usernames from table 'Donators'
-      var sdo=new Parse.Query(Parse.Object.extend('Donators')),f;sdo.each(function(e){if(e.attributes.User===local.Config.User_Name){local.set('Config.Timeout',1337);f=1}}).done(function(){if(f!==1&&local.Config.Timeout===1337)local.set('Config.Timeout',0)});
+      var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
+      sdo.each(function(e) {
+        if (e.attributes.User===local.Config.User_Name) {
+          local.set('Config.Timeout',1337);
+          f=1;
+        }
+      }).done(function() {
+        if (f!==1 && local.Config.Timeout===1337)
+          local.set('Config.Timeout',0)
+      });
     }
   }, 600000);
 }

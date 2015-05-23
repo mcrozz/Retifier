@@ -4,11 +4,23 @@
 *  data : String or object
 * }
 */
+
+// Dismiss all notifications when user opens extension's window
+if (location.pathname === '/popup.html') {
+	chrome.notifications.getAll(function(n) {
+		$.each(n, function(i,v) {
+			if (i == 'new_update' || i == 'sys')
+				return;
+			chrome.notifications.clear(i, function(){});
+		});
+	});
+}
+
 chrome.runtime.onMessage.addListener(function(msg, s, resp) {
 	if (typeof msg === 'string')
 		msg = {type: msg};
 
-	if (window.location.pathname === '/background.html') {
+	if (location.pathname === '/background.html') {
 		// If something is wrong or new update
 		// This object will be indicate what's
 		// went wrong:

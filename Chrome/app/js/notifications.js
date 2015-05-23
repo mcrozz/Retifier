@@ -1,29 +1,11 @@
-function clear(i) {
-	chrome.notifications.clear(i, function() {
-		var j = {};
-		$.each(StrNames, function(k,v) {
-			if (k!==i)
-				j[k] = v;
-		});
-		StrNames = j;
-	});
-}
 chrome.notifications.onButtonClicked.addListener(function(id){
 	// If user clicked button 'Install' in notification
 	if (id === 'new_update')
 		return chrome.runtime.reload();
 
 	// Clicked 'Watch now'
-	window.open('http://www.twitch.tv/'+StrNames[id]);
-	clear(id);
+	window.open('http://www.twitch.tv/'+window.notify.timeMeOut.getName(id));
 	return true;
-});
-chrome.notifications.onClosed.addListener(function(id,u){
-	if(u)
-		clear(id);
-});
-chrome.notifications.onClicked.addListener(function(id) {
-	clear(id);
 });
 chrome.runtime.onUpdateAvailable.addListener(function(m) {
 	// Update available, informate user
@@ -36,81 +18,130 @@ chrome.runtime.onUpdateAvailable.addListener(function(m) {
 	});
 });
 
-var ncnt = 0;
-var StrNames = {};
-
 if (!localStorage.timeOut)
-	localStorage.timeOut = '{}';
-var timeOut = {
-	init: function() {
-		try {
-			this.names = JSON.parse(localStorage.timeOut);
-			timeOut.check();
-		} catch(e) { return err(e); }
-	},
-	set: function(name) {
-		this.names[name] = (new Date()).toJSON();
-		this.save();
-	},
-	save: function() {
-		try {
-			localStorage.timeOut = JSON.stringify(this.names);
-		} catch(e) {return err(e); }
-	},
-	find: function(n) {
-		// return true if more than 15 second
-		if (typeof this.names[n] === 'undefined')
-			return true;
+	localStorage.timeOut = '[]';
+if (localStorage.timeOut[0] === '{')
+	localStorage.timeOut = '[]';
 
-		var dif = ((new Date())-(new Date(this.names[n])))/1000;
-		return dif>=15;
-	},
-	chck: -1,
-	check: function() {
-		if (this.chck !== -1)
-			return true;
+setTimeout(function() {
+	window.notify.timeMeOut.online.init();
+	setInterval(window.notify.timeMeOut.tickme, 30000);
+}, 0);
 
-		this.chck = setTimeout(function() {
-			var n = {}, ad = 0;
-			for (var i in timeOut.names) {
-				var c = timeOut.names[i];
-				var dif = ((new Date())-(new Date(c)))/1000;
-				if (dif<15) {
-					n[i] = c;
-					ad++;
-				}
-			}
-			timeOut.names = ad===0 ? {} : n;
-			timeOut.save();
-			timeOut.chck = -1;
-		}, 0);
-	}
-};
-timeOut.init();
-
-/*
-* Input: d {
-*  type: system, update, change etc
-*  name: name for storage
-*  msg
-*  title
-*  context
-*  button: Boolean or String
-* }
-*/
 window.notify = {
+	count: 0,
+	timeMeOut: {
+		add: function(name, typ, id) {
+			var time = 60000;
+			var times = {
+				online : 10,
+				offline: 10,
+				changed:  1,
+				follow :  1
+			};
+			time *= (times[typ]) ? times[typ] : 5;
+			
+			this.list[name] = [date()+time, id];
+			// Add it to timeOut list, so user won't be 'attacked' on startup
+			this.online.add(name);
+		},
+		del: function(name) {
+			var tmp = {};
+			$.each(this.list, function(i,v) {
+				if (i != name)
+					tmp[i] = v;
+			});
+			this.list = tmp;
+		},
+		list: {/* who's timeout and when expire */},
+		online: {
+			list: [],
+			add: function(name) {
+				this.list.push(name);
+				this.update();
+			},
+			is: function(name) {
+				return this.list.indexOf(name) != -1;
+			},
+			del: function(name) {
+				this.list = this.list.filter(function(n) {
+					return n!=name;
+				});
+				this.update();
+			},
+			update: function() {
+				try {
+					localStorage.timeOut = JSON.stringify(this.list);
+				} catch (e) { err(e); }
+			},
+			init: function() {
+				try {
+					this.list = JSON.parse(localStorage.timeOut);
+				} catch (e) { err(e); }
+			}
+		},
+		tickme: function() {
+			// TODO: check every streamer
+			var curTime = date();
+			$.each(window.notify.timeMeOut.list, function(i,v) {
+				if (curTime >= date(v[0])) {
+					// Dismiss notification
+					chrome.notifications.getAll(function(v) {
+						$.each(v, function(i,v) {
+							if (v[1] == i && v) {
+								chrome.notifications.clear(i, function(){});
+								return true;
+							}
+						});
+					});
+					// Remove from list
+					window.notify.timeMeOut.del(i);
+				}
+			});
+		},
+		getName: function(id) {
+			var returns = null;
+			$.each(this.list, function(i,v) {
+				if (v[1] == id) {
+					returns = i;
+					return;
+				}
+			});
+			return returns;
+		}
+	},
+	/*
+	* Input: d {
+	*  type: system, update, change etc
+	*  name: name for storage
+	*  msg
+	*  title
+	*  context
+	*  button: Boolean or String
+	* }
+	*/
 	send: function(d) {
 		this.list.push(d);
 		setTimeout(function() {
-			var d = notify.last();
 			if (window.location.pathname !== '/background.html')
 				return false;
 
-			if (d.type === 'sys' || d.type === 'update')
+			var d = notify.last();
+			
+			if (window.notify.timeMeOut.online.is(d.name))
+				return false;
+			
+			// You don't know when and how it'll happen
+			if (window.notify.count>9999)
+				window.notify.count = 0;
+			var id = 'n'+(++window.notify.count);
+			
+			/*if (d.type === 'sys' || d.type === 'update')
 				if (!d.name) {
 					d.name = 'd'+Math.floor(Math.random(100)*100);
-				}
+				}*/
 
+			// Just in case of undefined
 			$.each(['type', 'name', 'context', 'button'], function(i,v) {
 				d[v] = (typeof d[v] === 'undefined') ? '' : d[v];
 			});
@@ -119,45 +150,29 @@ window.notify = {
 				return Error("Invalid input");
 
 			deb(d);
-			function delNotify(i,t) {
-				var idToDel = i, times = 60000;
-				switch (t) {
-					case 'online':
-						times *= 30; break;
-					case 'offline':
-						times *= 30; break;
-					case 'changed':
-						times *= 10; break;
-					case 'follow':
-						times *= 3; break;
-					default:
-						times *= 5; break;
-				}
-				setTimeout(function(){
-					chrome.notifications.clear(idToDel, function(){});}, times);
-			}
 
 			function sendNotify(d) {
-				var k = d.name,
-					config = {
-						type           : "basic",
-						title          : d.title,
-						message        : d.msg,
-						contextMessage : d.context,
-						iconUrl        : "/img/notification_icon.png"
-					};
+				var config = {
+					type           : "basic",
+					title          : d.title,
+					message        : d.msg,
+					contextMessage : d.context,
+					iconUrl        : "/img/notification_icon.png"
+				};
 
 				if (typeof d.button === 'boolean' && d.button)
 					config.buttons = [{ title:"Watch now!" }];
 				else if (typeof d.button === 'string')
 					config.buttons = [{ title:d.button }];
 
-				chrome.notifications.create('n'+ncnt, config, function(){
-					StrNames['n'+ncnt] = d.name;
-					if (d.type != 'sys')
-						timeOut.set(d.name);
-					delNotify('n'+ncnt, d.type);
-					ncnt++;
+				chrome.notifications.create(id, config, function() {
+					// Add to timeOut queue
+					if (d.type != 'sys') {
+						window.notify.timeMeOut.add(d.name, d.type, id);
+						if (d.type == 'offline')
+							window.notify.timeMeOut.online.del(d.name);
+					}
+					// Play sound
 					if (local.Config.Notifications.sound_status)
 						new Audio('DinDon.ogg').play();
 				});
@@ -167,10 +182,6 @@ window.notify = {
 				// If system update
 				if (d.type === 'sys')
 					return sendNotify(d);
-
-				// If user in timoue
-				if (!timeOut.find(d.name))
-					return false;
 
 				var j = local.Config.Notifications;
 

@@ -43,10 +43,14 @@ var bck = {
       return this.data;
     },
     add: function(n) {
-      return this.data.push(n);
+      this.data.push(n);
+      local.set('Status.online', this.data.length);
+      BadgeOnlineCount(this.data.length);
     },
     del: function(n) {
       this.data = this.data.filter(function(v) { return v !== n; });
+      local.set('Status.online', this.data.length);
+      BadgeOnlineCount(this.data.length);
     },
     is: function(n) {
       return (this.data.indexOf(n))!==-1;
@@ -224,6 +228,32 @@ var bck = {
       return bck.checkStatus(lst, false);
     }
   },
+  recheckStatus: {
+    to: [],
+    checking: [],
+    is: function(name) {
+      return this.checking.indexOf(name)!=-1;
+    },
+    del: function(name) {
+      this.to = this.checking.filter(function(n){
+        return n!=name;
+      });
+    },
+    countDownStarted: false,
+    add: function(name) {
+      this.to.push(name);
+      
+      if (this.countDownStarted)
+        return;
+       
+      setTimeout(function() {
+        checkStatus(this.to, local.Config.token);
+        this.checking = this.to;
+        this.to = [];
+      }, 5000);
+      this.countDownStarted = true;
+    }
+  },
   checkStatus: function(list, token) {
     $.each(list, function(i,v) {
       $.getJSON('https://api.twitch.tv/kraken/streams/'+v)
@@ -285,7 +315,6 @@ var bck = {
         }
 
         if (i == list.length-1) {
-          timeOut.check();
           log('Every channel checked');
           return bck.promise.done();
         }
@@ -306,26 +335,32 @@ var bck = {
           Name   = d.stream.channel.name,
           d_name = d.stream.channel.display_name,
           Time   = d.stream.created_at;
+         
+        // Recheck streamer if status is undefined
+        if (!Status && bck.recheckStatus.is(Name))
+          return bck.recheckStatus.add(Name);
 
         if (!Status && FoLi.Stream.Title)
-          Status = FoLi.Stream.Title
+          Status = FoLi.Stream.Title;
         else if (!Status && !FoLi.Stream.Title)
           Status = 'Untitled stream';
 
         if (!Game && FoLi.Stream.Game)
-          Game = FoLi.Stream.Game
+          Game = FoLi.Stream.Game;
         else if (!Game && !FoLi.Stream.Game)
           Game = 'Not playing';
 
         if (!FoLi.Stream && !bck.online.is(Name)) {
           if (FoLi.Notify) {
-            var dd = (new Date()-new Date(Time)<=1000*local.Config.Interval_of_Checking)?' just went live!':' is live!';
+            var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
+              ?' just went live!':' is live!';
             notify.send({
               name: Name,
               title: Name+dd,
               msg: Status,
               type: 'online',
-              button: true
+              button: true,
+              context: Game
             });
           }
           bck.online.add(Name);
@@ -336,11 +371,14 @@ var bck = {
             name: Name,
             title: d_name+' changed stream title on',
             msg: Status,
-            type: 'follow'
+            type: 'follow',
+            context: Game
           });
 
-        if (new Date(FoLi.Stream.Time) - new Date(Time) > 0)
-          Time = FoLi.Stream.Time;
+        if (FoLi.Stream.Time)
+          if ((date(FoLi.Stream.Time)-date(Time)) > 0) {
+            Time = FoLi.Stream.Time;
+          }
 
         local.game(Game);
 
@@ -403,9 +441,9 @@ var bck = {
 
     // getting following list every 2 min
     // checking for online streamers every {USER} min + 30s
-    bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
+    bck.intFollowing = setInterval(function(){ bck.getList(); }, 120000);
     setTimeout(function() {
-      bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking));}
+      bck.intStatus = setInterval(function(){ bck.getOnline(); }, (60000*local.Config.Interval_of_Checking));}
     , 30000);
     bck.getList();
     bck.promise.after = bck.getOnline;
