@@ -319,7 +319,8 @@ var bck = {
 
         if (!FoLi.Stream && !bck.online.is(Name)) {
           if (FoLi.Notify) {
-            var dd = (new Date()-new Date(Time)<=1000*local.Config.Interval_of_Checking)?' just went live!':' is live!';
+            var dd = ((date()-date(Time))<=(1000*local.Config.Interval_of_Checking))
+              ?' just went live!':' is live!';
             notify.send({
               name: Name,
               title: Name+dd,
@@ -339,7 +340,7 @@ var bck = {
             type: 'follow'
           });
 
-        if (new Date(FoLi.Stream.Time) - new Date(Time) > 0)
+        if ((date(FoLi.Stream.Time)-date(Time)) > 0)
           Time = FoLi.Stream.Time;
 
         local.game(Game);

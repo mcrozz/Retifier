@@ -27,6 +27,11 @@ function _$(id){
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
     return $('#'+id)[0];
 }
+function date(_date) {
+  if (typeof _date == "undefined")
+    return (new Date()).getTime();
+   return (new Date(_date)).getTime();
+}
 
 window.local = new modelLocal();
 
@@ -226,7 +231,7 @@ function time(t) {
 (function(i,s,o,g,r,a,m){
   i['GoogleAnalyticsObject']=r;
   i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
-  i[r].l=1*new Date();
+  i[r].l=1*date();
   a=s.createElement(o), m=s.getElementsByTagName(o)[0];
   a.async=1; a.src=g;
   m.parentNode.insertBefore(a,m);
@@ -245,7 +250,7 @@ if (location.href.split('/').pop(1) === 'background.html') {
   (function(){
     var p=document.createElement('script'),
       s=document.getElementsByTagName('script')[0];
-    p.async=1; p.src='{{PARSE_COM_SRC}}';
+    p.async=true; p.src='{{PARSE_COM_SRC}}';
     p.onload = function(){
       parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
       var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
