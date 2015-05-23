@@ -43,10 +43,14 @@ var bck = {
       return this.data;
     },
     add: function(n) {
-      return this.data.push(n);
+      this.data.push(n);
+      local.set('Status.online', this.data.length);
+      BadgeOnlineCount(this.data.length);
     },
     del: function(n) {
       this.data = this.data.filter(function(v) { return v !== n; });
+      local.set('Status.online', this.data.length);
+      BadgeOnlineCount(this.data.length);
     },
     is: function(n) {
       return (this.data.indexOf(n))!==-1;
@@ -371,8 +375,10 @@ var bck = {
             context: Game
           });
 
-        if ((date(FoLi.Stream.Time)-date(Time)) > 0)
-          Time = FoLi.Stream.Time;
+        if (FoLi.Stream.Time)
+          if ((date(FoLi.Stream.Time)-date(Time)) > 0) {
+            Time = FoLi.Stream.Time;
+          }
 
         local.game(Game);
 
