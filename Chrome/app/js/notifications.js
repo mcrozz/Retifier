@@ -160,7 +160,7 @@ window.notify = {
 				chrome.notifications.create(id, config, function() {
 					// Add to timeOut queue
 					if (d.type != 'sys') {
-						window.notify.timeMeOut.add(d.name, d.type);
+						window.notify.timeMeOut.add(d.name, d.type, id);
 						if (d.type == 'offline')
 							window.notify.timeMeOut.online.del(d.name);
 					}
