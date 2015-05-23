@@ -79,7 +79,7 @@ window.notify = {
 			var curTime = date();
 			$.each(window.notify.timeMeOut.list, function(i,v) {
 				if (curTime >= date(v[0])) {
-					// Dissmis notification
+					// Dismiss notification
 					chrome.notifications.getAll(function(v) {
 						$.each(v, function(i,v) {
 							if (v[1] == i && v) {
