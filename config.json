@@ -2,7 +2,7 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1612,
+        "Build": 1614,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "site",
@@ -44,7 +44,6 @@
         "css\\grid.css",
         "css\\light.css",
         "css\\style.css",
-        "js\\jquery-2.1.3.min.js",
         "js\\insertFunc.js",
         "js\\firstStart.js",
         "js\\functions.js"

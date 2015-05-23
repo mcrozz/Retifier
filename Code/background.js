@@ -224,6 +224,32 @@ var bck = {
       return bck.checkStatus(lst, false);
     }
   },
+  recheckStatus: {
+    to: [],
+    checking: [],
+    is: function(name) {
+      return this.checking.indexOf(name)!=-1;
+    },
+    del: function(name) {
+      this.to = this.checking.filter(function(n){
+        return n!=name;
+      });
+    },
+    countDownStarted: false,
+    add: function(name) {
+      this.to.push(name);
+      
+      if (this.countDownStarted)
+        return;
+       
+      setTimeout(function() {
+        checkStatus(this.to, local.Config.token);
+        this.checking = this.to;
+        this.to = [];
+      }, 5000);
+      this.countDownStarted = true;
+    }
+  },
   checkStatus: function(list, token) {
     $.each(list, function(i,v) {
       $.getJSON('https://api.twitch.tv/kraken/streams/'+v)
@@ -306,14 +332,18 @@ var bck = {
           Name   = d.stream.channel.name,
           d_name = d.stream.channel.display_name,
           Time   = d.stream.created_at;
+         
+        // Recheck streamer if status is undefined
+        if (!Status && bck.recheckStatus.is(Name))
+          return bck.recheckStatus.add(Name);
 
         if (!Status && FoLi.Stream.Title)
-          Status = FoLi.Stream.Title
+          Status = FoLi.Stream.Title;
         else if (!Status && !FoLi.Stream.Title)
           Status = 'Untitled stream';
 
         if (!Game && FoLi.Stream.Game)
-          Game = FoLi.Stream.Game
+          Game = FoLi.Stream.Game;
         else if (!Game && !FoLi.Stream.Game)
           Game = 'Not playing';
 
@@ -404,9 +434,9 @@ var bck = {
 
     // getting following list every 2 min
     // checking for online streamers every {USER} min + 30s
-    bck.intFollowing = setInterval(function(){bck.getList()}, 120000);
+    bck.intFollowing = setInterval(function(){ bck.getList(); }, 120000);
     setTimeout(function() {
-      bck.intStatus = setInterval(function(){bck.getOnline()}, (60000*local.Config.Interval_of_Checking));}
+      bck.intStatus = setInterval(function(){ bck.getOnline(); }, (60000*local.Config.Interval_of_Checking));}
     , 30000);
     bck.getList();
     bck.promise.after = bck.getOnline;
