@@ -120,6 +120,8 @@ def build(b, s):
 		else:
 			scrpts += '<script src="'+y+'"></script>\n'
 	rp("{{INSERT_SCRIPTS_HERE}}", str(scrpts), pj([dbDir, "popup.html"]))
+	# Copying jQuery
+	shutil.copy2(pj([currDir, 'Code', 'js', config['GlobalVar']['jQuery']]), pj([dbDir, 'js', config['GlobalVar']['jQuery']]))
 	# Replace INSERT_BACKGROUND_SCRIPTS
 	if config[browser]['CopyBackgound'] == 'true':
 		scrBack = '<script src="./js/'+config['GlobalVar']['jQuery']+'"></script>\n'
