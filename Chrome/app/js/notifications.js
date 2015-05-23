@@ -7,8 +7,6 @@ chrome.notifications.onButtonClicked.addListener(function(id){
 	window.open('http://www.twitch.tv/'+window.notify.timeMeOut.getName(id));
 	return true;
 });
-chrome.notifications.onClosed.addListener(function(id,u){});
-chrome.notifications.onClicked.addListener(function(id) {});
 chrome.runtime.onUpdateAvailable.addListener(function(m) {
 	// Update available, informate user
 	notify.send({
@@ -46,6 +44,14 @@ window.notify = {
 			this.list[name] = [date()+time, id];
 			// Add it to timeOut list, so user won't be 'attacked' on startup
 			this.online.add(name);
+		},
+		del: function(name) {
+			var tmp = {};
+			$.each(this.list, function(i,v) {
+				if (i != name)
+					tmp[i] = v;
+			});
+			this.list = tmp;
 		},
 		list: {/* who's timeout and when expire */},
 		online: {
@@ -88,6 +94,8 @@ window.notify = {
 							}
 						});
 					});
+					// Remove from list
+					window.notify.timeMeOut.del(i);
 				}
 			});
 		},
