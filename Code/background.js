@@ -349,14 +349,15 @@ var bck = {
 
         if (!FoLi.Stream && !bck.online.is(Name)) {
           if (FoLi.Notify) {
-            var dd = ((date()-date(Time))<=(1000*local.Config.Interval_of_Checking))
+            var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
               ?' just went live!':' is live!';
             notify.send({
               name: Name,
               title: Name+dd,
               msg: Status,
               type: 'online',
-              button: true
+              button: true,
+              context: Game
             });
           }
           bck.online.add(Name);
@@ -367,7 +368,8 @@ var bck = {
             name: Name,
             title: d_name+' changed stream title on',
             msg: Status,
-            type: 'follow'
+            type: 'follow',
+            context: Game
           });
 
         if ((date(FoLi.Stream.Time)-date(Time)) > 0)
