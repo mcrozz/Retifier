@@ -2,10 +2,10 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1637,
+        "Build": 1639,
         "Config": "manifest.json",
         "CopyBackgound": "true",
-        "Parse": "site",
+        "Parse": "local",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
         "Ver": "1.4.9"
