@@ -7,6 +7,8 @@
 * For Safari:	Coming soon...
 * For Opera: [In Opera Add-Ons](http://bit.ly/TwitchOpera)
 
+# Auth redirection can be found [here on GitHub](https://github.com/mcrozz/backupsite/blob/gh-pages/auth/twitch.html)
+
 # Installation
 * Clone https://github.com/mcrozz/Twitch.tv_Notifier
 * Start build.py
