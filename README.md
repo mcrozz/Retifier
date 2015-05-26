@@ -17,11 +17,8 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.9**
->* Fixed auth by Twitch account
->* Fixed time out for notifications
->* Notifications will not attack you after restart (improved)
->* Various improvements
+_Google Chrome_ - **1.4.9.1**
+>* Fixed notifications not showing
 
 _Opera_ - **1.1.7**
 >* Fixed 'Get notifications from'

@@ -1,9 +1,11 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.9**
+- [_Google Chrome_](#google-chrome) - **1.4.9.1**
 - [_Opera_](#opera) - **1.1.7**
 
 # _Google Chrome_
+* **1.4.9.1**
+	* fixed notifications not showing
 * **1.4.9**
 	* Fixed auth by Twitch account
 	* Fixed time out for notifications
