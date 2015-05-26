@@ -19,9 +19,9 @@ chrome.runtime.onUpdateAvailable.addListener(function(m) {
 });
 
 if (!localStorage.timeOut)
-	localStorage.timeOut = '[]';
-if (localStorage.timeOut[0] === '{')
-	localStorage.timeOut = '[]';
+	localStorage.timeOut = '{}';
+if (localStorage.timeOut[0] === '[')
+	localStorage.timeOut = '{}';
 
 setTimeout(function() {
 	window.notify.timeMeOut.online.init();
@@ -41,7 +41,7 @@ window.notify = {
 			};
 			time *= (times[typ]) ? times[typ] : 5;
 			
-			this.list[name] = [date()+time, id];
+			this.list[name] = [date()+time, id, date()+600000];
 			// Add it to timeOut list, so user won't be 'attacked' on startup
 			this.online.add(name);
 		},
@@ -55,18 +55,30 @@ window.notify = {
 		},
 		list: {/* who's timeout and when expire */},
 		online: {
-			list: [],
+			list: {/* list of online streamers and who gone offline in 10 min */},
 			add: function(name) {
-				this.list.push(name);
+				this.list[name] = date();
 				this.update();
 			},
 			is: function(name) {
-				return this.list.indexOf(name) != -1;
+				var isThere = false;
+				$.each(this.list, function(i,v) {
+					if (i === name) {
+						isThere = true;
+						return true;
+					}
+				});
+				return isThere;
 			},
 			del: function(name) {
-				this.list = this.list.filter(function(n) {
-					return n!=name;
+				var tmpObj = {};
+				
+				$.each (this.list, function(i,v) {
+					if (i !== name)
+						tmpObj[i] = v;
 				});
+				
+				this.list = tmpObj;
 				this.update();
 			},
 			update: function() {
@@ -81,8 +93,14 @@ window.notify = {
 			}
 		},
 		tickme: function() {
-			// TODO: check every streamer
+			// Checking every notification for timeOut
 			var curTime = date();
+			$.each(window.notify.timeMeOut.online.list, function(i,v) {
+				// Streamer went offline more than 10 minutes ago
+				if (date() - v >= 60000)
+					window.notify.timeMeOut.online.del(i);
+			});
+			
 			$.each(window.notify.timeMeOut.list, function(i,v) {
 				if (curTime >= date(v[0])) {
 					// Dismiss notification
