@@ -5,7 +5,10 @@ chrome.notifications.onButtonClicked.addListener(function(id){
 
 	// Clicked 'Watch now'
 	window.open('http://www.twitch.tv/'+window.notify.timeMeOut.getName(id));
-	return true;
+	window.notify.timeMeOut.dismiss(id);
+});
+chrome.notifications.onClicked.addListener(function(id) {
+	window.notify.timeMeOut.dismiss(id);
 });
 chrome.runtime.onUpdateAvailable.addListener(function(m) {
 	// Update available, informate user
@@ -92,6 +95,26 @@ window.notify = {
 				} catch (e) { err(e); }
 			}
 		},
+		dismiss: function(name) {
+			// Dismiss notification
+			if (name[0] === "=") {
+				chrome.notifications.clear(name, function(){});
+				// Remove from list
+				this.del(this.getName(name));
+			} else {
+				chrome.notifications.getAll(function(v) {
+					$.each(v, function(i,v) {
+						if (name == i && v) {
+							chrome.notifications.clear(i, function(){});
+							return true;
+						}
+					});
+				});
+				// Remove from list
+				this.del(name);
+			}
+			
+		},
 		tickme: function() {
 			// Checking every notification for timeOut
 			var curTime = date();
@@ -102,19 +125,8 @@ window.notify = {
 			});
 			
 			$.each(window.notify.timeMeOut.list, function(i,v) {
-				if (curTime >= date(v[0])) {
-					// Dismiss notification
-					chrome.notifications.getAll(function(v) {
-						$.each(v, function(i,v) {
-							if (v[1] == i && v) {
-								chrome.notifications.clear(i, function(){});
-								return true;
-							}
-						});
-					});
-					// Remove from list
-					window.notify.timeMeOut.del(i);
-				}
+				if (curTime >= date(v[0]))
+					window.notify.timeMeOut.dismiss(i);
 			});
 		},
 		getName: function(id) {
@@ -152,7 +164,7 @@ window.notify = {
 			// You don't know when and how it'll happen
 			if (window.notify.count>9999)
 				window.notify.count = 0;
-			var id = 'n'+(++window.notify.count);
+			var id = '='+(++window.notify.count);
 			
 			/*if (d.type === 'sys' || d.type === 'update')
 				if (!d.name) {
