@@ -2,13 +2,13 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1639,
+        "Build": 1647,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
-        "Ver": "1.4.9"
+        "Ver": "1.4.9.1"
     },
     "Copy": [
         "DinDon.ogg",

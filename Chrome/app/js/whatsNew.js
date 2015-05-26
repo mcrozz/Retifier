@@ -2,12 +2,13 @@
 
 // What's new in update
 newUpdate = {
-  msg: "Fixes",
-  content: "<p>What's new in this update:</p><li>Fixed auth by Twitch account (you should try it!)</li><li>Fixed time out for notifications</li><li>Notifications will not attack you after restart (improved)</li><li>Various improvements</li>"
+  msg: "Fix",
+  content: "<p>What's new in this update:</p><li>Fixed notifications not showing</li>"
 };
 
 // Changelog
 changes = [
+  "-1.4.9.1 fixed notifications not showing",
   "-1.4.9 fixed auth by Twitch account, fixed time out for notifications, notifications will not attack you after restart (improved), various improvements",
   "-1.4.8 hotfix",
   "-1.4.7 fixed 'Get notifications from', various style improvements",
