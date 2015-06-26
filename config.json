@@ -72,13 +72,13 @@
     "Opera": {
         "Add": null,
         "Browser": "Opera",
-        "Build": 83,
+        "Build": 89,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
-        "Ver": "1.1.7"
+        "Ver": "1.1.8"
     },
     "Safari": {
         "Add": [
