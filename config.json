@@ -2,7 +2,7 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1647,
+        "Build": 1650,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
@@ -21,6 +21,8 @@
         "auth.js",
         "background.js",
         "img\\icon.png",
+        "img\\icon_0.png",
+        "img\\icon_1.png",
         "img\\notification_icon.png",
         "img\\Check_Box.png",
         "img\\Check_Box_ch.png",
