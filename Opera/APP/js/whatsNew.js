@@ -2,12 +2,13 @@
 
 // What's new in update
 newUpdate = {
-  msg: "Fixes",
-  content: "<p>What's new in this update:</p><li>Fixed 'Get notifications from'</li><li>Various style improvements</li>"
+  msg: "Various improvements",
+  content: "<p>What's new in this update:</p><li>fixed auth by Twitch account</li><li>fixed time out for notifications</li><li>notifications will not attack you after restart (improved)</li><li>fixed bug when notifications weren't showing</li><li>various improvements</li>"
 };
 
 // Changelog
 changes = [
+  "-1.1.8 fixed auth by Twitch account, fixed time out for notifications, notifications will not attack you after restart (improved), fixed bug when notifications weren't showing, various improvements",
   "-1.1.7 fixed 'Get notifications from', various style improvements",
   "-1.1.6 hotfix, fixed background script, fixed bug with zero followed channels",
   "-1.1.5 a lot of UI improvements, script optimizations, added notifications settings for each streamer, resizable extension's window",

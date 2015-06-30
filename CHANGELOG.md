@@ -1,11 +1,11 @@
 ## Changelog
 Current versions:
 - [_Google Chrome_](#google-chrome) - **1.4.9.1**
-- [_Opera_](#opera) - **1.1.7**
+- [_Opera_](#opera) - **1.1.8**
 
 # _Google Chrome_
 * **1.4.9.1**
-	* fixed notifications not showing
+	* Fixed bug when notifications weren't showing
 * **1.4.9**
 	* Fixed auth by Twitch account
 	* Fixed time out for notifications
@@ -128,6 +128,12 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.1.8**
+	* Fixed auth by Twitch account
+	* Fixed time out for notifications
+	* Notifications will not attack you after restart (improved)
+	* Fixed bug when notifications weren't showing
+	* Various improvements
 * **1.1.7**
 	* Fixed 'Get notifications from'
 	* Various style improvements

@@ -2,7 +2,7 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1647,
+        "Build": 1652,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
@@ -21,6 +21,8 @@
         "auth.js",
         "background.js",
         "img\\icon.png",
+        "img\\icon_0.png",
+        "img\\icon_1.png",
         "img\\notification_icon.png",
         "img\\Check_Box.png",
         "img\\Check_Box_ch.png",
@@ -72,13 +74,13 @@
     "Opera": {
         "Add": null,
         "Browser": "Opera",
-        "Build": 83,
+        "Build": 89,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://addons.opera.com/en/extensions/details/twitchtv-notifier/",
-        "Ver": "1.1.7"
+        "Ver": "1.1.8"
     },
     "Safari": {
         "Add": [

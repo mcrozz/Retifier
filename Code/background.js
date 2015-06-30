@@ -127,8 +127,8 @@ var bck = {
 
       log('Updating list of following channels');
 
+      // If new user
       if (local.Following == 0) {
-        // If new user
         $.each(j.follows, function(i,v) {
           local.following.set(i, {
             Name: v.channel.name,
@@ -173,10 +173,9 @@ var bck = {
       // Check token
       $.getJSON('https://api.twitch.tv/kraken/?oauth_token='+local.Config.token)
       .done(function(e) {
-        if (!e.token.valid) {
-          // token is invalid, inform user
+        // token is invalid, inform user
+        if (!e.token.valid)
           window.toShow = 777;
-        }
       })
       .error(function(e) {
         err(e);
@@ -188,9 +187,8 @@ var bck = {
 
       $.getJSON('https://api.twitch.tv/kraken/streams/followed?limit=100&offset=0&oauth_token='+local.Config.token)
       .done(function(d) {
+        // nobody online...
         if (d._total === 0) {
-          // nobody online...
-
           log('Every channel checked');
 
           if (bck.online.get().length !== 0) {
@@ -336,49 +334,51 @@ var bck = {
           d_name = d.stream.channel.display_name,
           Time   = d.stream.created_at;
          
-        // Recheck streamer if status is undefined
-        if (!Status && bck.recheckStatus.is(Name))
-          return bck.recheckStatus.add(Name);
+        if (FoLi !== null) {
+          // Recheck streamer if status is undefined
+          if (!Status && bck.recheckStatus.is(Name))
+            return bck.recheckStatus.add(Name);
 
-        if (!Status && FoLi.Stream.Title)
-          Status = FoLi.Stream.Title;
-        else if (!Status && !FoLi.Stream.Title)
-          Status = 'Untitled stream';
+          if (!Status && FoLi.Stream.Title)
+            Status = FoLi.Stream.Title;
+          else if (!Status && !FoLi.Stream.Title)
+            Status = 'Untitled stream';
 
-        if (!Game && FoLi.Stream.Game)
-          Game = FoLi.Stream.Game;
-        else if (!Game && !FoLi.Stream.Game)
-          Game = 'Not playing';
+          if (!Game && FoLi.Stream.Game)
+            Game = FoLi.Stream.Game;
+          else if (!Game && !FoLi.Stream.Game)
+            Game = 'Not playing';
 
-        if (!FoLi.Stream && !bck.online.is(Name)) {
-          if (FoLi.Notify) {
-            var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
-              ?' just went live!':' is live!';
+          if (!FoLi.Stream && !bck.online.is(Name)) {
+            if (FoLi.Notify) {
+              var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
+                ?' just went live!':' is live!';
+              notify.send({
+                name: Name,
+                title: Name+dd,
+                msg: Status,
+                type: 'online',
+                button: true,
+                context: Game
+              });
+            }
+            bck.online.add(Name);
+          }
+
+          if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
             notify.send({
               name: Name,
-              title: Name+dd,
+              title: d_name+' changed stream title on',
               msg: Status,
-              type: 'online',
-              button: true,
+              type: 'follow',
               context: Game
             });
-          }
-          bck.online.add(Name);
+
+          if (FoLi.Stream.Time)
+            if ((date(FoLi.Stream.Time)-date(Time)) > 0) {
+              Time = FoLi.Stream.Time;
+            }
         }
-
-        if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
-          notify.send({
-            name: Name,
-            title: d_name+' changed stream title on',
-            msg: Status,
-            type: 'follow',
-            context: Game
-          });
-
-        if (FoLi.Stream.Time)
-          if ((date(FoLi.Stream.Time)-date(Time)) > 0) {
-            Time = FoLi.Stream.Time;
-          }
 
         local.game(Game);
 
@@ -397,7 +397,7 @@ var bck = {
       } else if (!token) {
         var FoLi = local.following.get(d._links.self.split('/').pop(1));
         if (!FoLi)
-          return err('Could not find streamer in base, '+d.stream.channel.name);
+          return err('Could not find streamer in the base, '+d.stream.channel.name);
 
         if (!FoLi.Stream)
           return;

@@ -16,7 +16,7 @@ limitations under the License.
 
 import sys
 if "3.4" in sys.version:
-	print "Invalid versoin of Python, must be 2.*"
+	print("Invalid versoin of Python, must be 2.*")
 	sys.exit(0);
 
 from functions import *
