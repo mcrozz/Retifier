@@ -23,7 +23,7 @@ function TimeNdate(d,m) {
   return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]);
 }
 function _$(id){
-    // Do not try element selector e.g. button.Yup
+    // Do not try element selector e.g. button.No
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
     return $('#'+id)[0];
 }
@@ -71,7 +71,7 @@ function modelLocal() {
       this.Status = JSON.parse(localStorage.Status);
       this.FollowingList = JSON.parse(localStorage.FollowingList);
       this.Following = JSON.parse(localStorage.Following);
-      this.Games = JSON.parse(localStorage.Games);
+      this.Game.list = JSON.parse(localStorage.Games);
       this.following.hash();
       this.tried = 0;
     } catch(e) {
@@ -166,29 +166,38 @@ function modelLocal() {
       });
     }
   }
-  this.game = function(name) {
-    setTimeout(function() {
-      if (local.Games.length > 50) {
-        localStorage.Games = '{}';
-        local.init('Games');
-      }
-      var dname = encodeURI(name);
-      $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
-      .done(function(e) {
-        var isThere = false;
-        if (e.games.length === 0)
-          isThere = false;
-        else
-          $.each(e.games, function(i,v) {
-            if (v.name === name) {
-              isThere = true;
-            }
-          });
-        // preventing from error on local.set side
-        dname = dname.replace(/./g, '');
-        local.set('Games.'+dname, isThere);
-      });
-    }, 0);
+  this.Game =  {
+    check : function(name) {
+      setTimeout(function() {
+        if (local.Game.list.length > 50)
+          local.set('Games', []);
+
+        if (local.Game.list.indexOf(name) !== -1)
+          return;
+
+        var dname = encodeURI(name);
+        $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
+        .done(function(e) {
+          var isThere = false;
+          if (e.games.length === 0)
+            isThere = false;
+          else
+            $.each(e.games, function(i,v) {
+              if (v.name === name) {
+                isThere = true;
+              }
+            });
+          // preventing from error on local.set side
+          if (isThere)
+            local.Game.add(name);
+        });
+      }, 0);
+    },
+    list: [/* thumbnail is available */],
+    add: function(name) {
+      this.list.push(name);
+      local.set('Games', this.list);
+    }
   }
 };
 

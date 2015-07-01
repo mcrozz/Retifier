@@ -321,8 +321,8 @@ $(function() {
 				var nm = cr('div');
 				nm.className = 'user';
 				var name = cr('a');
-				name.innerHTML = v.d_name;
-				name.href = 'http://www.twitch.tv/'+v.Name+'/profile'
+				name.innerHTML = v.Name;
+				name.href = 'http://www.twitch.tv/'+v.Name.toLowerCase()+'/profile'
 				name.target = '_blank';
 				name.style.color = (v.Stream) ? "rgb(0, 194, 40)" : "white";
 				nm.appendChild(name);
@@ -447,7 +447,7 @@ $(function() {
 		// In case of incorrect online count
 		if (local.Status.online !== curOnline)
 			local.set('Status.online', curOnline);
-		BadgeOnlineCount(curOnline);
+		badge(curOnline);
 
 		if (local.Status.online === 0)
 			$('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');

@@ -4,7 +4,7 @@ function reLogin() {
 	local.set('Config.token', '');
 	local.set('Status.update', 7);
 	local.set('Status.online', 0);
-	BadgeOnlineCount(' Hi ');
+	badge(' Hi ');
 	localStorage.FollowingList='{}';
 	localStorage.Following='0';
 	localStorage.FirstLaunch='true';
