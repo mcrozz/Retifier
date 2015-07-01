@@ -1,6 +1,9 @@
 function send(msg, callback) {
-	if (typeof callback === 'function')
-		chrome.runtime.sendMessage(msg, null, callback);
-	else
-		chrome.runtime.sendMessage(msg);
+	$.each(chrome.extension.getViews(), function(i,v) {
+		if (v.location.pathname === location.pathname)
+			return;
+
+		if (typeof v.parseMessage === 'function')
+			v.parseMessage(msg, null, (typeof callback === 'function')?callback:null);
+	});
 }

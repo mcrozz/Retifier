@@ -16,11 +16,11 @@ if (location.pathname === '/popup.html') {
 	});
 }
 
-chrome.runtime.onMessage.addListener(function(msg, s, resp) {
+window.parseMessage = function(msg, s, resp) {
 	if (typeof msg === 'string')
 		msg = {type: msg};
 
-	if (location.pathname === '/background.html') {
+	if (location.pathname.search('background') !== -1) {
 		// If something is wrong or new update
 		// This object will be indicate what's
 		// went wrong:
@@ -45,4 +45,4 @@ chrome.runtime.onMessage.addListener(function(msg, s, resp) {
 		if (msg.type === 'update' && msg.data === 'Status')
 			updateStatus();
 	}
-});
+};
