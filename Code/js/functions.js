@@ -113,8 +113,7 @@ function modelLocal() {
   this.default = {
     Name: 'invalid',
     Stream: false,
-    Notify: true,
-    d_name: 'invalid'
+    Notify: true
   }
   this.following = {
     get: function(n) {
@@ -132,7 +131,7 @@ function modelLocal() {
 
         var tm = local.FollowingList[id];
         if (typeof tm !== 'undefined')
-          $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
+          $.each(['Name', 'Stream', 'Notify'], function(i,v) {
             if (typeof tm[v] === 'undefined')
               dt[v] = local.default[v];
             else if (typeof dt[v] === 'undefined')
@@ -160,7 +159,7 @@ function modelLocal() {
     },
     map: { /* String : Int ..*/ },
     hash: function() {
-      // Hash names and theirs id
+      // Hash positions
       local.following.map = {};
       $.each(local.FollowingList, function(i,v) {
         local.following.map[v.Name] = i;

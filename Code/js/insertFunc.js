@@ -25,15 +25,15 @@ function offSet(t,w) {
 function stream(ob) {
 	var name = ob.Name;
 	var divs = {
-		origin  : $('#'+name),
-		title   : $('#'+name+'>.inf>.title>a'),
-		name    : $('#'+name+'>.inf>.streamer>a'),
-		viewers : $('#'+name+'>.inf>.viewers>a'),
-		game    : $('#'+name+'>.inf>.game>a'),
-		ST      : $('#'+name+'>.tum>.ST'),
-		GT1     : $('#'+name+'>.tum>.GT1'),
-		GT2     : $('#'+name+'>.tum>.GT2'),
-		duration: $('#'+name+'>.inf>.adds>.duration>a')
+		  origin : $('#'+name),
+		   title : $('#'+name+'>.inf>.title>a'),
+		    name : $('#'+name+'>.inf>.streamer>a'),
+		 viewers : $('#'+name+'>.inf>.viewers>a'),
+		    game : $('#'+name+'>.inf>.game>a'),
+		      ST : $('#'+name+'>.tum>.ST'),
+		     GT1 : $('#'+name+'>.tum>.GT1'),
+		     GT2 : $('#'+name+'>.tum>.GT2'),
+		duration : $('#'+name+'>.inf>.adds>.duration>a')
 	};
 	var _this = this;
 	$.each(divs, function(i,v) {
@@ -75,6 +75,8 @@ window.insert = function(obj) {
 		*  tme : stream duration
 		* }
 		*/
+		a.dsn = a.str;
+		a.str = a.str.toLowerCase();
 		function c(n, par) {
 			var el = document.createElement(n);
 			if (par) {
@@ -85,7 +87,7 @@ window.insert = function(obj) {
 			return el;
 		}
 
-		var np = a.gme === 'Not playing';
+		var np = (a.gme === 'Not playing');
 		function preview() {
 			var tum = c('div', {className: 'tum'});
 
@@ -116,7 +118,7 @@ window.insert = function(obj) {
 			GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
 			GT1.style.backgroundSize = 'contain';
 			GT1.style.cursor = 'pointer';
-			if (np) {
+			if (!np) {
 				GT1.onclick = function() {
 					window.open('http://www.twitch.tv/directory/game/'+a.gme);
 				};
@@ -200,8 +202,7 @@ window.insert = function(obj) {
 			StreamerName  = obj.Name,
 			ShortStrmName = obj.d_name,
 			StreamGame    = obj.Stream.Game,
-			eStreamGame   = encodeURI(StreamGame),
-			isGameThumb   = local.Games[eStreamGame],
+			isGameThumb   = local.Game.list.indexOf(StreamGame)!=-1,
 			StreamVievers = obj.Stream.Viewers,
 			TitleWidth    = false,
 			GameWidth     = false,

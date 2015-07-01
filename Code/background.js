@@ -24,8 +24,8 @@ if (localStorage.FirstLaunch === 'true') {
     var j = {Stream: false}, k = local.FollowingList[i];
     if (typeof k.Notify === 'undefined')
       j.Notify = true;
-    if (typeof k.d_name === 'undefined')
-      j.d_name = k.Name;
+    if (typeof k.d_name !== 'undefined')
+      j.Name = k.d_name;
 
     local.following.set(i, j);
   });
@@ -131,10 +131,9 @@ var bck = {
       if (local.Following == 0) {
         $.each(j.follows, function(i,v) {
           local.following.set(i, {
-            Name: v.channel.name,
+            Name: v.channel.display_name,
             Stream: false,
-            Notify: true,
-            d_name: v.channel.display_name
+            Notify: true
           });
         });
         local.set('Following', j._total);
@@ -144,7 +143,7 @@ var bck = {
         $.each(local.FollowingList, function(i,v) {
           var del = true;
           $.each(j.follows, function(j,k) {
-            if (k.channel.name === v.Name)
+            if (k.channel.display_name === v.Name)
               del = false;
           });
           if (del)
@@ -384,7 +383,6 @@ var bck = {
 
         var s = {
           Name    : Name,
-          d_name  : d_name,
           Stream  : {
             Title  : Status,
             Game   : Game,
