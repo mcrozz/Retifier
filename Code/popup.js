@@ -117,7 +117,7 @@ $(function() {
 		clicked: function() {
 			if (Popup.id_)
 				return Popup.close_();
-			if (Popup.alerted)
+			if (Popup.alerted && typeof Popup.onClose === 'function')
 				return Popup.onClose();
 
 			if (typeof Popup.callback === 'function')
