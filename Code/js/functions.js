@@ -119,7 +119,7 @@ function modelLocal() {
     get: function(n) {
       // Returns streamer obj
       var itm = isNaN(n) ?
-        local.FollowingList[local.following.map[n]] :
+        local.FollowingList[local.following.map[n.toLowerCase()]] :
         local.FollowingList[n];
 
       return (typeof itm === 'undefined') ? null : itm;
@@ -127,7 +127,7 @@ function modelLocal() {
     set: function(id, dt) {
       try {
         if (isNaN(id))
-          id = local.following.map[id];
+          id = local.following.map[id.toLowerCase()];
 
         var tm = local.FollowingList[id];
         if (typeof tm !== 'undefined')
@@ -149,20 +149,18 @@ function modelLocal() {
     del: function(name) {
       var newObj = {};
       $.each(local.FollowingList, function(i,v) {
-        if (v.Name !== name)
+        if (v.Name.toLowerCase() !== name.toLowerCase())
           newObj[i] = v;
       });
-      try {
-        localStorage.FollowingList = JSON.parse(newObj);
-        local.init('FollowingList');
-      } catch(e) {}
+
+      local.set('FollowingList', newObj);
     },
     map: { /* String : Int ..*/ },
     hash: function() {
       // Hash positions
       local.following.map = {};
       $.each(local.FollowingList, function(i,v) {
-        local.following.map[v.Name] = i;
+        local.following.map[v.Name.toLowerCase()] = i;
       });
     }
   }
