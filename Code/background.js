@@ -222,7 +222,7 @@ var bck = {
     } else {
       var lst = [];
       $.each(local.FollowingList, function(i,v) {
-        lst.push(v.Name);
+        lst.push(v.Name.toLowerCase());
       });
       return bck.checkStatus(lst, false);
     }
@@ -420,6 +420,11 @@ var bck = {
     bck.promise.after = null;
     bck.intFollowing = -1;
     bck.intStatus = -1;
+    $.each(local.FollowingList, function(i,v) {
+      local.following.set(v.Name, {Stream: false});
+    });
+    badge(0);
+    bck.online.data = [];
     bck.init();
   },
   init: function() {
