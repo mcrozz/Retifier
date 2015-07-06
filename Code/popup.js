@@ -1,4 +1,129 @@
 {{LICENSE_HEADER}}
+var Popup = {
+	init: function(id, callback) {
+		$('#AppVersion').fadeOut(1000);
+		$('#popup').fadeIn(300);
+		$(id).fadeIn(285);
+		Popup.id = id;
+		if (typeof callback === 'function')
+			Popup.callback = callback;
+	},
+	change: function(id, returns, callback) {
+		if (typeof returns === 'boolean')
+			Popup.returns = returns;
+		if (typeof callback === 'function')
+			Popup.onClose = callback;
+
+		Popup.id_ = id;
+		$(id).fadeIn(500);
+		$(Popup.id).fadeOut(284);
+	},
+	close_: function() {
+		$(Popup.id_).fadeOut(280);
+		if (Popup.returns)
+			Popup.init(Popup.id, Popup.callback);
+
+		if (typeof Popup.onClose === 'function')
+			Popup.onClose();
+
+		Popup.id_ = '';
+		Popup.onClose = null;
+		Popup.returns = false;
+	},
+	close: function() {
+		$('#AppVersion').fadeIn(1000);
+		$('#popup').fadeOut(300);
+		$('#AppVersion').fadeIn(1000);
+		$(Popup.id).fadeOut(285);
+		Popup.id = '';
+	},
+	clicked: function() {
+		if (Popup.id_)
+			return Popup.close_();
+		if (Popup.alerted && typeof Popup.onClose === 'function')
+			return Popup.onClose();
+
+		if (typeof Popup.callback === 'function')
+			Popup.callback();
+		Popup.callback = null;
+		Popup.close();
+	},
+	alert: function(par) {
+		/*
+			par :: object {
+				header :: string,
+				content :: html or DOM,
+				onOk :: function,
+				onClose :: function,
+				showClose :: boolean,
+				returns :: boolean
+			}
+		*/
+		if (typeof par.onOk === 'function')
+			Popup.onOk = par.onOk;
+		if (typeof par.onClose === 'function')
+			Popup.onClose = par.onClose;
+		if (typeof par.returns === 'boolean')
+			Popup.returns = par.returns;
+
+		// hide current window
+		if (Popup.id)
+			$(Popup.id).hide();
+
+		if (!Popup.returns) {
+			Popup.id = '';
+			Popup.callback = null;
+		}
+
+		$('.alert>header>p').html(par.header);
+		$('.alert>div>div').html(par.content);
+		$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
+		$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
+
+		// show background
+		if ($('#popup').css('display')[0] === 'n')
+			$('#popup').fadeIn(300);
+
+		$('#AppVersion').fadeOut(1000);
+		$('.alert').fadeIn(285);
+		Popup.alerted = true;
+	},
+	closeAlert: function() {
+		// If clicked 'Cancel' or outside of window
+		if (typeof Popup.onClose === 'function')
+			Popup.onClose();
+
+		Popup.onClose = null;
+		Popup.alerted = false;
+
+		$('.alert').fadeOut(285);
+		if (Popup.returns) {
+			Popup.returns = false;
+			return Popup.init(Popup.id, Popup.callback);
+		} else
+			$('#popup').fadeOut(300);
+
+		if (!Popup.returns)
+			$('#AppVersion').fadeIn(1000);
+	},
+	clickAlert: function() {
+		// Clicked 'Ok'
+		if (typeof Popup.onOk === 'function')
+			Popup.onOk();
+
+		Popup.onOk = null;
+
+		Popup.closeAlert();
+	},
+	onOk: null,
+	onClose: null,
+	returns: false,
+	callback: null,
+	alerted: false,
+	id: '',
+	id_: ''
+};
+
 $(function() {
 	var style = {
 		reload: function(l) {
@@ -74,131 +199,6 @@ $(function() {
 					location.reload();
 			}
 		}
-	};
-
-	var Popup = {
-		init: function(id, callback) {
-			$('#AppVersion').fadeOut(1000);
-			$('#popup').fadeIn(300);
-			$(id).fadeIn(285);
-			Popup.id = id;
-			if (typeof callback === 'function')
-				Popup.callback = callback;
-		},
-		change: function(id, returns, callback) {
-			if (typeof returns === 'boolean')
-				Popup.returns = returns;
-			if (typeof callback === 'function')
-				Popup.onClose = callback;
-
-			Popup.id_ = id;
-			$(id).fadeIn(500);
-			$(Popup.id).fadeOut(284);
-		},
-		close_: function() {
-			$(Popup.id_).fadeOut(280);
-			if (Popup.returns)
-				Popup.init(Popup.id, Popup.callback);
-
-			if (typeof Popup.onClose === 'function')
-				Popup.onClose();
-
-			Popup.id_ = '';
-			Popup.onClose = null;
-			Popup.returns = false;
-		},
-		close: function() {
-			$('#AppVersion').fadeIn(1000);
-			$('#popup').fadeOut(300);
-			$('#AppVersion').fadeIn(1000);
-			$(Popup.id).fadeOut(285);
-			Popup.id = '';
-		},
-		clicked: function() {
-			if (Popup.id_)
-				return Popup.close_();
-			if (Popup.alerted && typeof Popup.onClose === 'function')
-				return Popup.onClose();
-
-			if (typeof Popup.callback === 'function')
-				Popup.callback();
-			Popup.callback = null;
-			Popup.close();
-		},
-		alert: function(par) {
-			/*
-				par :: object {
-					header :: string,
-					content :: html or DOM,
-					onOk :: function,
-					onClose :: function,
-					showClose :: boolean,
-					returns :: boolean
-				}
-			*/
-			if (typeof par.onOk === 'function')
-				Popup.onOk = par.onOk;
-			if (typeof par.onClose === 'function')
-				Popup.onClose = par.onClose;
-			if (typeof par.returns === 'boolean')
-				Popup.returns = par.returns;
-
-			// hide current window
-			if (Popup.id)
-				$(Popup.id).hide();
-
-			if (!Popup.returns) {
-				Popup.id = '';
-				Popup.callback = null;
-			}
-
-			$('.alert>header>p').html(par.header);
-			$('.alert>div>div').html(par.content);
-			$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
-			$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
-
-			// show background
-			if ($('#popup').css('display')[0] === 'n')
-				$('#popup').fadeIn(300);
-
-			$('#AppVersion').fadeOut(1000);
-			$('.alert').fadeIn(285);
-			Popup.alerted = true;
-		},
-		closeAlert: function() {
-			// If clicked 'Cancel' or outside of window
-			if (typeof Popup.onClose === 'function')
-				Popup.onClose();
-
-			Popup.onClose = null;
-			Popup.alerted = false;
-
-			$('.alert').fadeOut(285);
-			if (Popup.returns) {
-				Popup.returns = false;
-				return Popup.init(Popup.id, Popup.callback);
-			} else
-				$('#popup').fadeOut(300);
-
-			if (!Popup.returns)
-				$('#AppVersion').fadeIn(1000);
-		},
-		clickAlert: function() {
-			// Clicked 'Ok'
-			if (typeof Popup.onOk === 'function')
-				Popup.onOk();
-
-			Popup.onOk = null;
-
-			Popup.closeAlert();
-		},
-		onOk: null,
-		onClose: null,
-		returns: false,
-		callback: null,
-		alerted: false,
-		id: '',
-		id_: ''
 	};
 
 	function clickChangeUserCls() {
@@ -539,16 +539,6 @@ $(function() {
 		local.set('Config.Format', $('#view>span.selected')[0].classList[0]);
 		style.reload(); // Just in case
 		Popup.close_();
-	});
-	ael(window, function(e) {
-		if (e.target.className === 'zoom') {
-			var n = local.following.get(e.target.id.replace('zoom_', '')).Name;
-			$('#zoomIMG').css({
-				background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
-				backgroundSize: 'contain'
-			});
-			Popup.init('#zoomIMG');
-		}
 	});
 	ael('#popup>.background', Popup.clicked);
 	ael('#zoomIMG', Popup.close);
