@@ -1,5 +1,5 @@
 {{LICENSE_HEADER}}
-TimersetToUpdate = [];
+var TimersetToUpdate = [];
 var refresh = false,
 		t, g;
 texts = { d:new Date() };
@@ -23,7 +23,7 @@ function offSet(t,w) {
 }
 
 function stream(ob) {
-	var name = ob.Name;
+	var name = ob.Name.toLowerCase();
 	var divs = {
 		  origin : $('#'+name),
 		   title : $('#'+name+'>.inf>.title>a'),
@@ -60,23 +60,22 @@ window.insert = function(obj) {
 	// invalid input
 	if (!obj) return;
 
+	/*
+	* a : {
+	*  str : streamer name for urls
+	*  dsn : display streamer name
+	*  ttl : title
+	*  gme : game
+	*  viw : viewers count
+	*  pos : id
+	*  isG : is game tumb available
+	*  txw : is title big
+	*  gmw : is game big
+	*  tme : stream duration
+	* }
+	*/
 	function insert(a) {
-		/*
-		* a : {
-		*  str : streamer name for urls
-		*  dsn : display streamer name
-		*  ttl : title
-		*  gme : game
-		*  viw : viewers count
-		*  pos : id
-		*  isG : is game tumb available
-		*  txw : is title big
-		*  gmw : is game big
-		*  tme : stream duration
-		* }
-		*/
-		a.dsn = a.str;
-		a.str = a.str.toLowerCase();
+		
 		function c(n, par) {
 			var el = document.createElement(n);
 			if (par) {
@@ -133,7 +132,15 @@ window.insert = function(obj) {
 			tum.appendChild(GT2);
 
 			// Zoomed stream preview
-			var zoom = c('div', {className: 'zoom', id: 'zoom_'+a.pos});
+			var zoom = c('div', {className: 'zoom'});
+			zoom.onclick = function(e) {
+				var n = e.target.parentElement.parentElement.id.toLowerCase();
+				$('#zoomIMG').css({
+					background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
+					backgroundSize: 'contain'
+				});
+				Popup.init('#zoomIMG');
+			};
 			tum.appendChild(zoom);
 
 			return tum;
@@ -198,16 +205,16 @@ window.insert = function(obj) {
 		$('#insertContentHere').append(holder);
 	}
 
-	var StreamTitle   = obj.Stream.Title,
-			StreamerName  = obj.Name,
-			ShortStrmName = obj.d_name,
-			StreamGame    = obj.Stream.Game,
-			isGameThumb   = local.Game.list.indexOf(StreamGame)!=-1,
-			StreamVievers = obj.Stream.Viewers,
-			TitleWidth    = false,
-			GameWidth     = false,
-			b             = '#'+StreamerName+'>',
-			dc, TitleWidth, GameWidth;
+	var   StreamTitle = obj.Stream.Title,
+		 StreamerName = obj.Name.toLowerCase(),
+		ShortStrmName = obj.Name,
+		   StreamGame = obj.Stream.Game,
+		  isGameThumb = local.Game.list.indexOf(StreamGame)!=-1,
+		StreamVievers = obj.Stream.Viewers,
+		   TitleWidth = false,
+		    GameWidth = false,
+		            b = '#'+StreamerName+'>',
+		dc, TitleWidth, GameWidth;
 
 	var str = new stream(obj);
 
@@ -225,7 +232,7 @@ window.insert = function(obj) {
 		$('#insertContentHere').html('');
 
 	// If not in array and is online
-	if ($.inArray(obj.Name, online) === -1) {
+	if ($.inArray(obj.Name.toLowerCase(), online) === -1) {
 		if (!obj.Stream)
 			return;
 
