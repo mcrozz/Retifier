@@ -152,7 +152,7 @@ $(function() {
 			fp = (screen.pixelDepth*hp*10)+add;
 
 			htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
-			htm+= '#size>span{height:'+(h*.142)+'px;}';
+			htm+= '#size>span{height:'+(h*0.142)+'px;}';
 			$('style').html(htm);
 
 			if (typeof safari !== 'undefined') {
@@ -163,7 +163,7 @@ $(function() {
 			var css = local.Config.Format.toLowerCase();
 			if (l && l.format)
 				css = l.format.toLowerCase();
-			$('#cust')[0].href = "./css/"+css+".css";
+			$('#cust')[0].href = './css/'+css+'.css';
 		},
 		size: {
 			current: 0,
@@ -209,7 +209,7 @@ $(function() {
 		Popup.init('.options', clickChangeUserCls);
 
 		// Fix height of custom check boxes
-		$('.toggle>.Check_Box').css('height', $('.toggle>.Check_Box')[0].offsetWidth*.43+'px');
+		$('.toggle>.Check_Box').css('height', $('.toggle>.Check_Box')[0].offsetWidth*0.43+'px');
 		$('li>.Check_Box_2').css('height', $('li>.Check_Box_2')[0].offsetWidth+'px');
 
 		$('#user>a:nth-child(2)').html(local.Config.User_Name);
@@ -232,7 +232,7 @@ $(function() {
 
 		_$('.StreamDurationCheck').checked = local.Config.Duration_of_stream;
 
-		$('.options').anim('bounceIn', .9);
+		$('.options').anim('bounceIn', 0.9);
 
 		ga('send', 'event', 'button', 'click', 'Options');
 	}
@@ -265,13 +265,13 @@ $(function() {
 	function FollowedHub() {
 		function insert(obj, online) {
 			var cell = c('div', {className: 'container'});
-			if (obj.profile_banner != null)
+			if (obj.profile_banner !== null)
 				cell.style.backgroundImage = "url("+obj.profile_banner+")";
 			else
 				cell.style.background = "-webkit-linear-gradient(top, #848484 0%,#7c7c7c 54%,#565656 100%)";
-			if (obj.profile_banner_background_color != null)
+			if (obj.profile_banner_background_color !== null)
 				cell.style.backgroundColor = obj.profile_banner_background_color;
-			cell.style.backgroundSize = "contain";
+			cell.style.backgroundSize = "cover";
 
 			var d1 = c('div', {className: 'status'});
 			
@@ -525,7 +525,7 @@ $(function() {
 	$('#AppVersion').html(localStorage.App_Version);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
-	ael('.following', function(){
+	ael('button.following', function(){
 		FollowedHub(); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
