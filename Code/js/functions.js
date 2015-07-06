@@ -32,6 +32,15 @@ function date(_date) {
     return (new Date()).getTime();
    return (new Date(_date)).getTime();
 }
+function c(n, par) {
+  var el = document.createElement(n);
+  if (par) {
+    $.each(par, function(i,v) {
+      el[i] = v;
+    });
+  }
+  return el;
+}
 
 window.local = new modelLocal();
 

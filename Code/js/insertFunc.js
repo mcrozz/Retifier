@@ -75,17 +75,6 @@ window.insert = function(obj) {
 	* }
 	*/
 	function insert(a) {
-		
-		function c(n, par) {
-			var el = document.createElement(n);
-			if (par) {
-				$.each(par, function(i,v) {
-					el[i] = v;
-				});
-			}
-			return el;
-		}
-
 		var np = (a.gme === 'Not playing');
 		function preview() {
 			var tum = c('div', {className: 'tum'});
@@ -202,7 +191,7 @@ window.insert = function(obj) {
 		var holder = c('div', {className: 'content', id: a.pos});
 		holder.appendChild(preview());
 		holder.appendChild(information());
-		$('#insertContentHere').append(holder);
+		$('#content>div').append(holder);
 	}
 
 	var   StreamTitle = obj.Stream.Title,
@@ -228,8 +217,8 @@ window.insert = function(obj) {
 		GameWidth = texts[StreamGame]
 	}
 
-	if ($('#insertContentHere').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
-		$('#insertContentHere').html('');
+	if ($('#content>div').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
+		$('#content>div').html('');
 
 	// If not in array and is online
 	if ($.inArray(obj.Name.toLowerCase(), online) === -1) {
@@ -254,10 +243,10 @@ window.insert = function(obj) {
 		if (!obj.Stream) {
 			// Streamer went offline so delete
 			str.origin.el().remove();
-			online = online.filter(function(e) { return e!=obj.Name; });
+			online = online.filter(function(e) { return e!=obj.Name.toLowerCase(); });
 
 			if (local.Status.online == 0 && local.Status.update == 0)
-			    $('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
+			    $('#content>div').html('<div class="NOO"><a>No one online right now :(</a></div>');
 			return;
 		}
 

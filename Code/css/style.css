@@ -771,7 +771,7 @@ button.WelcomOK:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0)), to(rgba(182, 182, 182, 0.78)));
 }
 
-#content3 {
+#content {
 	width: 100%;
 	position: relative;
 	display: block;

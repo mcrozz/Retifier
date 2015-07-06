@@ -450,7 +450,7 @@ $(function() {
 		badge(curOnline);
 
 		if (local.Status.online === 0)
-			$('#insertContentHere').html('<div class="NOO"><a>No one online right now :(</a></div>');
+			$('#content>div').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	}, 0);
 	$('#AppVersion').html(localStorage.App_Version);
 	ael('.settings', clickChangeUser);
