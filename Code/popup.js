@@ -262,6 +262,76 @@ $(function() {
 		Popup.close();
 	}
 
+	function FollowedHub() {
+		function insert(obj, online) {
+			var cell = c('div', {className: 'container'});
+			if (obj.profile_banner != null)
+				cell.style.backgroundImage = "url("+obj.profile_banner+")";
+			else
+				cell.style.background = "-webkit-linear-gradient(top, #848484 0%,#7c7c7c 54%,#565656 100%)";
+			if (obj.profile_banner_background_color != null)
+				cell.style.backgroundColor = obj.profile_banner_background_color;
+			cell.style.backgroundSize = "contain";
+
+			var d1 = c('div', {className: 'status'});
+			
+			var sta = c('div', {className: online?'online':'offline'});
+			sta.innerText = (online)?'ONLINE':'OFFLINE';
+			d1.appendChild(sta);
+
+			var lgo = c('div', {className: 'logo'});
+			var ilgo = c('img', {src: obj.logo});
+			lgo.appendChild(ilgo);
+			d1.appendChild(lgo);
+
+			cell.appendChild(d1);
+
+			
+			var d2 = c('div');
+
+			var str = c('div', {className: 'streamer'});
+			var astr = c('a', {innerText: obj.display_name});
+			str.appendChild(astr);
+			d2.appendChild(str);
+
+			var spa = c('div', {className: 'spacer', innerText: ' '});
+			d2.appendChild(spa);
+
+			var sts = c('div', {className: 'stats'});
+			var a1 = c('a', {innerText: "Followers: "+obj.followers});
+			sts.appendChild(a1);
+			var a2 = c('a', {innerText: "Views: "+obj.views});
+			sts.appendChild(a2);
+			d2.appendChild(sts);
+
+			var btn = c('div', {className: 'buttons'});
+			var b1 = c('button', {innerText: 'Detailed'});
+			b1.onclick = function(e) {
+				// TODO: open detailed information abuot this streamer
+			}
+			btn.appendChild(b1);
+			// TODO: check if user auth'ed with token
+			var b2 = c('button', {innerText: 'Unfollow'});
+			btn.appendChild(b2);
+			d2.appendChild(btn);
+
+			cell.appendChild(d2);
+
+			$('.following>div:nth-child(2)').append(cell);
+		}
+
+		$('#content>.online').css('display', 'none');
+		$('#content>.following').css('display', 'block');
+
+		$.each(local.FollowingList, function(i,v) {
+			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase())
+			.done(function(d) {
+				insert(d, v.Stream);
+			})
+			.error(function(e) { err(e); });
+		});
+	}
+
 	function FollowedList(chk) {
 		function cr(n) { return document.createElement(n); }
 		var flw = cr('div');
@@ -450,13 +520,13 @@ $(function() {
 		badge(curOnline);
 
 		if (local.Status.online === 0)
-			$('#content>div').html('<div class="NOO"><a>No one online right now :(</a></div>');
+			$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
 	}, 0);
 	$('#AppVersion').html(localStorage.App_Version);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
 	ael('.following', function(){
-		FollowedList(false); });
+		FollowedHub(); });
 	ael('.EnNotify', function(t){
 		if (t.target.checked) {
 			$('.options>div>li>a').css('color', '');

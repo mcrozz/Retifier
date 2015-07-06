@@ -191,7 +191,7 @@ window.insert = function(obj) {
 		var holder = c('div', {className: 'content', id: a.pos});
 		holder.appendChild(preview());
 		holder.appendChild(information());
-		$('#content>div').append(holder);
+		$('#content>.online').append(holder);
 	}
 
 	var   StreamTitle = obj.Stream.Title,
@@ -217,8 +217,8 @@ window.insert = function(obj) {
 		GameWidth = texts[StreamGame]
 	}
 
-	if ($('#content>div').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
-		$('#content>div').html('');
+	if ($('#content>.online').html() === '<div class="NOO"><a>No one online right now :(</a></div>')
+		$('#content>.online').html('');
 
 	// If not in array and is online
 	if ($.inArray(obj.Name.toLowerCase(), online) === -1) {
@@ -246,7 +246,7 @@ window.insert = function(obj) {
 			online = online.filter(function(e) { return e!=obj.Name.toLowerCase(); });
 
 			if (local.Status.online == 0 && local.Status.update == 0)
-			    $('#content>div').html('<div class="NOO"><a>No one online right now :(</a></div>');
+			    $('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
 			return;
 		}
 
