@@ -44,17 +44,18 @@ var bck = {
       return this.data;
     },
     add: function(n) {
-      this.data.push(n);
+      this.data.push(n.toLowerCase());
       local.set('Status.online', this.data.length);
       badge(this.data.length);
     },
     del: function(n) {
+      var n = n.toLowerCase();
       this.data = this.data.filter(function(v) { return v !== n; });
       local.set('Status.online', this.data.length);
       badge(this.data.length);
     },
     is: function(n) {
-      return (this.data.indexOf(n))!==-1;
+      return (this.data.indexOf(n.toLowerCase()))!==-1;
     }
   },
   promise: {
@@ -214,7 +215,7 @@ var bck = {
 
         var onl = [];
         $.each(d.streams, function(i,v) {
-          onl.push(v.channel.name);
+          onl.push(v.channel.name.toLowerCase());
         });
 
         return bck.checkStatus(onl, true);
@@ -267,7 +268,7 @@ var bck = {
         if (token) {
           // 'list' is already is online list
           $.each(bck.online.get(), function(i,v) {
-            if (list.indexOf(v) === -1) {
+            if (list.indexOf(v.toLowerCase()) === -1) {
               // streamer gone offline
               bck.online.del(v);
               var str = local.following.get(v);
@@ -286,8 +287,6 @@ var bck = {
           local.set('Status.online', list.length);
           badge(list.length);
         } else {
-          local.set('Status.online', bck.online.get().length);
-
           var onl = bck.online.get().length;
 
           if (onl <= 0) {
@@ -325,14 +324,14 @@ var bck = {
 
       if (d.stream) {
         // Channel is online
-        var FoLi = local.following.get(d.stream.channel.name);
+        var FoLi = local.following.get(d.stream.channel.name.toLowerCase());
         if (typeof FoLi !== 'object')
           return err({message:'Could not find streamer in base, '+d.stream.channel.name});
 
         var Game = d.stream.channel.game,
           Status = d.stream.channel.status,
-          Name   = d.stream.channel.display_name,
-          Time   = d.stream.created_at;
+            Name = d.stream.channel.display_name,
+            Time = d.stream.created_at;
          
         if (FoLi !== null) {
           // Recheck streamer if status is undefined
@@ -351,7 +350,7 @@ var bck = {
 
           if (!FoLi.Stream && !bck.online.is(Name)) {
             if (FoLi.Notify) {
-              var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
+              var dd = (((date()-date(Time))<=((local.Config.Interval_of_Checking+60)*1000)))
                 ?' just went live!':' is live!';
               notify.send({
                 name: Name,
@@ -383,8 +382,8 @@ var bck = {
         local.Game.check(Game);
 
         var s = {
-          Name    : Name,
-          Stream  : {
+          Name   : Name,
+          Stream : {
             Title  : Status,
             Game   : Game,
             Viewers: d.stream.viewers,
