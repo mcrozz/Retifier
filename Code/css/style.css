@@ -11,15 +11,15 @@ html {
 }
 body {
 	margin: 0;
-  font-family: ExtFont;
-  font-size: inherit;
+	font-family: ExtFont;
+	font-size: inherit;
 }
 a {
 	text-decoration: none;
 	cursor: default;
 }
 p {
-	color:	black;
+	color: black;
 	border-right: 1px dotted black;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 }
@@ -87,14 +87,11 @@ button {
 }
 
 @-webkit-keyframes loading {
-  0% {
-	-webkit-transform: scale(1.4);
-	} 100% {
-	-webkit-transform: scale(1);
-	}
+	0% { -webkit-transform: scale(1.4); }
+	100% { -webkit-transform: scale(1); }
 }
 .loading {
-  position: absolute;
+	position: absolute;
 	display: block;
 	width: 44%;
 	height: 42%;
@@ -102,38 +99,38 @@ button {
 	top: 12%;
 }
 .loading>div {
-  position: absolute;
-  -webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
+	position: absolute;
+	-webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
 	width: 34%;
-  height: 37%;
+	height: 37%;
 }
 .loading>div:nth-of-type(1) {
-  background: #4821b8;
-  opacity: 0.9;
-  -webkit-animation-delay: 0s;
+	background: #4821b8;
+	opacity: 0.9;
+	-webkit-animation-delay: 0s;
 	top: 0;
-  left: 0;
+	left: 0;
 }
 .loading>div:nth-of-type(2) {
-  background: #4821b8;
-  opacity: 0.8;
-  -webkit-animation-delay: 0.1s;
+	background: #4821b8;
+	opacity: 0.8;
+	-webkit-animation-delay: 0.1s;
 	top: 0;
 	left: 50%;
 }
 .loading > div:nth-of-type(3) {
-  background: #4821b8;
-  opacity: 0.7;
-  -webkit-animation-delay: 0.3s;
+	background: #4821b8;
+	opacity: 0.7;
+	-webkit-animation-delay: 0.3s;
 	top: 50%;
-  left: 0;
+	left: 0;
 }
 .loading > div:nth-of-type(4) {
-  background: #4821b8;
-  opacity: 0.6;
-  -webkit-animation-delay: 0.2s;
+	background: #4821b8;
+	opacity: 0.6;
+	-webkit-animation-delay: 0.2s;
 	top: 50%;
-  left: 50%;
+	left: 50%;
 }
 
 #header {
@@ -144,13 +141,13 @@ button {
 
 .inf>.game, .inf>.title{
 	white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .inf>.game>a, .inf>.title>a {
 	white-space: inherit;
-  overflow: inherit;
-  text-overflow: inherit;
+	overflow: inherit;
+	text-overflow: inherit;
 }
 
 #nowONline {
@@ -185,8 +182,8 @@ div>.checkBox {
 	border: 1px solid rgb(82, 82, 82);
 	border-bottom: none;
 	border-radius: 14px;
-  color: white;
-  font-size: 90%;
+	color: white;
+	font-size: 90%;
 }
 
 .options>header {
@@ -352,9 +349,9 @@ button.Flush {
 }
 .alert>header>p {
 	margin: 0;
-  color: inherit;
-  border: none;
-  text-shadow: none;
+	color: inherit;
+	border: none;
+	text-shadow: none;
 }
 .alert>div {
 	display: block;
