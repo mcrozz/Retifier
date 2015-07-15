@@ -334,17 +334,28 @@ $(function() {
 		});
 	}
 
-	function HostedTab() {
+	// TODO: get duration
+	function HostedHub() {
 		var hstd = c('div');
-		function add(name, title, prev, views, game, from) {
+		function add(name, title, prev, views, game, dur, from, id) {
 			var cell = c('div');
-			// TODO: create containers
-			// Maybe need to copy style from online list
+			cell.appendChild(str_cell({
+				str: name.toLowerCase(),
+				dsn: name,
+				ttl: title,
+				gme: game,
+				viw: views,
+				pos: id,
+				isG: local.Game.list.indexOf(game)!=-1,
+				txw: false,
+				gmw: false,
+				tme: time(dur)
+			}));
 			hstd.appendChild(cell);
 		}
 
 		// getting list of hosted channels
-		$.getJSON("")
+		$.getJSON("http://api.twitch.tv/api/users/"+local.Config.User+"/followed/hosting")
 		.done(function(e) {
 			$.each(e.hosts, function(i,v) {
 				add(v.target.display_name,
@@ -352,9 +363,16 @@ $(function() {
 					v.target.preview,
 					v.target.viewers,
 					v.target.meta_game,
-					v.display_name);
+					false,
+					v.display_name,
+					i);
 			});
 			$('#content>.host').append(hstd);
+		})
+		.error(function(e) {
+			err(e);
+			// Try to back it up after a second
+			setTimeout(HostedHub, 1000);
 		});
 	}
 
@@ -568,10 +586,8 @@ $(function() {
 	ael('button.About', AppVersion.about);
 	ael('button.Changes', AppVersion.changes);
 	ael('button.Close', Popup.close);
-	ael('#Dashboard', function(){
-		ga('send', 'event', 'button', 'click', 'Dashboard');
-		window.open('http://www.twitch.tv/broadcast/dashboard'); });
-	ael('.directory', function(){
+	ael('button.directory', function(){
+		HostedHub(); return;
 		ga('send', 'event', 'button', 'click', 'Direct');
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('button.NotificationsOpt', function() {

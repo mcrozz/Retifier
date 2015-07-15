@@ -54,12 +54,7 @@ function stream(ob) {
 	});
 }
 
-var online = [];
-
-window.insert = function(obj) {
-	// invalid input
-	if (!obj) return;
-
+function str_cell(a, to) {
 	/*
 	* a : {
 	*  str : streamer name for urls
@@ -72,127 +67,137 @@ window.insert = function(obj) {
 	*  txw : is title big
 	*  gmw : is game big
 	*  tme : stream duration
-	* }
+	* },
+	* to : selector, where to insert
+	* if "to" is undefined, then return Node object
 	*/
-	function insert(a) {
-		var np = (a.gme === 'Not playing');
-		function preview() {
-			var tum = c('div', {className: 'tum'});
 
-			// Loading icon
-			var load = c('div', {className: 'loading'});
-			load.appendChild(c('div'));
-			load.appendChild(c('div'));
-			load.appendChild(c('div'));
-			load.appendChild(c('div'));
-			tum.appendChild(load);
+	var np = (a.gme === 'Not playing');
+	function preview() {
+		var tum = c('div', {className: 'tum'});
 
-			// 'Launch Stream' on hover
-			var launch = c('a', {
-				href: 'http://www.twitch.tv/'+a.str,
-				target: '_blank',
-				innerHTML: 'Launch Stream'});
-			tum.appendChild(launch);
+		// Loading icon
+		var load = c('div', {className: 'loading'});
+		load.appendChild(c('div'));
+		load.appendChild(c('div'));
+		load.appendChild(c('div'));
+		load.appendChild(c('div'));
+		tum.appendChild(load);
 
-			// Stream preview
-			var ST = c('img', {className: 'ST'});
-			ST.style.background = 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+a.str+'-320x200.jpg)';
-			ST.style.backgroundSize = 'contain';
-			ST.style.cursor = 'pointer';
-			tum.appendChild(ST);
+		// 'Launch Stream' on hover
+		var launch = c('a', {
+			href: 'http://www.twitch.tv/'+a.str,
+			target: '_blank',
+			innerHTML: 'Launch Stream'});
+		tum.appendChild(launch);
 
-			// Game poster
-			var GT1 = c('img', {className: 'GT1'});
-			GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
-			GT1.style.backgroundSize = 'contain';
-			GT1.style.cursor = 'pointer';
-			if (!np) {
-				GT1.onclick = function() {
-					window.open('http://www.twitch.tv/directory/game/'+a.gme);
-				};
-			}
-			tum.appendChild(GT1);
+		// Stream preview
+		var ST = c('img', {className: 'ST'});
+		ST.style.background = 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+a.str+'-320x200.jpg)';
+		ST.style.backgroundSize = 'contain';
+		ST.style.cursor = 'pointer';
+		tum.appendChild(ST);
 
-			// In case game poster is not available
-			var GT2 = c('img', {className: 'GT2'});
-			GT2.style.background = 'url("./img/playing.png")';
-			GT2.style.backgroundSize = 'contain';
-			GT2.style.cursor = 'pointer';
-			tum.appendChild(GT2);
-
-			// Zoomed stream preview
-			var zoom = c('div', {className: 'zoom'});
-			zoom.onclick = function(e) {
-				var n = e.target.parentElement.parentElement.id.toLowerCase();
-				$('#zoomIMG').css({
-					background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
-					backgroundSize: 'contain'
-				});
-				Popup.init('#zoomIMG');
+		// Game poster
+		var GT1 = c('img', {className: 'GT1'});
+		GT1.style.background = 'url("http://static-cdn.jtvnw.net/ttv-boxart/'+a.gme+'-272x380.jpg")'
+		GT1.style.backgroundSize = 'contain';
+		GT1.style.cursor = 'pointer';
+		if (!np) {
+			GT1.onclick = function() {
+				window.open('http://www.twitch.tv/directory/game/'+a.gme);
 			};
-			tum.appendChild(zoom);
-
-			return tum;
 		}
-		function information() {
-			var inf = c('div', {className: 'inf'});
+		tum.appendChild(GT1);
 
-			// Title of stream
-			var title = c('div', {className: 'title'});
-			var aTitle = c('a', {innerHTML: a.ttl});
-			aTitle.setAttribute('show', a.txw);
-			title.appendChild(aTitle);
-			inf.appendChild(title);
+		// In case game poster is not available
+		var GT2 = c('img', {className: 'GT2'});
+		GT2.style.background = 'url("./img/playing.png")';
+		GT2.style.backgroundSize = 'contain';
+		GT2.style.cursor = 'pointer';
+		tum.appendChild(GT2);
 
-			// Streamer name
-			var streamer = c('div', {className: 'streamer'});
-			var aStream = c('a', {
-				href: 'http://www.twitch.tv/'+a.str+'/profile',
-				target: '_blank',
-				innerHTML: a.dsn});
-			streamer.appendChild(aStream);
-			inf.appendChild(streamer);
+		// Zoomed stream preview
+		var zoom = c('div', {className: 'zoom'});
+		zoom.onclick = function(e) {
+			var n = e.target.parentElement.parentElement.id.toLowerCase();
+			$('#zoomIMG').css({
+				background: 'url(http://static-cdn.jtvnw.net/previews-ttv/live_user_'+n+'-640x400.jpg) no-repeat',
+				backgroundSize: 'contain'
+			});
+			Popup.init('#zoomIMG');
+		};
+		tum.appendChild(zoom);
 
-			// Viewers count
-			var viewers = c('div', {className: 'viewers'});
-			var aView = c('a', {innerHTML: a.viw+' viewers'});
-			viewers.appendChild(aView);
-			inf.appendChild(viewers);
-
-			// Game name
-			var game = c('div', {className: 'game'});
-			var aGame = c('a', {
-				href: !np?'http://www.twitch.tv/directory/game/'+a.gme:null,
-				target: !np?'_blank':null,
-				innerHTML: a.gme});
-			aGame.setAttribute('show', a.gmw);
-			game.appendChild(aGame);
-			inf.appendChild(game);
-
-			// Additionals (duration and visit channel)
-			var adds = c('div', {className: 'adds'});
-			var page = c('div', {className: 'page'});
-			var aPag = c('a', {href: 'http://www.twitch.tv/'+a.str+'/profile', target: '_blank'});
-			var abPag = c('button', {
-				type: 'button',
-				className: 'button',
-				innerHTML: 'Channel page'});
-			aPag.appendChild(abPag);
-			page.appendChild(aPag);
-			adds.appendChild(page);
-			var dur = c('div', {className: 'duration'});
-			dur.appendChild(c('a', {innerHTML: a.tme}));
-			adds.appendChild(dur);
-			inf.appendChild(adds);
-
-			return inf;
-		}
-
-		var holder = c('div', {className: 'content', id: a.pos});
-		holder.appendChild(preview());
-		holder.appendChild(information());
-		$('#content>.online').append(holder);
+		return tum;
 	}
+	function information() {
+		var inf = c('div', {className: 'inf'});
+
+		// Title of stream
+		var title = c('div', {className: 'title'});
+		var aTitle = c('a', {innerHTML: a.ttl});
+		aTitle.setAttribute('show', a.txw);
+		title.appendChild(aTitle);
+		inf.appendChild(title);
+
+		// Streamer name
+		var streamer = c('div', {className: 'streamer'});
+		var aStream = c('a', {
+			href: 'http://www.twitch.tv/'+a.str+'/profile',
+			target: '_blank',
+			innerHTML: a.dsn});
+		streamer.appendChild(aStream);
+		inf.appendChild(streamer);
+
+		// Viewers count
+		var viewers = c('div', {className: 'viewers'});
+		var aView = c('a', {innerHTML: a.viw+' viewers'});
+		viewers.appendChild(aView);
+		inf.appendChild(viewers);
+
+		// Game name
+		var game = c('div', {className: 'game'});
+		var aGame = c('a', {
+			href: !np?'http://www.twitch.tv/directory/game/'+a.gme:null,
+			target: !np?'_blank':null,
+			innerHTML: a.gme});
+		aGame.setAttribute('show', a.gmw);
+		game.appendChild(aGame);
+		inf.appendChild(game);
+
+		// Additionals (duration and visit channel)
+		var adds = c('div', {className: 'adds'});
+		var page = c('div', {className: 'page'});
+		var aPag = c('a', {href: 'http://www.twitch.tv/'+a.str+'/profile', target: '_blank'});
+		var abPag = c('button', {
+			type: 'button',
+			className: 'button',
+			innerHTML: 'Channel page'});
+		aPag.appendChild(abPag);
+		page.appendChild(aPag);
+		adds.appendChild(page);
+		var dur = c('div', {className: 'duration'});
+		dur.appendChild(c('a', {innerHTML: a.tme}));
+		adds.appendChild(dur);
+		inf.appendChild(adds);
+
+		return inf;
+	}
+
+	var holder = c('div', {className: 'content', id: a.pos});
+	holder.appendChild(preview());
+	holder.appendChild(information());
+	if (typeof to === "undefined")
+		return holder;
+	$(to).append(holder);
+}
+
+var online = [];
+
+window.insert = function(obj) {
+	// invalid input
+	if (!obj) return;
 
 	var   StreamTitle = obj.Stream.Title,
 		 StreamerName = obj.Name.toLowerCase(),
@@ -225,7 +230,7 @@ window.insert = function(obj) {
 		if (!obj.Stream)
 			return;
 
-		insert({
+		str_cell({
 			str: StreamerName,
 			dsn: ShortStrmName,
 			ttl: StreamTitle,
@@ -236,7 +241,7 @@ window.insert = function(obj) {
 			txw: TitleWidth,
 			gmw: GameWidth,
 			tme: time(obj.Stream.Time)
-		});
+		}, '#content>.online');
 		online.push(StreamerName);
 	} else {
 		// This name is in list
