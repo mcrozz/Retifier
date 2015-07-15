@@ -5,7 +5,7 @@
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
-	font:130% ExtFont!important;
+	font:130% ExtFont;
 	overflow: hidden;
 	margin: 0;
 }
@@ -36,7 +36,7 @@ button {
 	border-radius: 10px;
 }
 
-#insertContentHere::-webkit-scrollbar {
+#content>.online::-webkit-scrollbar {
 	width: 1.9%;
 }
 .alert>div::-webkit-scrollbar {
@@ -58,6 +58,12 @@ body>div {
 	display: block;
 	width: 100%;
 	height: 100%;
+}
+
+.following>div, #content>.online {
+	width: 100%;
+	height: 90%;
+	overflow-y: scroll;
 }
 
 .game>a, .streamer>a {
@@ -91,6 +97,22 @@ body>div {
 }
 .tum>a:hover {
 	opacity: 1;
+}
+
+/* For HiDPI */
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+	only screen and (-o-min-device-pixel-ratio: 3/2),
+	only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-device-pixel-ratio: 1.5) {
+		html {
+			font:100% ExtFont!important;
+		}
+		#FollowedChannelsOnline {
+			font:85% ExtFont!important;
+		}
+		.tum>a {
+			font:95% ExtFont!important;
+		}
 }
 
 @-webkit-keyframes loading {
@@ -945,12 +967,6 @@ button.dash:hover {
 }
 .container>.status {
 	width: 25%;
-}
-
-.following>div {
-	width: 100%;
-	height: 100%;
-	overflow: auto;
 }
 
 .following>div>.container>div {

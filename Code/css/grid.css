@@ -1,4 +1,29 @@
 {{LICENSE_HEADER}}
+/* For HiDPI */
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+	only screen and (-o-min-device-pixel-ratio: 3/2),
+	only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-device-pixel-ratio: 1.5) {
+		.inf>.title>a, .inf>.streamer>a, .inf>.game>a, .inf>.viewers>a, .inf>.viewers>p {
+			font-size:70% !important;
+		}
+		.adds>.duration>a {
+			font-size:85% !important;
+		}
+		.options>header>div:first-child {
+			font-size:110% !important;
+		}
+		#user {
+			font-size:100% !important
+		}
+		.options {
+			font-size:75% !important
+		}
+		button[name=Select1], button[name=Select2] {
+			font-size:75% !important;
+		}
+}
+
 .adds>.duration>a {
 	color: white;
 	text-shadow: 1px 2px 3px black;
