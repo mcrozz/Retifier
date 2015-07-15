@@ -8,7 +8,7 @@ function reLogin() {
 	localStorage.FollowingList='{}';
 	localStorage.Following='0';
 	localStorage.FirstLaunch='true';
-	localStorage.Games = '{}';
+	localStorage.Games = '[]';
 	localStorage.timeOut = '{}';
 	TimersetToUpdate=[];
 	send({type: 'update', data: -1});
@@ -17,7 +17,7 @@ function reLogin() {
 
 function logged() {
 	$('button.dash').each(function(i,v) {v.disabled = false;});
-	$('#insertContentHere').html('');
+	$('#content>.online').html('');
 	$('#FollowedChannelsOnline').html("Please wait a moment");
 }
 
@@ -75,7 +75,7 @@ function lgin() {
 					$('button.dash').each(function(i,v) {v.disabled = false;});
 					_$('SetUpUserNameInp').onkeyup = function(){};
 					_$("SetUpUserName").onclick = function(){};
-					_$('insertContentHere').innerHTML = null;
+					$('#content>.online').html('');
 				})
 				.error(function(e) {
 					$('#FollowedChannelsOnline').html('Could not find such name');
@@ -83,7 +83,7 @@ function lgin() {
 			} else { $('#FollowedChannelsOnline').html('Invalid name!'); }
 		}
 		$('#FollowedChannelsOnline').html("Sign in by a Twicth Name");
-		$('#insertContentHere').html(
+		$('#content>.online').html(
 			'<div class="Welcome" style="animated FadeIn">'+
 			'<p>Hello!</p>'+
 			'<p>Before you will use this app,</p>'+
@@ -110,7 +110,7 @@ function lgin() {
 	hld.appendChild(TwAcc);
 	hld.appendChild(TwNam);
 
-	$('#insertContentHere').html(hld);
+	$('#content>.online').html(hld);
 }
 
 $(lgin);

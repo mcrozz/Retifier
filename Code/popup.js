@@ -163,7 +163,7 @@ $(function() {
 			var css = local.Config.Format.toLowerCase();
 			if (l && l.format)
 				css = l.format.toLowerCase();
-			$('#cust')[0].href = './css/'+css+'.css';
+			_$('#cust').href = './css/'+css+'.css';
 		},
 		size: {
 			current: 0,
@@ -280,7 +280,9 @@ $(function() {
 			d1.appendChild(sta);
 
 			var lgo = c('div', {className: 'logo'});
-			var ilgo = c('img', {src: obj.logo});
+			var ilgo = c('img', {
+				src: obj.logo, 
+				href: "http://www.twitch.tv/"+obj.name+"/profile"});
 			lgo.appendChild(ilgo);
 			d1.appendChild(lgo);
 
@@ -290,7 +292,9 @@ $(function() {
 			var d2 = c('div');
 
 			var str = c('div', {className: 'streamer'});
-			var astr = c('a', {innerText: obj.display_name});
+			var astr = c('a', {
+				innerText: obj.display_name,
+				href: "http://www.twitch.tv/"+obj.name+"/profile"});
 			str.appendChild(astr);
 			d2.appendChild(str);
 
