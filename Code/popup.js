@@ -336,6 +336,30 @@ $(function() {
 		});
 	}
 
+	function HostedTab() {
+		var hstd = c('div');
+		function add(name, title, prev, views, game, from) {
+			var cell = c('div');
+			// TODO: create containers
+			hstd.appendChild(cell);
+		}
+
+		// getting list of hosted channels
+		$.getJSON("")
+		.done(function(e) {
+			$.each(e.hosts, function(i,v) {
+				add(v.target.display_name,
+					v.target.title,
+					v.target.preview,
+					v.target.viewers,
+					v.target.meta_game,
+					v.display_name);
+			});
+			$('#content>.host').append(hstd);
+		});
+	}
+
+	// TODO: use it only for notifications
 	function FollowedList(chk) {
 		function cr(n) { return document.createElement(n); }
 		var flw = cr('div');
