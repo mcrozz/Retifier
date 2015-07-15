@@ -151,9 +151,7 @@ $(function() {
 			 add = -21;
 			fp = (screen.pixelDepth*hp*10)+add;
 
-			htm = 'html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}';
-			htm+= '#size>span{height:'+(h*0.142)+'px;}';
-			$('style').html(htm);
+			$('style').html('html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}');
 
 			if (typeof safari !== 'undefined') {
 				safari.self.width = w;
