@@ -1,0 +1,31 @@
+{
+	"_links": {
+		"self": "http://api.twitch.tv/api/users/izarudny/followed/hosting?limit=25&offset=0",
+		"next": "http://api.twitch.tv/api/users/izarudny/followed/hosting?limit=25&offset=25"
+	},
+	"_total": 1,
+	"hosts": [
+		{
+			"id": 22680841,
+			"name": "joshimuz",
+			"target": {
+				"id": "kittymuz",
+				"channel": {
+					"id": 41803259,
+					"logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/kittymuz-profile_image-d734b9c06ee7fa65-300x300.jpeg",
+					"url": "http://www.twitch.tv/kittymuz",
+					"display_name": "Kittymuz",
+					"name": "kittymuz"
+				},
+				"meta_game": "Hearthstone: Heroes of Warcraft",
+				"preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_kittymuz-320x180.jpg",
+				"title": "Hearthstone Laddering and Tavern Brawl",
+				"url": "http://www.twitch.tv/kittymuz",
+				"viewers": 17,
+				"_id": 41803259
+			},
+			"logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/joshimuz-profile_image-df08ad7fcdd77fb5-300x300.png",
+			"display_name": "Joshimuz"
+		}
+	]
+}
