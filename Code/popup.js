@@ -339,6 +339,7 @@ $(function() {
 		function add(name, title, prev, views, game, from) {
 			var cell = c('div');
 			// TODO: create containers
+			// Maybe need to copy style from online list
 			hstd.appendChild(cell);
 		}
 

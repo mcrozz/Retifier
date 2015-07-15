@@ -460,19 +460,6 @@ button.button:hover {
 	height: 30%;
 	margin: 29% 37.5%;
 }
-#size>div {
-	display: block;
-	position: absolute;
-	top: -84%;
-	left: -82%;
-	width: 278%;
-	height: auto;
-}
-#size>div>a {
-	color: red;
-	font-size: 100%;
-	display: block;
-}
 #size>span {
 	display: inline-block;
 	width: 48%;
