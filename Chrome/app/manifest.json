@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://www.parsecdn.com https://www.google-analytics.com https://api.twitch.tv; object-src 'self'",
-  "name": "Twitch Notifier",
+  "name": "Retifier",
   "version": "{{APP_VERSION_CURRENT}}",
-  "description": "Get notified when your following channel going online",
+  "description": "Expand your Twitch experience",
   "background": {
     "persistent": true,
 	  "page": "background.html"
