@@ -7,9 +7,9 @@ if (localStorage.FirstLaunch === 'true') {
   badge(0);
   local.set('Status.online', 0);
   if (local.Game.list.length == undefined)
-    local.set('Games', "[]");
+    local.set('Games', []);
   if (local.Game.list.length > 50) {
-    local.set('Games', "[]")
+    local.set('Games', [])
   }
   if ($.inArray("object Object", localStorage.FollowingList) != -1) {
     localStorage.FollowingList = "{}";
