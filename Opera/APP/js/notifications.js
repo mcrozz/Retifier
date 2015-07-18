@@ -187,7 +187,7 @@ window.notify = {
 					title          : d.title,
 					message        : d.msg,
 					contextMessage : d.context,
-					iconUrl        : "img/notification_icon.png"
+					iconUrl        : "img/Notification_512.png"
 				};
 
 				/*if (typeof d.button === 'boolean' && d.button)

@@ -2,13 +2,13 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1652,
+        "Build": 1733,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
         "Platform": "webkit",
         "Review": "https://chrome.google.com/webstore/detail/twitchtv-notifier/mmemeoejijknklekkdacacimmkmmokbn/reviews",
-        "Ver": "1.4.9.1"
+        "Ver": "1.5.0"
     },
     "Copy": [
         "DinDon.ogg",
@@ -20,10 +20,14 @@
         "auth.html",
         "auth.js",
         "background.js",
-        "img\\icon.png",
+        "img\\Logo_512.png",
+        "img\\Logo_256.png",
+        "img\\Logo_128.png",
+        "img\\Logo_48.png",
+        "img\\Logo_16.png",
         "img\\icon_0.png",
         "img\\icon_1.png",
-        "img\\notification_icon.png",
+        "img\\Notification_512.png",
         "img\\Check_Box.png",
         "img\\Check_Box_ch.png",
         "img\\Check_Box_2.png",

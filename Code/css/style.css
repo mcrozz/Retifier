@@ -5,21 +5,21 @@
 }
 html {
 	background: rgba(141, 141, 141, 0.22);
-	font:130% ExtFont!important;
+	font:130% ExtFont;
 	overflow: hidden;
 	margin: 0;
 }
 body {
 	margin: 0;
-  font-family: ExtFont;
-  font-size: inherit;
+	font-family: ExtFont;
+	font-size: inherit;
 }
 a {
 	text-decoration: none;
 	cursor: default;
 }
 p {
-	color:	black;
+	color: black;
 	border-right: 1px dotted black;
 	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
 }
@@ -35,7 +35,8 @@ button {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
 }
-#insertContentHere::-webkit-scrollbar {
+
+#content>.online::-webkit-scrollbar {
 	width: 1.9%;
 }
 .alert>div::-webkit-scrollbar {
@@ -51,6 +52,18 @@ button {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #555;
+}
+
+body>div {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.following>div, #content>.online {
+	width: 100%;
+	height: 90%;
+	overflow-y: scroll;
 }
 
 .game>a, .streamer>a {
@@ -86,15 +99,28 @@ button {
 	opacity: 1;
 }
 
+/* For HiDPI */
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+	only screen and (-o-min-device-pixel-ratio: 3/2),
+	only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-device-pixel-ratio: 1.5) {
+		html {
+			font:100% ExtFont!important;
+		}
+		#FollowedChannelsOnline {
+			font:85% ExtFont!important;
+		}
+		.tum>a {
+			font:95% ExtFont!important;
+		}
+}
+
 @-webkit-keyframes loading {
-  0% {
-	-webkit-transform: scale(1.4);
-	} 100% {
-	-webkit-transform: scale(1);
-	}
+	0% { -webkit-transform: scale(1.4); }
+	100% { -webkit-transform: scale(1); }
 }
 .loading {
-  position: absolute;
+	position: absolute;
 	display: block;
 	width: 44%;
 	height: 42%;
@@ -102,38 +128,38 @@ button {
 	top: 12%;
 }
 .loading>div {
-  position: absolute;
-  -webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
+	position: absolute;
+	-webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
 	width: 34%;
-  height: 37%;
+	height: 37%;
 }
 .loading>div:nth-of-type(1) {
-  background: #4821b8;
-  opacity: 0.9;
-  -webkit-animation-delay: 0s;
+	background: #4821b8;
+	opacity: 0.9;
+	-webkit-animation-delay: 0s;
 	top: 0;
-  left: 0;
+	left: 0;
 }
 .loading>div:nth-of-type(2) {
-  background: #4821b8;
-  opacity: 0.8;
-  -webkit-animation-delay: 0.1s;
+	background: #4821b8;
+	opacity: 0.8;
+	-webkit-animation-delay: 0.1s;
 	top: 0;
 	left: 50%;
 }
 .loading > div:nth-of-type(3) {
-  background: #4821b8;
-  opacity: 0.7;
-  -webkit-animation-delay: 0.3s;
+	background: #4821b8;
+	opacity: 0.7;
+	-webkit-animation-delay: 0.3s;
 	top: 50%;
-  left: 0;
+	left: 0;
 }
 .loading > div:nth-of-type(4) {
-  background: #4821b8;
-  opacity: 0.6;
-  -webkit-animation-delay: 0.2s;
+	background: #4821b8;
+	opacity: 0.6;
+	-webkit-animation-delay: 0.2s;
 	top: 50%;
-  left: 50%;
+	left: 50%;
 }
 
 #header {
@@ -144,13 +170,13 @@ button {
 
 .inf>.game, .inf>.title{
 	white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .inf>.game>a, .inf>.title>a {
 	white-space: inherit;
-  overflow: inherit;
-  text-overflow: inherit;
+	overflow: inherit;
+	text-overflow: inherit;
 }
 
 #nowONline {
@@ -185,8 +211,8 @@ div>.checkBox {
 	border: 1px solid rgb(82, 82, 82);
 	border-bottom: none;
 	border-radius: 14px;
-  color: white;
-  font-size: 90%;
+	color: white;
+	font-size: 90%;
 }
 
 .options>header {
@@ -352,9 +378,9 @@ button.Flush {
 }
 .alert>header>p {
 	margin: 0;
-  color: inherit;
-  border: none;
-  text-shadow: none;
+	color: inherit;
+	border: none;
+	text-shadow: none;
 }
 .alert>div {
 	display: block;
@@ -434,19 +460,6 @@ button.button:hover {
 	height: 30%;
 	margin: 29% 37.5%;
 }
-#size>div {
-	display: block;
-	position: absolute;
-	top: -84%;
-	left: -82%;
-	width: 278%;
-	height: auto;
-}
-#size>div>a {
-	color: red;
-	font-size: 100%;
-	display: block;
-}
 #size>span {
 	display: inline-block;
 	width: 48%;
@@ -494,7 +507,7 @@ span.ok {
 }
 #view>span {
 	width: 17%;
-	height: 55%;
+	height: 62%;
 	display: inline-block;
 	border-radius: 40%;
 }
@@ -771,7 +784,7 @@ button.WelcomOK:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0)), to(rgba(182, 182, 182, 0.78)));
 }
 
-#content3 {
+#content {
 	width: 100%;
 	position: relative;
 	display: block;
@@ -900,9 +913,9 @@ button.dash:hover {
 	display: none;
 	position: relative;
 	width: 100%;
-	height: 68.8%;
+	height: 74.7%;
 	background-color: rgba(255, 255, 255, 0.25);
-	margin: 14.3% 0;
+	margin: 12% 0;
 }
 
 .Welcome>p {
@@ -910,6 +923,84 @@ button.dash:hover {
 }
 .Welcome>p::selection {
 	background: none;
+}
+
+/* FollowedHub */
+.following>div>.container {
+	width: 47%;
+	height: 25%;
+	padding: 1.5% 1%;
+	color: white;
+	display: inline-flex;
+	margin: 1% .5%;
+}
+
+.status>.logo>img {
+	width: 100%;
+	height: auto;
+	background-color: rgba(0, 0, 0, 0.68);
+}
+.status>.online {
+	background: -webkit-radial-gradient(center, ellipse cover, #3df230 1%,#6cc96c 52%,#68bf67 100%);
+	width: 100%;
+	font-size: 78%;
+	text-align: center;
+}
+.status>.offline {
+	background: -webkit-radial-gradient(center, ellipse cover, #c92828 0%,#824646 54%,#824646 100%);
+	width: 100%;
+	font-size: 78%;
+	text-align: center;
+}
+.container>.status {
+	width: 25%;
+}
+
+.following>div>.container>div {
+	display: inline-table;
+	height: 100%;
+}
+.following>div>.container>div:nth-child(2) {
+	background-color: rgba(0, 0, 0, 0.68);
+	width: 75%;
+}
+.container>div>.streamer {
+	display: block;
+	width: 80%;
+	padding: 0 0 0 5px;
+}
+.container>div>.streamer>a {
+	font-size: 120%;
+	color: white;
+}
+.container>div>.streamer>a:hover {
+	color: rgba(255,255,255,0.6);
+}
+
+.container>div>.spacer {
+	display: block;
+	width: 100%;
+	height: 25%;
+}
+
+.container>div>.buttons>button {
+	width: 49%;
+	font-size: 97%;
+}
+
+.container>div>.stats>a {
+	font-size:90%;
+	margin-left: 2%;
+	display: block;
+}
+
+.status>.logo:hover:after {
+	content: "Channel";
+	width: 100%;
+	background: black;
+	color: white;
+	text-align: center;
+	display: block;
 }
 
 /*

@@ -2,13 +2,14 @@
 if (localStorage.FirstLaunch === 'true') {
   localStorage.Following = 0;
   local.set('Status.update', 7);
-  BadgeOnlineCount(' Hi ');
+  badge(' Hi ');
 } else {
-  BadgeOnlineCount(0);
+  badge(0);
   local.set('Status.online', 0);
-  if (local.Games.length > 50) {
-    localStorage.Games = '{}';
-    local.init('Games');
+  if (local.Game.list.length == undefined)
+    local.set('Games', []);
+  if (local.Game.list.length > 50) {
+    local.set('Games', [])
   }
   if ($.inArray("object Object", localStorage.FollowingList) != -1) {
     localStorage.FollowingList = "{}";
@@ -24,8 +25,8 @@ if (localStorage.FirstLaunch === 'true') {
     var j = {Stream: false}, k = local.FollowingList[i];
     if (typeof k.Notify === 'undefined')
       j.Notify = true;
-    if (typeof k.d_name === 'undefined')
-      j.d_name = k.Name;
+    if (typeof k.d_name !== 'undefined')
+      j.Name = k.d_name;
 
     local.following.set(i, j);
   });
@@ -43,17 +44,18 @@ var bck = {
       return this.data;
     },
     add: function(n) {
-      this.data.push(n);
+      this.data.push(n.toLowerCase());
       local.set('Status.online', this.data.length);
-      BadgeOnlineCount(this.data.length);
+      badge(this.data.length);
     },
     del: function(n) {
+      var n = n.toLowerCase();
       this.data = this.data.filter(function(v) { return v !== n; });
       local.set('Status.online', this.data.length);
-      BadgeOnlineCount(this.data.length);
+      badge(this.data.length);
     },
     is: function(n) {
-      return (this.data.indexOf(n))!==-1;
+      return (this.data.indexOf(n.toLowerCase()))!==-1;
     }
   },
   promise: {
@@ -131,10 +133,9 @@ var bck = {
       if (local.Following == 0) {
         $.each(j.follows, function(i,v) {
           local.following.set(i, {
-            Name: v.channel.name,
+            Name: v.channel.display_name,
             Stream: false,
-            Notify: true,
-            d_name: v.channel.display_name
+            Notify: true
           });
         });
         local.set('Following', j._total);
@@ -144,7 +145,7 @@ var bck = {
         $.each(local.FollowingList, function(i,v) {
           var del = true;
           $.each(j.follows, function(j,k) {
-            if (k.channel.name === v.Name)
+            if (k.channel.display_name === v.Name)
               del = false;
           });
           if (del)
@@ -182,7 +183,7 @@ var bck = {
         return bck.promise.done();
       });
 
-      if (toShow === 777)
+      if (window.toShow === 777)
         return bck.promise.done();
 
       $.getJSON('https://api.twitch.tv/kraken/streams/followed?limit=100&offset=0&oauth_token='+local.Config.token)
@@ -205,6 +206,7 @@ var bck = {
                 });
 
               local.following.set(v, {Stream: false});
+              badge(0);
               send({type:'following', data: {Name:v, Stream:false}});
             });
           }
@@ -213,7 +215,7 @@ var bck = {
 
         var onl = [];
         $.each(d.streams, function(i,v) {
-          onl.push(v.channel.name);
+          onl.push(v.channel.name.toLowerCase());
         });
 
         return bck.checkStatus(onl, true);
@@ -221,7 +223,7 @@ var bck = {
     } else {
       var lst = [];
       $.each(local.FollowingList, function(i,v) {
-        lst.push(v.Name);
+        lst.push(v.Name.toLowerCase());
       });
       return bck.checkStatus(lst, false);
     }
@@ -266,7 +268,7 @@ var bck = {
         if (token) {
           // 'list' is already is online list
           $.each(bck.online.get(), function(i,v) {
-            if (list.indexOf(v) === -1) {
+            if (list.indexOf(v.toLowerCase()) === -1) {
               // streamer gone offline
               bck.online.del(v);
               var str = local.following.get(v);
@@ -283,10 +285,8 @@ var bck = {
             }
           });
           local.set('Status.online', list.length);
-          BadgeOnlineCount(list.length);
+          badge(list.length);
         } else {
-          local.set('Status.online', bck.online.get().length);
-
           var onl = bck.online.get().length;
 
           if (onl <= 0) {
@@ -298,7 +298,7 @@ var bck = {
           }
 
           local.set('Status.online', onl);
-          BadgeOnlineCount(local.Status.online);
+          badge(local.Status.online);
 
           if (local.Config.Notifications.update) {
             switch (local.Status.online) {
@@ -324,15 +324,14 @@ var bck = {
 
       if (d.stream) {
         // Channel is online
-        var FoLi = local.following.get(d.stream.channel.name);
+        var FoLi = local.following.get(d.stream.channel.name.toLowerCase());
         if (typeof FoLi !== 'object')
           return err({message:'Could not find streamer in base, '+d.stream.channel.name});
 
         var Game = d.stream.channel.game,
           Status = d.stream.channel.status,
-          Name   = d.stream.channel.name,
-          d_name = d.stream.channel.display_name,
-          Time   = d.stream.created_at;
+            Name = d.stream.channel.display_name,
+            Time = d.stream.created_at;
          
         if (FoLi !== null) {
           // Recheck streamer if status is undefined
@@ -351,7 +350,7 @@ var bck = {
 
           if (!FoLi.Stream && !bck.online.is(Name)) {
             if (FoLi.Notify) {
-              var dd = ((date()-date(Time))<=((60+local.Config.Interval_of_Checking)*1000))
+              var dd = (((date()-date(Time))<=((local.Config.Interval_of_Checking+60)*1000)))
                 ?' just went live!':' is live!';
               notify.send({
                 name: Name,
@@ -368,7 +367,7 @@ var bck = {
           if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
             notify.send({
               name: Name,
-              title: d_name+' changed stream title on',
+              title: Name+' changed stream title on',
               msg: Status,
               type: 'follow',
               context: Game
@@ -380,12 +379,11 @@ var bck = {
             }
         }
 
-        local.game(Game);
+        local.Game.check(Game);
 
         var s = {
-          Name    : Name,
-          d_name  : d_name,
-          Stream  : {
+          Name   : Name,
+          Stream : {
             Title  : Status,
             Game   : Game,
             Viewers: d.stream.viewers,
@@ -421,6 +419,11 @@ var bck = {
     bck.promise.after = null;
     bck.intFollowing = -1;
     bck.intStatus = -1;
+    $.each(local.FollowingList, function(i,v) {
+      local.following.set(v.Name, {Stream: false});
+    });
+    badge(0);
+    bck.online.data = [];
     bck.init();
   },
   init: function() {
@@ -443,8 +446,8 @@ var bck = {
     // checking for online streamers every {USER} min + 30s
     bck.intFollowing = setInterval(function(){ bck.getList(); }, 120000);
     setTimeout(function() {
-      bck.intStatus = setInterval(function(){ bck.getOnline(); }, (60000*local.Config.Interval_of_Checking));}
-    , 30000);
+      bck.intStatus = setInterval(function(){ bck.getOnline(); }, (60000*local.Config.Interval_of_Checking));
+    }, 30000);
     bck.getList();
     bck.promise.after = bck.getOnline;
   },

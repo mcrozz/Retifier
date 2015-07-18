@@ -23,7 +23,7 @@ function TimeNdate(d,m) {
   return (new Date()).getTime()+(Math.abs(d)*86400000)+(Math.abs(m)*86400000*j[(new Date()).getMonth()]);
 }
 function _$(id){
-    // Do not try element selector e.g. button.Yup
+    // Do not try element selector e.g. button.No
     if ($.inArray(id[0], ['.', '#']) != -1) return $(id)[0];
     return $('#'+id)[0];
 }
@@ -31,6 +31,15 @@ function date(_date) {
   if (typeof _date == "undefined")
     return (new Date()).getTime();
    return (new Date(_date)).getTime();
+}
+function c(n, par) {
+  var el = document.createElement(n);
+  if (par) {
+    $.each(par, function(i,v) {
+      el[i] = v;
+    });
+  }
+  return el;
 }
 
 window.local = new modelLocal();
@@ -71,7 +80,7 @@ function modelLocal() {
       this.Status = JSON.parse(localStorage.Status);
       this.FollowingList = JSON.parse(localStorage.FollowingList);
       this.Following = JSON.parse(localStorage.Following);
-      this.Games = JSON.parse(localStorage.Games);
+      this.Game.list = JSON.parse(localStorage.Games);
       this.following.hash();
       this.tried = 0;
     } catch(e) {
@@ -113,14 +122,13 @@ function modelLocal() {
   this.default = {
     Name: 'invalid',
     Stream: false,
-    Notify: true,
-    d_name: 'invalid'
+    Notify: true
   }
   this.following = {
     get: function(n) {
       // Returns streamer obj
       var itm = isNaN(n) ?
-        local.FollowingList[local.following.map[n]] :
+        local.FollowingList[local.following.map[n.toLowerCase()]] :
         local.FollowingList[n];
 
       return (typeof itm === 'undefined') ? null : itm;
@@ -128,11 +136,11 @@ function modelLocal() {
     set: function(id, dt) {
       try {
         if (isNaN(id))
-          id = local.following.map[id];
+          id = local.following.map[id.toLowerCase()];
 
         var tm = local.FollowingList[id];
         if (typeof tm !== 'undefined')
-          $.each(['Name', 'Stream', 'Notify', 'd_name'], function(i,v) {
+          $.each(['Name', 'Stream', 'Notify'], function(i,v) {
             if (typeof tm[v] === 'undefined')
               dt[v] = local.default[v];
             else if (typeof dt[v] === 'undefined')
@@ -150,46 +158,53 @@ function modelLocal() {
     del: function(name) {
       var newObj = {};
       $.each(local.FollowingList, function(i,v) {
-        if (v.Name !== name)
+        if (v.Name.toLowerCase() !== name.toLowerCase())
           newObj[i] = v;
       });
-      try {
-        localStorage.FollowingList = JSON.parse(newObj);
-        local.init('FollowingList');
-      } catch(e) {}
+
+      local.set('FollowingList', newObj);
     },
     map: { /* String : Int ..*/ },
     hash: function() {
-      // Hash names and theirs id
+      // Hash positions
       local.following.map = {};
       $.each(local.FollowingList, function(i,v) {
-        local.following.map[v.Name] = i;
+        local.following.map[v.Name.toLowerCase()] = i;
       });
     }
   }
-  this.game = function(name) {
-    setTimeout(function() {
-      if (local.Games.length > 50) {
-        localStorage.Games = '{}';
-        local.init('Games');
-      }
-      var dname = encodeURI(name);
-      $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
-      .done(function(e) {
-        var isThere = false;
-        if (e.games.length === 0)
-          isThere = false;
-        else
-          $.each(e.games, function(i,v) {
-            if (v.name === name) {
-              isThere = true;
-            }
-          });
-        // preventing from error on local.set side
-        dname = dname.replace(/./g, '');
-        local.set('Games.'+dname, isThere);
-      });
-    }, 0);
+  this.Game =  {
+    check : function(name) {
+      setTimeout(function() {
+        if (local.Game.list.length > 50)
+          local.set('Games', []);
+
+        if (local.Game.list.indexOf(name) !== -1)
+          return;
+
+        var dname = encodeURI(name);
+        $.getJSON('https://api.twitch.tv/kraken/search/games?q='+dname+'&type=suggest')
+        .done(function(e) {
+          var isThere = false;
+          if (e.games.length === 0)
+            isThere = false;
+          else
+            $.each(e.games, function(i,v) {
+              if (v.name === name) {
+                isThere = true;
+              }
+            });
+          // preventing from error on local.set side
+          if (isThere)
+            local.Game.add(name);
+        });
+      }, 0);
+    },
+    list: [/* thumbnail is available */],
+    add: function(name) {
+      this.list.push(name);
+      local.set('Games', this.list);
+    }
   }
 };
 
@@ -228,22 +243,23 @@ function time(t) {
 }
 
 // https://www.google-analytics.com
-(function(i,s,o,g,r,a,m){
-  i['GoogleAnalyticsObject']=r;
-  i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
-  i[r].l=1*date();
-  a=s.createElement(o), m=s.getElementsByTagName(o)[0];
-  a.async=1; a.src=g;
-  m.parentNode.insertBefore(a,m);
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-25472862-3', {cookieDomain: 'none'});
-  ga('set', 'checkProtocolTask', function(){});
-  ga('set', 'anonymizeIp', true);
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview', {
-    'page': location.pathname,
-    'title': location.pathname
-  });
+try {
+  (function(i,s,o,g,r,a,m){
+    i['GoogleAnalyticsObject']=r;
+    i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
+    i[r].l=1*date();
+    a=s.createElement(o), m=s.getElementsByTagName(o)[0];
+    a.async=true; a.src=g;
+    m.parentNode.insertBefore(a,m);
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-25472862-3', {cookieDomain: 'none'});
+    ga('set', 'checkProtocolTask', function(){});
+    ga('set', 'anonymizeIp', true);
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview', {
+      'page': location.pathname,
+      'title': location.pathname});
+} catch(e) {}
 
 // https://www.parsecdn.com
 if (location.href.split('/').pop(1) === 'background.html') {

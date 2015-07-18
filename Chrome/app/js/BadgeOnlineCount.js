@@ -1,4 +1,4 @@
-function BadgeOnlineCount(count) {
+function badge(count) {
 	chrome.browserAction.setBadgeText({ text: String(count) });
 	if (count !== 0) {
 		chrome.browserAction.setBadgeBackgroundColor({color:"#593a94"});

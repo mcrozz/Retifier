@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Twitch Notifier</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.rozz.twitchnotifier</string>
+	<string>com.rozz.retifier</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -43,15 +43,15 @@
 				<key>Identifier</key>
 				<string>popup</string>
 				<key>Image</key>
-				<string>img/icon.png</string>
+				<string>img/Logo_48.png</string>
 				<key>Label</key>
-				<string>Twitch Notifier</string>
+				<string>Retifier</string>
 				<key>Palette Label</key>
 				<string></string>
 				<key>Popover</key>
 				<string>main</string>
 				<key>Tool Tip</key>
-				<string>Twitch Notifier</string>
+				<string>Retifier</string>
 			</dict>
 		</array>
 	</dict>
@@ -61,7 +61,7 @@
 		<dict/>
 	</dict>
 	<key>Description</key>
-	<string>Get notified when your favorite streamer goes online</string>
+	<string>Expand your Twitch experience</string>
 	<key>DeveloperIdentifier</key>
 	<string>X79YF53ARB</string>
 	<key>ExtensionInfoDictionaryVersion</key>
@@ -85,6 +85,6 @@
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>https://github.com/mcrozz/Twitch.tv_Notifier</string>
+	<string>https://github.com/mcrozz/Retifier</string>
 </dict>
 </plist>

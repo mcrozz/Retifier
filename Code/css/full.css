@@ -93,9 +93,9 @@ button:focus {
 }
 .GT1, .GT2{
 	width: 17%;
-	height: 38%;
+	height: 41%;
 	position: absolute;
-	margin: 38% 0 0 -17%;
+	margin: 34% 0 0 -17%;
 }
 .tum>.ST {
 	width: 100%;

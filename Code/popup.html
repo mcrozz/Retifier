@@ -1,4 +1,4 @@
-<meta charset='utf-8'>
+<meta charset="utf-8">
 <link rel="stylesheet" href="./css/style.css" type="text/css" />
 <link rel="stylesheet" id="cust" href="./css/full.css" type="text/css" />
 <style type="text/css"></style>
@@ -30,11 +30,6 @@
 
 	<!-- Change size page -->
 	<div id="size">
-	 	<div>
-	 		<a>While you're changing size, height of the window will
-				 NOT change, but after pressing 'OK' it will be normalized</a>
-			<a>Buttons may be visually broken, but they are working!</a>
-	 	</div>
 		<span class="cls"></span>
 	 	<span class="plus"></span>
 	 	<span class="minus"></span>
@@ -184,8 +179,22 @@
 
 	<progress style="display:none" id="CheckingProgress" max="100" value="0"></progress>
 
-	<div id="content3">
-		<div id="insertContentHere"></div>
+	<div id="content">
+		<div class="online show">
+			<!-- List of online streamers -->
+		</div>
+		<div class="following" style="display:none">
+			<div style="display:none">
+				<!-- Detailed view -->
+				<!-- TODO -->
+			</div>
+			<div>
+				<!-- List of streamers -->
+			</div>
+		</div>
+		<div class="host" style="display:none">
+			<!-- List of hosted channels by followed list -->
+		</div>
 	</div>
 
 	<div id="AppVersion"></div>

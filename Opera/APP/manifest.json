@@ -1,19 +1,19 @@
 {
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://www.parsecdn.com https://www.google-analytics.com https://api.twitch.tv; object-src 'self'",
-  "name": "Twitch Notifier",
+  "name": "Retifier",
   "version": "{{APP_VERSION_CURRENT}}",
-  "description": "Get notified when your following channel going online",
+  "description": "Expand your Twitch experience",
   "background": {
     "persistent": true,
-	  "page": "background.html"
+    "page": "background.html"
   },
   "icons": {
-  	"16": "/img/icon.png",
-  	"48": "/img/icon.png",
-  	"128": "/img/icon.png",
-  	"256": "/img/icon.png",
-    "512": "/img/icon.png"
+    "16": "/img/Logo_16.png",
+    "48": "/img/Logo_48.png",
+    "128": "/img/Logo_128.png",
+    "256": "/img/Logo_256.png",
+    "512": "/img/Logo_512.png"
   },
   "permissions": [
     "http://*.twitch.tv/",
@@ -24,7 +24,7 @@
     ],
   "browser_action": {
     "default_title": "Who's online?",
-    "default_icon": "/img/icon.png",
+    "default_icon": "/img/Logo_512.png",
     "default_popup": "popup.html"
   },
   "web_accessible_resources": ["auth.html"]
