@@ -1,9 +1,18 @@
 ## Changelog
 Current versions:
-- [_Google Chrome_](#google-chrome) - **1.4.9.1**
+- [_Google Chrome_](#google-chrome) - **1.5.0**
 - [_Opera_](#opera) - **1.1.8**
 
 # _Google Chrome_
+* **1.5.0**
+	* Changed name from Twitch Notifier to Retifier
+	* Changed extension icon
+	* Changed popup icons
+	* Changed notifications icon
+	* Changed Followed Hub (check it out)
+	* Fixed font size for HiDPI displays
+	* Fixed extension's size
+	* Various improvements
 * **1.4.9.1**
 	* Fixed bug when notifications weren't showing
 * **1.4.9**

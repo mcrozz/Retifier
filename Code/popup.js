@@ -509,7 +509,7 @@ $(function() {
 				"<a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a>"+
 				"<a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a>"+
 				"<a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a>"+
-				"<a>By installing this extension you are accepting Twitch's Terms of Service. Futher information can be found here: <a href='http://www.twitch.tv/p/tos'>http://www.twitch.tv/p/tos</a></div>");
+				"<a>By using this extension you are accepting Twitch's Terms of Service. Futher information can be found here: <a href='http://www.twitch.tv/p/tos' target='_blank'>http://www.twitch.tv/p/tos</a></div>");
 		}
 	}
 
@@ -722,7 +722,7 @@ $(function() {
 			$('#content>.following>div:nth-child(2)').html('');
 			$('#content>.following').hide();
 			$('#content>.online').show();
+			e.preventDefault();
 		}
-		e.preventDefault();
 	});
 });

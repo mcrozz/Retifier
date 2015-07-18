@@ -1,5 +1,5 @@
 # Screenshot
-![Screenshot](https://raw.githubusercontent.com/mcrozz/Twitch.tv_Notifier/master/screenshots/ScreenShot_1.png)
+![Screenshot](https://raw.githubusercontent.com/mcrozz/Retifier/master/screenshots/ScreenShot_1.png)
 
 # In web stores
 * For Google Chrome: [In Google Web Store](http://bit.ly/TwitchNotifer)
@@ -10,15 +10,22 @@
 # Auth redirection can be found [here on GitHub](https://github.com/mcrozz/backupsite/blob/gh-pages/auth/twitch.html)
 
 # Installation
-* Clone https://github.com/mcrozz/Twitch.tv_Notifier
+* Clone https://github.com/mcrozz/Retifier
 * Start build.py
 * Choose platform
 * Enable developer mode in browser
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.4.9.1**
->* Fixed notifications not showing
+_Google Chrome_ - **1.5.0**
+>* Changed name from Twitch Notifier to Retifier
+>* Changed extension icon
+>* Changed popup icons
+>* Changed notifications icon
+>* Changed Followed Hub (check it out)
+>* Fixed font size for HiDPI displays
+>* Fixed extension's size
+>* Various improvements
 
 _Opera_ - **1.1.8**
 >* Fixed auth by Twitch account

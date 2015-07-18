@@ -2,19 +2,20 @@
 
 // What's new in update
 newUpdate = {
-  msg: "Fix",
-  content: "<p>What's new in this update:</p><li>Fixed notifications not showing</li>"
+  msg: "Biggest update",
+  content: "<p>What's new in this update:</p><li>Changed name from Twitch Notifier to Retifier</li><li>Changed extension icon</li><li>Changed popup icons</li><li>Changed notifications icon</li><li>Changed Followed Hub (check it out)</li><li>Fixed font size for HiDPI displays</li><li>Fixed extension's size</li><li>Various improvements</li>"
 };
 
 // Changelog
 changes = [
+  "-1.5.0 changed name from Twitch Notifier to Retifier, changed extension icon, changed popup icons, changed notifications icon, changed Followed Hub (check it out), fixed font size for HiDPI displays, fixed extension's size, various improvements",
   "-1.4.9.1 fixed notifications not showing",
   "-1.4.9 fixed auth by Twitch account, fixed time out for notifications, notifications will not attack you after restart (improved), various improvements",
   "-1.4.8 hotfix",
   "-1.4.7 fixed 'Get notifications from', various style improvements",
   "-1.4.6 hotfix, fixed background script, fixed bug with zero followed channels",
   "-1.4.5 a lot of UI improvements, script optimizations, added notifications settings for each streamer, resizable extension's window",
-  "-1.4.2 hotfix, fixed auth by twitch's account, fixed game links",
+  "-1.4.2 hotfix, fixed auth by Twitch's account, fixed game links",
   "-1.4.1 changed font to PermianSans Typeface, fixed ON/OFF statements, added notify on offline, optimized network code",
   "-1.4 Fresh look, fixed 'Following List' page, various improvements",
   "-1.3.9.9 Bug fixing",
@@ -28,7 +29,7 @@ changes = [
   "-1.3.9.1 Bug fix",
   "-1.3.9 Edited some animation, edited design, stability improvements",
   "-1.3.8 Fixed bug with text on hover, added a new feature: zoomed preview",
-  "-1.3.7 Deleted 'Live update' script, various style editings",
+  "-1.3.7 Deleted 'Live update' script, various style improvements",
   "-1.3.6 Cumulative update",
   "-1.3.5 Fixed update script",
   "-1.3.4 Happy New Year!",
@@ -50,7 +51,7 @@ changes = [
   "-1.1.8 Bug fixes",
   "-1.1.7 Added 'Live Update' script. Fixed minor bugs",
   "-1.1.6 Bug fixes",
-  "-1.1.5 A little optimisation in style. Now you can disable duration of the stream. Button 'Found a bug?' now only viewable in options and in changes",
+  "-1.1.5 A little optimization in style. Now you can disable duration of the stream. Button 'Found a bug?' now only viewable in options and in changes",
   "-1.1.4 Fixed freezes on opening",
   "-1.1.3 Bug with notifications, fixed stream duration",
   "-1.1.2 Stream duration",
