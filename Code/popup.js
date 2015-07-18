@@ -261,6 +261,13 @@ $(function() {
 	}
 
 	function FollowedHub() {
+		if ($('#content>.following').css('display') === "block") {
+			$('#content>.following>div:nth-child(2)').html('');
+			$('#content>.following').hide();
+			$('#content>.online').show();
+			return;
+		}
+
 		function insert(obj, online) {
 			var cell = c('div', {className: 'container'});
 			if (obj.profile_banner !== null)
@@ -307,14 +314,14 @@ $(function() {
 			d2.appendChild(sts);
 
 			var btn = c('div', {className: 'buttons'});
-			var b1 = c('button', {innerText: 'Detailed'});
+			/*var b1 = c('button', {innerText: 'Detailed'});
 			b1.onclick = function(e) {
 				// TODO: open detailed information abuot this streamer
 			}
 			btn.appendChild(b1);
 			// TODO: check if user auth'ed with token
 			var b2 = c('button', {innerText: 'Unfollow'});
-			btn.appendChild(b2);
+			btn.appendChild(b2);*/
 			d2.appendChild(btn);
 
 			cell.appendChild(d2);
@@ -501,7 +508,8 @@ $(function() {
 				"<a>Ivan 'MacRozz' Zarudny</a>"+
 				"<a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a>"+
 				"<a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a>"+
-				"<a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a></div>");
+				"<a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a>"+
+				"<a>By installing this extension you are accepting Twitch's Terms of Service. Futher information can be found here: <a href='http://www.twitch.tv/p/tos'>http://www.twitch.tv/p/tos</a></div>");
 		}
 	}
 
@@ -587,7 +595,6 @@ $(function() {
 	ael('button.Changes', AppVersion.changes);
 	ael('button.Close', Popup.close);
 	ael('button.directory', function(){
-		HostedHub(); return;
 		ga('send', 'event', 'button', 'click', 'Direct');
 		window.open('http://www.twitch.tv/directory/following'); });
 	ael('button.NotificationsOpt', function() {
@@ -707,5 +714,15 @@ $(function() {
 	$(window).on('resize', function(e) {
 		HEIGHT = $(window).height();
 		WIDTH = $(window).width();
+	});
+	$(document).on('keypress', function(e) {
+		// TODO: make it proper
+		// User pressed Esc or Backspace
+		if (e.charCode === 27 || e.charCode === 8) {
+			$('#content>.following>div:nth-child(2)').html('');
+			$('#content>.following').hide();
+			$('#content>.online').show();
+		}
+		e.preventDefault();
 	});
 });
