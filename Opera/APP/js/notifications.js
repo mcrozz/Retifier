@@ -221,7 +221,7 @@ window.notify = {
 
 				sendNotify(d);
 			}
-		}, Math.floor(Math.random()*500+500));
+		}, Math.floor(Math.random()*1000));
 	},
 	list: [/* notify queue goes here */],
 	last: function() {
