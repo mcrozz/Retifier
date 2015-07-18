@@ -27,11 +27,14 @@ _Google Chrome_ - **1.5.0**
 >* Fixed extension's size
 >* Various improvements
 
-_Opera_ - **1.1.8**
->* Fixed auth by Twitch account
->* Fixed time out for notifications
->* Notifications will not attack you after restart (improved)
->* Fixed bug when notifications weren't showing
+_Opera_ - **1.2.0**
+>* Changed name from Twitch Notifier to Retifier
+>* Changed extension icon
+>* Changed popup icons
+>* Changed notifications icon
+>* Changed Followed Hub (check it out)
+>* Fixed font size for HiDPI displays
+>* Fixed extension's size
 >* Various improvements
 
 [Show full changelog](CHANGELOG.md)
