@@ -1,7 +1,7 @@
 ## Changelog
 Current versions:
 - [_Google Chrome_](#google-chrome) - **1.5.0**
-- [_Opera_](#opera) - **1.1.8**
+- [_Opera_](#opera) - **1.2.0**
 
 # _Google Chrome_
 * **1.5.0**
@@ -137,6 +137,15 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* **1.2.0**
+	* Changed name from Twitch Notifier to Retifier
+	* Changed extension icon
+	* Changed popup icons
+	* Changed notifications icon
+	* Changed Followed Hub (check it out)
+	* Fixed font size for HiDPI displays
+	* Fixed extension's size
+	* Various improvements
 * **1.1.8**
 	* Fixed auth by Twitch account
 	* Fixed time out for notifications

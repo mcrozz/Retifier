@@ -2,12 +2,13 @@
 
 // What's new in update
 newUpdate = {
-  msg: "Various improvements",
-  content: "<p>What's new in this update:</p><li>fixed auth by Twitch account</li><li>fixed time out for notifications</li><li>notifications will not attack you after restart (improved)</li><li>fixed bug when notifications weren't showing</li><li>various improvements</li>"
+  msg: "Biggest update",
+  content: "<p>What's new in this update:</p><li>Changed name from Twitch Notifier to Retifier</li><li>Changed extension icon</li><li>Changed popup icons</li><li>Changed notifications icon</li><li>Changed Followed Hub (check it out)</li><li>Fixed font size for HiDPI displays</li><li>Fixed extension's size</li><li>Various improvements</li>"
 };
 
 // Changelog
 changes = [
+  "-1.2.0 changed name from Twitch Notifier to Retifier, changed extension icon, changed popup icons, changed notifications icon, changed Followed Hub (check it out), fixed font size for HiDPI displays, fixed extension's size, various improvements",
   "-1.1.8 fixed auth by Twitch account, fixed time out for notifications, notifications will not attack you after restart (improved), fixed bug when notifications weren't showing, various improvements",
   "-1.1.7 fixed 'Get notifications from', various style improvements",
   "-1.1.6 hotfix, fixed background script, fixed bug with zero followed channels",
