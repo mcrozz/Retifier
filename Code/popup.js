@@ -261,6 +261,7 @@ $(function() {
 	}
 
 	function FollowedHub() {
+		// FUTURE: need to be deleted when switched to the tab menu
 		if ($('#content>.following').css('display') === "block") {
 			$('#content>.following>div:nth-child(2)').html('');
 			$('#content>.following').hide();
@@ -277,7 +278,7 @@ $(function() {
 			if (obj.profile_banner_background_color !== null)
 				cell.style.backgroundColor = obj.profile_banner_background_color;
 			cell.style.backgroundSize = "cover";
-
+			// Left part
 			var d1 = c('div', {className: 'status'});
 			
 			var sta = c('div', {className: online?'online':'offline'});
@@ -292,8 +293,7 @@ $(function() {
 			d1.appendChild(lgo);
 
 			cell.appendChild(d1);
-
-			
+			// Right part
 			var d2 = c('div');
 
 			var str = c('div', {className: 'streamer'});
@@ -314,18 +314,20 @@ $(function() {
 			d2.appendChild(sts);
 
 			var btn = c('div', {className: 'buttons'});
-			/*var b1 = c('button', {innerText: 'Detailed'});
+			var b1 = c('button', {innerText: 'Detailed'});
 			b1.onclick = function(e) {
-				// TODO: open detailed information abuot this streamer
+				// TODO: open detailed information about this streamer
 			}
 			btn.appendChild(b1);
-			// TODO: check if user auth'ed with token
-			var b2 = c('button', {innerText: 'Unfollow'});
-			btn.appendChild(b2);*/
+			if (local.Config.token !== "") {
+				var b2 = c('button', {innerText: 'Unfollow'});
+				btn.appendChild(b2);
+			}
 			d2.appendChild(btn);
 
 			cell.appendChild(d2);
 
+			// inserting one cell at the tab
 			$('.following>div:nth-child(2)').append(cell);
 		}
 
@@ -341,7 +343,9 @@ $(function() {
 		});
 	}
 
-	// TODO: get duration
+	// TODO: get duration, probably another ajax call
+	// + get updates from background page and update
+	// status of every streamer
 	function HostedHub() {
 		var hstd = c('div');
 		function add(name, title, prev, views, game, dur, from, id) {
@@ -385,15 +389,14 @@ $(function() {
 
 	// TODO: use it only for notifications
 	function FollowedList(chk) {
-		function cr(n) { return document.createElement(n); }
-		var flw = cr('div');
+		var flw = c('div');
 
 		if (chk) {
-			var d = cr('div');
+			var d = c('div');
 
-			var b1 = cr('button');
-			b1.innerHTML = 'Show online';
-			b1.name = 'Select1';
+			var b1 = c('button', {
+				innerHTML: 'Show online',
+				name: 'Select1'});
 			b1.onclick = function(e) {
 				if (e.target.innerHTML === 'Show online') {
 					e.target.innerHTML = 'Show all';
@@ -414,9 +417,9 @@ $(function() {
 				}
 			};
 
-			var b2 = cr('button');
-			b2.innerHTML = 'Deselect all';
-			b2.name = 'Select2';
+			var b2 = c('button', {
+				innerHTML: 'Deselect all',
+				name: 'Select2'});
 			b2.onclick = function(e) {
 				if (e.target.innerHTML === 'Deselect all') {
 					e.target.innerHTML = 'Select all';
@@ -438,26 +441,26 @@ $(function() {
 
 		function insert() {
 			$.each(local.FollowingList, function(i,v) {
-				var hld = cr('div');
+				var hld = c('div');
 
-				var nm = cr('div');
-				nm.className = 'user';
-				var name = cr('a');
-				name.innerHTML = v.Name;
-				name.href = 'http://www.twitch.tv/'+v.Name.toLowerCase()+'/profile'
-				name.target = '_blank';
+				var nm = c('div', {className: 'user'});
+				var name = cr('a', {
+					innerHTML: v.Name,
+					href: 'http://www.twitch.tv/'+v.Name.toLowerCase()+'/profile',
+					target: '_blank'
+				});
 				name.style.color = (v.Stream) ? "rgb(0, 194, 40)" : "white";
 				nm.appendChild(name);
 				hld.appendChild(nm);
 
 				if (chk) {
-					var ch = cr('div');
-					ch.className = 'checkBox';
-					var check = cr('input');
-					check.type = 'checkbox';
-					check.id = i;
-					check.className = 'Check_Box_2';
-					check.checked = v.Notify;
+					var ch = c('div', {className: 'checkBox'});
+					var check = cr('input', {
+						type: 'checkbox',
+						id: i,
+						className: 'Check_Box_2',
+						checked: v.Notify
+					});
 					ch.appendChild(check);
 					hld.appendChild(ch);
 				}
@@ -716,13 +719,20 @@ $(function() {
 		WIDTH = $(window).width();
 	});
 	$(document).on('keypress', function(e) {
-		// TODO: make it proper
 		// User pressed Esc or Backspace
+		// FUTURE: need to be deleted when switched to the tab menu
 		if (e.charCode === 27 || e.charCode === 8) {
 			$('#content>.following>div:nth-child(2)').html('');
 			$('#content>.following').hide();
 			$('#content>.online').show();
-			e.preventDefault();
+			return e.preventDefault();
+		}
+		if (e.charCode > 64 || e.charCode < 91) {
+			// User wants to find streamer from followed list
+			if ($('#content>.following').css('display') === "block") {
+				// TODO: show quick search popup
+				// and make sure that search popup is not shown right now
+			}
 		}
 	});
 });
