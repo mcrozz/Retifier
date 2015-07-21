@@ -243,7 +243,7 @@ function time(t) {
 }
 
 // https://www.google-analytics.com
-try {
+if (navigator.onLine) {
   (function(i,s,o,g,r,a,m){
     i['GoogleAnalyticsObject']=r;
     i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
@@ -252,63 +252,63 @@ try {
     a.async=true; a.src=g;
     m.parentNode.insertBefore(a,m);
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-25472862-3', {cookieDomain: 'none'});
-    ga('set', 'checkProtocolTask', function(){});
-    ga('set', 'anonymizeIp', true);
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview', {
-      'page': location.pathname,
-      'title': location.pathname});
-} catch(e) {}
+  ga('create', 'UA-25472862-3', {cookieDomain: 'none'});
+  ga('set', 'checkProtocolTask', function(){});
+  ga('set', 'anonymizeIp', true);
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview', {
+    'page': location.pathname,
+    'title': location.pathname});
 
-// https://www.parsecdn.com
-if (location.href.split('/').pop(1) === 'background.html') {
-  (function(){
-    var p=document.createElement('script'),
-      s=document.getElementsByTagName('script')[0];
-    p.async=true; p.src='{{PARSE_COM_SRC}}';
-    p.onload = function(){
-      parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
-      var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
-      sdo.each(function(e) {
-        if (e.attributes.User===local.Config.User_Name) {
-          local.set('Config.Timeout', 1337);
-          f = 1;
-        }
-      }).done(function() {
-        if (f!==1 && local.Config.Timeout===1337)
-          local.set('Config.Timeout',0);
-      });
-      var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
-      sad.each(function(e) {
-        t.push(e.attributes.TwitchName);
-      }).done(function() {
-        localStorage.Ads=JSON.stringify(t);
-      });
-    }
-    s.parentNode.insertBefore(p,s);
-  })();
+  // https://www.parsecdn.com
+  if (location.href.split('/').pop(1) === 'background.html') {
+    (function(){
+      var p=document.createElement('script'),
+        s=document.getElementsByTagName('script')[0];
+      p.async=true; p.src='{{PARSE_COM_SRC}}';
+      p.onload = function(){
+        parse=true; Parse.initialize("PfjlSJhaRrf9GzabqVMATUd3Rn8poXpXjiNAT2uE","h4148nbRRIWRv5uxHQFbADDSItRLO631UR6denWm");
+        var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
+        sdo.each(function(e) {
+          if (e.attributes.User===local.Config.User_Name) {
+            local.set('Config.Timeout', 1337);
+            f = 1;
+          }
+        }).done(function() {
+          if (f!==1 && local.Config.Timeout===1337)
+            local.set('Config.Timeout',0);
+        });
+        var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
+        sad.each(function(e) {
+          t.push(e.attributes.TwitchName);
+        }).done(function() {
+          localStorage.Ads=JSON.stringify(t);
+        });
+      }
+      s.parentNode.insertBefore(p,s);
+    })();
 
-  setInterval(function(){
-    if (parse) {
-      // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
-      var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
-      sad.each(function(e) {
-        t.push(e.attributes.TwitchName);
-      }).done(function() {
-        localStorage.Ads=JSON.stringify(t);
-      });
-      // Getting usernames from table 'Donators'
-      var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
-      sdo.each(function(e) {
-        if (e.attributes.User===local.Config.User_Name) {
-          local.set('Config.Timeout',1337);
-          f=1;
-        }
-      }).done(function() {
-        if (f!==1 && local.Config.Timeout===1337)
-          local.set('Config.Timeout',0)
-      });
-    }
-  }, 600000);
+    setInterval(function(){
+      if (parse) {
+        // Getting usernames from table 'Ads' on parse.com and inserting 'em in the localStorage
+        var sad = new Parse.Query(Parse.Object.extend('Ads')), t=[];
+        sad.each(function(e) {
+          t.push(e.attributes.TwitchName);
+        }).done(function() {
+          localStorage.Ads=JSON.stringify(t);
+        });
+        // Getting usernames from table 'Donators'
+        var sdo = new Parse.Query(Parse.Object.extend('Donators')), f;
+        sdo.each(function(e) {
+          if (e.attributes.User===local.Config.User_Name) {
+            local.set('Config.Timeout',1337);
+            f=1;
+          }
+        }).done(function() {
+          if (f!==1 && local.Config.Timeout===1337)
+            local.set('Config.Timeout',0)
+        });
+      }
+    }, 600000);
+  }
 }

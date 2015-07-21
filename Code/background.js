@@ -417,42 +417,37 @@ var bck = {
     // in case of stuck
     bck.promise.inWork = false;
     bck.promise.after = null;
-    bck.intFollowing = -1;
-    bck.intStatus = -1;
     $.each(local.FollowingList, function(i,v) {
       local.following.set(v.Name, {Stream: false});
     });
     badge(0);
     bck.online.data = [];
-    bck.init();
   },
-  init: function() {
-    if (bck.intFollowing !== -1 || bck.intStatus !== -1) {
-      clearInterval(bck.intFollowing);
-      bck.intFollowing = -1;
-      clearInterval(bck.intStatus);
-      bck.intStatus = -1;
-
-      return bck.init();
-    }
-
+  checkInt: function() {
     // Double check user interval
     if (local.Config.token && local.Config.Interval_of_Checking < .5)
       local.set('Config.Interval_of_Checking', .5);
     else if (!local.Config.token && local.Config.Interval_of_Checking < 1)
       local.set('Config.Interval_of_Checking', 1);
-
-    // getting following list every 2 min
-    // checking for online streamers every {USER} min + 30s
-    bck.intFollowing = setInterval(function(){ bck.getList(); }, 120000);
-    setTimeout(function() {
-      bck.intStatus = setInterval(function(){ bck.getOnline(); }, (60000*local.Config.Interval_of_Checking));
-    }, 30000);
-    bck.getList();
-    bck.promise.after = bck.getOnline;
   },
-  intFollowing: -1,
-  intStatus: -1
+  init: function() {
+    // Get following list every two mins
+    (function(){
+      // If user does not have connection to the internet
+      // skip checking
+      if (navigator.onLine)
+        bck.getList();
+      bck.checkInt();
+      setTimeout(arguments.callee, 120000);
+    })();
+    // Check online status of followed channels
+    (function(){
+      if (navigator.onLine)
+        bck.getOnline();
+      bck.checkInt();
+      setTimeout(arguments.callee, 60000*local.Config.Interval_of_Checking);
+    })();
+  }
 };
 
 bck.init();
