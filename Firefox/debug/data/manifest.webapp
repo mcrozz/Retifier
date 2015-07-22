@@ -1,0 +1,47 @@
+{
+	"name": "Retifier",
+	"description": "Expand your Twitch experience",
+	"launch_path": "/popup.html",
+	"version": "1.5.0",
+	"icons": {
+		"16": "/img/Logo_16.png",
+		"48": "/img/Logo_48.png",
+		"128": "/img/Logo_128.png",
+		"256": "/img/Logo_256.png",
+		"512": "/img/Logo_512.png"
+	},
+	"developer": {
+		"name": "Ivan 'MacRozz' Zarudny",
+		"url": "https://www.github.com/mcrozz"
+	},
+	"default_locale": "en",
+	"csp": "script-src 'self' https://www.parsecdn.com https://www.google-analytics.com https://api.twitch.tv; object-src 'self'",
+	"permissions": {
+		"systemXHR": {
+			"description": "Required to access Twitch database"
+		},
+		"storage": {
+			"description": "Save information about streamers and extension's configuration"
+		},
+		"Notification": {
+			"description": "Be able to reach you out, when fav streamer gone online"
+		},
+		"backgroundservice": {
+			"description": "Check status in background"
+		}
+	},
+
+
+	// "permissions": [
+	// 	"http://*.twitch.tv/",
+	// 	"https://*.twitch.tv/",
+	// 	"http://*.jtvnw.net/ttv-boxart/*",
+	// 	"https://api.parse.com/*",
+	// 	"notifications", "storage"
+	// 	],
+	// "web_accessible_resources": ["auth.html"],
+	// "background": {
+	// 	"persistent": true,
+	// 	"page": "background.html"
+	// }
+}
