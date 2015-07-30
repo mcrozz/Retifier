@@ -2,10 +2,11 @@
 ![Screenshot](https://raw.githubusercontent.com/mcrozz/Retifier/master/screenshots/ScreenShot_1.png)
 
 # In web stores
-* For Google Chrome: [In Google Web Store](http://bit.ly/TwitchNotifer)
-* For Mozilla FireFox: [In Mozilla Add-Ons (currently not available)](http://bit.ly/TwitchTVfox)
+* For Google Chrome: [In Google Web Store](http://bit.ly/RetifierChrome)
+* For Mozilla FireFox: [In Mozilla Add-Ons (currently not available)](http://bit.ly/RetifierFirefox)
 * For Safari:	Coming soon...
-* For Opera: [In Opera Add-Ons](http://bit.ly/TwitchOpera)
+* For Opera: [In Opera Add-Ons](http://bit.ly/RetifierOpera)
+* For Edge: in plans
 
 # Auth redirection can be found [here on GitHub](https://github.com/mcrozz/backupsite/blob/gh-pages/auth/twitch.html)
 
@@ -17,7 +18,7 @@
 * Load as unpacked extension, you can found compiled extension in [BROWSER_NAME]/debug
 
 # Changelog
-_Google Chrome_ - **1.5.0**
+[_Google Chrome_](CHANGELOG.md#google-chrome) - **1.5.0**
 >* Changed name from Twitch Notifier to Retifier
 >* Changed extension icon
 >* Changed popup icons
@@ -27,7 +28,7 @@ _Google Chrome_ - **1.5.0**
 >* Fixed extension's size
 >* Various improvements
 
-_Opera_ - **1.2.0**
+[_Opera_](CHANGELOG.md#opera) - **1.2.0**
 >* Changed name from Twitch Notifier to Retifier
 >* Changed extension icon
 >* Changed popup icons
