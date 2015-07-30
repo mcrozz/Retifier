@@ -1,0 +1,24 @@
+{
+	"title": "Retifier",
+	"name": "retifier",
+	"version": "0.9.0",
+	"description": "Be aware of all the streams",
+	"main": "main.js",
+	"icon": "data/img/Logo_48.png",
+	"author": "Ivan 'MacRozz' Zarudny",
+	"engines": {
+		"firefox": ">=38.0a1"
+	},
+	"license": "Apache 2.0",
+	"permissions": {
+		"desktop-notification": {},
+		"cross-domain-content": 
+		[
+			"http://www.twitch.tv/",
+			"https://api.twitch.tv/",
+			"https://www.twitch.tv/",
+			"https://www.mcrozz.net/",
+			"http://static-cdn.jtvnw.net/ttv-boxart/"
+		]
+	}
+}

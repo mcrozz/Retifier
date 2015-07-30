@@ -1,0 +1,1071 @@
+/*
+Copyright 2013-2015 Ivan 'MacRozz' Zarudny
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+@font-face {
+	font-family: ExtFont;
+	src: url(../PermianSansTypeface.otf);
+}
+html {
+	background: rgba(141, 141, 141, 0.22);
+	font:130% ExtFont;
+	overflow: hidden;
+	margin: 0;
+}
+body {
+	margin: 0;
+	font-family: ExtFont;
+	font-size: inherit;
+}
+a {
+	text-decoration: none;
+	cursor: default;
+}
+p {
+	color: black;
+	border-right: 1px dotted black;
+	text-shadow: 0px -1px 0px rgba(000, 000, 000, 0.2), 0px 1px 0px rgba(255, 255, 255, 0.4);
+}
+button {
+	border: none;
+	cursor: default;
+}
+
+*::selection {
+	background: rgba(0,	0,	0,	0);
+}
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+}
+
+#content>.online::-webkit-scrollbar {
+	width: 1.9%;
+}
+.alert>div::-webkit-scrollbar {
+	width: 4%;
+}
+.AppVersionContent3::-webkit-scrollbar {
+	width: 3%
+}
+::-webkit-scrollbar {
+	background-color: rgba(0, 0, 0, 0.44);
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+body>div {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.following>div, #content>.online {
+	width: 100%;
+	height: 90%;
+	overflow-y: scroll;
+}
+
+.game>a, .streamer>a {
+	cursor: pointer;
+}
+.tum>.ST {
+	z-index: 1;
+	position: relative;
+}
+.content>.tum {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(211, 192, 239, 1)), to(rgba(114, 113, 131, 1)));
+}
+.tum>.loading {
+	z-index: 0;
+}
+.tum>.GT1 {
+	z-index: 4;
+}
+.tum>.GT2 {
+	z-index: 3;
+}
+.tum>a {
+	z-index: 2;
+	position: absolute;
+	text-align: center;
+	color: white;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(95, 29, 194, 0.66)), to(rgba(0, 0, 0, 0.85)));
+	cursor: pointer;
+	transition: opacity 0.8s;
+	opacity: 0;
+}
+.tum>a:hover {
+	opacity: 1;
+}
+
+/* For HiDPI */
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+	only screen and (-o-min-device-pixel-ratio: 3/2),
+	only screen and (-webkit-min-device-pixel-ratio: 1.5),
+	only screen and (min-device-pixel-ratio: 1.5) {
+		html {
+			font:100% ExtFont!important;
+		}
+		#FollowedChannelsOnline {
+			font:85% ExtFont!important;
+		}
+		.tum>a {
+			font:95% ExtFont!important;
+		}
+}
+
+@-webkit-keyframes loading {
+	0% { -webkit-transform: scale(1.4); }
+	100% { -webkit-transform: scale(1); }
+}
+.loading {
+	position: absolute;
+	display: block;
+	width: 44%;
+	height: 42%;
+	left: 33%;
+	top: 12%;
+}
+.loading>div {
+	position: absolute;
+	-webkit-animation: loading 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
+	width: 34%;
+	height: 37%;
+}
+.loading>div:nth-of-type(1) {
+	background: #4821b8;
+	opacity: 0.9;
+	-webkit-animation-delay: 0s;
+	top: 0;
+	left: 0;
+}
+.loading>div:nth-of-type(2) {
+	background: #4821b8;
+	opacity: 0.8;
+	-webkit-animation-delay: 0.1s;
+	top: 0;
+	left: 50%;
+}
+.loading > div:nth-of-type(3) {
+	background: #4821b8;
+	opacity: 0.7;
+	-webkit-animation-delay: 0.3s;
+	top: 50%;
+	left: 0;
+}
+.loading > div:nth-of-type(4) {
+	background: #4821b8;
+	opacity: 0.6;
+	-webkit-animation-delay: 0.2s;
+	top: 50%;
+	left: 50%;
+}
+
+#header {
+	background: rgb(189, 189, 189);
+	height: 10%;
+	display: block;
+}
+
+.inf>.game, .inf>.title{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.inf>.game>a, .inf>.title>a {
+	white-space: inherit;
+	overflow: inherit;
+	text-overflow: inherit;
+}
+
+#nowONline {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 22%;
+	height: 10%;
+	width: 55.5%;
+	text-align: center;
+	line-height: 256%;
+}
+
+div>.user {
+	display: inline-block;
+	width: 88%;
+}
+div>.checkBox {
+	display: inline-block;
+	width: 11%;
+}
+
+.options {
+	display: none;
+	top: 11%;
+	left: 2.5%;
+	width: 95%;
+	height: auto;
+	position: absolute;
+	overflow: auto;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(15, 15, 15, 1)), to(rgba(68, 65, 65, 1)));
+	border: 1px solid rgb(82, 82, 82);
+	border-bottom: none;
+	border-radius: 14px;
+	color: white;
+	font-size: 90%;
+}
+
+.options>header {
+	width: 100%;
+	height: 8%;
+}
+.options>header>div {
+	display: inline-block;
+}
+.options>header>div:first-child {
+	width: 20%;
+	font-size: 150%;
+	text-align: right;
+}
+#user>* {
+	display: inherit;
+	margin-left: 1%;
+}
+#user {
+	width: 65%;
+	font-size: 120%;
+	text-align: right;
+}
+#ChgUsrInt {
+	max-width: 24%;
+	min-width: 10%;
+	font-size: 160%;
+	border-color: rgba(0, 0, 0, 0);
+	border-radius: 20px;
+	color: white;
+	background: none;
+	text-align: center;
+}
+.Logout {
+	color: inherit;
+	background: rgb(142, 11, 11);
+	font-size: 70%;
+	border: 2px rgba(65, 65, 65, 0.62) solid!important;
+	border-radius: 5px;
+	padding: 1%;
+	margin: 0;
+	cursor: pointer;
+}
+.Logout:hover {
+	background: rgb(115, 9, 9);
+	border-color: rgba(71, 71, 71, 0.96);
+}
+header>.close {
+	width: 10%;
+	text-align: right;
+}
+
+.options>div {
+	display: inline-block;
+	width: 48%;
+	height: auto;
+	margin: 0 1%;
+}
+.options>div>div {
+	margin: 3% 0;
+}
+.r2 {
+	position: absolute;
+}
+.options>div>li>a {
+	width: 82%;
+	display: inline-block;
+}
+.options>div>.toggle>a {
+	width: 80%;
+	display: inline-block;
+}
+.options>div>.check {
+	text-align: center;
+}
+.options>div>.goto {
+	width: 100%;
+}
+
+.close>span {
+	background: rgb(111, 111, 111);
+	display: inline-block;
+	padding: 0px 8px 4px 8px;
+	border-radius: 15px;
+	cursor: pointer;
+}
+.close>span:hover {
+	color: lightgrey;
+}
+
+.goto>button {
+	width: 100%;
+	font-size: 100%;
+	color: white;
+	text-align: left;
+	padding: 1.5% 2%;
+	cursor: pointer;
+}
+.goto>button:hover {
+	background: rgb(43, 48, 98);
+	color: rgba(255, 255, 255, 0.72);
+}
+button.NotificationsOpt {
+	background: rgb(22, 25, 58);
+}
+button.ChangeSize {
+	background: rgb(8, 13, 60);
+}
+button.OnlineStyle {
+	background: rgb(8, 13, 60);
+}
+button.Flush {
+	background: rgb(22, 25, 58);
+}
+
+#ChgUsrSnd {
+	color: inherit;
+	text-decoration: none;
+	font-size: 120%;
+	border-radius: 0 0 12px 12px;
+	width: 100%;
+	height: 7%;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(9, 30, 84, 0.49)), to(rgba(0, 0, 0, 0.44)));
+}
+#ChgUsrSnd:hover {
+	color: rgb(228, 228, 228);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(27, 51, 113, 0.77)), to(rgba(7, 0, 50, 0.61)));
+}
+
+#popup {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+#popup>.background {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.65);
+}
+#popup>.alert {
+	display: none;
+	width: 45%;
+	height: 60%;
+	position: relative;
+	margin: 12% auto;
+}
+.alert>header {
+	display: block;
+	width: 98%;
+	height: auto;
+	background: -webkit-gradient(linear, left top, left bottom, from(#525252), to(#303030));
+	color: white;
+	padding: 3% 1% 2% 1%;
+	text-align: center;
+	border-bottom: 1px dotted rgba(168, 157, 157, 0.05);
+}
+.alert>header>p {
+	margin: 0;
+	color: inherit;
+	border: none;
+	text-shadow: none;
+}
+.alert>div {
+	display: block;
+	width: 96%;
+	height: 79%;
+	background: -webkit-gradient(linear, left top, left bottom, from(#303030), to(#565656));
+	padding: 0 2%;
+	overflow: auto;
+}
+.alert>div>div {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.alert>div>div>* {
+	margin: 0;
+	padding: 0;
+	color: white!important;
+}
+.alert>footer {
+	display: block;
+	width: 100%;
+}
+.alert>footer>button {
+	display: inline-block;
+	width: 49%;
+	font-size: 100%;
+}
+button[name=k] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#9CD892), to(#608B62));
+}
+button[name=k]:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(#B2EDA8), to(#719B73));
+}
+button[name=c] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#D89292), to(#8B6060));
+}
+button[name=c]:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(#E8A6A6), to(#A37676));
+}
+
+button[name=Select1] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#60FF45), to(#76A178));
+}
+button[name=Select2] {
+	background: -webkit-gradient(linear, left top, left bottom, from(#DFDFDF), to(#848484));
+}
+button[name=Select1], button[name=Select2] {
+	width: 49%;
+	height: 9%;
+	font-size: 84%;
+	display: inline-block;
+	margin: 2% 0 4% 0;
+}
+button[name=Select1]:hover, button[name=Select2]:hover {
+	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
+}
+
+.checkBox>.Check_Box_2 {
+	width: 71.5%;
+}
+
+button.button {
+	color: white;
+	text-decoration: none;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(194,	0,	255,	0.57)), to(rgba(57,	0,	179,	0.85)));
+}
+button.button:hover {
+	color: white;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(194,	0,	255,	0.22)), to(rgba(57,	0,	179,	0.49)));
+}
+
+#size {
+	display: none;
+	position: relative;
+	width: 25%;
+	height: 30%;
+	margin: 29% 37.5%;
+}
+#size>span {
+	display: inline-block;
+	width: 48%;
+	height: 48%;
+	border-radius: 25px;
+	position: absolute;
+}
+span.cls {
+	background: url(../img/Close.png);
+	background-size: contain;
+	left: -4%;
+	top: -7%;
+}
+span.minus {
+	background: url(../img/minus.png);
+	background-size: contain;
+	left: 58%;
+	top: 9%;
+}
+span.plus {
+	background: url(../img/plus.png);
+	background-size: contain;
+	top: 54%;
+	left: -6%;
+}
+span.ok {
+	background: url(../img/OK.png);
+	background-size: contain;
+	top: 70%;
+	left: 56%;
+}
+
+#view {
+	display: none;
+	position: relative;
+	width: 75%;
+	height: 25%;
+	margin: 32.5% 12.5%;
+	text-align: center;
+}
+#view>div {
+	display: block;
+	font-size: 140%;
+	margin-bottom: 5%;
+}
+#view>span {
+	width: 17%;
+	height: 62%;
+	display: inline-block;
+	border-radius: 40%;
+}
+#view>div>a {
+	color: white;
+}
+#view>span.selected {
+	border: 4px solid rgb(55, 52, 187);
+	margin: 0 -4px!important;
+}
+span.Grid {
+	background: url(../img/Grid_View.png);
+	background-size: contain;
+}
+span.Light {
+	background: url(../img/Light_View.png);
+	background-size: contain;
+}
+span.Full {
+	background: url(../img/Full_View.png);
+	background-size: contain;
+}
+
+span:hover {
+	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
+}
+
+.DashboardButton {
+	position: absolute;
+}
+
+#FollowedChannelsOnline {
+	cursor: default;
+	border-right: none;
+	font-size: 98%;
+	margin: 0;
+}
+
+.selected {
+	border: 5px rgb(140, 100, 213) solid;
+	margin: 0 4% -6px 4% !important;
+}
+.style {
+	display: inline-block;
+	width: 16%;
+	height: 8.5%;
+	margin: 0 4%;
+}
+
+#insertContentHere {
+	height: 100%;
+	overflow: auto;
+}
+
+.Check_Box, .Check_Box_2 {
+	height: 3.7%;
+	-webkit-appearance: none;
+	outline: none;
+	margin: 0;
+}
+.Check_Box:disabled, .Check_Box_2:disabled {
+	box-shadow: inset 0 0 0 1000px rgba(0,0,0,.4);
+}
+.Check_Box {
+	background: url(../img/Check_Box.png) no-repeat;
+	background-size: cover;
+	width: 16.5%;
+}
+.Check_Box:checked {
+	background: url(../img/Check_Box_ch.png) no-repeat;
+		background-size: cover;
+}
+.Check_Box_2 {
+	background: url(../img/Check_Box_2.png) no-repeat;
+		background-size: cover;
+	width: 7.4%;
+}
+.Check_Box_2:checked {
+	background: url(../img/Check_Box_2_ch.png) no-repeat;
+		background-size: cover;
+}
+
+.Welcome {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)), to(rgba(39, 39, 39, 0.5)));
+	width: 60%;
+	position: absolute;
+	left: 20%;
+	top: 19%;
+}
+.Welcome>p {
+	border: none;
+	font-size: 100%;
+	text-align: center;
+	margin: 1% 0 0 0;
+}
+.Welcome>p:nth-of-type(1) {
+	font-size: 110%;
+	margin: 2% 0 0 0;
+}
+.inSetUpUserName {
+	margin:2% 0 2% 10%;
+	width: 80%;
+	height: 5%;
+	font-size: 110%;
+	text-align: center;
+}
+input#SetUpUserNameInp::selection {
+	background: rgba(100, 100, 247, 0.48);
+}
+
+.fs1 {
+	-webkit-animation: fadeIn 2s both;
+	display: block;
+	z-index: 99;
+	width: 100%;
+	height: 100%}
+.fs1>a,	#TwitchName,	#TwitchAccount {
+	display: block;
+	position: absolute;
+	color: black;
+}
+.fs1>a:first-child {
+	left: 16%;
+	top: 6%;
+	font-size: 141%;
+	-webkit-animation: slideInLeft 1s both;
+}
+.fs1>a:nth-child(2) {
+	left: 22%;
+	top: 11%;
+	font-size: 140%;
+	-webkit-animation: slideInRight 1s both;
+}
+#TwitchName,	#TwitchAccount {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165,	68,	255,	1)), to(rgba(42,	0,	173,	0.95)));
+	width: 23%;
+	height: 26%;
+	color: rgba(255, 255, 255, 0.97);
+	border-radius: 62px;
+	transition: color .3s;
+}
+#TwitchName:hover,	#TwitchAccount:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110, 50, 165, 1)), to(rgba(40, 0, 163, 0.95)));
+	color: rgba(255, 255, 255, 0.5);
+}
+#TwitchAccount {
+	left: 19%;
+	top: 36%;
+}
+#TwitchName {
+	left: 57%;
+	top: 36%;
+}
+#TwitchAccount>a, #TwitchName>a {
+	display: block;
+	padding: 9% 0 0 0;
+	text-align: center;
+	font-size: 125%;
+	color: inherit;
+}
+
+#AppVersion {
+	position: fixed;
+	right: 3%;
+	bottom: -1%;
+	border-radius: 15px;
+	background: white;
+	padding: .6%;
+	color: black;
+	font-size: 70%;
+	cursor: help;
+	z-index: 15;
+	-webkit-animation-name: fadeIn;
+	-webkit-animation-duration: 1s;
+}
+#AppChanges {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(85, 85, 85, 0.95)));
+	position: absolute;
+	left: 21%;
+	width: 58%;
+	height: 70%;
+	bottom: 0;
+}
+.AppInfo::selection {
+	background: rgba(0, 0, 0, 0);
+}
+button.AppInfo {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165, 165, 165, 0.8)), to(rgba(39, 39, 39, 0.5)));
+	padding: .6% 0;
+	margin: 0 -1% 0 0;
+	width: 40%;
+	font-size: 100%;
+	color: white;
+	border-right: 1px solid black;
+}
+button.AppInfo:last-child {
+	width: 20%;
+}
+button.AppInfo:hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(117,	117,	117,	0.8)), to(rgba(61,	61,	61,	0)));
+}
+.AppVersionContent2 {
+	position: relative;
+	height: 90%;
+	padding: 1% 4% 0 4%;
+	color: white;
+}
+.AppVersionContent3 {
+	max-height: 100%;
+	overflow: auto;
+}
+
+#AppInfoBack {
+	background: rgba(0, 0, 0, 0.65);
+	z-index: 5;
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.AppInfo>a {
+	font-size: 80%;
+}
+.AppInfoAbout>a {
+	display: block;
+}
+.AppInfoAbout>a[href] {
+	color: rgb(128, 156, 199);
+}
+.AppInfoAbout>a[href]:hover {
+	color: rgb(93, 124, 171);
+}
+.AppInfoAbout>a:nth-child(1) {
+	margin-top: 2%;
+	font-size: 82%;
+}
+.AppInfoAbout>a:nth-child(2) {
+	text-align: center;
+}
+.AppInfoAbout>a:nth-child(3) {
+	margin: 4% 0 0 3%;
+	cursor: pointer;
+}
+.AppInfoAbout>a:nth-child(4) {
+	margin: 1% 0 0 9%;
+	cursor: pointer;
+}
+.AppInfoAbout>a:nth-child(5) {
+	margin: 1% 0 0 15%;
+	cursor: pointer;
+}
+
+#CheckingProgress {
+	position: absolute;
+	width: 100%;
+	height: .7%;
+}
+
+button.WelcomOK {
+	margin-top: 2%;
+	color: white;
+	text-decoration: none;
+	font-size: 112%;
+	width: 100%;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0)), to(rgba(87, 87, 87, 0.78)));
+}
+button.WelcomOK:hover {
+	color: rgb(207, 207, 207);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(39, 39, 39, 0)), to(rgba(182, 182, 182, 0.78)));
+}
+
+#content {
+	width: 100%;
+	position: relative;
+	display: block;
+}
+
+#WhatsNew {
+	display: none;
+	background: rgb(185,	185,	185);
+	position: fixed;
+	z-index: 99;
+	width: 367px;
+	height: 430px;
+	left: 150px;
+	padding: 15px;
+}
+.msgContain>a {
+	color: darkblue;
+	font-size: inherit;
+}
+.msgTitle {
+	text-align: center;
+	font-size: 23px;
+	padding-bottom: 5px;
+}
+.msgContain {
+	font-size: 19px;
+}
+.msgCheckbox {
+	font-size: 19px;
+}
+.msgChange {
+	font-size: 20px;
+	text-align: center;
+	padding: 15px 0 5px 0;
+}
+#msgClose {
+	font-size: 25px;
+	width: 390px;
+	position: absolute;
+	bottom: 0;
+	left: 3;
+}
+
+button.refresh {
+	background: url(../img/refresh.png) no-repeat;
+	background-size: contain;
+}
+button.directory {
+	background: url(../img/Home.png) no-repeat;
+	background-size: contain;
+}
+button.following {
+	background: url(../img/Following.png) no-repeat;
+	background-size: contain;
+}
+button.settings {
+	background: url(../img/Setting.png) no-repeat;
+	background-size: contain;
+}
+#header>.dashL {
+	display: inline-block;
+	width: 21%;
+	padding: 1% 0;
+	text-align: left;
+}
+#header>.dashL:first-child {
+	text-align: right;
+	margin-right: 55%;
+}
+button.dash {
+	display: inline-block;
+	width: 33%;
+	height: 83%;
+	transition: all .2s ease-in-out;
+}
+button.dash:hover {
+	transform: scale(.85);
+}
+
+#message {
+	display: none;
+	position: absolute;
+	z-index: 99;
+	width: 45%;
+	font-size: 85%;
+	padding: 1% 1%;
+	background: white;
+	text-align: center;
+	-webkit-animation: fadeIn 0.3s both;
+}
+
+#textWidth {
+	display: block;
+	position: absolute;
+	z-index: -1;
+}
+
+.NOO {
+	width: 100%;
+	text-align: center;
+}
+.NOO>a {
+	color: black;
+}
+.zoom {
+	background: url(../img/zoom.png) no-repeat;
+	background-size: contain;
+	display: block;
+	position: absolute;
+	width: 10.02%;
+	height: 10.02%;
+	top: 2%;
+	left: 2%;
+	z-index: 4;
+	cursor: pointer;
+}
+#zoomContent {
+	display: none;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.90);
+	width: 100%;
+	top: 10%;
+	z-index: 99;
+}
+#zoomIMG {
+	display: none;
+	position: relative;
+	width: 100%;
+	height: 74.7%;
+	background-color: rgba(255, 255, 255, 0.25);
+	margin: 12% 0;
+}
+
+.Welcome>p {
+	cursor: default;
+}
+.Welcome>p::selection {
+	background: none;
+}
+
+/* FollowedHub */
+.following>div>.container {
+	width: 47%;
+	height: 25%;
+	padding: 1.5% 1%;
+	color: white;
+	display: inline-flex;
+	margin: 1% .5%;
+}
+
+.status>.logo>img {
+	width: 100%;
+	height: auto;
+	background-color: rgba(0, 0, 0, 0.68);
+}
+.status>.online {
+	background: -webkit-radial-gradient(center, ellipse cover, #3df230 1%,#6cc96c 52%,#68bf67 100%);
+	width: 100%;
+	font-size: 78%;
+	text-align: center;
+}
+.status>.offline {
+	background: -webkit-radial-gradient(center, ellipse cover, #c92828 0%,#824646 54%,#824646 100%);
+	width: 100%;
+	font-size: 78%;
+	text-align: center;
+}
+.container>.status {
+	width: 25%;
+}
+
+.following>div>.container>div {
+	display: inline-table;
+	height: 100%;
+}
+.following>div>.container>div:nth-child(2) {
+	background-color: rgba(0, 0, 0, 0.68);
+	width: 75%;
+}
+.container>div>.streamer {
+	display: block;
+	width: 80%;
+	padding: 0 0 0 5px;
+}
+.container>div>.streamer>a {
+	font-size: 120%;
+	color: white;
+}
+.container>div>.streamer>a:hover {
+	color: rgba(255,255,255,0.6);
+}
+
+.container>div>.spacer {
+	display: block;
+	width: 100%;
+	height: 25%;
+}
+
+.container>div>.buttons>button {
+	width: 49%;
+	font-size: 97%;
+}
+
+.container>div>.stats>a {
+	font-size:90%;
+	margin-left: 2%;
+	display: block;
+}
+
+.status>.logo:hover:after {
+	content: "Channel";
+	width: 100%;
+	background: black;
+	color: white;
+	text-align: center;
+	display: block;
+}
+
+/*
+		based on Animate.css
+	http://daneden.me/animate
+*/
+@-webkit-keyframes pulse {
+	0% { background: red; }
+	25% { background: none; }
+	50% { background: red; }
+	75% { background: none; }
+	100% { background: none; }
+}
+@-webkit-keyframes bounceInUp {
+	0% { opacity:0;-webkit-transform:translateY(100%) }
+	100% { opacity:1;-webkit-transform:translateY(0) }
+}
+@-webkit-keyframes bounceOutDown {
+	0% { -webkit-transform:translateY(0) }
+	20% { opacity:1;-webkit-transform:translateY(-10%) }
+	100% { opacity:0;-webkit-transform:translateY(100%) }
+}
+@-webkit-keyframes bounceIn {
+	0% { opacity:0;-webkit-transform:scale(.0) }
+	100% { opacity:1;-webkit-transform:scale(1) }
+}
+@-webkit-keyframes bounceOut {
+	0% { opacity:1;-webkit-transform:scale(1) }
+	100% { opacity:0;-webkit-transform:scale(.0) }
+}
+@-webkit-keyframes slideInDown {
+	0% { opacity:0;-webkit-transform:translateY(-2000px) }
+	100% { -webkit-transform:translateY(0) }
+}
+@-webkit-keyframes slideOutUp {
+	0% { -webkit-transform:translateY(0) }
+	100% { opacity:0;-webkit-transform:translateY(-2000px) }
+}
+@-webkit-keyframes slideInLeft {
+	0% { opacity:0;-webkit-transform:translateX(-2000px) }
+	100% { -webkit-transform:translateX(0) }
+}
+@-webkit-keyframes slideOutLeft {
+	0% { -webkit-transform:translateX(0) }
+	100% { opacity:0;-webkit-transform:translateX(-2000px) }
+}
+@-webkit-keyframes slideInRight {
+	0% { opacity:0;-webkit-transform:translateX(2000px) }
+	100% { -webkit-transform:translateX(0) }
+}
+@-webkit-keyframes slideOutRight {
+	0% { -webkit-transform:translateX(0) }
+	100% { opacity:0;-webkit-transform:translateX(2000px) }
+}

@@ -169,7 +169,9 @@ function str_cell(a, to) {
 		// Additionals (duration and visit channel)
 		var adds = c('div', {className: 'adds'});
 		var page = c('div', {className: 'page'});
-		var aPag = c('a', {href: 'http://www.twitch.tv/'+a.str+'/profile', target: '_blank'});
+		var aPag = c('a', {
+			href: 'http://www.twitch.tv/'+a.str+'/profile',
+			target: '_blank'});
 		var abPag = c('button', {
 			type: 'button',
 			className: 'button',
@@ -185,7 +187,9 @@ function str_cell(a, to) {
 		return inf;
 	}
 
-	var holder = c('div', {className: 'content', id: a.pos});
+	var holder = c('div', {
+		className: 'content',
+		id: a.pos});
 	holder.appendChild(preview());
 	holder.appendChild(information());
 	if (typeof to === "undefined")
@@ -251,7 +255,7 @@ window.insert = function(obj) {
 			online = online.filter(function(e) { return e!=obj.Name.toLowerCase(); });
 
 			if (local.Status.online == 0 && local.Status.update == 0)
-			    $('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
+				$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
 			return;
 		}
 
@@ -309,8 +313,8 @@ window.updateStatus = function() {
 	if (localStorage.FirstLaunch === 'true')
 		return false;
 	var j = _$('FollowedChannelsOnline'),
-	    Upd = local.Status.update,
-	    Onlv = local.Status.online;
+			Upd = local.Status.update,
+			Onlv = local.Status.online;
 	if (!Onlv)
 		Onlv = 0;
 	switch (Upd) {
