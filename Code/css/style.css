@@ -165,6 +165,7 @@ body>div {
 #header {
 	background: rgb(189, 189, 189);
 	height: 10%;
+	width: 100%;
 	display: block;
 }
 
@@ -180,14 +181,12 @@ body>div {
 }
 
 #nowONline {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 22%;
-	height: 10%;
-	width: 55.5%;
+	display: inline-block;
+	height: 100%;
+	width: 57%;
 	text-align: center;
 	line-height: 256%;
+	vertical-align: middle;
 }
 
 div>.user {
@@ -846,13 +845,12 @@ button.settings {
 }
 #header>.dashL {
 	display: inline-block;
-	width: 21%;
-	padding: 1% 0;
+	width: 20%;
+	padding: 0.5% 0;
 	text-align: left;
 }
 #header>.dashL:first-child {
 	text-align: right;
-	margin-right: 55%;
 }
 button.dash {
 	display: inline-block;
