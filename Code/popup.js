@@ -264,7 +264,7 @@ $(function() {
 	}
 
 	function FollowedHub() {
-		// FUTURE: need to be deleted when switched to the tab menu
+		// PROD: need to be deleted when switched to the tab menu
 		if ($('#content>.following').css('display') === "block") {
 			$('#content>.following>div:nth-child(2)').html('');
 			$('#content>.following').hide();
@@ -320,10 +320,37 @@ $(function() {
 			var b1 = c('button', {innerText: 'Detailed'});
 			b1.onclick = function(e) {
 				// TODO: open detailed information about this streamer
+				//name: e.target.parentElement.parentElement.querySelector('div>a').innerText;
 			}
 			btn.appendChild(b1);
 			if (local.Config.token !== "") {
 				var b2 = c('button', {innerText: 'Unfollow'});
+				b2.onclick = function(e) {
+					var str = e.target.parentElement.parentElement.querySelector('div>a').innerText.toLowerCase();
+
+					// TODO: inform user about that
+					if (local.following.get(str) === null)
+						return err("Streamer not found :(");
+					if (!local.Config.token)
+						return false;
+
+					$.ajax({
+						url: 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels/'+str,
+						type: 'DELETE',
+						dataType: 'json',
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader('Authorization', 'OAuth '+local.Config.token);
+						}
+					})
+					.done(function() {
+						local.following.del(str);
+						e.target.parentElement.parentElement.parentElement.remove();
+					})
+					.fail(function(r) {
+						err("Could not execute deletion", r);
+					});
+					
+				}
 				btn.appendChild(b2);
 			}
 			d2.appendChild(btn);
@@ -447,7 +474,7 @@ $(function() {
 				var hld = c('div');
 
 				var nm = c('div', {className: 'user'});
-				var name = cr('a', {
+				var name = c('a', {
 					innerHTML: v.Name,
 					href: 'http://www.twitch.tv/'+v.Name.toLowerCase()+'/profile',
 					target: '_blank'
@@ -458,7 +485,7 @@ $(function() {
 
 				if (chk) {
 					var ch = c('div', {className: 'checkBox'});
-					var check = cr('input', {
+					var check = c('input', {
 						type: 'checkbox',
 						id: i,
 						className: 'Check_Box_2',
