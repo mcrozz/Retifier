@@ -192,13 +192,15 @@ $(function() {
 
 			this.closeAlert();
 		}
-		this.onOk = null;
-		this.onClose = null;
-		this.returns = false;
-		this.callback = null;
-		this.alerted = false;
-		this.id = '';
-		this.id_ = '';
+		!function() {
+			this.onOk = null;
+			this.onClose = null;
+			this.returns = false;
+			this.callback = null;
+			this.alerted = false;
+			this.id = '';
+			this.id_ = '';
+		}();
 	};
 	Popup = new pop();
 
