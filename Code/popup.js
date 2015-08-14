@@ -359,14 +359,40 @@ $(function() {
 
 			cell.appendChild(d2);
 
-			// inserting one cell at the tab
-			$('.following>div:nth-child(2)').append(cell);
+			// trying to insert at right place
+			// obj.name
+			var crt = $('.following>div:nth-child(2)>div');
+			// Reminder for morning, fix this
+			var pos = obj.name.indexOf(shouldBe);
+			
+			// Fallback
+			if (pos == -1 || $('.following>div:nth-child(2)').length === 0)
+				return $('.following>div:nth-child(2)').append(cell);
+
+			for (var i=pos+1; i<=0; i--) {
+				if (typeof crt[i] !== 'undefined') {
+					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase(),
+						done = false;
+					for (var j=pos+1; j<=0; j--) {
+						if (tmp === shouldBe[j]) {
+							done = true;
+							crt[i].after(cell);
+							return;
+						}
+					}
+
+					if (done)
+						return;
+				}
+			}
 		}
 
 		$('#content>.online').css('display', 'none');
 		$('#content>.following').css('display', 'block');
 
+		var shouldBe = [];
 		$.each(local.FollowingList, function(i,v) {
+			shouldBe[i] = v.Name.toLowerCase();
 			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase())
 			.done(function(d) {
 				insert(d, v.Stream);
