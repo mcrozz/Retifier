@@ -1,128 +1,5 @@
 {{LICENSE_HEADER}}
-var Popup = {
-	init: function(id, callback) {
-		$('#AppVersion').fadeOut(1000);
-		$('#popup').fadeIn(300);
-		$(id).fadeIn(285);
-		Popup.id = id;
-		if (typeof callback === 'function')
-			Popup.callback = callback;
-	},
-	change: function(id, returns, callback) {
-		if (typeof returns === 'boolean')
-			Popup.returns = returns;
-		if (typeof callback === 'function')
-			Popup.onClose = callback;
-
-		Popup.id_ = id;
-		$(id).fadeIn(500);
-		$(Popup.id).fadeOut(284);
-	},
-	close_: function() {
-		$(Popup.id_).fadeOut(280);
-		if (Popup.returns)
-			Popup.init(Popup.id, Popup.callback);
-
-		if (typeof Popup.onClose === 'function')
-			Popup.onClose();
-
-		Popup.id_ = '';
-		Popup.onClose = null;
-		Popup.returns = false;
-	},
-	close: function() {
-		$('#AppVersion').fadeIn(1000);
-		$('#popup').fadeOut(300);
-		$('#AppVersion').fadeIn(1000);
-		$(Popup.id).fadeOut(285);
-		Popup.id = '';
-	},
-	clicked: function() {
-		if (Popup.id_)
-			return Popup.close_();
-		if (Popup.alerted && typeof Popup.onClose === 'function')
-			return Popup.onClose();
-
-		if (typeof Popup.callback === 'function')
-			Popup.callback();
-		Popup.callback = null;
-		Popup.close();
-	},
-	alert: function(par) {
-		/*
-			par :: object {
-				header :: string,
-				content :: html or DOM,
-				onOk :: function,
-				onClose :: function,
-				showClose :: boolean,
-				returns :: boolean
-			}
-		*/
-		if (typeof par.onOk === 'function')
-			Popup.onOk = par.onOk;
-		if (typeof par.onClose === 'function')
-			Popup.onClose = par.onClose;
-		if (typeof par.returns === 'boolean')
-			Popup.returns = par.returns;
-
-		// hide current window
-		if (Popup.id)
-			$(Popup.id).hide();
-
-		if (!Popup.returns) {
-			Popup.id = '';
-			Popup.callback = null;
-		}
-
-		$('.alert>header>p').html(par.header);
-		$('.alert>div>div').html(par.content);
-		$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
-		$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
-
-		// show background
-		if ($('#popup').css('display')[0] === 'n')
-			$('#popup').fadeIn(300);
-
-		$('#AppVersion').fadeOut(1000);
-		$('.alert').fadeIn(285);
-		Popup.alerted = true;
-	},
-	closeAlert: function() {
-		// If clicked 'Cancel' or outside of window
-		if (typeof Popup.onClose === 'function')
-			Popup.onClose();
-
-		Popup.onClose = null;
-		Popup.alerted = false;
-
-		$('.alert').fadeOut(285);
-		if (Popup.returns) {
-			Popup.returns = false;
-			return Popup.init(Popup.id, Popup.callback);
-		} else
-			$('#popup').fadeOut(300);
-
-		if (!Popup.returns)
-			$('#AppVersion').fadeIn(1000);
-	},
-	clickAlert: function() {
-		// Clicked 'Ok'
-		if (typeof Popup.onOk === 'function')
-			Popup.onOk();
-
-		Popup.onOk = null;
-
-		Popup.closeAlert();
-	},
-	onOk: null,
-	onClose: null,
-	returns: false,
-	callback: null,
-	alerted: false,
-	id: '',
-	id_: ''
-};
+Popup = null;
 
 $(function() {
 	var style = {
@@ -198,6 +75,132 @@ $(function() {
 			}
 		}
 	};
+
+	var pop = function() {
+		this.init = function(id, callback) {
+			$('#AppVersion').fadeOut(1000);
+			$('#popup').fadeIn(300);
+			$(id).fadeIn(285);
+			this.id = id;
+			if (typeof callback === 'function')
+				this.callback = callback;
+		}
+		this.change = function(id, returns, callback) {
+			if (typeof returns === 'boolean')
+				this.returns = returns;
+			if (typeof callback === 'function')
+				this.onClose = callback;
+
+			this.id_ = id;
+			$(id).fadeIn(500);
+			$(this.id).fadeOut(284);
+		}
+		this.close_ = function() {
+			$(this.id_).fadeOut(280);
+			if (this.returns)
+				this.init(this.id, this.callback);
+
+			if (typeof this.onClose === 'function')
+				this.onClose();
+
+			this.id_ = '';
+			this.onClose = null;
+			this.returns = false;
+		}
+		this.close = function() {
+			$('#AppVersion').fadeIn(1000);
+			$('#popup').fadeOut(300);
+			$('#AppVersion').fadeIn(1000);
+			$(this.id).fadeOut(285);
+			this.id = '';
+		}
+		this.clicked = function() {
+			if (this.id_)
+				return this.close_();
+			if (this.alerted && typeof this.onClose === 'function')
+				return this.onClose();
+
+			if (typeof this.callback === 'function')
+				this.callback();
+			this.callback = null;
+			this.close();
+		}
+		this.alert = function(par) {
+			/*
+				par :: object {
+					header :: string,
+					content :: html or DOM,
+					onOk :: function,
+					onClose :: function,
+					showClose :: boolean,
+					returns :: boolean
+				}
+			*/
+			if (typeof par.onOk === 'function')
+				this.onOk = par.onOk;
+			if (typeof par.onClose === 'function')
+				this.onClose = par.onClose;
+			if (typeof par.returns === 'boolean')
+				this.returns = par.returns;
+
+			// hide current window
+			if (this.id)
+				$(this.id).hide();
+
+			if (!this.returns) {
+				this.id = '';
+				this.callback = null;
+			}
+
+			$('.alert>header>p').html(par.header);
+			$('.alert>div>div').html(par.content);
+			$('.alert>footer>button[name=k]').css('width', par.showClose?'49%':'100%');
+			$('.alert>footer>button[name=c]')[par.showClose?'show':'hide']();
+
+			// show background
+			if ($('#popup').css('display')[0] === 'n')
+				$('#popup').fadeIn(300);
+
+			$('#AppVersion').fadeOut(1000);
+			$('.alert').fadeIn(285);
+			this.alerted = true;
+		}
+		this.closeAlert = function() {
+			// If clicked 'Cancel' or outside of window
+			if (typeof this.onClose === 'function')
+				this.onClose();
+
+			this.onClose = null;
+			this.alerted = false;
+
+			$('.alert').fadeOut(285);
+			if (this.returns) {
+				this.returns = false;
+				return this.init(this.id, this.callback);
+			} else
+				$('#popup').fadeOut(300);
+
+			if (!this.returns)
+				$('#AppVersion').fadeIn(1000);
+		}
+		this.clickAlert = function() {
+			// Clicked 'Ok'
+			if (typeof this.onOk === 'function')
+				this.onOk();
+
+			this.onOk = null;
+
+			this.closeAlert();
+		}
+		this.onOk = null;
+		this.onClose = null;
+		this.returns = false;
+		this.callback = null;
+		this.alerted = false;
+		this.id = '';
+		this.id_ = '';
+	};
+	Popup = new pop();
 
 	function clickChangeUserCls() {
 		style.reload();
