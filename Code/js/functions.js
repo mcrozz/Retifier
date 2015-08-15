@@ -212,34 +212,30 @@ function modelLocal() {
 
 {{NOTIFY_USER_FUNCTION}}
 
-function time(t) {
+function time(t, raw) {
 	function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
+		if (b === 0) { return '00'+j; }
+		else if (b < 10) { return '0'+b+j; }
+		else { return b.toString()+j; }
 	}
-	var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+	var SubtractTimes, D, H, M, S;
 
 	if (isNaN((new Date(t)).getTime())) return '';
 	SubtractTimes = (((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
 
-	Days = Math.floor(SubtractTimes/86400);
-	SubtractTimes -= Days*86400;
-	if (Days == 0) { Days = ''; } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+	D = Math.floor(SubtractTimes/86400);
+	SubtractTimes -= D*86400;
+	H = Math.floor(SubtractTimes/3600);
+	SubtractTimes -= H*3600;
+	M = Math.floor(SubtractTimes/60);
+	SubtractTimes -= M*60;
+	S = Math.floor(SubtractTimes);
 
-	Hours = Math.floor(SubtractTimes/3600);
-	SubtractTimes -= Hours*3600;
-	Hours = h(Hours, 'h:');
+	if (raw)
+		return [D, H, M, S];
 
-	Minutes = Math.floor(SubtractTimes/60);
-	SubtractTimes -= Minutes*60;
-	Minutes = h(Minutes, 'm:')
-
-	Seconds = Math.floor(SubtractTimes);
-	Seconds = h(Seconds, 's');
-
-	Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-	return Time;
+	var Time = h(H, 'h:')+''+h(M, 'm:')+''+h(S, 's');
+	return (D === 0) ? Time : h(D, 'd:')+Time;
 }
 
 // https://www.google-analytics.com
