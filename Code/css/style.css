@@ -985,6 +985,18 @@ button.dash:hover {
 	width: 49%;
 	font-size: 97%;
 }
+div.buttons>button:nth-child(1) {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(220, 52%, 63%)), to(hsl(220, 35%, 49%)));
+}
+div.buttons>button:nth-child(1):hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(220, 35%, 63%)), to(hsl(220, 25%, 49%)));
+}
+div.buttons>button:nth-child(2) {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(357, 77%, 64%)), to(hsl(357, 38%, 43%)));
+}
+div.buttons>button:nth-child(2):hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(357, 45%, 64%)), to(hsl(357, 20%, 43%)));
+}
 
 .container>div>.stats>a {
 	font-size:90%;
