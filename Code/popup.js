@@ -306,7 +306,9 @@ $(function() {
 			var str = c('div', {className: 'streamer'});
 			var astr = c('a', {
 				innerText: obj.display_name,
-				href: "http://www.twitch.tv/"+obj.name+"/profile"});
+				href: "http://www.twitch.tv/"+obj.name+"/profile",
+				target: "_blank"
+			});
 			str.appendChild(astr);
 			d2.appendChild(str);
 
@@ -326,7 +328,11 @@ $(function() {
 				// Fill and open detailed view
 				$('.art>div')[0].innerHTML = (online)?"ONLINE":"OFFLINE";
 				$('.art>div')[0].className = (online)?"online":"offline";
-				$('.logo>img')[0].src = obj.logo;
+				$('.logo>img').attr({
+					src: obj.logo,
+					href: "http://www.twitch.tv/"+obj.name+"/profile",
+					target: "_blank"
+				});
 
 				var inf = $('.info>p>a');
 				// Did stream
@@ -389,22 +395,28 @@ $(function() {
 					if (!local.Config.token)
 						return false;
 
-					$.ajax({
-						url: 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels/'+str,
-						type: 'DELETE',
-						dataType: 'json',
-						beforeSend: function(xhr) {
-							xhr.setRequestHeader('Authorization', 'OAuth '+local.Config.token);
-						}
-					})
-					.done(function() {
-						local.following.del(str);
-						e.target.parentElement.parentElement.parentElement.remove();
-					})
-					.fail(function(r) {
-						err("Could not execute deletion", r);
+					Popup.alert({
+						header: "Are you sure?",
+						content: "<h4><center>Streamer "+str+" will be deleted from your following list</center></h4>",
+						onOk: function() {
+							$.ajax({
+								url: 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels/'+str,
+								type: 'DELETE',
+								dataType: 'json',
+								beforeSend: function(xhr) {
+									xhr.setRequestHeader('Authorization', 'OAuth '+local.Config.token);
+								}
+							})
+							.done(function() {
+								local.following.del(str);
+								e.target.parentElement.parentElement.parentElement.remove();
+							})
+							.fail(function(r) {
+								err("Could not execute deletion", r);
+							});
+						},
+						showClose: true
 					});
-					
 				}
 				btn.appendChild(b2);
 			}
@@ -737,8 +749,8 @@ $(function() {
 		Popup.close();
 		reLogin();
 	});
-	ael('.close>span', Popup.close);
-	ael('span.cls', Popup.close_);
+	ael('.close>span', function() { Popup.close(); });
+	ael('span.cls', function() { Popup.close_(); });
 	ael('#size>.plus', style.size.add);
 	ael('#size>.minus', style.size.sub);
 	ael('#size>.ok', style.size.save);
@@ -776,10 +788,10 @@ $(function() {
 		style.reload(); // Just in case
 		Popup.close_();
 	});
-	ael('#popup>.background', Popup.clicked);
-	ael('#zoomIMG', Popup.close);
-	ael('button[name=k]', Popup.clickAlert);
-	ael('button[name=c]', Popup.closeAlert);
+	ael('#popup>.background', function() { Popup.clicked(); });
+	ael('#zoomIMG', function() { Popup.close(); });
+	ael('button[name=k]', function() { Popup.clickAlert(); });
+	ael('button[name=c]', function() { Popup.closeAlert(); });
 	ael('.up>.close>button', function() {
 		$('.following>.detail').hide();
 		$('.following>.list').show();
