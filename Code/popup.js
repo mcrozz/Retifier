@@ -362,38 +362,41 @@ $(function() {
 			// trying to insert at right place
 			// obj.name
 			var crt = $('.following>div:nth-child(2)>div');
-			// Reminder for morning, fix this
-			var pos = obj.name.indexOf(shouldBe);
+			var pos = shouldBe[obj.name];
 			
-			// Fallback
-			if (pos == -1 || $('.following>div:nth-child(2)').length === 0)
+			// If first or cannot find position, insert at the end
+			if (typeof pos === 'undefined' || crt.length === 0)
 				return $('.following>div:nth-child(2)').append(cell);
 
-			for (var i=pos+1; i<=0; i--) {
+			// Trying to find element before
+			var done = false;
+			for (var i=pos; i>=0; i--) {
 				if (typeof crt[i] !== 'undefined') {
-					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase(),
-						done = false;
-					for (var j=pos+1; j<=0; j--) {
-						if (tmp === shouldBe[j]) {
+					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase();
+					for (var j=pos; j>=0; j--) {
+						if (tmp === local.FollowingList[j].Name.toLowerCase().replace(/\s/, "")) {
 							done = true;
-							crt[i].after(cell);
-							return;
+							$(crt[i]).after(cell);
+							break;
 						}
 					}
-
 					if (done)
-						return;
+						break;
 				}
 			}
+			if (done)
+				return;
+
+			// Fallback, insert at the top
+			$('.following>div:nth-child(2)').prepend(cell);
 		}
 
 		$('#content>.online').css('display', 'none');
 		$('#content>.following').css('display', 'block');
 
-		var shouldBe = [];
+		var shouldBe = local.following.map;
 		$.each(local.FollowingList, function(i,v) {
-			shouldBe[i] = v.Name.toLowerCase();
-			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase())
+			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase().replace(/\s/, ""))
 			.done(function(d) {
 				insert(d, v.Stream);
 			})
