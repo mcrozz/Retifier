@@ -933,18 +933,18 @@ button.dash:hover {
 	margin: 1% .5%;
 }
 
-.status>.logo>img {
+.status>.logo>img, .art>.logo>img {
 	width: 100%;
 	height: auto;
 	background-color: rgba(0, 0, 0, 0.68);
 }
-.status>.online {
+.status>.online, .art>.online {
 	background: -webkit-radial-gradient(center, ellipse cover, #3df230 1%,#6cc96c 52%,#68bf67 100%);
 	width: 100%;
 	font-size: 78%;
 	text-align: center;
 }
-.status>.offline {
+.status>.offline, .art>.offline {
 	background: -webkit-radial-gradient(center, ellipse cover, #c92828 0%,#824646 54%,#824646 100%);
 	width: 100%;
 	font-size: 78%;
@@ -999,6 +999,75 @@ button.dash:hover {
 	color: white;
 	text-align: center;
 	display: block;
+}
+
+.following>.detail {
+	overflow: hidden;
+}
+.detail>.up {
+	display: block;
+	height: 50%;
+	background-color: rgba(0, 0, 0, 0.61);
+}
+.up>.close {
+	display: inline-block;
+	width: 6%;
+	padding: 3% 0 0 1%;
+	vertical-align: top;
+}
+.up>.close>button {
+	display: block;
+	background: url(/img/Close.png);
+	background-size: contain;
+	width: 33px;
+	height: 33px;
+}
+.up>.art {
+	display: inline-block;
+	width: 30%;
+	margin-left: 4%;
+	padding-top: 2%;
+}
+.up>.info {
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+	margin-top: 6%;
+}
+.art>.offline, .art>.online {
+	font-size: 90%;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.info>p {
+	color: white;
+	text-shadow: none;
+	border-right: none;
+	margin: 0;
+	padding: .3%;
+	font-size: 105%;
+}
+.detail>.bio {
+	display: block;
+	height: 50%;
+	background-color: rgba(0, 0, 0, 0.72);
+	overflow-y: auto;
+}
+.bio>p {
+	color: white;
+	text-shadow: none;
+	border-right: none;
+	margin: 0;
+	padding: .3% 2%;
+	font-size: 100%;
+}
+.bio>p:nth-child(1) {
+	font-size: 85%;
+	text-align: right;
+}
+.bio>p>a {
+	margin-left: 2%;
+	font-size: italic;
 }
 
 /*

@@ -268,7 +268,9 @@ $(function() {
 	function FollowedHub() {
 		// PROD: need to be deleted when switched to the tab menu
 		if ($('#content>.following').css('display') === "block") {
-			$('#content>.following>div:nth-child(2)').html('');
+			$('#content>.following>.list').html('');
+			$('#content>.following>.detail').hide();
+			$('#content>.following>.list').show();
 			$('#content>.following').hide();
 			$('#content>.online').show();
 			return;
@@ -321,8 +323,59 @@ $(function() {
 			var btn = c('div', {className: 'buttons'});
 			var b1 = c('button', {innerText: 'Detailed'});
 			b1.onclick = function(e) {
-				// TODO: open detailed information about this streamer
-				//name: e.target.parentElement.parentElement.querySelector('div>a').innerText;
+				// Fill and open detailed view
+				$('.art>div')[0].innerHTML = (online)?"ONLINE":"OFFLINE";
+				$('.art>div')[0].className = (online)?"online":"offline";
+				$('.logo>img')[0].src = obj.logo;
+
+				var inf = $('.info>p>a');
+				// Did stream
+				var didStream = "";
+				var dS = time(obj.updated_at, true);
+				if (dS.h < 1) {
+					didStream = "less than a hour ago";
+				} else if (dS.d < 1) {
+					didStream = (dS.d*24)+dS.h+((dS.m>30)?1:0)+" hours ago";
+				} else {
+					didStream = "more than "+dS.d+" days";
+				}
+				inf[0].innerHTML = didStream;
+				// Registered
+				var reg = "";
+				var dR = time(obj.created_at, true);
+				if (dR.d > 300) {
+					var j = Math.floor(dR.d/36.5)/10;
+					reg = "more than "+j+" years";
+				} else if (dR.d > 3) {
+					reg = "more than "+dR.d+" days";
+				} else {
+					reg = (dR.d*24)+dR.h+" hours ago";
+				}
+				inf[1].innerHTML = reg;
+				// Followers
+				inf[2].innerHTML = obj.followers;
+				// Views
+				inf[3].innerHTML = obj.views;
+
+
+				var dF = new Date(local.following.get(obj.display_name).Followed);
+				$('.bio>p>a').html(dF.toLocaleString());
+
+				var bg = $('.following>.detail')[0];
+				if (obj.profile_banner !== null)
+					bg.style.backgroundImage = "url("+obj.profile_banner+")";
+				if (obj.profile_banner_background_color !== null)
+					bg.style.backgroundColor = obj.profile_banner_background_color;
+				bg.style.backgroundSize = "cover";
+
+				// Getting BIO
+				$.getJSON('https://api.twitch.tv/kraken/users/'+obj.name,
+					function(r) {
+					$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
+				});
+
+				$('.following>.list').hide();
+				$('.following>.detail').show();
 			}
 			btn.appendChild(b1);
 			if (local.Config.token !== "") {
@@ -360,13 +413,12 @@ $(function() {
 			cell.appendChild(d2);
 
 			// trying to insert at right place
-			// obj.name
-			var crt = $('.following>div:nth-child(2)>div');
-			var pos = shouldBe[obj.name];
+			var crt = $('.following>.list>div');
+			var pos = shouldBe[obj.display_name.toLowerCase()];
 			
 			// If first or cannot find position, insert at the end
 			if (typeof pos === 'undefined' || crt.length === 0)
-				return $('.following>div:nth-child(2)').append(cell);
+				return $('.following>.list').append(cell);
 
 			// Trying to find element before
 			var done = false;
@@ -388,11 +440,11 @@ $(function() {
 				return;
 
 			// Fallback, insert at the top
-			$('.following>div:nth-child(2)').prepend(cell);
+			$('.following>.list').prepend(cell);
 		}
 
-		$('#content>.online').css('display', 'none');
-		$('#content>.following').css('display', 'block');
+		$('#content>.online').hide();
+		$('#content>.following').show();
 
 		var shouldBe = local.following.map;
 		$.each(local.FollowingList, function(i,v) {
@@ -728,6 +780,22 @@ $(function() {
 	ael('#zoomIMG', Popup.close);
 	ael('button[name=k]', Popup.clickAlert);
 	ael('button[name=c]', Popup.closeAlert);
+	ael('.up>.close>button', function() {
+		$('.following>.detail').hide();
+		$('.following>.list').show();
+
+		// Clean up detailed view
+		$('.art>div')[0].innerHTML = null;
+		$('.art>div')[0].className = null;
+		$('.logo>img')[0].src = null;
+		$('.info>p>a').html(null);
+		$('.bio>p')[1].innerHTML = null;
+		$('.bio>p>a').html("BIO is downloading...");
+		var bg = $('.following>.detail')[0];
+		bg.style.backgroundImage = null;
+		bg.style.backgroundColor = null;
+		bg.style.backgroundSize = "cover";
+	});
 	$('input#ChgUsrInt').on('change', function(e) {
 		var v = Math.abs(e.target.value);
 		if (isNaN(v) || v === 0)

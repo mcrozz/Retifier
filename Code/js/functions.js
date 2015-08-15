@@ -140,7 +140,7 @@ function modelLocal() {
 
 				var tm = local.FollowingList[id];
 				if (typeof tm !== 'undefined')
-					$.each(['Name', 'Stream', 'Notify'], function(i,v) {
+					$.each(['Name', 'Stream', 'Notify', 'Followed'], function(i,v) {
 						if (typeof tm[v] === 'undefined')
 							dt[v] = local.default[v];
 						else if (typeof dt[v] === 'undefined')
@@ -232,7 +232,7 @@ function time(t, raw) {
 	S = Math.floor(SubtractTimes);
 
 	if (raw)
-		return [D, H, M, S];
+		return {d:D, h:H, m:M, s:S};
 
 	var Time = h(H, 'h:')+''+h(M, 'm:')+''+h(S, 's');
 	return (D === 0) ? Time : h(D, 'd:')+Time;
