@@ -30,17 +30,6 @@ if (localStorage.FirstLaunch === 'true') {
 
 		local.following.set(i, j);
 	});
-
-	if (local.Following !== 0 && typeof local.following.get(0).Followed === 'undefined') {
-		$.getJSON('https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels?limit=100&offset=0')
-		.done(function(r) {
-			$.each(r.follows, function(i,v) {
-				local.following.set(v.channel.display_name, {
-					Followed: v.channel.created_at
-				});
-			});
-		});
-	}
 }
 
 try {
@@ -152,19 +141,11 @@ var bck = {
 				});
 				local.set('Following', j._total);
 				local.set('Status.online', 0);
+				local.following.hash();
 			} else {
 				local.set('Following', j._total);
-				$.each(local.FollowingList, function(i,v) {
-					var del = true;
-					$.each(j.follows, function(j,k) {
-						if (k.channel.display_name === v.Name)
-							del = false;
-					});
-					if (del)
-						local.following.del(v.Name);
-				});
+				local.following.analyse(j.follows);
 			}
-			local.following.hash();
 			return bck.promise.done();
 		});
 	},

@@ -164,10 +164,38 @@ function modelLocal() {
 
 			local.set('FollowingList', newObj);
 		},
-		map: { /* String : Int ..*/ },
+		analyse: function(obj) {
+			var tmp = new Array();
+			var hsh = {};
+			$.each(obj, function(i,v) {
+				var loc = local.following.get(v.channel.display_name);
+				
+				if (loc == null) {
+					tmp[i] = {
+						Name: v.channel.display_name,
+						Stream: false,
+						Notify: true,
+						Followed: v.created_at
+					};
+					// TODO: inform popup window
+				} else {
+					tmp[i] = {
+						Name: v.channel.display_name,
+						Stream: loc.Stream,
+						Notify: loc.Notify,
+						Followed: v.created_at
+					};
+				}
+
+				hsh[v.channel.display_name.toLowerCase()] = i;
+			});
+			local.set("FollowingList", tmp);
+			this.hash = hsh;
+		},
+		map: { /*.. String : Int ..*/ },
 		hash: function() {
 			// Hash positions
-			local.following.map = {};
+			this.map = {};
 			$.each(local.FollowingList, function(i,v) {
 				local.following.map[v.Name.toLowerCase()] = i;
 			});
