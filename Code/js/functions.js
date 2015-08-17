@@ -170,7 +170,15 @@ function modelLocal() {
 			$.each(obj, function(i,v) {
 				var loc = local.following.get(v.channel.display_name);
 				
-				if (loc == null) {
+				// FIX: can erase some Notify flags
+				if (loc !== null && v.channel.display_name === loc.Name) {
+					tmp[i] = {
+						Name: v.channel.display_name,
+						Stream: loc.Stream,
+						Notify: loc.Notify,
+						Followed: v.created_at
+					};
+				} else {
 					tmp[i] = {
 						Name: v.channel.display_name,
 						Stream: false,
@@ -178,13 +186,6 @@ function modelLocal() {
 						Followed: v.created_at
 					};
 					// TODO: inform popup window
-				} else {
-					tmp[i] = {
-						Name: v.channel.display_name,
-						Stream: loc.Stream,
-						Notify: loc.Notify,
-						Followed: v.created_at
-					};
 				}
 
 				hsh[v.channel.display_name.toLowerCase()] = i;
