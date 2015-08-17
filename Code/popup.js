@@ -328,7 +328,7 @@ $(function() {
 				// Fill and open detailed view
 				$('.art>div')[0].innerHTML = (online)?"ONLINE":"OFFLINE";
 				$('.art>div')[0].className = (online)?"online":"offline";
-				$('.logo>img').attr({
+				$('.art>.logo>img').attr({
 					src: obj.logo,
 					href: "http://www.twitch.tv/"+obj.name+"/profile",
 					target: "_blank"
@@ -799,7 +799,7 @@ $(function() {
 		// Clean up detailed view
 		$('.art>div')[0].innerHTML = null;
 		$('.art>div')[0].className = null;
-		$('.logo>img')[0].src = null;
+		$('.art>.logo>img')[0].src = null;
 		$('.info>p>a').html(null);
 		$('.bio>p')[1].innerHTML = null;
 		$('.bio>p>a').html("BIO is downloading...");
