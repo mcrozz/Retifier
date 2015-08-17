@@ -317,9 +317,9 @@ var bck = {
 
 			if (d.stream) {
 				// Channel is online
-				var FoLi = local.following.get(d.stream.channel.name.toLowerCase());
+				var FoLi = local.following.get(d.stream.channel.display_name.toLowerCase());
 				if (typeof FoLi !== 'object')
-					return err({message:'Could not find streamer in base, '+d.stream.channel.name});
+					return err({message:'Could not find streamer in the db, '+d.stream.channel.name});
 
 				var Game = d.stream.channel.game,
 					Status = d.stream.channel.status,

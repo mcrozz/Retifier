@@ -169,7 +169,6 @@ function modelLocal() {
 			var hsh = {};
 			$.each(obj, function(i,v) {
 				var loc = local.following.get(v.channel.display_name);
-				
 				// FIX: can erase some Notify flags
 				if (loc !== null && v.channel.display_name === loc.Name) {
 					tmp[i] = {
@@ -185,11 +184,11 @@ function modelLocal() {
 						Notify: true,
 						Followed: v.created_at
 					};
-					// TODO: inform popup window
 				}
-
+				// Hash name
 				hsh[v.channel.display_name.toLowerCase()] = i;
 			});
+			// Swap lists and hashes
 			local.set("FollowingList", tmp);
 			this.hash = hsh;
 		},
