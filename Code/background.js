@@ -261,7 +261,7 @@ var bck = {
 				if (token) {
 					// 'list' is already is online list
 					$.each(bck.online.get(), function(i,v) {
-						if (list.indexOf(v.toLowerCase()) === -1) {
+						if (list.indexOf(v.toLowerCase().replace(/\s/g, "")) === -1) {
 							// streamer gone offline
 							bck.online.del(v);
 							var str = local.following.get(v);
@@ -354,7 +354,7 @@ var bck = {
 								context: Game
 							});
 						}
-						bck.online.add(Name);
+						bck.online.add(Name.toLowerCase().replace(/\s/g, ""));
 					}
 
 					if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
@@ -400,7 +400,7 @@ var bck = {
 						msg: "Been online for "+time(FoLi.Stream.Time),
 						type: "offline"
 					});
-				bck.online.del(FoLi.Name);
+				bck.online.del(FoLi.Name.toLowerCase().replace(/\s/g, ""));
 				local.following.set(FoLi.Name, {Stream: false});
 				send({type:'following', data: {Name:FoLi.Name, Stream:false}});
 			}
