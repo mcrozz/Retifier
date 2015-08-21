@@ -143,10 +143,62 @@ function str_cell(a, to) {
 
 		// Streamer name
 		var streamer = c('div', {className: 'streamer'});
-		var aStream = c('a', {
-			href: 'http://www.twitch.tv/'+a.str+'/profile',
-			target: '_blank',
-			innerHTML: a.dsn});
+		var aStream = c('a', {innerHTML: a.dsn});
+		aStream.onclick = function(e) {
+			console.log(a);
+			// Fill and open detailed view
+			var inf = $('.info>p>a');
+			$('.art>div')[0].innerHTML = "ONLINE";
+			$('.art>div')[0].className = "online";
+			
+			// Getting info abuot streamer
+			$.getJSON("https://api.twitch.tv/kraken/channels/"+a.str, function(r) {
+				$('.art>.logo>img').attr({
+					src: r.logo,
+					href: "http://www.twitch.tv/"+a.str+"/profile",
+					target: "_blank"
+				});
+
+				// Registered
+				var reg = "";
+				var dR = time(r.created_at, true);
+				if (dR.d > 300) {
+					var j = Math.floor(dR.d/36.5)/10;
+					reg = "more than "+j+" years";
+				} else if (dR.d > 3) {
+					reg = "more than "+dR.d+" days";
+				} else {
+					reg = (dR.d*24)+dR.h+" hours ago";
+				}
+				inf[1].innerHTML = reg;
+				// Followers
+				inf[2].innerHTML = r.followers;
+				// Views
+				inf[3].innerHTML = r.views;
+
+				var bg = $('.following>.detail')[0];
+				if (r.profile_banner !== null)
+					bg.style.backgroundImage = "url("+r.profile_banner+")";
+				if (r.profile_banner_background_color !== null)
+					bg.style.backgroundColor = r.profile_banner_background_color;
+				bg.style.backgroundSize = "cover";
+			});
+
+			// Did stream
+			inf[0].innerHTML = "Streaming right now";
+
+			var dF = new Date(local.following.get(a.dsn.toLowerCase()).Followed);
+			$('.bio>p>a').html(dF.toLocaleString());
+
+			// Getting BIO
+			$.getJSON('https://api.twitch.tv/kraken/users/'+a.str,
+				function(r) {
+				$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
+			});
+
+			$('#content>.online, .following>.list').hide();
+			$('#content>.following, .following>.detail').show();
+		}
 		streamer.appendChild(aStream);
 		inf.appendChild(streamer);
 
@@ -231,7 +283,7 @@ window.insert = function(obj) {
 		$('#content>.online').html('');
 
 	// If not in array and is online
-	if ($.inArray(obj.Name.toLowerCase(), online) === -1) {
+	if ($.inArray(StreamerName, online) === -1) {
 		if (!obj.Stream)
 			return;
 
@@ -332,8 +384,7 @@ window.updateStatus = function() {
 // Duration of stream
 setInterval(function() {
 	$.each(online, function(i,v) {
-		var k = v.replace(/\s/g, '');
-		if ($('#'+k).length === 0)
+		if ($('#'+v).length === 0)
 			return online = online.filter(function(e) { return e!=v; });
 		try {
 			var s = local.following.get(v);

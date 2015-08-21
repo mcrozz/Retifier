@@ -794,7 +794,10 @@ $(function() {
 	ael('button[name=k]', function() { Popup.clickAlert(); });
 	ael('button[name=c]', function() { Popup.closeAlert(); });
 	ael('.up>.close>button', function() {
-		$('.following>.detail').hide();
+		if ($('.following>.list>div').length === 0)
+			$('#content>.online').show();
+		else
+			$('.following>.detail').hide();
 		$('.following>.list').show();
 
 		// Clean up detailed view
