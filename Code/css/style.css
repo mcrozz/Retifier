@@ -62,7 +62,7 @@ body>div {
 
 .following>div, #content>.online {
 	width: 100%;
-	height: 90%;
+	height: 100%;
 	overflow-y: auto;
 }
 
@@ -123,8 +123,8 @@ body>div {
 	display: block;
 	width: 44%;
 	height: 42%;
-	left: 33%;
-	top: 12%;
+	left: 29%;
+	top: 14%;
 }
 .loading>div {
 	position: absolute;
@@ -164,7 +164,7 @@ body>div {
 #header {
 	display: block;
 	background: hsl(216, 4%, 85%);
-	height: 10%;
+	height: 8%;
 	width: 100%;
 	position: static;
 	text-align: center;
@@ -541,7 +541,7 @@ span:hover {
 
 #FollowedChannelsOnline {
 	display: inline-block;
-	width: 65%;
+	width: 70%;
 	height: 100%;
 	text-align: center;
 	vertical-align: middle;
@@ -792,6 +792,7 @@ button.WelcomOK:hover {
 
 #content {
 	width: 100%;
+	height: 100%;
 	position: relative;
 	display: block;
 }
@@ -852,7 +853,7 @@ button.settings {
 }
 button.dash {
 	display: inline-block;
-	width: 8%;
+	width: 8vh;
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -892,8 +893,8 @@ button.dash:hover {
 	background-size: contain;
 	display: block;
 	position: absolute;
-	width: 10.02%;
-	height: 10.02%;
+	width: 5vh;
+	height: 5vh;
 	top: 2%;
 	left: 2%;
 	z-index: 4;
@@ -925,12 +926,12 @@ button.dash:hover {
 
 /* FollowedHub */
 .following>div>.container {
-	width: 46.5%;
-	height: 25%;
+	width: 45vw;
+	height: 23vh;
 	padding: 1.5% 1%;
 	color: white;
 	display: inline-flex;
-	margin: 1% .5%;
+	margin: 1% .5% 0 .5%;
 }
 
 .status>.logo>img, .art>.logo>img {
@@ -959,13 +960,13 @@ button.dash:hover {
 	height: 100%;
 }
 .following>div>.container>div:nth-child(2) {
-	background-color: hsla(184, 6%, 35%, 0.4);
+	background-color: hsla(271, 16%, 25%, 0.81);
 	width: 75%;
+	padding: 0 1% 0 1%;
 }
 .container>div>.streamer {
 	display: block;
-	width: 80%;
-	padding: 0 0 0 5px;
+	width: 100%;
 }
 .container>div>.streamer>a {
 	font-size: 120%;
@@ -1008,6 +1009,7 @@ div.buttons>button:nth-child(2):hover {
 	content: "Channel";
 	width: 100%;
 	background: black;
+	font-size: 67%;
 	color: white;
 	text-align: center;
 	display: block;
