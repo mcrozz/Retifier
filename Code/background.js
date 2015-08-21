@@ -424,22 +424,45 @@ var bck = {
 			local.set('Config.Interval_of_Checking', 1);
 	},
 	init: function() {
-		// Get following list every two mins
-		(function(){
-			// If user does not have connection to the internet
-			// skip checking
-			if (navigator.onLine)
-				bck.getList();
-			bck.checkInt();
-			setTimeout(arguments.callee, 120000);
-		})();
-		// Check online status of followed channels
-		(function(){
-			if (navigator.onLine)
-				bck.getOnline();
-			bck.checkInt();
-			setTimeout(arguments.callee, 60000*local.Config.Interval_of_Checking);
-		})();
+		bck.restart.done();
+	},
+	restart: {
+		done: function() {
+			if (bck.online.get().length === 0 &&
+				bck.restart.did === 0 && bck.restart.working === false)
+				bck.restart.did = 1;
+
+			bck.restart.did++;
+
+			if (bck.restart.did >= 2) {
+				bck.restart.did = 0;
+				bck.restart.working = true;
+				// Get following list every two mins
+				(function(){
+					if (bck.restart.working === false)
+						return bck.restart.done();
+
+					// If user does not have connection to the internet
+					// skip checking
+					if (navigator.onLine)
+						bck.getList();
+					bck.checkInt();
+					setTimeout(arguments.callee, 120000);
+				})();
+				// Check online status of followed channels
+				(function(){
+					if (bck.restart.working === false)
+						return bck.restart.done();
+
+					if (navigator.onLine)
+						bck.getOnline();
+					bck.checkInt();
+					setTimeout(arguments.callee, 60000*local.Config.Interval_of_Checking);
+				})();
+			}
+		},
+		did: 0,
+		working: false
 	}
 };
 
