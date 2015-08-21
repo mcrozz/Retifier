@@ -691,6 +691,26 @@ $(function() {
 		if (localStorage.FirstLaunch === 'true')
 			return;
 
+		// Insert online list
+		var curOnline = 0;
+		$.each(local.FollowingList, function(i,v) {
+			if (v.Stream) {
+				insert(v);
+				curOnline++;
+			}
+		});
+
+		// In case of incorrect online count
+		if (local.Status.online !== curOnline)
+			local.set('Status.online', curOnline);
+		badge(curOnline);
+
+		if (local.Status.online === 0)
+			$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
+	}, 50);
+	setTimeout(function() {
+		if (localStorage.FirstLaunch === 'true')
+				return;
 		// Get working code of background script
 		send({type: "getInf"}, function(e) {
 			if (!e) return;
@@ -718,24 +738,8 @@ $(function() {
 					break;
 			}
 		});
+	}, 100);
 
-		// Insert online list
-		var curOnline = 0;
-		$.each(local.FollowingList, function(i,v) {
-			if (v.Stream) {
-				insert(v);
-				curOnline++;
-			}
-		});
-
-		// In case of incorrect online count
-		if (local.Status.online !== curOnline)
-			local.set('Status.online', curOnline);
-		badge(curOnline);
-
-		if (local.Status.online === 0)
-			$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
-	}, 0);
 	$('#AppVersion').html(localStorage.App_Version);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
