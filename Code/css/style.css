@@ -462,40 +462,38 @@ button.button:hover {
 #size {
 	display: none;
 	position: relative;
-	width: 25%;
-	height: 30%;
-	margin: 29% 37.5%;
+	margin: 30vw 38vw;
 }
 #size>span {
 	display: inline-block;
-	width: 48%;
-	height: 48%;
+	width: 12vw;
+	height: 12vw;
 	border-radius: 25px;
 	position: absolute;
 }
 span.cls {
 	background: url(../img/Close.png);
 	background-size: contain;
-	left: -4%;
-	top: -7%;
+	left: -1vw;
+	top: -1vw;
 }
 span.minus {
 	background: url(../img/minus.png);
 	background-size: contain;
-	left: 58%;
-	top: 9%;
+	left: 13vw;
+	top: 3vw;
 }
 span.plus {
 	background: url(../img/plus.png);
 	background-size: contain;
-	top: 54%;
-	left: -6%;
+	top: 14vw;
+	left: -1vw;
 }
 span.ok {
 	background: url(../img/OK.png);
 	background-size: contain;
-	top: 70%;
-	left: 56%;
+	top: 17vw;
+	left: 13vw;
 }
 
 #view {
