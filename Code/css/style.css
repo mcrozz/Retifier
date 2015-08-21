@@ -66,6 +66,12 @@ body>div {
 	overflow-y: auto;
 }
 
+.online>.spacer {
+	display: block;
+	width: 100%;
+	height: 16vh;
+}
+
 .game>a, .streamer>a {
 	cursor: pointer;
 }
