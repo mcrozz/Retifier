@@ -285,6 +285,7 @@ $(function() {
 			if (obj.profile_banner_background_color !== null)
 				cell.style.backgroundColor = obj.profile_banner_background_color;
 			cell.style.backgroundSize = "cover";
+			cell.style.animation = "zoomIn 0.35s";
 			// Left part
 			var d1 = c('div', {className: 'status'});
 			

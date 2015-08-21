@@ -192,6 +192,7 @@ function str_cell(a, to) {
 		id: a.pos});
 	holder.appendChild(preview());
 	holder.appendChild(information());
+	holder.style.animation = "zoomIn 0.15s";
 	if (typeof to === "undefined")
 		return holder;
 	$(to).append(holder);
