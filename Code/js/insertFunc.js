@@ -23,7 +23,7 @@ function offSet(t,w) {
 }
 
 function stream(ob) {
-	var name = ob.Name.toLowerCase();
+	var name = ob.Name.toLowerCase().replace(/\s/g, '');
 	var divs = {
 		  origin : $('#'+name),
 		   title : $('#'+name+'>.inf>.title>a'),
@@ -204,8 +204,8 @@ window.insert = function(obj) {
 	// invalid input
 	if (!obj) return;
 
-	var   StreamTitle = obj.Stream.Title,
-		 StreamerName = obj.Name.toLowerCase(),
+	var StreamTitle = obj.Stream.Title,
+		 StreamerName = obj.Name.toLowerCase().replace(/\s/g, ''),
 		ShortStrmName = obj.Name,
 		   StreamGame = obj.Stream.Game,
 		  isGameThumb = local.Game.list.indexOf(StreamGame)!=-1,
@@ -332,7 +332,8 @@ window.updateStatus = function() {
 // Duration of stream
 setInterval(function() {
 	$.each(online, function(i,v) {
-		if ($('#'+v).length === 0)
+		var k = v.replace(/\s/g, '');
+		if ($('#'+k).length === 0)
 			return online = online.filter(function(e) { return e!=v; });
 		try {
 			var s = local.following.get(v);
