@@ -66,7 +66,7 @@ body>div {
 	overflow-y: auto;
 }
 
-.online>.spacer {
+.online>.spacer, .list>.spacer {
 	display: block;
 	width: 100%;
 	height: 16vh;
