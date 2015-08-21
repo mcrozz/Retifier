@@ -32,6 +32,8 @@ if (localStorage.FirstLaunch === 'true') {
 	});
 }
 
+sessionStorage.Launch = date();
+
 try {
 	ga('set', 'appVersion', local.App_Version.Ver);
 	ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
@@ -44,7 +46,7 @@ var bck = {
 			return this.data;
 		},
 		add: function(n) {
-			this.data.push(n.toLowerCase());
+			this.data.push(n.toLowerCase().replace(/\s/g, ""));
 			local.set('Status.online', this.data.length);
 			badge(this.data.length);
 		},
@@ -343,18 +345,23 @@ var bck = {
 
 					if (!FoLi.Stream && !bck.online.is(Name)) {
 						if (FoLi.Notify) {
-							var dd = (((date()-date(Time))<=((local.Config.Interval_of_Checking+60)*1000)))
-								?' just went live!':' is live!';
-							notify.send({
-								name: Name,
-								title: Name+dd,
-								msg: Status,
-								type: 'online',
-								button: true,
-								context: Game
-							});
+							var moreT = (((date()-date(Time)) < ((local.Config.Interval_of_Checking+60)*1000)));
+							var cSnd = true;
+							
+							if (120000 > date()-date(sessionStorage.Launch) && !moreT)
+								cSnd = false;
+
+							if (cSnd)
+								notify.send({
+									name: Name,
+									title: Name+(moreT ? ' just went live!' : ' is live!'),
+									msg: Status,
+									type: 'online',
+									button: true,
+									context: Game
+								});
 						}
-						bck.online.add(Name.toLowerCase().replace(/\s/g, ""));
+						bck.online.add(Name);
 					}
 
 					if (FoLi.Stream.Title !== Status && FoLi.Stream.Title)
