@@ -443,13 +443,13 @@ $(function() {
 			
 			// If first or cannot find position, insert at the end
 			if (typeof pos === 'undefined' || crt.length === 0)
-				return $('.following>.list').append(cell);
+				return $('.following>.list').prepend(cell);
 
 			// Trying to find element before
 			var done = false;
 			for (var i=pos; i>=0; i--) {
 				if (typeof crt[i] !== 'undefined') {
-					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase();
+					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase().replace(/\s/, "");
 					for (var j=pos; j>=0; j--) {
 						if (tmp === local.FollowingList[j].Name.toLowerCase().replace(/\s/, "")) {
 							done = true;
@@ -474,9 +474,10 @@ $(function() {
 		var shouldBe = local.following.map;
 		$.each(local.FollowingList, function(i,v) {
 			var str = v.Name.toLowerCase().replace(/\s/g, "");
-			if (typeof cachedInfo.get(str) !== 'undefined') {
+			// Trying to get cached copy of streamer's info
+			if (typeof cachedInfo.get(str) !== 'undefined')
 				insert(cachedInfo.get(str), v.Stream);
-			} else
+			else
 				$.getJSON("https://api.twitch.tv/kraken/channels/"+str)
 				.done(function(d) {
 					// Caching info
