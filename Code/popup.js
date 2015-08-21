@@ -265,6 +265,14 @@ $(function() {
 		Popup.close();
 	}
 
+	var cachedInfo = {
+		total: 0,
+		list: [],
+		map: {},
+		get: function(n) {
+			return this.list[this.map[n]];
+		}
+	};
 	function FollowedHub() {
 		// PROD: need to be deleted when switched to the tab menu
 		if ($('#content>.following').css('display') === "block") {
@@ -376,10 +384,14 @@ $(function() {
 				bg.style.backgroundSize = "cover";
 
 				// Getting BIO
-				$.getJSON('https://api.twitch.tv/kraken/users/'+obj.name,
-					function(r) {
-					$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
-				});
+				if (obj.bio)
+					$('.bio>p')[1].innerHTML = (obj.bio != null) ? obj.bio : "This user has no bio.";
+				else
+					$.getJSON('https://api.twitch.tv/kraken/users/'+obj.name,
+						function(r) {
+						$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
+						cachedInfo.list[cachedInfo.map[obj.name]].bio = r.bio;
+					});
 
 				$('.following>.list').hide();
 				$('.following>.detail').show();
@@ -461,11 +473,30 @@ $(function() {
 
 		var shouldBe = local.following.map;
 		$.each(local.FollowingList, function(i,v) {
-			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase().replace(/\s/, ""))
-			.done(function(d) {
-				insert(d, v.Stream);
-			})
-			.error(function(e) { err(e); });
+			var str = v.Name.toLowerCase().replace(/\s/g, "");
+			if (typeof cachedInfo.get(str) !== 'undefined') {
+				insert(cachedInfo.get(str), v.Stream);
+			} else
+				$.getJSON("https://api.twitch.tv/kraken/channels/"+str)
+				.done(function(d) {
+					// Caching info
+					cachedInfo.total++;
+					cachedInfo.list.push({
+						profile_banner: d.profile_banner,
+						profile_banner_background_color: d.profile_banner_background_color,
+						name: d.name,
+						display_name: d.display_name,
+						logo: d.logo,
+						views: d.views,
+						followers: d.followers,
+						created_at: d.created_at,
+						updated_at: d.updated_at
+					});
+					cachedInfo.map[d.name] = cachedInfo.total-1;
+
+					insert(d, v.Stream);
+				})
+				.error(function(e) { err(e); });
 		});
 	}
 
