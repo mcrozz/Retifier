@@ -2,7 +2,7 @@
     "Chrome": {
         "Add": null,
         "Browser": "Chrome",
-        "Build": 1849,
+        "Build": 1851,
         "Config": "manifest.json",
         "CopyBackgound": "true",
         "Parse": "local",
