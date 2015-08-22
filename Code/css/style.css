@@ -35,18 +35,9 @@ button {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
 }
-
-#content>.online::-webkit-scrollbar {
-	width: 1.9%;
-}
-.alert>div::-webkit-scrollbar {
-	width: 4%;
-}
-.AppVersionContent3::-webkit-scrollbar {
-	width: 3%
-}
 ::-webkit-scrollbar {
 	background-color: rgba(0, 0, 0, 0.44);
+	width: 1.9vw;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
@@ -110,13 +101,17 @@ body>div {
 	only screen and (-webkit-min-device-pixel-ratio: 1.5),
 	only screen and (min-device-pixel-ratio: 1.5) {
 		html {
-			font:100% ExtFont!important;
+			font-size:100% !important;
 		}
 		#FollowedChannelsOnline {
-			font:85% ExtFont!important;
+			font-size:.9rem !important;
+			line-height: 60% !important;
 		}
 		.tum>a {
-			font:95% ExtFont!important;
+			font-size:95% !important;
+		}
+		.container>div>.spacer {
+			height: 20% !important;
 		}
 }
 
@@ -545,7 +540,7 @@ span:hover {
 
 #FollowedChannelsOnline {
 	display: inline-block;
-	width: 70vw;
+	width: 69vw;
 	height: 100%;
 	text-align: center;
 	vertical-align: middle;
@@ -883,6 +878,7 @@ button.dash:hover {
 	display: block;
 	position: absolute;
 	z-index: -1;
+	white-space: nowrap;
 }
 
 .NOO {
@@ -935,7 +931,7 @@ button.dash:hover {
 	padding: 1.5% 1%;
 	color: white;
 	display: inline-flex;
-	margin: 1% .5% 0 .5%;
+	margin: 1% 1% 0 1%;
 }
 
 .status>.logo>img, .art>.logo>img {

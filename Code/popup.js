@@ -25,7 +25,10 @@ $(function() {
 			var add = 0;
 			// normalize font size for Linux users
 			if (navigator.platform[0].toLowerCase() === 'l')
-			 add = -21;
+				add = -21;
+			// normalize font size for users with HiDPI screens
+			if (window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.5)').matches)
+				add = -10
 			fp = (screen.pixelDepth*hp*10)+add;
 
 			$('style').html('html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}');
