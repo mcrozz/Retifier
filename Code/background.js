@@ -218,7 +218,7 @@ var bck = {
 		} else {
 			var lst = [];
 			$.each(local.FollowingList, function(i,v) {
-				lst.push(v.Name.toLowerCase());
+				lst.push(v.Name.toLowerCase().replace(/\s/g, ''));
 			});
 			return bck.checkStatus(lst, false);
 		}
@@ -263,7 +263,7 @@ var bck = {
 				if (token) {
 					// 'list' is already is online list
 					$.each(bck.online.get(), function(i,v) {
-						if (list.indexOf(v.toLowerCase().replace(/\s/g, "")) === -1) {
+						if (list.indexOf(v) === -1) {
 							// streamer gone offline
 							bck.online.del(v);
 							var str = local.following.get(v);
@@ -319,7 +319,7 @@ var bck = {
 
 			if (d.stream) {
 				// Channel is online
-				var FoLi = local.following.get(d.stream.channel.display_name.toLowerCase());
+				var FoLi = local.following.get(d.stream.channel.display_name);
 				if (typeof FoLi !== 'object')
 					return err({message:'Could not find streamer in the db, '+d.stream.channel.name});
 
@@ -395,7 +395,7 @@ var bck = {
 			} else if (!token) {
 				var FoLi = local.following.get(d._links.self.split('/').pop(1));
 				if (!FoLi)
-					return err('Could not find streamer in the base, '+d.stream.channel.name);
+					return err('Could not find streamer in the base, '+d._links.self.split('/').pop(1));
 
 				if (!FoLi.Stream)
 					return;
