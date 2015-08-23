@@ -4,7 +4,7 @@
 	src: url(../PermianSansTypeface.otf);
 }
 html {
-	background: rgba(141, 141, 141, 0.22);
+	background: hsl(216, 5%, 95%);
 	font:130% ExtFont;
 	overflow: hidden;
 	margin: 0;
@@ -29,24 +29,15 @@ button {
 }
 
 *::selection {
-	background: rgba(0,	0,	0,	0);
+	background: rgba(0, 0, 0, 0);
 }
 ::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
 }
-
-#content>.online::-webkit-scrollbar {
-	width: 1.9%;
-}
-.alert>div::-webkit-scrollbar {
-	width: 4%;
-}
-.AppVersionContent3::-webkit-scrollbar {
-	width: 3%
-}
 ::-webkit-scrollbar {
 	background-color: rgba(0, 0, 0, 0.44);
+	width: 1.9vw;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
@@ -62,8 +53,14 @@ body>div {
 
 .following>div, #content>.online {
 	width: 100%;
-	height: 90%;
-	overflow-y: scroll;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.online>.spacer, .list>.spacer {
+	display: block;
+	width: 100%;
+	height: 16vh;
 }
 
 .game>a, .streamer>a {
@@ -101,31 +98,34 @@ body>div {
 
 /* For HiDPI */
 @media only screen and (-moz-min-device-pixel-ratio: 1.5),
-	only screen and (-o-min-device-pixel-ratio: 3/2),
 	only screen and (-webkit-min-device-pixel-ratio: 1.5),
 	only screen and (min-device-pixel-ratio: 1.5) {
 		html {
-			font:100% ExtFont!important;
+			font-size:100% !important;
 		}
 		#FollowedChannelsOnline {
-			font:85% ExtFont!important;
+			font-size:.9rem !important;
+			line-height: 60% !important;
 		}
 		.tum>a {
-			font:95% ExtFont!important;
+			font-size:95% !important;
+		}
+		.container>div>.spacer {
+			height: 20% !important;
 		}
 }
 
-@-webkit-keyframes loading {
-	0% { -webkit-transform: scale(1.4); }
-	100% { -webkit-transform: scale(1); }
+@keyframes loading {
+	0% { transform: scale(1.4); }
+	100% { transform: scale(1); }
 }
 .loading {
 	position: absolute;
 	display: block;
 	width: 44%;
 	height: 42%;
-	left: 33%;
-	top: 12%;
+	left: 29%;
+	top: 14%;
 }
 .loading>div {
 	position: absolute;
@@ -163,9 +163,12 @@ body>div {
 }
 
 #header {
-	background: rgb(189, 189, 189);
-	height: 10%;
 	display: block;
+	background: hsl(216, 4%, 85%);
+	height: 8%;
+	width: 100%;
+	position: static;
+	text-align: center;
 }
 
 .inf>.game, .inf>.title{
@@ -180,14 +183,12 @@ body>div {
 }
 
 #nowONline {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 22%;
-	height: 10%;
-	width: 55.5%;
+	display: inline-block;
+	height: 100%;
+	width: 57%;
 	text-align: center;
 	line-height: 256%;
+	vertical-align: middle;
 }
 
 div>.user {
@@ -456,40 +457,38 @@ button.button:hover {
 #size {
 	display: none;
 	position: relative;
-	width: 25%;
-	height: 30%;
-	margin: 29% 37.5%;
+	margin: 30vw 38vw;
 }
 #size>span {
 	display: inline-block;
-	width: 48%;
-	height: 48%;
+	width: 12vw;
+	height: 12vw;
 	border-radius: 25px;
 	position: absolute;
 }
 span.cls {
 	background: url(../img/Close.png);
 	background-size: contain;
-	left: -4%;
-	top: -7%;
+	left: -1vw;
+	top: -1vw;
 }
 span.minus {
 	background: url(../img/minus.png);
 	background-size: contain;
-	left: 58%;
-	top: 9%;
+	left: 13vw;
+	top: 3vw;
 }
 span.plus {
 	background: url(../img/plus.png);
 	background-size: contain;
-	top: 54%;
-	left: -6%;
+	top: 14vw;
+	left: -1vw;
 }
 span.ok {
 	background: url(../img/OK.png);
 	background-size: contain;
-	top: 70%;
-	left: 56%;
+	top: 17vw;
+	left: 13vw;
 }
 
 #view {
@@ -540,6 +539,12 @@ span:hover {
 }
 
 #FollowedChannelsOnline {
+	display: inline-block;
+	width: 69vw;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 40%;
 	cursor: default;
 	border-right: none;
 	font-size: 98%;
@@ -630,41 +635,41 @@ input#SetUpUserNameInp::selection {
 	color: black;
 }
 .fs1>a:first-child {
-	left: 16%;
-	top: 6%;
+	left: 16vw;
+	top: 4vw;
 	font-size: 141%;
 	-webkit-animation: slideInLeft 1s both;
 }
 .fs1>a:nth-child(2) {
-	left: 22%;
-	top: 11%;
+	left: 23vw;
+	top: 10vw;
 	font-size: 140%;
 	-webkit-animation: slideInRight 1s both;
 }
 #TwitchName,	#TwitchAccount {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(165,	68,	255,	1)), to(rgba(42,	0,	173,	0.95)));
-	width: 23%;
-	height: 26%;
+	width: 26vw;
+	height: 26vw;
 	color: rgba(255, 255, 255, 0.97);
-	border-radius: 62px;
+	border-radius: 50%;
 	transition: color .3s;
+	text-align: center;
 }
 #TwitchName:hover,	#TwitchAccount:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(110, 50, 165, 1)), to(rgba(40, 0, 163, 0.95)));
 	color: rgba(255, 255, 255, 0.5);
 }
 #TwitchAccount {
-	left: 19%;
-	top: 36%;
+	left: 19vw;
+	top: 30vw;
 }
 #TwitchName {
-	left: 57%;
-	top: 36%;
+	left: 57vw;
+	top: 30vw;
 }
 #TwitchAccount>a, #TwitchName>a {
 	display: block;
-	padding: 9% 0 0 0;
-	text-align: center;
+	padding: 3vw 0 0 0;
 	font-size: 125%;
 	color: inherit;
 }
@@ -786,6 +791,7 @@ button.WelcomOK:hover {
 
 #content {
 	width: 100%;
+	height: 100%;
 	position: relative;
 	display: block;
 }
@@ -844,24 +850,16 @@ button.settings {
 	background: url(../img/Setting.png) no-repeat;
 	background-size: contain;
 }
-#header>.dashL {
-	display: inline-block;
-	width: 21%;
-	padding: 1% 0;
-	text-align: left;
-}
-#header>.dashL:first-child {
-	text-align: right;
-	margin-right: 55%;
-}
 button.dash {
 	display: inline-block;
-	width: 33%;
-	height: 83%;
-	transition: all .2s ease-in-out;
+	width: 8vh;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	transition: all .2s cubic-bezier(0.29, 0.19, 0.43, 0.99);
 }
 button.dash:hover {
-	transform: scale(.85);
+	transform: scale(.95);
 }
 
 #message {
@@ -873,13 +871,14 @@ button.dash:hover {
 	padding: 1% 1%;
 	background: white;
 	text-align: center;
-	-webkit-animation: fadeIn 0.3s both;
+	animation: fadeIn 0.3s both;
 }
 
 #textWidth {
 	display: block;
 	position: absolute;
 	z-index: -1;
+	white-space: nowrap;
 }
 
 .NOO {
@@ -894,8 +893,8 @@ button.dash:hover {
 	background-size: contain;
 	display: block;
 	position: absolute;
-	width: 10.02%;
-	height: 10.02%;
+	width: 5vh;
+	height: 5vh;
 	top: 2%;
 	left: 2%;
 	z-index: 4;
@@ -927,26 +926,26 @@ button.dash:hover {
 
 /* FollowedHub */
 .following>div>.container {
-	width: 47%;
-	height: 25%;
+	width: 45vw;
+	height: 23vh;
 	padding: 1.5% 1%;
 	color: white;
 	display: inline-flex;
-	margin: 1% .5%;
+	margin: 1% 1% 0 1%;
 }
 
-.status>.logo>img {
+.status>.logo>img, .art>.logo>img {
 	width: 100%;
 	height: auto;
 	background-color: rgba(0, 0, 0, 0.68);
 }
-.status>.online {
+.status>.online, .art>.online {
 	background: -webkit-radial-gradient(center, ellipse cover, #3df230 1%,#6cc96c 52%,#68bf67 100%);
 	width: 100%;
 	font-size: 78%;
 	text-align: center;
 }
-.status>.offline {
+.status>.offline, .art>.offline {
 	background: -webkit-radial-gradient(center, ellipse cover, #c92828 0%,#824646 54%,#824646 100%);
 	width: 100%;
 	font-size: 78%;
@@ -961,13 +960,13 @@ button.dash:hover {
 	height: 100%;
 }
 .following>div>.container>div:nth-child(2) {
-	background-color: rgba(0, 0, 0, 0.68);
+	background-color: hsla(271, 16%, 25%, 0.81);
 	width: 75%;
+	padding: 0 1% 0 1%;
 }
 .container>div>.streamer {
 	display: block;
-	width: 80%;
-	padding: 0 0 0 5px;
+	width: 100%;
 }
 .container>div>.streamer>a {
 	font-size: 120%;
@@ -987,6 +986,18 @@ button.dash:hover {
 	width: 49%;
 	font-size: 97%;
 }
+div.buttons>button:nth-child(1) {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(220, 52%, 63%)), to(hsl(220, 35%, 49%)));
+}
+div.buttons>button:nth-child(1):hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(220, 35%, 63%)), to(hsl(220, 25%, 49%)));
+}
+div.buttons>button:nth-child(2) {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(357, 77%, 64%)), to(hsl(357, 38%, 43%)));
+}
+div.buttons>button:nth-child(2):hover {
+	background: -webkit-gradient(linear, left top, left bottom, from(hsl(357, 45%, 64%)), to(hsl(357, 20%, 43%)));
+}
 
 .container>div>.stats>a {
 	font-size:90%;
@@ -998,60 +1009,134 @@ button.dash:hover {
 	content: "Channel";
 	width: 100%;
 	background: black;
+	font-size: 67%;
 	color: white;
 	text-align: center;
 	display: block;
 }
 
+.following>.detail {
+	overflow: hidden;
+}
+.detail>.up {
+	display: block;
+	height: 50%;
+	background-color: hsla(235, 19%, 26%, 0.71);
+}
+.up>.close {
+	display: inline-block;
+	width: 6%;
+	padding: 3% 0 0 1%;
+	vertical-align: top;
+}
+.up>.close>button {
+	display: block;
+	background: url(/img/Close.png);
+	background-size: contain;
+	width: 33px;
+	height: 33px;
+}
+.up>.art {
+	display: inline-block;
+	width: 30%;
+	margin-left: 4%;
+	padding-top: 2%;
+}
+.up>.info {
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+	margin-top: 6%;
+}
+.art>.offline, .art>.online {
+	font-size: 90%;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.info>p {
+	color: white;
+	text-shadow: none;
+	border-right: none;
+	margin: 0;
+	padding: .3%;
+	font-size: 105%;
+}
+.detail>.bio {
+	display: block;
+	height: 50%;
+	background-color: hsla(235, 19%, 26%, 0.71);
+	overflow-y: auto;
+}
+.bio>p {
+	color: white;
+	text-shadow: none;
+	border-right: none;
+	margin: 0;
+	padding: .3% 2%;
+	font-size: 100%;
+}
+.bio>p:nth-child(1) {
+	font-size: 85%;
+	text-align: right;
+}
+.bio>p>a {
+	margin-left: 2%;
+	font-size: italic;
+}
+
 /*
-		based on Animate.css
+	 inspired by Animate.css
 	http://daneden.me/animate
 */
-@-{{PLATFORM}}-keyframes pulse {
+@keyframes pulse {
 	0% { background: red; }
 	25% { background: none; }
 	50% { background: red; }
 	75% { background: none; }
 	100% { background: none; }
 }
-@-{{PLATFORM}}-keyframes bounceInUp {
-	0% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
-	100% { opacity:1;-{{PLATFORM}}-transform:translateY(0) }
+@keyframes bounceInUp {
+	0% { opacity:0; transform:translateY(100%) }
+	100% { opacity:1; transform:translateY(0) }
 }
-@-{{PLATFORM}}-keyframes bounceOutDown {
-	0% { -{{PLATFORM}}-transform:translateY(0) }
-	20% { opacity:1;-{{PLATFORM}}-transform:translateY(-10%) }
-	100% { opacity:0;-{{PLATFORM}}-transform:translateY(100%) }
+@keyframes bounceOutDown {
+	0% { transform:translateY(0) }
+	20% { opacity:1; transform:translateY(-10%) }
+	100% { opacity:0; transform:translateY(100%) }
 }
-@-{{PLATFORM}}-keyframes bounceIn {
-	0% { opacity:0;-{{PLATFORM}}-transform:scale(.0) }
-	100% { opacity:1;-{{PLATFORM}}-transform:scale(1) }
+@keyframes zoomIn {
+	0% { opacity:.9; transform:scale(.7) }
+	100% { opacity:1; transform:scale(1) }
 }
-@-{{PLATFORM}}-keyframes bounceOut {
-	0% { opacity:1;-{{PLATFORM}}-transform:scale(1) }
-	100% { opacity:0;-{{PLATFORM}}-transform:scale(.0) }
+@keyframes bounceIn {
+	0% { opacity:0; transform:scale(0) }
+	100% { opacity:1; transform:scale(1) }
 }
-@-{{PLATFORM}}-keyframes slideInDown {
-	0% { opacity:0;-{{PLATFORM}}-transform:translateY(-2000px) }
-	100% { -{{PLATFORM}}-transform:translateY(0) }
+@keyframes bounceOut {
+	0% { opacity:1; transform:scale(1) }
+	100% { opacity:0; transform:scale(0) }
 }
-@-{{PLATFORM}}-keyframes slideOutUp {
-	0% { -{{PLATFORM}}-transform:translateY(0) }
-	100% { opacity:0;-{{PLATFORM}}-transform:translateY(-2000px) }
+@keyframes slideInDown {
+	0% { opacity:0; transform:translateY(-2000px) }
+	100% { transform:translateY(0) }
 }
-@-{{PLATFORM}}-keyframes slideInLeft {
-	0% { opacity:0;-{{PLATFORM}}-transform:translateX(-2000px) }
-	100% { -{{PLATFORM}}-transform:translateX(0) }
+@keyframes slideOutUp {
+	0% { transform:translateY(0) }
+	100% { opacity:0; transform:translateY(-2000px) }
 }
-@-{{PLATFORM}}-keyframes slideOutLeft {
-	0% { -{{PLATFORM}}-transform:translateX(0) }
-	100% { opacity:0;-{{PLATFORM}}-transform:translateX(-2000px) }
+@keyframes slideInLeft {
+	0% { opacity:0; transform:translateX(-2000px) }
+	100% { transform:translateX(0) }
 }
-@-{{PLATFORM}}-keyframes slideInRight {
-	0% { opacity:0;-{{PLATFORM}}-transform:translateX(2000px) }
-	100% { -{{PLATFORM}}-transform:translateX(0) }
+@keyframes slideOutLeft {
+	0% { transform:translateX(0) }
+	100% { opacity:0; transform:translateX(-2000px) }
 }
-@-{{PLATFORM}}-keyframes slideOutRight {
-	0% { -{{PLATFORM}}-transform:translateX(0) }
-	100% { opacity:0;-{{PLATFORM}}-transform:translateX(2000px) }
+@keyframes slideInRight {
+	0% { opacity:0; transform:translateX(2000px) }
+	100% { transform:translateX(0) }
+}
+@keyframes slideOutRight {
+	0% { transform:translateX(0) }
+	100% { opacity:0; transform:translateX(2000px) }
 }

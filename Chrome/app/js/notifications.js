@@ -152,6 +152,8 @@ window.notify = {
 	*/
 	send: function(d) {
 		this.list.push(d);
+		var add = time(this.lastNotify, true).getS() < 3 ? 2000 : 500;
+		this.lastNotify = date();
 		setTimeout(function() {
 			if (window.location.pathname !== '/background.html')
 				return false;
@@ -221,12 +223,13 @@ window.notify = {
 
 				sendNotify(d);
 			}
-		}, Math.floor(Math.random()*1000));
+		}, Math.floor(Math.random()*1000)+add);
 	},
 	list: [/* notify queue goes here */],
 	last: function() {
 		var t = this.list[0];
 		this.list.shift();
 		return t;
-	}
+	},
+	lastNotify: 0
 };

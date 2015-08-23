@@ -80,7 +80,7 @@ function modelLocal() {
 			this.Status = JSON.parse(localStorage.Status);
 			this.FollowingList = JSON.parse(localStorage.FollowingList);
 			this.Following = JSON.parse(localStorage.Following);
-			this.Game.list = JSON.parse(localStorage.Games);
+			this.Games = JSON.parse(localStorage.Games);
 			this.following.hash();
 			this.tried = 0;
 		} catch(e) {
@@ -128,7 +128,7 @@ function modelLocal() {
 		get: function(n) {
 			// Returns streamer obj
 			var itm = isNaN(n) ?
-				local.FollowingList[local.following.map[n.toLowerCase()]] :
+				local.FollowingList[local.following.map[n.toLowerCase().replace(/\s/g, '')]] :
 				local.FollowingList[n];
 
 			return (typeof itm === 'undefined') ? null : itm;
@@ -136,11 +136,11 @@ function modelLocal() {
 		set: function(id, dt) {
 			try {
 				if (isNaN(id))
-					id = local.following.map[id.toLowerCase()];
+					id = local.following.map[id.toLowerCase().replace(/\s/g, '')];
 
 				var tm = local.FollowingList[id];
 				if (typeof tm !== 'undefined')
-					$.each(['Name', 'Stream', 'Notify'], function(i,v) {
+					$.each(['Name', 'Stream', 'Notify', 'Followed'], function(i,v) {
 						if (typeof tm[v] === 'undefined')
 							dt[v] = local.default[v];
 						else if (typeof dt[v] === 'undefined')
@@ -158,28 +158,56 @@ function modelLocal() {
 		del: function(name) {
 			var newObj = {};
 			$.each(local.FollowingList, function(i,v) {
-				if (v.Name.toLowerCase() !== name.toLowerCase())
+				if (v.Name.toLowerCase().replace(/\s/g, '') !== name.toLowerCase().replace(/\s/g, ''))
 					newObj[i] = v;
 			});
 
 			local.set('FollowingList', newObj);
 		},
-		map: { /* String : Int ..*/ },
+		analyse: function(obj) {
+			var tmp = new Array();
+			var hsh = {};
+			$.each(obj, function(i,v) {
+				var loc = local.following.get(v.channel.display_name);
+				// FIX: can erase some Notify flags
+				if (loc !== null && v.channel.display_name === loc.Name) {
+					tmp[i] = {
+						Name: v.channel.display_name,
+						Stream: loc.Stream,
+						Notify: loc.Notify,
+						Followed: v.created_at
+					};
+				} else {
+					tmp[i] = {
+						Name: v.channel.display_name,
+						Stream: false,
+						Notify: true,
+						Followed: v.created_at
+					};
+				}
+				// Hash name
+				hsh[v.channel.display_name.toLowerCase().replace(/\s/g, '')] = i;
+			});
+			// Swap lists and hashes
+			local.set("FollowingList", tmp);
+			this.hash = hsh;
+		},
+		map: { /*.. String : Int ..*/ },
 		hash: function() {
 			// Hash positions
-			local.following.map = {};
+			this.map = {};
 			$.each(local.FollowingList, function(i,v) {
-				local.following.map[v.Name.toLowerCase()] = i;
+				local.following.map[v.Name.toLowerCase().replace(/\s/g, '')] = i;
 			});
 		}
 	}
 	this.Game =  {
 		check : function(name) {
 			setTimeout(function() {
-				if (local.Game.list.length > 50)
+				if (local.Games.length > 50)
 					local.set('Games', []);
 
-				if (local.Game.list.indexOf(name) !== -1)
+				if (local.Games.indexOf(name) !== -1)
 					return;
 
 				var dname = encodeURI(name);
@@ -200,10 +228,9 @@ function modelLocal() {
 				});
 			}, 0);
 		},
-		list: [/* thumbnail is available */],
 		add: function(name) {
-			this.list.push(name);
-			local.set('Games', this.list);
+			local.Games.push(name);
+			local.set('Games', local.Games);
 		}
 	}
 };
@@ -212,34 +239,35 @@ function modelLocal() {
 
 {{NOTIFY_USER_FUNCTION}}
 
-function time(t) {
+function time(t, raw) {
 	function h(b,j) {
-			if (b === 0) { return '00'+j; }
-			else if (b < 10) { return '0'+b+j; }
-			else { return b.toString()+j; }
+		if (b === 0) { return '00'+j; }
+		else if (b < 10) { return '0'+b+j; }
+		else { return b.toString()+j; }
 	}
-	var SubtractTimes, Days, Hours, Minutes, Seconds, Time
+	var SubtractTimes, D, H, M, S;
 
 	if (isNaN((new Date(t)).getTime())) return '';
 	SubtractTimes = (((new Date()).getTime() - (new Date(t)).getTime()) / 1000);
 
-	Days = Math.floor(SubtractTimes/86400);
-	SubtractTimes -= Days*86400;
-	if (Days == 0) { Days = ''; } else { Days = (Days < 10) ? '0'+Days+'d:' : Days+'d:'; }
+	D = Math.floor(SubtractTimes/86400);
+	SubtractTimes -= D*86400;
+	H = Math.floor(SubtractTimes/3600);
+	SubtractTimes -= H*3600;
+	M = Math.floor(SubtractTimes/60);
+	SubtractTimes -= M*60;
+	S = Math.floor(SubtractTimes);
 
-	Hours = Math.floor(SubtractTimes/3600);
-	SubtractTimes -= Hours*3600;
-	Hours = h(Hours, 'h:');
+	if (raw)
+		return {
+			d:D, h:H, m:M, s:S,
+			getS: function() { return this.d*24*60*60 + this.h*60*60 + this.m*60 + this.s; },
+			getM: function() { return this.d*24*60 + this.h*60 + this.m; },
+			getH: function() { return this.d*24 + this.h; }
+		};
 
-	Minutes = Math.floor(SubtractTimes/60);
-	SubtractTimes -= Minutes*60;
-	Minutes = h(Minutes, 'm:')
-
-	Seconds = Math.floor(SubtractTimes);
-	Seconds = h(Seconds, 's');
-
-	Time = Days + '' + Hours + '' + Minutes + '' + Seconds;
-	return Time;
+	var Time = h(H, 'h:')+''+h(M, 'm:')+''+h(S, 's');
+	return (D === 0) ? Time : h(D, 'd:')+Time;
 }
 
 // https://www.google-analytics.com

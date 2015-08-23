@@ -6,9 +6,9 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
 	badge(0);
 	local.set('Status.online', 0);
-	if (local.Game.list.length == undefined)
+	if (local.Games.length == undefined)
 		local.set('Games', []);
-	if (local.Game.list.length > 50) {
+	if (local.Games.length > 50) {
 		local.set('Games', [])
 	}
 	if ($.inArray("object Object", localStorage.FollowingList) != -1) {
@@ -32,10 +32,7 @@ if (localStorage.FirstLaunch === 'true') {
 	});
 }
 
-try {
-	ga('set', 'appVersion', local.App_Version.Ver);
-	ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
-}catch(e){};
+sessionStorage.Launch = date();
 
 var bck = {
 	online: {
@@ -44,7 +41,7 @@ var bck = {
 			return this.data;
 		},
 		add: function(n) {
-			this.data.push(n.toLowerCase());
+			this.data.push(n.toLowerCase().replace(/\s/g, ""));
 			local.set('Status.online', this.data.length);
 			badge(this.data.length);
 		},
@@ -135,24 +132,17 @@ var bck = {
 					local.following.set(i, {
 						Name: v.channel.display_name,
 						Stream: false,
-						Notify: true
+						Notify: true,
+						Followed: v.created_at
 					});
 				});
 				local.set('Following', j._total);
 				local.set('Status.online', 0);
+				local.following.hash();
 			} else {
 				local.set('Following', j._total);
-				$.each(local.FollowingList, function(i,v) {
-					var del = true;
-					$.each(j.follows, function(j,k) {
-						if (k.channel.display_name === v.Name)
-							del = false;
-					});
-					if (del)
-						local.following.del(v.Name);
-				});
+				local.following.analyse(j.follows);
 			}
-			local.following.hash();
 			return bck.promise.done();
 		});
 	},
@@ -223,7 +213,7 @@ var bck = {
 		} else {
 			var lst = [];
 			$.each(local.FollowingList, function(i,v) {
-				lst.push(v.Name.toLowerCase());
+				lst.push(v.Name.toLowerCase().replace(/\s/g, ''));
 			});
 			return bck.checkStatus(lst, false);
 		}
@@ -268,7 +258,7 @@ var bck = {
 				if (token) {
 					// 'list' is already is online list
 					$.each(bck.online.get(), function(i,v) {
-						if (list.indexOf(v.toLowerCase()) === -1) {
+						if (list.indexOf(v) === -1) {
 							// streamer gone offline
 							bck.online.del(v);
 							var str = local.following.get(v);
@@ -324,9 +314,9 @@ var bck = {
 
 			if (d.stream) {
 				// Channel is online
-				var FoLi = local.following.get(d.stream.channel.name.toLowerCase());
+				var FoLi = local.following.get(d.stream.channel.display_name);
 				if (typeof FoLi !== 'object')
-					return err({message:'Could not find streamer in base, '+d.stream.channel.name});
+					return err({message:'Could not find streamer in the db, '+d.stream.channel.name});
 
 				var Game = d.stream.channel.game,
 					Status = d.stream.channel.status,
@@ -350,16 +340,25 @@ var bck = {
 
 					if (!FoLi.Stream && !bck.online.is(Name)) {
 						if (FoLi.Notify) {
-							var dd = (((date()-date(Time))<=((local.Config.Interval_of_Checking+60)*1000)))
-								?' just went live!':' is live!';
-							notify.send({
-								name: Name,
-								title: Name+dd,
-								msg: Status,
-								type: 'online',
-								button: true,
-								context: Game
-							});
+							var tme = time(Time, true);
+							var moreT = tme.M > local.Config.Interval_of_Checking+5;
+							var cSnd = true;
+
+							if (tme.H !== 0 || tme.D !== 0)
+								cSnd = false;
+							
+							if (120000 > date()-date(sessionStorage.Launch) && !moreT)
+								cSnd = false;
+
+							if (cSnd)
+								notify.send({
+									name: Name,
+									title: Name+(moreT ? ' just went live!' : ' is live!'),
+									msg: Status,
+									type: 'online',
+									button: true,
+									context: Game
+								});
 						}
 						bck.online.add(Name);
 					}
@@ -395,7 +394,7 @@ var bck = {
 			} else if (!token) {
 				var FoLi = local.following.get(d._links.self.split('/').pop(1));
 				if (!FoLi)
-					return err('Could not find streamer in the base, '+d.stream.channel.name);
+					return err('Could not find streamer in the base, '+d._links.self.split('/').pop(1));
 
 				if (!FoLi.Stream)
 					return;
@@ -407,7 +406,7 @@ var bck = {
 						msg: "Been online for "+time(FoLi.Stream.Time),
 						type: "offline"
 					});
-				bck.online.del(FoLi.Name);
+				bck.online.del(FoLi.Name.toLowerCase().replace(/\s/g, ""));
 				local.following.set(FoLi.Name, {Stream: false});
 				send({type:'following', data: {Name:FoLi.Name, Stream:false}});
 			}
@@ -431,22 +430,45 @@ var bck = {
 			local.set('Config.Interval_of_Checking', 1);
 	},
 	init: function() {
-		// Get following list every two mins
-		(function(){
-			// If user does not have connection to the internet
-			// skip checking
-			if (navigator.onLine)
-				bck.getList();
-			bck.checkInt();
-			setTimeout(arguments.callee, 120000);
-		})();
-		// Check online status of followed channels
-		(function(){
-			if (navigator.onLine)
-				bck.getOnline();
-			bck.checkInt();
-			setTimeout(arguments.callee, 60000*local.Config.Interval_of_Checking);
-		})();
+		bck.restart.done();
+	},
+	restart: {
+		done: function() {
+			if (bck.online.get().length === 0 &&
+				bck.restart.did === 0 && bck.restart.working === false)
+				bck.restart.did = 1;
+
+			bck.restart.did++;
+
+			if (bck.restart.did >= 2) {
+				bck.restart.did = 0;
+				bck.restart.working = true;
+				// Get following list every two mins
+				(function(){
+					if (bck.restart.working === false)
+						return bck.restart.done();
+
+					// If user does not have connection to the internet
+					// skip checking
+					if (navigator.onLine)
+						bck.getList();
+					bck.checkInt();
+					setTimeout(arguments.callee, 120000);
+				})();
+				// Check online status of followed channels
+				(function(){
+					if (bck.restart.working === false)
+						return bck.restart.done();
+
+					if (navigator.onLine)
+						bck.getOnline();
+					bck.checkInt();
+					setTimeout(arguments.callee, 60000*local.Config.Interval_of_Checking);
+				})();
+			}
+		},
+		did: 0,
+		working: false
 	}
 };
 

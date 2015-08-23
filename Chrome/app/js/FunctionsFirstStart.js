@@ -2,7 +2,7 @@
 	if (window.location.pathname === '/background.html') {
 		$.ajaxSetup ({cache:false,crossDomain:true});
 		if (!localStorage.Config)
-			localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"offline":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid","Screen":0.34}';
+			localStorage.Config = '{"User_Name":"Guest","token":"","Notifications":{"status":true,"online":true,"offline":true,"update":false,"sound_status":true,"sound":"DinDon","status":true,"follow":false},"Duration_of_stream":true,"Interval_of_Checking":3,"Format":"Grid","Screen":false}';
 		if (!localStorage.Status)
 			localStorage.Status = '{"update":7,"online":0,"checked":0}';
 		if (!localStorage.FirstLaunch)
@@ -14,7 +14,9 @@
 		if (!localStorage.FollowingList)
 			localStorage.FollowingList='{}';
 		if (!localStorage.Games)
-			localStorage.Games = '{}';
+			localStorage.Games = '[]';
+		if (localStorage.Games[0] === '{')
+			localStorage.Games = '[]';
 		if (!localStorage.Following)
 			localStorage.Following = 0;
 
@@ -27,11 +29,11 @@
 			local.set('Config.Format', 'Light');
 
 		if (!local.Config.Screen)
-				local.set('Config.Screen', 0.34);
+			local.set('Config.Screen', window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.5)').matches ? 0.48 : 0.34);
 
 
 		var j = localStorage.App_Version,
-				k = chrome.runtime.getManifest().version;
+			k = chrome.runtime.getManifest().version;
 
 		// Fallback for old versions
 		try{
@@ -59,6 +61,11 @@
 			localStorage.App_Version = k;
 			window.toShow = 123;
 		}
+
+		try {
+			ga('set', 'appVersion', local.App_Version.Ver);
+			ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
+		}catch(e){};
 	} else
 		local.init();
 })();

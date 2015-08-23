@@ -1,5 +1,5 @@
 {{LICENSE_HEADER}}
-var Popup = {
+Popup = {
 	init: function(id, callback) {
 		$('#AppVersion').fadeOut(1000);
 		$('#popup').fadeIn(300);
@@ -8,7 +8,7 @@ var Popup = {
 		if (typeof callback === 'function')
 			Popup.callback = callback;
 	},
-	change: function(id, returns, callback) {
+	change : function(id, returns, callback) {
 		if (typeof returns === 'boolean')
 			Popup.returns = returns;
 		if (typeof callback === 'function')
@@ -18,7 +18,7 @@ var Popup = {
 		$(id).fadeIn(500);
 		$(Popup.id).fadeOut(284);
 	},
-	close_: function() {
+	close_ : function() {
 		$(Popup.id_).fadeOut(280);
 		if (Popup.returns)
 			Popup.init(Popup.id, Popup.callback);
@@ -30,14 +30,14 @@ var Popup = {
 		Popup.onClose = null;
 		Popup.returns = false;
 	},
-	close: function() {
+	close : function() {
 		$('#AppVersion').fadeIn(1000);
 		$('#popup').fadeOut(300);
 		$('#AppVersion').fadeIn(1000);
 		$(Popup.id).fadeOut(285);
 		Popup.id = '';
 	},
-	clicked: function() {
+	clicked : function() {
 		if (Popup.id_)
 			return Popup.close_();
 		if (Popup.alerted && typeof Popup.onClose === 'function')
@@ -48,7 +48,7 @@ var Popup = {
 		Popup.callback = null;
 		Popup.close();
 	},
-	alert: function(par) {
+	alert : function(par) {
 		/*
 			par :: object {
 				header :: string,
@@ -88,7 +88,7 @@ var Popup = {
 		$('.alert').fadeIn(285);
 		Popup.alerted = true;
 	},
-	closeAlert: function() {
+	closeAlert : function() {
 		// If clicked 'Cancel' or outside of window
 		if (typeof Popup.onClose === 'function')
 			Popup.onClose();
@@ -106,7 +106,7 @@ var Popup = {
 		if (!Popup.returns)
 			$('#AppVersion').fadeIn(1000);
 	},
-	clickAlert: function() {
+	clickAlert : function() {
 		// Clicked 'Ok'
 		if (typeof Popup.onOk === 'function')
 			Popup.onOk();
@@ -134,6 +134,9 @@ $(function() {
 					*format : string
 				}
 			*/
+			if (!local.Config.Screen)
+				local.set('Config.Screen', window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.5)').matches ? 0.48 : 0.34);
+			
 			var s = window.screen, w, h, hp, fp, htm;
 
 			hp = (l && l.size) ? l.size/100 : local.Config.Screen;
@@ -148,7 +151,10 @@ $(function() {
 			var add = 0;
 			// normalize font size for Linux users
 			if (navigator.platform[0].toLowerCase() === 'l')
-			 add = -21;
+				add = -21;
+			// normalize font size for users with HiDPI screens
+			if (window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.5)').matches)
+				add = -10
 			fp = (screen.pixelDepth*hp*10)+add;
 
 			$('style').html('html {width:'+w+'px;height:'+h+'px;font-size:'+fp+'%!important;}');
@@ -260,10 +266,20 @@ $(function() {
 		Popup.close();
 	}
 
+	var cachedInfo = {
+		total: 0,
+		list: [],
+		map: {},
+		get: function(n) {
+			return this.list[this.map[n]];
+		}
+	};
 	function FollowedHub() {
-		// FUTURE: need to be deleted when switched to the tab menu
+		// PROD: need to be deleted when switched to the tab menu
 		if ($('#content>.following').css('display') === "block") {
-			$('#content>.following>div:nth-child(2)').html('');
+			$('#content>.following>.list').html('');
+			$('#content>.following>.detail').hide();
+			$('#content>.following>.list').show();
 			$('#content>.following').hide();
 			$('#content>.online').show();
 			return;
@@ -278,6 +294,7 @@ $(function() {
 			if (obj.profile_banner_background_color !== null)
 				cell.style.backgroundColor = obj.profile_banner_background_color;
 			cell.style.backgroundSize = "cover";
+			cell.style.animation = "zoomIn 0.35s";
 			// Left part
 			var d1 = c('div', {className: 'status'});
 			
@@ -299,7 +316,9 @@ $(function() {
 			var str = c('div', {className: 'streamer'});
 			var astr = c('a', {
 				innerText: obj.display_name,
-				href: "http://www.twitch.tv/"+obj.name+"/profile"});
+				href: "http://www.twitch.tv/"+obj.name+"/profile",
+				target: "_blank"
+			});
 			str.appendChild(astr);
 			d2.appendChild(str);
 
@@ -316,30 +335,170 @@ $(function() {
 			var btn = c('div', {className: 'buttons'});
 			var b1 = c('button', {innerText: 'Detailed'});
 			b1.onclick = function(e) {
-				// TODO: open detailed information about this streamer
+				// Fill and open detailed view
+				$('.art>div')[0].innerHTML = (online)?"ONLINE":"OFFLINE";
+				$('.art>div')[0].className = (online)?"online":"offline";
+				$('.art>.logo>img').attr({
+					src: obj.logo,
+					href: "http://www.twitch.tv/"+obj.name+"/profile",
+					target: "_blank"
+				});
+
+				var inf = $('.info>p>a');
+				// Did stream
+				var didStream = "";
+				var dS = time(obj.updated_at, true);
+				if (dS.h < 1) {
+					didStream = "less than a hour ago";
+				} else if (dS.d < 1) {
+					didStream = (dS.d*24)+dS.h+((dS.m>30)?1:0)+" hours ago";
+				} else {
+					didStream = "more than "+dS.d+" days";
+				}
+				inf[0].innerHTML = didStream;
+				// Registered
+				var reg = "";
+				var dR = time(obj.created_at, true);
+				if (dR.d > 300) {
+					var j = Math.floor(dR.d/36.5)/10;
+					reg = "more than "+j+" years";
+				} else if (dR.d > 3) {
+					reg = "more than "+dR.d+" days";
+				} else {
+					reg = (dR.d*24)+dR.h+" hours ago";
+				}
+				inf[1].innerHTML = reg;
+				// Followers
+				inf[2].innerHTML = obj.followers;
+				// Views
+				inf[3].innerHTML = obj.views;
+
+
+				var dF = new Date(local.following.get(obj.display_name).Followed);
+				$('.bio>p>a').html(dF.toLocaleString());
+
+				var bg = $('.following>.detail')[0];
+				if (obj.profile_banner !== null)
+					bg.style.backgroundImage = "url("+obj.profile_banner+")";
+				if (obj.profile_banner_background_color !== null)
+					bg.style.backgroundColor = obj.profile_banner_background_color;
+				bg.style.backgroundSize = "cover";
+
+				// Getting BIO
+				if (obj.bio)
+					$('.bio>p')[1].innerHTML = (obj.bio != null) ? obj.bio : "This user has no bio.";
+				else
+					$.getJSON('https://api.twitch.tv/kraken/users/'+obj.name,
+						function(r) {
+						$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
+						cachedInfo.list[cachedInfo.map[obj.name]].bio = r.bio;
+					});
+
+				$('.following>.list').hide();
+				$('.following>.detail').show();
 			}
 			btn.appendChild(b1);
 			if (local.Config.token !== "") {
 				var b2 = c('button', {innerText: 'Unfollow'});
+				b2.onclick = function(e) {
+					var str = e.target.parentElement.parentElement.querySelector('div>a').innerText.toLowerCase();
+
+					// TODO: inform user about that
+					if (local.following.get(str) === null)
+						return err("Streamer not found :(");
+					if (!local.Config.token)
+						return false;
+
+					Popup.alert({
+						header: "Are you sure?",
+						content: "<h4><center>Streamer "+str+" will be deleted from your following list</center></h4>",
+						onOk: function() {
+							$.ajax({
+								url: 'https://api.twitch.tv/kraken/users/'+local.Config.User_Name+'/follows/channels/'+str,
+								type: 'DELETE',
+								dataType: 'json',
+								beforeSend: function(xhr) {
+									xhr.setRequestHeader('Authorization', 'OAuth '+local.Config.token);
+								}
+							})
+							.done(function() {
+								local.following.del(str);
+								e.target.parentElement.parentElement.parentElement.remove();
+							})
+							.fail(function(r) {
+								err("Could not execute deletion", r);
+							});
+						},
+						showClose: true
+					});
+				}
 				btn.appendChild(b2);
 			}
 			d2.appendChild(btn);
 
 			cell.appendChild(d2);
 
-			// inserting one cell at the tab
-			$('.following>div:nth-child(2)').append(cell);
+			// trying to insert at right place
+			var crt = $('.following>.list>div');
+			var pos = shouldBe[obj.display_name.toLowerCase()];
+			
+			// If first or cannot find position, insert at the end
+			if (typeof pos === 'undefined' || crt.length === 0)
+				return $('.following>.list').prepend(cell);
+
+			// Trying to find element before
+			var done = false;
+			for (var i=pos; i>=0; i--) {
+				if (typeof crt[i] !== 'undefined') {
+					var tmp = crt[i].querySelector("div>a").innerText.toLowerCase().replace(/\s/, "");
+					for (var j=pos; j>=0; j--) {
+						if (tmp === local.FollowingList[j].Name.toLowerCase().replace(/\s/, "")) {
+							done = true;
+							$(crt[i]).after(cell);
+							break;
+						}
+					}
+					if (done)
+						break;
+				}
+			}
+			if (done)
+				return;
+
+			// Fallback, insert at the top
+			$('.following>.list').prepend(cell);
 		}
 
-		$('#content>.online').css('display', 'none');
-		$('#content>.following').css('display', 'block');
+		$('#content>.online').hide();
+		$('#content>.following').show();
 
+		var shouldBe = local.following.map;
 		$.each(local.FollowingList, function(i,v) {
-			$.getJSON("https://api.twitch.tv/kraken/channels/"+v.Name.toLowerCase())
-			.done(function(d) {
-				insert(d, v.Stream);
-			})
-			.error(function(e) { err(e); });
+			var str = v.Name.toLowerCase().replace(/\s/g, "");
+			// Trying to get cached copy of streamer's info
+			if (typeof cachedInfo.get(str) !== 'undefined')
+				insert(cachedInfo.get(str), v.Stream);
+			else
+				$.getJSON("https://api.twitch.tv/kraken/channels/"+str)
+				.done(function(d) {
+					// Caching info
+					cachedInfo.total++;
+					cachedInfo.list.push({
+						profile_banner: d.profile_banner,
+						profile_banner_background_color: d.profile_banner_background_color,
+						name: d.name,
+						display_name: d.display_name,
+						logo: d.logo,
+						views: d.views,
+						followers: d.followers,
+						created_at: d.created_at,
+						updated_at: d.updated_at
+					});
+					cachedInfo.map[d.name] = cachedInfo.total-1;
+
+					insert(d, v.Stream);
+				})
+				.error(function(e) { err(e); });
 		});
 	}
 
@@ -444,7 +603,7 @@ $(function() {
 				var hld = c('div');
 
 				var nm = c('div', {className: 'user'});
-				var name = cr('a', {
+				var name = c('a', {
 					innerHTML: v.Name,
 					href: 'http://www.twitch.tv/'+v.Name.toLowerCase()+'/profile',
 					target: '_blank'
@@ -455,7 +614,7 @@ $(function() {
 
 				if (chk) {
 					var ch = c('div', {className: 'checkBox'});
-					var check = cr('input', {
+					var check = c('input', {
 						type: 'checkbox',
 						id: i,
 						className: 'Check_Box_2',
@@ -512,7 +671,7 @@ $(function() {
 				"<a href='http://www.mcrozz.net' target='_blank'>My website www.mcrozz.net</a>"+
 				"<a href='http://www.twitter.com/iZarudny' target='_blank'>Twitter @iZarudny</a>"+
 				"<a href='{{LINK_REVIEW}}' target='_blank'>Don't forget to rate my app ;)</a>"+
-				"<a>By using this extension you are accepting Twitch's Terms of Service. Futher information can be found here: <a href='http://www.twitch.tv/p/tos' target='_blank'>http://www.twitch.tv/p/tos</a></div>");
+				"<a>By using this extension you are accepting Twitch's Terms of Service. Further information can be found here: <a href='http://www.twitch.tv/p/tos' target='_blank'>http://www.twitch.tv/p/tos</a></div>");
 		}
 	}
 
@@ -533,6 +692,26 @@ $(function() {
 		if (localStorage.FirstLaunch === 'true')
 			return;
 
+		// Insert online list
+		var curOnline = 0;
+		$.each(local.FollowingList, function(i,v) {
+			if (v.Stream) {
+				insert(v);
+				curOnline++;
+			}
+		});
+
+		// In case of incorrect online count
+		if (local.Status.online !== curOnline)
+			local.set('Status.online', curOnline);
+		badge(curOnline);
+
+		if (local.Status.online === 0)
+			$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
+	}, 50);
+	setTimeout(function() {
+		if (localStorage.FirstLaunch === 'true')
+				return;
 		// Get working code of background script
 		send({type: "getInf"}, function(e) {
 			if (!e) return;
@@ -560,24 +739,8 @@ $(function() {
 					break;
 			}
 		});
+	}, 100);
 
-		// Insert online list
-		var curOnline = 0;
-		$.each(local.FollowingList, function(i,v) {
-			if (v.Stream) {
-				insert(v);
-				curOnline++;
-			}
-		});
-
-		// In case of incorrect online count
-		if (local.Status.online !== curOnline)
-			local.set('Status.online', curOnline);
-		badge(curOnline);
-
-		if (local.Status.online === 0)
-			$('#content>.online').html('<div class="NOO"><a>No one online right now :(</a></div>');
-	}, 0);
 	$('#AppVersion').html(localStorage.App_Version);
 	ael('.settings', clickChangeUser);
 	ael('#ChgUsrSnd', changeScriptStarter);
@@ -624,8 +787,8 @@ $(function() {
 		Popup.close();
 		reLogin();
 	});
-	ael('.close>span', Popup.close);
-	ael('span.cls', Popup.close_);
+	ael('.close>span', function() { Popup.close(); });
+	ael('span.cls', function() { Popup.close_(); });
 	ael('#size>.plus', style.size.add);
 	ael('#size>.minus', style.size.sub);
 	ael('#size>.ok', style.size.save);
@@ -663,10 +826,29 @@ $(function() {
 		style.reload(); // Just in case
 		Popup.close_();
 	});
-	ael('#popup>.background', Popup.clicked);
-	ael('#zoomIMG', Popup.close);
-	ael('button[name=k]', Popup.clickAlert);
-	ael('button[name=c]', Popup.closeAlert);
+	ael('#popup>.background', function() { Popup.clicked(); });
+	ael('#zoomIMG', function() { Popup.close(); });
+	ael('button[name=k]', function() { Popup.clickAlert(); });
+	ael('button[name=c]', function() { Popup.closeAlert(); });
+	ael('.up>.close>button', function() {
+		if ($('.following>.list>div').length === 0)
+			$('#content>.online').show();
+		else
+			$('.following>.detail').hide();
+		$('.following>.list').show();
+
+		// Clean up detailed view
+		$('.art>div')[0].innerHTML = null;
+		$('.art>div')[0].className = null;
+		$('.art>.logo>img')[0].src = null;
+		$('.info>p>a').html(null);
+		$('.bio>p')[1].innerHTML = null;
+		$('.bio>p>a').html("BIO is downloading...");
+		var bg = $('.following>.detail')[0];
+		bg.style.backgroundImage = null;
+		bg.style.backgroundColor = null;
+		bg.style.backgroundSize = "cover";
+	});
 	$('input#ChgUsrInt').on('change', function(e) {
 		var v = Math.abs(e.target.value);
 		if (isNaN(v) || v === 0)

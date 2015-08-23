@@ -8,9 +8,9 @@ function offSet(t,w) {
 	function snum() {
 		var g = {
 			// [t]itle or [g]ame: { [W]idth, [F]ontSize }
-			'Grid' : {t:{w: .4535, f: 79}, g:{w: .4535, f: 79}},
-			'Full' : {t:{w: .4710, f: 85}, g:{w: .4710, f: 85}},
-			'Light': {t:{w: .7100, f: 87}, g:{w: .2840, f: 87}}
+			'Grid' : {t:{w: .4535, f: .79}, g:{w: .4535, f: .79}},
+			'Full' : {t:{w: .4710, f: .85}, g:{w: .4710, f: .85}},
+			'Light': {t:{w: .7100, f: .87}, g:{w: .2840, f: .87}}
 		};
 		// returns: { w:int, f:int }
 		return g[local.Config.Format];
@@ -18,12 +18,12 @@ function offSet(t,w) {
 
 	// [t]ext, [w]hat(game or title)
 	var f = snum()[w];
-	var d = $('#textWidth').css('fontSize', f.f+'%').html(t);
+	var d = $('#textWidth').css('fontSize', f.f+'rem').html(t);
 	return (d.width()>(window.WIDTH*f.w));
 }
 
 function stream(ob) {
-	var name = ob.Name.toLowerCase();
+	var name = ob.Name.toLowerCase().replace(/\s/g, '');
 	var divs = {
 		  origin : $('#'+name),
 		   title : $('#'+name+'>.inf>.title>a'),
@@ -143,10 +143,62 @@ function str_cell(a, to) {
 
 		// Streamer name
 		var streamer = c('div', {className: 'streamer'});
-		var aStream = c('a', {
-			href: 'http://www.twitch.tv/'+a.str+'/profile',
-			target: '_blank',
-			innerHTML: a.dsn});
+		var aStream = c('a', {innerHTML: a.dsn});
+		aStream.onclick = function(e) {
+			console.log(a);
+			// Fill and open detailed view
+			var inf = $('.info>p>a');
+			$('.art>div')[0].innerHTML = "ONLINE";
+			$('.art>div')[0].className = "online";
+			
+			// Getting info abuot streamer
+			$.getJSON("https://api.twitch.tv/kraken/channels/"+a.str, function(r) {
+				$('.art>.logo>img').attr({
+					src: r.logo,
+					href: "http://www.twitch.tv/"+a.str+"/profile",
+					target: "_blank"
+				});
+
+				// Registered
+				var reg = "";
+				var dR = time(r.created_at, true);
+				if (dR.d > 300) {
+					var j = Math.floor(dR.d/36.5)/10;
+					reg = "more than "+j+" years";
+				} else if (dR.d > 3) {
+					reg = "more than "+dR.d+" days";
+				} else {
+					reg = (dR.d*24)+dR.h+" hours ago";
+				}
+				inf[1].innerHTML = reg;
+				// Followers
+				inf[2].innerHTML = r.followers;
+				// Views
+				inf[3].innerHTML = r.views;
+
+				var bg = $('.following>.detail')[0];
+				if (r.profile_banner !== null)
+					bg.style.backgroundImage = "url("+r.profile_banner+")";
+				if (r.profile_banner_background_color !== null)
+					bg.style.backgroundColor = r.profile_banner_background_color;
+				bg.style.backgroundSize = "cover";
+			});
+
+			// Did stream
+			inf[0].innerHTML = "Streaming right now";
+
+			var dF = new Date(local.following.get(a.dsn.toLowerCase()).Followed);
+			$('.bio>p>a').html(dF.toLocaleString());
+
+			// Getting BIO
+			$.getJSON('https://api.twitch.tv/kraken/users/'+a.str,
+				function(r) {
+				$('.bio>p')[1].innerHTML = (r.bio != null) ? r.bio : "This user has no bio.";
+			});
+
+			$('#content>.online, .following>.list').hide();
+			$('#content>.following, .following>.detail').show();
+		}
 		streamer.appendChild(aStream);
 		inf.appendChild(streamer);
 
@@ -192,9 +244,14 @@ function str_cell(a, to) {
 		id: a.pos});
 	holder.appendChild(preview());
 	holder.appendChild(information());
+	holder.style.animation = "zoomIn 0.15s";
 	if (typeof to === "undefined")
 		return holder;
-	$(to).append(holder);
+	
+	if (to == "#content>.online")
+		$(holder).insertBefore(".online>.spacer");
+	else
+		$(to).append(holder);
 }
 
 var online = [];
@@ -203,11 +260,11 @@ window.insert = function(obj) {
 	// invalid input
 	if (!obj) return;
 
-	var   StreamTitle = obj.Stream.Title,
-		 StreamerName = obj.Name.toLowerCase(),
+	var StreamTitle = obj.Stream.Title,
+		 StreamerName = obj.Name.toLowerCase().replace(/\s/g, ''),
 		ShortStrmName = obj.Name,
 		   StreamGame = obj.Stream.Game,
-		  isGameThumb = local.Game.list.indexOf(StreamGame)!=-1,
+		  isGameThumb = local.Games.indexOf(StreamGame)!=-1,
 		StreamVievers = obj.Stream.Viewers,
 		   TitleWidth = false,
 		    GameWidth = false,
@@ -230,7 +287,7 @@ window.insert = function(obj) {
 		$('#content>.online').html('');
 
 	// If not in array and is online
-	if ($.inArray(obj.Name.toLowerCase(), online) === -1) {
+	if ($.inArray(StreamerName, online) === -1) {
 		if (!obj.Stream)
 			return;
 

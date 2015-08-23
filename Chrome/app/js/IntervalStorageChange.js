@@ -30,7 +30,7 @@ window.parseMessage = function(msg, s, resp) {
 			window.toShow = -1;
 
 		switch(msg.type) {
-			case "refresh": bck.init(); break;
+			case "refresh": bck.restart.working = false; break;
 			case "getOnline": bck.getList(); break;
 			case "flush": bck.flush(); break;
 			case "update": local.init(msg.data); break;
