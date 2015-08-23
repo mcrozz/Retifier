@@ -8,9 +8,9 @@ function offSet(t,w) {
 	function snum() {
 		var g = {
 			// [t]itle or [g]ame: { [W]idth, [F]ontSize }
-			'Grid' : {t:{w: .4535, f: 79}, g:{w: .4535, f: 79}},
-			'Full' : {t:{w: .4710, f: 85}, g:{w: .4710, f: 85}},
-			'Light': {t:{w: .7100, f: 87}, g:{w: .2840, f: 87}}
+			'Grid' : {t:{w: .4535, f: .79}, g:{w: .4535, f: .79}},
+			'Full' : {t:{w: .4710, f: .85}, g:{w: .4710, f: .85}},
+			'Light': {t:{w: .7100, f: .87}, g:{w: .2840, f: .87}}
 		};
 		// returns: { w:int, f:int }
 		return g[local.Config.Format];
@@ -18,7 +18,7 @@ function offSet(t,w) {
 
 	// [t]ext, [w]hat(game or title)
 	var f = snum()[w];
-	var d = $('#textWidth').css('fontSize', f.f+'%').html(t);
+	var d = $('#textWidth').css('fontSize', f.f+'rem').html(t);
 	return (d.width()>(window.WIDTH*f.w));
 }
 
@@ -264,7 +264,7 @@ window.insert = function(obj) {
 		 StreamerName = obj.Name.toLowerCase().replace(/\s/g, ''),
 		ShortStrmName = obj.Name,
 		   StreamGame = obj.Stream.Game,
-		  isGameThumb = local.Game.list.indexOf(StreamGame)!=-1,
+		  isGameThumb = local.Games.indexOf(StreamGame)!=-1,
 		StreamVievers = obj.Stream.Viewers,
 		   TitleWidth = false,
 		    GameWidth = false,
