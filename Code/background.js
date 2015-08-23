@@ -6,9 +6,9 @@ if (localStorage.FirstLaunch === 'true') {
 } else {
 	badge(0);
 	local.set('Status.online', 0);
-	if (local.Game.list.length == undefined)
+	if (local.Games.length == undefined)
 		local.set('Games', []);
-	if (local.Game.list.length > 50) {
+	if (local.Games.length > 50) {
 		local.set('Games', [])
 	}
 	if ($.inArray("object Object", localStorage.FollowingList) != -1) {
@@ -33,11 +33,6 @@ if (localStorage.FirstLaunch === 'true') {
 }
 
 sessionStorage.Launch = date();
-
-try {
-	ga('set', 'appVersion', local.App_Version.Ver);
-	ga('send', 'event', 'version', local.App_Version.Ver, 'ver');
-}catch(e){};
 
 var bck = {
 	online: {

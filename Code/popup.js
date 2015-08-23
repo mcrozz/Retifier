@@ -134,6 +134,9 @@ $(function() {
 					*format : string
 				}
 			*/
+			if (!local.Config.Screen)
+				local.set('Config.Screen', window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.5)').matches ? 0.48 : 0.34);
+			
 			var s = window.screen, w, h, hp, fp, htm;
 
 			hp = (l && l.size) ? l.size/100 : local.Config.Screen;

@@ -80,7 +80,7 @@ function modelLocal() {
 			this.Status = JSON.parse(localStorage.Status);
 			this.FollowingList = JSON.parse(localStorage.FollowingList);
 			this.Following = JSON.parse(localStorage.Following);
-			this.Game.list = JSON.parse(localStorage.Games);
+			this.Games = JSON.parse(localStorage.Games);
 			this.following.hash();
 			this.tried = 0;
 		} catch(e) {
@@ -204,10 +204,10 @@ function modelLocal() {
 	this.Game =  {
 		check : function(name) {
 			setTimeout(function() {
-				if (local.Game.list.length > 50)
+				if (local.Games.length > 50)
 					local.set('Games', []);
 
-				if (local.Game.list.indexOf(name) !== -1)
+				if (local.Games.indexOf(name) !== -1)
 					return;
 
 				var dname = encodeURI(name);
@@ -228,10 +228,9 @@ function modelLocal() {
 				});
 			}, 0);
 		},
-		list: [/* thumbnail is available */],
 		add: function(name) {
-			this.list.push(name);
-			local.set('Games', this.list);
+			local.Games.push(name);
+			local.set('Games', local.Games);
 		}
 	}
 };
