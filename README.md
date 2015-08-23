@@ -2,7 +2,7 @@
 ![Screenshot](https://raw.githubusercontent.com/mcrozz/Retifier/master/screenshots/ScreenShot_1.png)
 
 # In web stores
-* For Google Chrome: [In Google Web Store](http://bit.ly/RetifierChrome)
+* For Google Chrome: [In Google Web Store](http://bit.ly/RetifierForChrome)
 * For Mozilla FireFox: [In Mozilla Add-Ons (currently not available)](http://bit.ly/RetifierFirefox)
 * For Safari:	Coming soon...
 * For Opera: [In Opera Add-Ons](http://bit.ly/RetifierOpera)
