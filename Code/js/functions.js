@@ -136,7 +136,7 @@ function modelLocal() {
 		set: function(id, dt) {
 			try {
 				if (isNaN(id))
-					id = local.following.map[id.toLowerCase()];
+					id = local.following.map[id.toLowerCase().replace(/\s/g, '')];
 
 				var tm = local.FollowingList[id];
 				if (typeof tm !== 'undefined')
@@ -158,7 +158,7 @@ function modelLocal() {
 		del: function(name) {
 			var newObj = {};
 			$.each(local.FollowingList, function(i,v) {
-				if (v.Name.toLowerCase() !== name.toLowerCase())
+				if (v.Name.toLowerCase().replace(/\s/g, '') !== name.toLowerCase().replace(/\s/g, ''))
 					newObj[i] = v;
 			});
 
@@ -186,7 +186,7 @@ function modelLocal() {
 					};
 				}
 				// Hash name
-				hsh[v.channel.display_name.toLowerCase()] = i;
+				hsh[v.channel.display_name.toLowerCase().replace(/\s/g, '')] = i;
 			});
 			// Swap lists and hashes
 			local.set("FollowingList", tmp);
@@ -260,7 +260,12 @@ function time(t, raw) {
 	S = Math.floor(SubtractTimes);
 
 	if (raw)
-		return {d:D, h:H, m:M, s:S};
+		return {
+			d:D, h:H, m:M, s:S,
+			getS: function() { return this.d*24*60*60 + this.h*60*60 + this.m*60 + this.s; },
+			getM: function() { return this.d*24*60 + this.h*60 + this.m; },
+			getH: function() { return this.d*24 + this.h; }
+		};
 
 	var Time = h(H, 'h:')+''+h(M, 'm:')+''+h(S, 's');
 	return (D === 0) ? Time : h(D, 'd:')+Time;

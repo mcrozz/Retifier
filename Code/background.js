@@ -345,8 +345,12 @@ var bck = {
 
 					if (!FoLi.Stream && !bck.online.is(Name)) {
 						if (FoLi.Notify) {
-							var moreT = (((date()-date(Time)) < ((local.Config.Interval_of_Checking+60)*1000)));
+							var tme = time(Time, true);
+							var moreT = tme.M > local.Config.Interval_of_Checking+5;
 							var cSnd = true;
+
+							if (tme.H !== 0 || tme.D !== 0)
+								cSnd = false;
 							
 							if (120000 > date()-date(sessionStorage.Launch) && !moreT)
 								cSnd = false;
