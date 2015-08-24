@@ -1,7 +1,7 @@
 ## Changelog
 Current versions:
 - [_Google Chrome_](#google-chrome) - **1.5.1**
-- [_Opera_](#opera) - **1.2.0**
+- [_Opera_](#opera) - **1.2.1**
 
 # _Google Chrome_
 * [**1.5.1**](29a9fcdd0bea3e79f2d6c92f84e71e96df861c52)
@@ -154,6 +154,15 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
+* [**1.2.1**]()
+	* Detailed section now can be accessible from main screen (just click on the streamer name)
+	* Changed color scheme
+	* Changed toolbar's icons
+	* Added detailed section in the Following Hub
+	* Added caching for the Following Hub
+	* Fixed issue with 'refresh' button
+	* Fixed position of streamer in the Following Hub
+	* Various fixes for HiDPI displays
 * [**1.2.0**](87a73757aff3fe02cba1afbe2af3ff3d716aa5a1)
 	* Changed name from Twitch Notifier to Retifier
 	* Changed extension icon
