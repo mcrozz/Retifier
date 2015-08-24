@@ -154,7 +154,7 @@ Current versions:
  	* first publish in Google Web Store
 
 ## _Opera_
-* [**1.2.1**]()
+* [**1.2.1**](2d2eb50444b04dfabef96c1d34c1d8fa96be2dcc)
 	* Detailed section now can be accessible from main screen (just click on the streamer name)
 	* Changed color scheme
 	* Changed toolbar's icons
