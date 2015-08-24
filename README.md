@@ -28,15 +28,15 @@
 >* Fixed position of streamer in the Following Hub
 >* Various fixes for HiDPI displays
 
-[_Opera_](CHANGELOG.md#opera) - **1.2.0**
->* Changed name from Twitch Notifier to Retifier
->* Changed extension icon
->* Changed popup icons
->* Changed notifications icon
->* Changed Followed Hub (check it out)
->* Fixed font size for HiDPI displays
->* Fixed extension's size
->* Various improvements
+[_Opera_](CHANGELOG.md#opera) - **1.2.1**
+>* Detailed section now can be accessible from main screen (just click on the streamer name)
+>* Changed color scheme
+>* Changed toolbar's icons
+>* Added detailed section in the Following Hub
+>* Added caching for the Following Hub
+>* Fixed issue with 'refresh' button
+>* Fixed position of streamer in the Following Hub
+>* Various fixes for HiDPI displays
 
 [Show full changelog](CHANGELOG.md)
 
