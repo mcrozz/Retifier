@@ -26,6 +26,13 @@ var checker = {
 	}
 };
 
+checker.following.customSave = function() {
+	var rtn = [];
+	for (var s in this.data)
+		rtn.push(this.data[s].id);
+	return rtn;
+};
+
 checker.getFollowingList: function() {
 	if (!settings.user.isSet()) return false;
 
