@@ -36,10 +36,10 @@ checker.getFollowingList: function() {
 			stack: e});
 	})
 	.done(function(d) {
-		if (this.following.get().length == 0) {
+		if (this.following.length() == 0) {
 			// Fill up the following array
 			for (var s in d.follows) {
-				this.following.data.push(
+				this.following.push(
 					new streamer(d.follows[s].channel.name,
 						d.follows[s].channel.display_name,
 						d.follows[s].created_at)
@@ -49,17 +49,23 @@ checker.getFollowingList: function() {
 		} else {
 			// Check if user stoped following someone
 			var del = [];
+			var add = [];
+			for (var d in this.following.get()) {
+				// @TODO
+			}
 			for (var s in d.follows) {
-				if (!this.following.get().findBy('id', d.follows[s].channel.name))
-					del.push(d.follows[s].channel.name);
+				if (!this.following.findBy('id', d.follows[s].channel.name))
+					add.push(d.follows[s].channel.name);
 			}
 			if (del.length !== 0) {
 				var _t = [];
 				for (var i in this.following.get()) {
 					if (del.indexOf(this.following.get(i).id) == -1)
-						_t.push(this.following[i]);
+						_t.push(this.following.get(i));
 				}
-				this.following = _t;
+				// Swap data and save it
+				this.following.data = _t;
+				setTimeout(this.following.save.bind(this), 0);
 			}
 		}
 	}.bind(this));
