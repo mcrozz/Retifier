@@ -13,6 +13,13 @@ var streamer = function(id, name, follows) {
 	this.update = function() {
 		this.lastUpdate = 0;
 	};
+	this.previews = {
+		// Cached previews for faster start up
+		//of popup window
+		big: null,
+		small: null,
+		lastUpdate: -1
+	};
 
 	return this;
 };
