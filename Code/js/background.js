@@ -24,6 +24,18 @@ var streamer = function(id, name, follows) {
 	return this;
 };
 
+var twitch = {
+	getFollowing: function(user) {
+		return $.getJSON('https://api.twitch.tv/kraken/users/'+user+'/follows/channels?limit=100&offset=0');
+	},
+	getStatus: function(name) {
+		return $.getJSON('https://api.twitch.tv/kraken/streams/'+name);
+	},
+	getOnline: function(token) {
+		return $.getJSON('https://api.twitch.tv/kraken/streams/followed?limit=100&offset=0&oauth_token='+token);
+	}
+};
+
 var checker = {
 	online: [/* new streamer() */],
 	following: new storage('following'),
@@ -43,7 +55,7 @@ checker.following.customSave = function() {
 checker.getFollowingList: function() {
 	if (!settings.user.isSet()) return false;
 
-	$.getJSON('https://api.twitch.tv/kraken/users/'+settings.user.id+'/follows/channels?limit=100&offset=0')
+	twitch.getFollowing(settings.user.id)
 	.fail(function(e) {
 		browser.error({
 			message:"Cannot obtain following list",
@@ -94,7 +106,7 @@ checker.getStatus: function(str) {
 		
 		if (date() - _t.lastUpdate >= settings.checkInterval) {
 			this.following.set(i, 'lastUpdate', date()+20000); // settings.checkInterval +20s timeout
-			$.getJSON('https://api.twitch.tv/kraken/streams/'+_t.id)
+			twitch.getStatus(_t.id)
 			.fail(function(e) {
 				browser.error({message: "Cannot obtain streamer", stack: e});
 				this.following.set(this.checking, 'lastUpdate', date());
