@@ -14,6 +14,16 @@ function storage(id) {
 	this.get = function(id) {
 		return id? this.data[id] : this.data;
 	};
+	this.push = function(data) {
+		this.data.push(data);
+	};
+	this.length = function() {
+		return this.data.length;
+	};
+	// @Dependend on Array.prototype.findBy
+	this.findBy = function(par, equ) {
+		return this.data.findBy(par, equ);
+	};
 	this.save = function() {
 		var js = null;
 		try { js = JSON.stringify(this.data); }
