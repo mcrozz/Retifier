@@ -35,3 +35,32 @@ function storage(id) {
 
 	return this;
 };
+
+function date(type, input) {
+	if (!type) return new Date().getTime();
+	var t = new Date();
+	
+	if (type == "smart" && !isNaN(input)) {
+		var diff = t-input;
+		var rtn = " ago";
+		
+		if (diff/(3600000) < 1)
+			rtn = Math.round(diff/(60000))+" minutes"+rtn; // Minutes ago
+		else if (diff/(86400000) < 1)
+			rtn = Math.round(diff/(3600000))+" hours"+rtn; // Hours ago
+		else
+			rtn = Math.round(diff/(86400000))+" days"+rtn; // Days ago
+
+		return rtn;
+	} else if (type == "raw") {
+		return {
+			H: t.getHours(),
+			M: t.getMinutes(),
+			S: t.getSeconds(),
+			D: t.getDate(),
+			M: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Oct", "Dec"][t.getMonth()],
+			Y: t.getFullYear()
+		};
+	}
+	return false;
+};
