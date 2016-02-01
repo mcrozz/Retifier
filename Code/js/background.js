@@ -88,8 +88,102 @@ checker.getFollowingList: function() {
 };
 
 checker.getStatus: function(str) {
+	// If user sign up just with Twitch user name
+	for (var i in this.following.get()) {
+		var _t = this.following.get(i);
+		
+		if (date() - _t.lastUpdate >= settings.checkInterval) {
+			this.following.set(i, 'lastUpdate', date()+20000); // settings.checkInterval +20s timeout
+			$.getJSON('https://api.twitch.tv/kraken/streams/'+_t.id)
+			.fail(function(e) {
+				browser.error({message: "Cannot obtain streamer", stack: e});
+				this.following.set(this.checking, 'lastUpdate', date());
+			}.bind(this, {checking: i}))
+			.done(function(d) {
+				/* Output scheme
+				 * stream: {
+				 *   <If offline then null>
+				 *   channel: {
+				 *     status: String
+				 *     display_name: String
+				 *     name: String
+				 *   created_at: String
+				 *   game: String
+				 *   viewers: int
+				 *   is_playlist: boolean
+				 *   delay: int
+				 * }
+				*/
 
-	this.intervals.status = setTimeout(arguments.callee.bind(this), 60000*settings.checkInterval)
+				var _t = this.following.findBy('id', str.id);
+				if (_t == null) return browser.error("Cannot find such streamer: "+str.name);
+				var i = _t.i;
+				_t = _t.element;
+				this.following.set(i, 'lastUpdate', date());
+
+				if (d.stream == null) {
+					if (_t.online)
+						_t.online = false;
+					_t.data = {};
+					this.following.set(i, _t);
+
+					// Remove streamer from online list
+					this.online = this.online.filter(function(i,v) {
+						return v != this.checking;
+					});
+
+					return;
+				}
+
+				var str = {
+					id: d.stream.channel.name,
+					name: d.stream.channel.display_name,
+					title: d.stream.channel.status,
+					game: d.stream.game,
+					viewers: d.stream.viewers
+					started: d.stream.created_at,
+				};
+
+				if (!_t.online) {
+					// Streamer went online
+					this.online.push(str.id);
+					
+					this.following.data[i].data = {
+						title: str.title,
+						game: str.game,
+						started: str.started,
+						viewers: str.viewers
+					};
+					this.following.data[i].online = true;
+					// @? notification here
+
+					return;
+				}
+
+				// Update information
+				var par = ['title', 'game', 'started', 'viewers'];
+				for (var i in par) {
+					if (_t.data[par[i]] == null)
+						_t.data[par[i]] = str[par[i]];
+					else if (typeof str[par[i]] != 'undefined' && str[par[i]] != null) {
+						if (str[par[i]] != _t.data[par[i]])
+							_t.data[par[i]] = str[par[i]];
+					}
+				}
+
+				this.following.data[i] = _t;
+				// @? inform popup window
+			}.bind(this, {checking: _t.id}));
+		}
+
+		// @? Move to another structure
+		if (date() - _t.previews.lastUpdate >= 330000) {
+			// Update previews every 5.5 mins
+			// @TODO
+		}
+	};
+
+	this.intervals.status = setTimeout(arguments.callee.bind(this), 2000);
 };
 
 checker.start: function() {
