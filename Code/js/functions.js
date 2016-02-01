@@ -14,6 +14,24 @@ function storage(id) {
 	this.get = function(id) {
 		return id? this.data[id] : this.data;
 	};
+	this.set = function(id, val, sec) {
+		if (isNaN(id))
+			id = this.findBy('id', id);
+
+		if (!id) return false;
+		id = id.i;
+
+		if (typeof this.data[id] == 'undefined')
+			return false;
+
+		if (typeof sec == 'undefined')
+			return (this.data[id] = val);
+		else
+			if (typeof thisdata[id][val] != 'undefined')
+				return (this.data[id][val] = sec);
+
+		return false;
+	};
 	this.push = function(data) {
 		this.data.push(data);
 	};
