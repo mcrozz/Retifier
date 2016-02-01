@@ -43,8 +43,12 @@ function storage(id) {
 		return this.data.findBy(par, equ);
 	};
 	this.save = function() {
+		var toSave = this.data;
+		if (typeof this.customSave == 'function')
+			toSave = this.customSave();
+
 		var js = null;
-		try { js = JSON.stringify(this.data); }
+		try { js = JSON.stringify(toSave); }
 		catch(e) { browser.error(e); }
 		if (js === null) return false;
 
