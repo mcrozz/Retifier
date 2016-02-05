@@ -14,6 +14,9 @@ function storage(id) {
 	this.get = function(id) {
 		return id? this.data[id] : this.data;
 	};
+	this.getAll = function() {
+		return this.data;
+	};
 	this.set = function(id, val, sec) {
 		if (isNaN(id))
 			id = this.findBy('id', id);
@@ -111,14 +114,15 @@ var message = function() {
 
 function messageParser() {
 	var cmds = {
-		getOnlineList: function() { return ''; },
-		getAll: function() { return ''; },
-		getStreamer: function(str) { return ''; },
-		setStreamer: function(str) { return ''; },
+		getOnlineList: function() { return checker.online; },
+		getAll: function() { return checker.following.getAll(); },
+		getStreamer: function(str) { return checker.following.find(str); },
+		setStreamer: function(str) { return 1; },
 		getConfig: function() { return ''; },
-		setConfig: function(cfg) { return ''; },
-		forceUpdate: function() { return ''; },
-		getSuggestions: function() { return ''; }
+		setConfig: function(cfg) { return 1; },
+		forceUpdate: function() { return checker.restart(); },
+		getSuggestions: function() { return ''; },
+		change: function(type) { $(window).trigger(type); }
 	};
 
 	function message(msg, args, callback) {
