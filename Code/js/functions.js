@@ -1,3 +1,5 @@
+window.browser = {};
+
 // Returns position and object itself as
 // { i: int, element: object }
 Array.prototype.findBy = function(par, equ) {
@@ -12,6 +14,8 @@ Array.prototype.findBy = function(par, equ) {
 // @input
 //   id as String, used as localStorage name
 function storage(id) {
+	if (!(this instanceof arguments.callee))
+		throw new Error('Cannot be used as function!');
 	this.data = [];
 	this.id = id;
 	this.get = function(id) {
@@ -133,6 +137,8 @@ function date(type, input) {
 // message.async('getAll', function(response){});
 // message.sync('getAll');
 var message = function() {
+	if (!(this instanceof arguments.callee))
+		throw new Error('Cannot be used as function!');
 	var body = new messageParser();
 	this.async = function(msg, args, callback) {
 		return body.send(new body.messageConstructor(msg, args, callback));
@@ -146,13 +152,16 @@ var message = function() {
 	this.send = function() {
 		return body.send().bind(this);
 	}.bind(this);
-}();
+};
 
 
 // Pair background script and popup window
 // @requires methods: sendMethod, receiveMethod
 //which is platform depended
 function messageParser() {
+	if (!(this instanceof arguments.callee))
+		throw new Error('Cannot be used as function!');
+
 	var cmds = {
 		getOnlineList: function() { return checker.online; },
 		getAll: function() { return checker.following.get(); },
@@ -268,14 +277,6 @@ function messageParser() {
 		rsp.response = response;
 		return this.send(rsp);
 	}.bind(this);
-
-	// Example for Chromium engine
-	this.sendMethod = function(data) {
-		$.each(chrome.extension.getViews(), function(i,v) {
-			if (v.location.pathname === location.pathname)
-				return;
-
-			message.receive(msg);
-		}.bind(this));
-	};
 }
+
+var notificationConstructor = function() {};
