@@ -174,6 +174,17 @@ function messageParser() {
 		change: function(type) { $(window).trigger(type); }
 	};
 
+	// Expand commands if necessary
+	this.bind = function(command, callback) {
+		if (!command || !callback)
+			return browser.error(new Error('Invalid input, cannot bind!'));
+
+		if (typeof cmds[command] === 'undefined')
+			return (cmds[command] = callback);
+		else
+			return false;
+	};
+
 	function message(msg, args, callback) {
 		function randomID() {
 			// 48-90 and 97-122
