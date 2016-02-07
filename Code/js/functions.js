@@ -1,4 +1,5 @@
-// Returns position and object itself
+// Returns position and object itself as
+// { i: int, element: object }
 Array.prototype.findBy = function(par, equ) {
 	for (var i in this) {
 		if (this[i][par] == equ)
@@ -8,14 +9,13 @@ Array.prototype.findBy = function(par, equ) {
 };
 
 // Storage unit
+// @input
+//   id as String, used as localStorage name
 function storage(id) {
 	this.data = [];
 	this.id = id;
 	this.get = function(id) {
 		return id? this.data[id] : this.data;
-	};
-	this.getAll = function() {
-		return this.data;
 	};
 	this.set = function(id, val, sec) {
 		if (isNaN(id))
@@ -61,10 +61,34 @@ function storage(id) {
 	return this;
 }
 
+// Date function
+// @input
+//   type:
+//     smart: e.g. "5 minutes"
+//     raw: returns object {
+//       h: int - hours
+//       m: int - minutes
+//       s: int - seconds
+//       D: int - days
+//       M: int - mounths
+//       Y: int - years
+//       }
+//     fill: @requires input as String
+//       or input as object:
+//       { pattern: String, time: int }
+//   input: @required if type is smart
+//     or type is fill and used as difference
 function date(type, input) {
 	if (!type) return new Date().getTime();
 	var t = new Date();
 	
+	function fill(str, data) {
+		for (var i in data)
+			str = str.replace(i, data[i]);
+
+		return str;
+	}
+
 	if (type == 'smart' && !isNaN(input)) {
 		var diff = t-input;
 		var rtn = ' ago';
@@ -86,14 +110,26 @@ function date(type, input) {
 			M: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Oct', 'Dec'][t.getMonth()],
 			Y: t.getFullYear()
 		};
+	} else if (type == 'fill') {
+		// @input as it is raw
+		if (typeof input === 'undefined')
+			return null;
+
+		switch(typeof input) {
+			case 'object':
+				return fill(input.pattern, date('raw', t-input.time));
+			case 'string':
+				return fill(input, date('raw', input));
+		}
 	}
 	return false;
 }
 
-// Pair background script and popup window
-// @requires methods: sendMethod, receiveMethod
-// platform depended
 
+// Bridge between scripts, need to be initiated after
+//browserDependies.js and before creation of browser
+//object.
+// Usage:
 // message.async('getAll', function(response){});
 // message.sync('getAll');
 var message = function() {
@@ -110,12 +146,16 @@ var message = function() {
 	this.send = function() {
 		return body.send().bind(this);
 	}.bind(this);
-}()
+}();
 
+
+// Pair background script and popup window
+// @requires methods: sendMethod, receiveMethod
+//which is platform depended
 function messageParser() {
 	var cmds = {
 		getOnlineList: function() { return checker.online; },
-		getAll: function() { return checker.following.getAll(); },
+		getAll: function() { return checker.following.get(); },
 		getStreamer: function(str) { return checker.following.find(str); },
 		setStreamer: function(str) { return 1; },
 		getConfig: function() { return ''; },
@@ -146,7 +186,7 @@ function messageParser() {
 					return (_t+'')[(_t+'').length-1];
 				} else
 					return Math.round(val);
-			};
+			}
 			
 			return String.fromCharCode(clamp(i+j-48))+
 				String.fromCharCode(clamp(j/i))+
@@ -170,7 +210,7 @@ function messageParser() {
 				String.fromCharCode(clamp(z>>1))+
 				String.fromCharCode(clamp(j>>4))+
 				String.fromCharCode(clamp(z^2-14884));
-		};
+		}
 
 		this.id = randomID();
 		this.message = msg;

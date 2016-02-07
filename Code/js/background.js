@@ -1,3 +1,4 @@
+// Streamer object
 var streamer = function(id, name, follows) {
 	this.id = id;
 	this.name = name;
@@ -129,6 +130,8 @@ checker.getStatus = function() {
 		this.following.set(i, 'lastUpdate', date());
 
 		if (d.stream === null) {
+			// @FUTURE: check if Twitch's API failed
+			//or streamer actually went offline
 			if (_t.online)
 				_t.online = false;
 			_t.data = {};
