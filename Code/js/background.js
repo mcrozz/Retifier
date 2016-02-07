@@ -1,5 +1,10 @@
+browser.badge.set('...');
+
 // Streamer object
 var streamer = function(id, name, follows) {
+	if (!(this instanceof arguments.callee))
+		throw new Error('Cannot be used as function!');
+
 	this.id = id;
 	this.name = name;
 	this.data = {
@@ -41,7 +46,28 @@ var twitch = {
 };
 
 var checker = {
-	online: [/* new streamer() */],
+	online: {
+		data: [/* new streamer() */],
+		add: function(str) {
+			if (this.data.indexOf(str) === -1) {
+				browser.send.async('wentOnline', str);
+				return this.data.push(str);
+			}
+			return false;
+		},
+		del: function(id) {
+			if (!id) return false;
+
+			browser.send.async('wentOffline', (isNaN(id)?id:this.data[id]));
+			this.data = this.data.filter(function(i,v) {
+				return (isNaN(id))?v!=id:i!=id;
+			});
+			return true;
+		},
+		get: function(id) {
+			return id?this.data[id]:this.data;
+		}
+	},
 	following: new storage('following'),
 	intervals: {
 		followers: -1,
@@ -76,7 +102,7 @@ checker.getFollowingList = function() {
 						d.follows[s].created_at)
 				);
 			}
-			this.online = [];
+			this.online.data = [];
 		} else {
 			// Check if user stoped following someone
 			var del = [];
@@ -138,9 +164,7 @@ checker.getStatus = function() {
 			this.following.set(i, _t);
 
 			// Remove streamer from online list
-			this.online = this.online.filter(function(i,v) {
-				return v != this.checking;
-			});
+			this.online.del(this.checking);
 
 			return;
 		}
@@ -156,7 +180,7 @@ checker.getStatus = function() {
 
 		if (!_t.online) {
 			// Streamer went online
-			this.online.push(str.id);
+			this.online.add(str.id);
 			
 			this.following.data[i].data = {
 				title: str.title,
