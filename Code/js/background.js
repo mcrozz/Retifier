@@ -68,7 +68,7 @@ var checker = {
 			return id?this.data[id]:this.data;
 		}
 	},
-	following: new storage('following'),
+	following: new storage('following', []),
 	intervals: {
 		followers: -1,
 		status: -1

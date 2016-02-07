@@ -61,13 +61,14 @@ function randomID() {
 // Storage unit
 // @input
 //   id as String, used as localStorage name
-function storage(id) {
+function storage(id, fallback) {
 	if (!(this instanceof arguments.callee))
 		throw new Error('Cannot be used as function!');
-	this.data = [];
-	this.id = id;
+	var data = null;
+	var id = id;
+	
 	this.get = function(id) {
-		return id? this.data[id] : this.data;
+		return id? data[id] : data;
 	};
 	this.set = function(id, val, sec) {
 		if (isNaN(id))
@@ -76,29 +77,29 @@ function storage(id) {
 		if (!id) return false;
 		id = id.i;
 
-		if (typeof this.data[id] == 'undefined')
+		if (typeof data[id] == 'undefined')
 			return false;
 
 		if (typeof sec == 'undefined')
-			return (this.data[id] = val);
+			return (data[id] = val);
 		else
-			if (typeof this.data[id][val] != 'undefined')
-				return (this.data[id][val] = sec);
+			if (typeof data[id][val] != 'undefined')
+				return (data[id][val] = sec);
 
 		return false;
 	};
-	this.push = function(data) {
-		this.data.push(data);
+	this.push = function(d) {
+		data.push(d);
 	};
 	this.length = function() {
-		return this.data.length;
+		return data.length;
 	};
 	// @Dependend on Array.prototype.findBy
 	this.findBy = function(par, equ) {
-		return this.data.findBy(par, equ);
+		return data.findBy(par, equ);
 	};
 	this.save = function() {
-		var toSave = this.data;
+		var toSave = data;
 		if (typeof this.customSave == 'function')
 			toSave = this.customSave();
 
@@ -109,6 +110,12 @@ function storage(id) {
 
 		return (localStorage[this.id] = js);
 	};
+
+	try {
+		data = JSON.parse(localStorage[id]);
+	} catch(e) {
+		localStorage[id] = fallback;
+	}
 
 	return this;
 }

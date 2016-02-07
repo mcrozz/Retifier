@@ -32,7 +32,7 @@ browser.badge = {
 	}
 };
 
-// Notification handler
+// Notification handlers
 chrome.notifications.onButtonClicked.addListener(function(id, buttonID) {
 	return browser.notification.clicked(id, 'button');
 });
