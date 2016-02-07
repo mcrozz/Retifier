@@ -263,12 +263,5 @@ checker.restart = function() {
 };
 
 setTimeout(function() {
-	var flw = null;
-	try{ flw = JSON.parse(localStorage.following); }
-	catch(e) { browser.error(e); }
-	if (flw === null) return false;
-
-	checker.following = flw;
-
 	checker.start();
 }, 0);

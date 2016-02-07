@@ -15,11 +15,15 @@ browser.badge = {
 	set: function(str) {
 		chrome.browserAction.setBadgeText({ text: String(count) });
 		if (count !== 0) {
-			chrome.browserAction.setBadgeBackgroundColor({color:"#593a94"});
-			chrome.browserAction.setIcon({path:"/img/icon_1.png"}, function(){});
+			chrome.browserAction.setBadgeBackgroundColor({
+				color:'#593a94'});
+			chrome.browserAction.setIcon({
+				path:'/img/icon_1.png'}, function(){});
 		} else {
-			chrome.browserAction.setBadgeBackgroundColor({color:"#c9c9c9"});
-			chrome.browserAction.setIcon({path:"/img/icon_0.png"}, function(){});
+			chrome.browserAction.setBadgeBackgroundColor({
+				color:'#c9c9c9'});
+			chrome.browserAction.setIcon({
+				path:'/img/icon_0.png'}, function(){});
 		}
 	},
 	get: function() {
@@ -42,3 +46,15 @@ chrome.notifications.onClicked.addListener(function(id) {
 chrome.notifications.onClosed.addListener(function(id) {
 	return browser.notification.closed(id);
 });
+notificationConstructor.constructor.prototype.sendMethod = function(ntf) {
+	chrome.notifications.create(ntf.id,
+		{
+			iconUrl: '/img/icon_1.png',
+			title: ntf.title,
+			message: ntf.body,
+			contextMessage: ntf.context,
+			eventTime: ntf.date,
+			buttons: ntf.buttons,
+			isClickable: true
+		}, function() {});
+}

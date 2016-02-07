@@ -205,9 +205,6 @@ var message = function() {
 	this.receive = function(data) {
 		return body.receive(data);
 	}.bind(this);
-	this.send = function() {
-		return body.send().bind(this);
-	}.bind(this);
 
 	return this;
 };
