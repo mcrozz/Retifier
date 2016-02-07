@@ -1,7 +1,7 @@
 // Example for Chromium engine
 
 // Send message to every view
-messageParser.constructions.prototype.sendMethod = function(data) {
+messageParser.constructor.prototype.sendMethod = function(data) {
 	for (var view in chrome.extension.getViews()) {
 		if (chrome.extension.getViews()[view].location.pathname === location.pathname)
 			return;
@@ -31,3 +31,14 @@ browser.badge = {
 		return this;
 	}
 };
+
+// Notification handler
+chrome.notifications.onButtonClicked.addListener(function(id, buttonID) {
+	return browser.notification.clicked(id, 'button');
+});
+chrome.notifications.onClicked.addListener(function(id) {
+	return browser.notification.clicked(id, false);
+});
+chrome.notifications.onClosed.addListener(function(id) {
+	return browser.notification.closed(id);
+});

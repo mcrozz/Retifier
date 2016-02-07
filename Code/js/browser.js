@@ -9,7 +9,6 @@ browser.debug = function(d) {
 	return console.debug(d);
 };
 
-
 browser.notification = new notificationConstructor();
 
 browser.send = new message();

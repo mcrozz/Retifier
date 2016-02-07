@@ -10,6 +10,54 @@ Array.prototype.findBy = function(par, equ) {
 	return false;
 };
 
+// Generates random key, e.g.
+//AbCDeFGh-1234-IjKLmNop
+function randomID() {
+	// 48-90 and 97-122
+	var i = Math.floor((Math.random()*122)+48);
+	var j = Math.floor((Math.random()*122)+48);
+	var z = Math.floor((Math.random()*122)+48);
+	function clamp(val,just) {
+		if (val>=91&&val<=96) {
+			var t = Math.random()*50-50;
+			if (t<0)
+				val = 90+t;
+			else
+				val = 97+t;
+		}
+		else if (val>122) val = 122-(Math.random()*74);
+		else if (val<48) val = 48+(Math.random()*74);
+		if (just) {
+			var _t = Math.round(val);
+			return (_t+'')[(_t+'').length-1];
+		} else
+			return Math.round(val);
+	}
+	
+	return String.fromCharCode(clamp(i+j-48))+
+		String.fromCharCode(clamp(j/i))+
+		String.fromCharCode(clamp((i%j)*100))+
+		String.fromCharCode(clamp(i/2))+
+		String.fromCharCode(clamp(i*5))+
+		String.fromCharCode(clamp(j+15))+
+		String.fromCharCode(clamp(j-4))+
+		String.fromCharCode(clamp(i-j+100))+
+		'-'+
+		clamp(i/5,1)+
+		clamp(i+j,1)+
+		clamp(z-4,1)+
+		clamp(j/z,1)+
+		'-'+
+		String.fromCharCode(clamp(z*j-14884))+
+		String.fromCharCode(clamp(122-z))+
+		String.fromCharCode(clamp(122-j))+
+		String.fromCharCode(clamp(z%2))+
+		String.fromCharCode(clamp(j%10))+
+		String.fromCharCode(clamp(z>>1))+
+		String.fromCharCode(clamp(j>>4))+
+		String.fromCharCode(clamp(z^2-14884));
+}
+
 // Storage unit
 // @input
 //   id as String, used as localStorage name
@@ -64,6 +112,7 @@ function storage(id) {
 
 	return this;
 }
+
 
 // Date function
 // @input
@@ -152,6 +201,8 @@ var message = function() {
 	this.send = function() {
 		return body.send().bind(this);
 	}.bind(this);
+
+	return this;
 };
 
 
@@ -186,52 +237,6 @@ function messageParser() {
 	};
 
 	function message(msg, args, callback) {
-		function randomID() {
-			// 48-90 and 97-122
-			var i = Math.floor((Math.random()*122)+48);
-			var j = Math.floor((Math.random()*122)+48);
-			var z = Math.floor((Math.random()*122)+48);
-			function clamp(val,just) {
-				if (val>=91&&val<=96) {
-					var t = Math.random()*50-50;
-					if (t<0)
-						val = 90+t;
-					else
-						val = 97+t;
-				}
-				else if (val>122) val = 122-(Math.random()*74);
-				else if (val<48) val = 48+(Math.random()*74);
-				if (just) {
-					var _t = Math.round(val);
-					return (_t+'')[(_t+'').length-1];
-				} else
-					return Math.round(val);
-			}
-			
-			return String.fromCharCode(clamp(i+j-48))+
-				String.fromCharCode(clamp(j/i))+
-				String.fromCharCode(clamp((i%j)*100))+
-				String.fromCharCode(clamp(i/2))+
-				String.fromCharCode(clamp(i*5))+
-				String.fromCharCode(clamp(j+15))+
-				String.fromCharCode(clamp(j-4))+
-				String.fromCharCode(clamp(i-j+100))+
-				'-'+
-				clamp(i/5,1)+
-				clamp(i+j,1)+
-				clamp(z-4,1)+
-				clamp(j/z,1)+
-				'-'+
-				String.fromCharCode(clamp(z*j-14884))+
-				String.fromCharCode(clamp(122-z))+
-				String.fromCharCode(clamp(122-j))+
-				String.fromCharCode(clamp(z%2))+
-				String.fromCharCode(clamp(j%10))+
-				String.fromCharCode(clamp(z>>1))+
-				String.fromCharCode(clamp(j>>4))+
-				String.fromCharCode(clamp(z^2-14884));
-		}
-
 		this.id = randomID();
 		this.message = msg;
 		this.args = args;
@@ -288,6 +293,82 @@ function messageParser() {
 		rsp.response = response;
 		return this.send(rsp);
 	}.bind(this);
+
+	return this;
 }
 
-var notificationConstructor = function() {};
+
+// Notification facility
+// @depends on sendMethod, closeMethod, clickMethod function
+// clickMethod can be replaced by two other functions as
+//clickBodyMethod, clickButtonMethod and clickCloseMethod
+var notificationConstructor = function() {
+	function notification(data) {
+		this.id = randomID();
+		this.title = data.title;
+		this.body = data.body;
+		this.date = new Date().getTime();
+		this.buttons = data.buttons;
+
+		this.click = data.callback;
+
+		return this;
+	};
+
+	var queue = [];
+	var del = function(id) {
+		if (id.length !== 20)
+			id = queue[id].id;
+
+		queue = queue.filter(function(i,v) {
+			return v.id != id;
+		});
+
+		return true;
+	}.bind(this);
+
+	var send = function(title, data, callback) {
+		if (!title) throw new Error('Cannot create notification without a title');
+		var d = {};
+
+		if (typeof data === 'undefined' && typeof title !== 'undefined') {
+			d.body = title;
+			d.title = '';
+			d.buttons = [];
+			d.callback = callback || function(){};
+		} else {
+			d.title = title;
+			d.body = data.body || '';
+			d.buttons = data.buttons || [];
+			d.callback = callback || function(){};
+		}
+
+		if (d == {})
+			throw new Error('Something went wrong :(');
+
+		var ntf = new notification(d);
+		queue.push(ntf);
+		this.sendMethod(ntf);
+	}.bind(this);
+
+	var sendCallback = function(id, event) {
+		var _t = queue.findBy('id', id);
+		if (_t == null) throw new Error('Cannot find such notification');
+
+		if (typeof _t.click === 'function')
+			_t.click({
+				type: event,
+				target: _t
+			});
+	};
+
+	this.closed = function(id) {
+		this.sendCallback(id, 'closed');
+	}.bind(this);
+
+	this.clicked = function(id, button) {
+		this.sendCallback(id, button? 'button':'body');
+	}.bind(this);
+
+	return this;
+};
