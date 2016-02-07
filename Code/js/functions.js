@@ -299,6 +299,7 @@ function messageParser() {
 
 
 // Notification facility
+// browser.notification.send(Title, {buttons: [Title: callback], Body, Context}).click(function(event));
 // @depends on sendMethod, closeMethod, clickMethod function
 // clickMethod can be replaced by two other functions as
 //clickBodyMethod, clickButtonMethod and clickCloseMethod
@@ -310,7 +311,10 @@ var notificationConstructor = function() {
 		this.date = new Date().getTime();
 		this.buttons = data.buttons;
 
-		this.click = data.callback;
+		this.click = function(cal) {
+			this.callback = cal;
+		}.bind(this);
+		this.callback = null;
 
 		return this;
 	};
@@ -327,7 +331,7 @@ var notificationConstructor = function() {
 		return true;
 	}.bind(this);
 
-	var send = function(title, data, callback) {
+	var send = function(title, data) {
 		if (!title) throw new Error('Cannot create notification without a title');
 		var d = {};
 
@@ -335,12 +339,10 @@ var notificationConstructor = function() {
 			d.body = title;
 			d.title = '';
 			d.buttons = [];
-			d.callback = callback || function(){};
 		} else {
 			d.title = title;
 			d.body = data.body || '';
 			d.buttons = data.buttons || [];
-			d.callback = callback || function(){};
 		}
 
 		if (d == {})
@@ -349,14 +351,17 @@ var notificationConstructor = function() {
 		var ntf = new notification(d);
 		queue.push(ntf);
 		this.sendMethod(ntf);
+
+		return ntf;
 	}.bind(this);
 
 	var sendCallback = function(id, event) {
 		var _t = queue.findBy('id', id);
-		if (_t == null) throw new Error('Cannot find such notification');
+		if (_t == null)
+			throw new Error('Cannot find such notification');
 
-		if (typeof _t.click === 'function')
-			_t.click({
+		if (typeof _t.callback === 'function')
+			_t.callback({
 				type: event,
 				target: _t
 			});
