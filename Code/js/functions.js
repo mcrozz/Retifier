@@ -151,22 +151,33 @@ function date(type, input) {
 
 	if (type == 'smart' && !isNaN(input)) {
 		var diff = t-input;
-		var rtn = ' ago';
+		var rtn = '';
+		var _t = -1;
 		
-		if (diff/(3600000) < 1)
-			rtn = Math.round(diff/(60000))+' minutes'+rtn; // Minutes ago
-		else if (diff/(86400000) < 1)
-			rtn = Math.round(diff/(3600000))+' hours'+rtn; // Hours ago
-		else
-			rtn = Math.round(diff/(86400000))+' days'+rtn; // Days ago
+		if (diff/3600000 < 1) { // Less than a hour
+			_t = Math.round(diff/60000);
+			rtn = 'minute';
+		} else if (diff/(86400000) < 1) { // Less than a day
+			_t = Math.round(diff/3600000);
+			rtn = 'hour'; 
+		} else if (diff/31536000000 < 1) { // Less than a year
+			_t = Math.round(diff/86400000);
+			rtn = 'day';
+		} else {
+			_t = Math.round(diff/31536000000);
+			rtn = 'year';
+		}
 
-		return rtn;
+		_t = _t===0 ? 1:_t;
+		rtn+= _t===1?'':'s';
+
+		return _t+' '+rtn+' ago';
 	} else if (type == 'raw') {
 		return {
-			h: t.getHours(),
-			m: t.getMinutes(),
-			s: t.getSeconds(),
-			D: t.getDate(),
+			h: t.getHours()<10?'0'+t.getHours():t.getHours(),
+			m: t.getMinutes()<10?'0'+t.getMinutes():t.getMinutes(),
+			s: t.getSeconds()<10?'0'+t.getSeconds():t.getSeconds(),
+			D: t.getDate()<10?'0'+t.getDate():t.getDate(),
 			M: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Oct', 'Dec'][t.getMonth()],
 			Y: t.getFullYear()
 		};
@@ -338,6 +349,9 @@ var notificationConstructor = function() {
 	var send = function(title, data) {
 		if (!title) throw new Error('Cannot create notification without a title');
 		var d = {};
+
+		// @TODO check settings for restrictions
+		// data.type!!
 
 		if (typeof data === 'undefined' && typeof title !== 'undefined') {
 			d.body = title;
