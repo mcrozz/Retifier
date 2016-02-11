@@ -121,7 +121,7 @@ function storage(id, fallback) {
 }
 
 
-// Date function
+// Date function (type, input, arg)
 // @input
 //   type:
 //     smart: e.g. "5 minutes"
@@ -133,90 +133,134 @@ function storage(id, fallback) {
 //       M: int - mounths
 //       Y: int - years
 //       }
+//     diffRaw: optional @input arg as timestamp
+//       returns similar object as in 'raw' type
 //     fill: @requires input as String
-//       or input as object:
-//       { pattern: String, time: int }
+//       optional: arg as int for time difference
 //   input: @required if type is smart
 //     or type is fill and used as difference
-function date(type, input) {
+//   arg: optional
+function date(type, input, arg) {
 	if (!type) return new Date().getTime();
 	var t = new Date();
 
+	function fill(str, data) {
+		var _t = {
+			'?h': data.h+''=='00'? '':data.h,
+			'?m': data.m+''=='00'? '':data.m,
+			'?s': data.s+''=='00'? '':data.s,
+			'?D': data.D+''=='00'? '':data.D,
+			'?M': data.M+''=='00'? '':data.M,
+			'?Y': data.Y+''=='00'? '':data.Y
+		};
+		
+		if (/\?/.test(str))
+			for (;;) {
+				var rx = /(\?.){(.)}/;
+				if (!rx.test(str))
+					break;
+
+				var _r = str.match(rx);
+				_t = {
+					'?h': data.h+''=='00'? '':data.h,
+					'?m': data.m+''=='00'? '':data.m,
+					'?s': data.s+''=='00'? '':data.s,
+					'?D': data.D+''=='00'? '':data.D,
+					'?M': data.M+''=='00'? '':data.M,
+					'?Y': data.Y+''=='00'? '':data.Y
+				};
+				try {
+					if (_t[_r[1]] !== '') _t[_r[1]]+= _r[2];
+					str = str.replace(_r[0], _t[_r[1]]);
+				} catch(e) {}
+			}
+
+		for (var i in data)
+			str = str.replace(i, data[i]);
+
+		return str;
+	}
+	function normalize(str, lt) {
+		if (lt)
+			return Number(str)<lt?'0'+str:str;
+		else
+			return str+''.length===0?'0'+str:str;
+	}
+
 	if (type == 'smart' && !isNaN(input)) {
-		var diff = t-input;
+		var dif = t.getTime()-input;
 		var rtn = '';
 		var _t = -1;
 		
-		if (diff/3600000 < 1) { // Less than a hour
-			_t = Math.round(diff/60000);
+		if (dif/3600000 < 1) { // Less than a hour
+			_t = Math.round(dif/60000);
 			rtn = 'minute';
-		} else if (diff/(86400000) < 1) { // Less than a day
-			_t = Math.round(diff/3600000);
+		} else if (dif/(86400000) < 1) { // Less than a day
+			_t = Math.round(dif/3600000);
 			rtn = 'hour'; 
-		} else if (diff/31536000000 < 1) { // Less than a year
-			_t = Math.round(diff/86400000);
+		} else if (dif/31536000000 < 1) { // Less than a year
+			_t = Math.round(dif/86400000);
 			rtn = 'day';
 		} else {
-			_t = Math.round(diff/31536000000);
+			_t = Math.round(dif/31536000000);
 			rtn = 'year';
 		}
 
 		_t = _t===0 ? 1:_t;
+		if (arg)
+			return _t+rtn[0];
+		
 		rtn+= _t===1?'':'s';
-
-		return _t+' '+rtn+' ago';
+		
+		return _t+' '+rtn;
 	} else if (type == 'raw') {
 		return {
-			h: t.getHours()<10?'0'+t.getHours():t.getHours(),
-			m: t.getMinutes()<10?'0'+t.getMinutes():t.getMinutes(),
-			s: t.getSeconds()<10?'0'+t.getSeconds():t.getSeconds(),
-			D: t.getDate()<10?'0'+t.getDate():t.getDate(),
-			M: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Oct', 'Dec'][t.getMonth()],
+			h: normalize(t.getHours(), 10),
+			m: normalize(t.getMinutes(), 10),
+			s: normalize(t.getSeconds(), 10),
+			D: normalize(t.getDate(), 10),
+			M: arg?t.getMonth():['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Oct', 'Dec'][t.getMonth()],
 			Y: t.getFullYear()
 		};
+	} else if (type == 'diffRaw') {
+		var diff = !isNaN(input)? t.getTime()-input : t.getTime();
+		var r = {};
+
+		// Years
+		r.Y = Math.floor(diff/31536000000);
+		diff-= r.Y*31536000000;
+
+		// Days
+		r.D = Math.floor(diff/86400000);
+		diff-= r.D*86400000;
+
+		// Hours
+		r.h = Math.floor(diff/3600000);
+		diff-= r.h*3600000;
+
+		// Minutes
+		r.m = Math.floor(diff/60000);
+		diff-= r.m*60000;
+
+		// Seconds
+		r.s = Math.floor(diff/1000);
+
+		for (var h in r)
+			r[h] = normalize(r[h], 10);
+
+		return r;
 	} else if (type == 'fill') {
 		// Pattern can include 'toggleable' elements
 		// e.g. ?h{:}m:s will not replace "h:"
 		// if property is '00' and will replace only
 		// 'm' and 's'
 
-		function fill(str, data) {
-			var _t = {};
-			_t['?h'] = data.h+''=='00'? '':data.h;
-			_t['?m'] = data.m+''=='00'? '':data.m;
-			_t['?s'] = data.s+''=='00'? '':data.s;
-			_t['?D'] = data.D+''=='00'? '':data.D;
-			_t['?M'] = data.M+''=='00'? '':data.M;
-			_t['?Y'] = data.Y+''=='00'? '':data.Y;
-			
-			if (/\?/.test(str))
-				for (;;) {
-					var rx = /(\?.){(.)}/;
-					if (!rx.test(str))
-						break;
+		// pattern : String input
+		// *arg : int Timestamp
+		if (!isNaN(arg))
+			return fill(input, date('diffRaw', arg));
 
-					var _r = str.match(rx);
-					try {
-						str = str.replace(_r[0], _t[_r[1]]+_r[2]);
-					} catch(e) {}
-				}
-
-			for (var i in data)
-				str = str.replace(i, data[i]);
-
-			return str;
-		}
-
-		switch(typeof input) {
-			case 'object':
-				// { pattern: String, time: int }
-				return fill(input.pattern, date('raw', t-input.time));
-			case 'string':
-				// pattern == input
-				return fill(input, date('raw', input));
-			case 'undefined':
-				return null;
-		}
+		return fill(input, date('raw', input));
 	}
 	return false;
 }
