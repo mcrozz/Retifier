@@ -141,13 +141,6 @@ function storage(id, fallback) {
 function date(type, input) {
 	if (!type) return new Date().getTime();
 	var t = new Date();
-	
-	function fill(str, data) {
-		for (var i in data)
-			str = str.replace(i, data[i]);
-
-		return str;
-	}
 
 	if (type == 'smart' && !isNaN(input)) {
 		var diff = t-input;
@@ -182,15 +175,47 @@ function date(type, input) {
 			Y: t.getFullYear()
 		};
 	} else if (type == 'fill') {
-		// @input as it is raw
-		if (typeof input === 'undefined')
-			return null;
+		// Pattern can include 'toggleable' elements
+		// e.g. ?h{:}m:s will not replace "h:"
+		// if property is '00' and will replace only
+		// 'm' and 's'
+
+		function fill(str, data) {
+			var _t = {};
+			_t['?h'] = data.h+''=='00'? '':data.h;
+			_t['?m'] = data.m+''=='00'? '':data.m;
+			_t['?s'] = data.s+''=='00'? '':data.s;
+			_t['?D'] = data.D+''=='00'? '':data.D;
+			_t['?M'] = data.M+''=='00'? '':data.M;
+			_t['?Y'] = data.Y+''=='00'? '':data.Y;
+			
+			if (/\?/.test(str))
+				for (;;) {
+					var rx = /(\?.){(.)}/;
+					if (!rx.test(str))
+						break;
+
+					var _r = str.match(rx);
+					try {
+						str = str.replace(_r[0], _t[_r[1]]+_r[2]);
+					} catch(e) {}
+				}
+
+			for (var i in data)
+				str = str.replace(i, data[i]);
+
+			return str;
+		}
 
 		switch(typeof input) {
 			case 'object':
+				// { pattern: String, time: int }
 				return fill(input.pattern, date('raw', t-input.time));
 			case 'string':
+				// pattern == input
 				return fill(input, date('raw', input));
+			case 'undefined':
+				return null;
 		}
 	}
 	return false;
