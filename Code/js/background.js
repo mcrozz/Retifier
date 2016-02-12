@@ -69,10 +69,51 @@ var checker = {
 		}
 	},
 	following: new storage('following', []),
-	intervals: {
-		followers: -1,
-		status: -1
-	},
+	interval: function() {
+		var run = {
+			following: {
+				lastRun: 0,
+				interval: 300000,
+				call: checker.getFollowing,
+				bind: checker
+			},
+			status: {
+				lastRun: 0,
+				interval: 2000,
+				call: checker.getStatus,
+				bind: checker
+			}
+		};
+		var intervalVal = -1;
+
+		this.start = function() {
+			setTimeout(call.bind(this), 0);
+			return true;
+		};
+		this.stop = function() {
+			clearTimeout(intervalVal);
+			return true;
+		};
+		this.restart = function() {
+			this.stop();
+			this.start();
+			return true;
+		};
+
+		var call = function() {
+			var t = date();
+			for (var i in run) {
+				if (t - run[i].lastRun >= run[i].interval) {
+					run[i].lastRun = t;
+					setTimeout(run[i].call.bind(run[i].bind), 0);
+				}
+			}
+
+			intervalVal = setTimeout(arguments.callee.bind(this), 2000);
+		};
+
+		return this;
+	}(),
 	lastUpdate: -1
 };
 
@@ -84,6 +125,8 @@ checker.following.customSave = function() {
 };
 
 checker.getFollowingList = function() {
+	if (!browser.isOnline) return false;
+
 	if (!settings.user.isSet()) return false;
 
 	twitch.getFollowing(settings.user.id)
@@ -126,8 +169,6 @@ checker.getFollowingList = function() {
 			}
 		}
 	}.bind(this));
-
-	this.intervals.followers = setTimeout(arguments.callee.bind(this), 300000);
 };
 
 checker.getStatus = function() {
@@ -209,6 +250,10 @@ checker.getStatus = function() {
 		// @? inform popup window
 	}
 
+	if (!browser.isOnline) return false;
+
+	if (!settings.user.isSet()) return false;
+
 	if (settings.user.token !== null && date() - this.lastUpdate >= settings.checkInterval) {
 		twitch.getOnline(settings.user.token)
 		.fail(function(e) {
@@ -236,32 +281,8 @@ checker.getStatus = function() {
 				// @TODO
 			}
 		}
-
-	this.intervals.status = setTimeout(arguments.callee.bind(this), 2000);
-};
-
-checker.start = function() {
-	if (this.intervals.followers !== -1 ||
-		this.intervals.status !== -1) return false;
-
-	this.intervals.followers = setTimeout(this.getFollowingList.bind(this), 0);
-	this.intervals.status = setTimeout(this.getStatus.bind(this), 10);
-
-	return true;
-};
-
-checker.restart = function() {
-	if (this.intervals.followers == -1 ||
-		this.intervals.status == -1) return false;
-
-	clearTimeout(this.intervals.followers);
-	this.intervals.followers = -1;
-	clearTimeout(this.intervals.status);
-	this.intervals.status = -1;
-
-	return this.start.bind(this);
 };
 
 setTimeout(function() {
-	checker.start();
+	checker.interval.start();
 }, 0);
