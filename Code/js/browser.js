@@ -15,3 +15,12 @@ browser.send = new message();
 
 if (typeof browser.badge === 'undefined')
 	throw new Error('browser.badge is undefined!');
+
+browser.isOnline = navigator.onLine;
+
+$(window).on('offline', function() {
+	window.browser.isOnline = false;
+});
+$(window).on('online', function() {
+	window.browser.isOnline = true;
+});
