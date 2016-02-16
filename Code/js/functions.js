@@ -17,7 +17,7 @@ function randomID() {
 	var i = Math.floor((Math.random()*122)+48);
 	var j = Math.floor((Math.random()*122)+48);
 	var z = Math.floor((Math.random()*122)+48);
-	function clamp(val,just) {
+	function c(val,just) {
 		if (val>=91&&val<=96) {
 			var t = Math.random()*50-50;
 			if (t<0)
@@ -33,39 +33,53 @@ function randomID() {
 		} else
 			return Math.round(val);
 	}
+	function s(i) {
+		return String.fromCharCode(i);
+	}
 	
-	return String.fromCharCode(clamp(i+j-48))+
-		String.fromCharCode(clamp(j/i))+
-		String.fromCharCode(clamp((i%j)*100))+
-		String.fromCharCode(clamp(i/2))+
-		String.fromCharCode(clamp(i*5))+
-		String.fromCharCode(clamp(j+15))+
-		String.fromCharCode(clamp(j-4))+
-		String.fromCharCode(clamp(i-j+100))+
+	return s(c(i+j-48))+
+		s(c(j/i))+
+		s(c((i%j)*100))+
+		s(c(i/2))+
+		s(c(i*5))+
+		s(c(j+15))+
+		s(c(j-4))+
+		s(c(i-j+100))+
 		'-'+
-		clamp(i/5,1)+
-		clamp(i+j,1)+
-		clamp(z-4,1)+
-		clamp(j/z,1)+
+		c(i/5,1)+
+		c(i+j,1)+
+		c(z-4,1)+
+		c(j/z,1)+
 		'-'+
-		String.fromCharCode(clamp(z*j-14884))+
-		String.fromCharCode(clamp(122-z))+
-		String.fromCharCode(clamp(122-j))+
-		String.fromCharCode(clamp(z%2))+
-		String.fromCharCode(clamp(j%10))+
-		String.fromCharCode(clamp(z>>1))+
-		String.fromCharCode(clamp(j>>4))+
-		String.fromCharCode(clamp(z^2-14884));
+		s(c(z*j-14884))+
+		s(c(122-z))+
+		s(c(122-j))+
+		s(c(z%2))+
+		s(c(j%10))+
+		s(c(z>>1))+
+		s(c(j>>4))+
+		s(c(z^2-14884));
 }
 
 // Storage unit
 // @input
 //   id as String, used as localStorage name
-function storage(id, fallback) {
+// :options
+//   fallback: any object, used if localStorage[id]
+//     is undefined.
+//   local: boolean, if true disable saving to the
+//     localStorage
+//   onchange(changed object): callback on change
+//   onremove(removed object): callback on remove
+//   onadd(added object): callback on adding
+function storage(id, options) {
 	if (!(this instanceof arguments.callee))
 		throw new Error('Cannot be used as function!');
 	var data = null;
 	var id = id;
+	var options = options? options:{};
+
+	if (options.local) { data = id; id = null; }
 	
 	this.get = function(id) {
 		return id? data[id] : data;
@@ -80,16 +94,51 @@ function storage(id, fallback) {
 		if (typeof data[id] == 'undefined')
 			return false;
 
-		if (typeof sec == 'undefined')
-			return (data[id] = val);
-		else
-			if (typeof data[id][val] != 'undefined')
-				return (data[id][val] = sec);
+		if (typeof sec == 'undefined') {
+			data[id] = val;
+
+			if (typeof options.onchange === 'function')
+				options.onchange(data[id]);
+			
+			return true;
+		}	else if (typeof data[id][val] != 'undefined') {
+			data[id][val] = sec;
+
+			if (typeof options.onchange === 'function')
+				options.onchange(data[id][val]);
+
+			return true;
+		}
 
 		return false;
 	};
+	this.del = function(id, by) {
+		var f = id;
+		var o = null;
+		if (typeof by !== 'undefined')
+			f = this.findBy(id, by).i;
+		o = data[f];
+
+		data = data.filter(function(i,v) {
+			return f !== i;
+		});
+
+		if (typeof options.onchange === 'function')
+			options.onchange(o);
+
+		if (typeof options.onremove === 'function')
+			options.onremove(o);
+
+		return true;
+	};
 	this.push = function(d) {
 		data.push(d);
+
+		if (typeof options.onchange === 'function')
+			options.onchange(d);
+
+		if (typeof options.onadd === 'function')
+			options.onadd(d);
 	};
 	this.length = function() {
 		return data.length;
@@ -98,6 +147,9 @@ function storage(id, fallback) {
 	this.findBy = function(par, equ) {
 		return data.findBy(par, equ);
 	};
+	
+	if (options.local) return this;
+
 	this.save = function() {
 		var toSave = data;
 		if (typeof this.customSave == 'function')
@@ -331,20 +383,7 @@ function messageParser() {
 
 	this.messageConstructor = message;
 
-	var queue = [];
-	this.find = function(id) {
-		var rtn = null;
-		for (var i in queue)
-			if (queue[i].id == id) {
-				rtn = queue[i]; break;
-			}
-		return rtn;
-	};
-	this.del = function(id) {
-		queue = queue.filter(function(i,v) {
-			v.id !== id;
-		});
-	};
+	var queue = new storage([], {local: true});
 
 	this.send = function(data) {
 		this.queue.push(data);
@@ -403,17 +442,7 @@ var notificationConstructor = function() {
 		return this;
 	};
 
-	var queue = [];
-	var del = function(id) {
-		if (id.length !== 20)
-			id = queue[id].id;
-
-		queue = queue.filter(function(i,v) {
-			return v.id != id;
-		});
-
-		return true;
-	}.bind(this);
+	var queue = new storage([], {local: true});
 
 	var send = function(title, data) {
 		if (!title) throw new Error('Cannot create notification without a title');

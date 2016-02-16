@@ -84,32 +84,23 @@ var twitch = {
 	},
 	gamePreview: function(game) {
 		return 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(game)+'-272x380.jpg';
+	},
+	getHosting: function(user) {
+		if (!user) throw Error('Invalid input');
+		return $.getJSON('http://api.twitch.tv/api/users/'+user+'/followed/hosting?limit=50&offset=0');
 	}
 };
 
 var checker = {
-	online: {
-		data: [/* new streamer() */],
-		add: function(str) {
-			if (this.data.indexOf(str) === -1) {
-				browser.send.async('wentOnline', str);
-				return this.data.push(str);
-			}
-			return false;
+	online: new storage([], {
+		local: true,
+		onadd: function(d) {
+			browser.send.async('wentOnline', d);
 		},
-		del: function(id) {
-			if (!id) return false;
-
-			browser.send.async('wentOffline', (isNaN(id)?id:this.data[id]));
-			this.data = this.data.filter(function(i,v) {
-				return (isNaN(id))?v!=id:i!=id;
-			});
-			return true;
-		},
-		get: function(id) {
-			return id?this.data[id]:this.data;
+		onremove: function(d) {
+			browser.send.async('wentOffline', d);
 		}
-	},
+	}),
 	following: new storage('following', []),
 	interval: function() {
 		var run = {
