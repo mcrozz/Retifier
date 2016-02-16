@@ -11,7 +11,14 @@ var streamer = function(id, name, follows) {
 		title: null,
 		game: null,
 		started: -1,
-		viewers: -1
+		viewers: -1,
+		previews: {
+			// Cached previews for faster start up
+			stream: null,
+			game: null,
+			logo: null,
+			profile: null
+		}
 	};
 	this.online = false;
 	this.lastUpdate = -1;
@@ -19,13 +26,45 @@ var streamer = function(id, name, follows) {
 	this.update = function() {
 		this.lastUpdate = 0;
 	};
-	this.previews = {
-		// Cached previews for faster start up
-		//of popup window
-		big: null,
-		small: null,
-		lastUpdate: -1
+
+	return this;
+};
+
+// Image holder object
+var imageHolder = function(url) {
+	var url = url;
+	var base64 = null;
+	var lastUpdate = -1;
+
+	this.getImage = function() {
+		return base64;
 	};
+	this.update = function() {
+		'use strict'
+		if (date() - lastUpdate < 600000)
+			return false;
+
+		var _t = new Image();
+		_t.onload = function(i) {
+			'use strict'
+			var _c = document.createElement('canvas');
+			var _x = _c.getContext('2d');
+
+			_c.width = i.width;
+			_c.height = i.height;
+
+			_x.drawImage(i, 0, 0);
+			
+			base64 = _c.toDateURL();
+			lastUpdate = date();
+			_c = null;
+		}.bind(this);
+		_t.src = url;
+	};
+
+	setTimeout(function() {
+		this.update();
+	}.bind(this), (1000*Math.round(Math.random()*100))+1000);
 
 	return this;
 };
@@ -42,6 +81,9 @@ var twitch = {
 	getOnline: function(token) {
 		if (!token) throw Error('Invalid input');
 		return $.getJSON('https://api.twitch.tv/kraken/streams/followed?limit=100&offset=0&oauth_token='+token);
+	},
+	gamePreview: function(game) {
+		return 'http://static-cdn.jtvnw.net/ttv-boxart/'+encodeURI(game)+'-272x380.jpg';
 	}
 };
 
@@ -82,6 +124,12 @@ var checker = {
 				interval: 2000,
 				call: checker.getStatus,
 				bind: checker
+			},
+			cache: {
+				lastRun: 0,
+				interval: 10000,
+				call: checker.updatePreviews,
+				bind: checker
 			}
 		};
 		var intervalVal = -1;
@@ -101,6 +149,7 @@ var checker = {
 		};
 
 		var call = function() {
+			'use strict'
 			var t = date();
 			for (var i in run) {
 				if (t - run[i].lastRun >= run[i].interval) {
@@ -122,6 +171,23 @@ checker.following.customSave = function() {
 	for (var s in this.data)
 		rtn.push(this.data[s].id);
 	return rtn;
+};
+
+checker.updatePreviews = function() {
+	if (!browser.isOnline) return false;
+
+	if (!settings.user.isSet()) return false;
+
+	var par = ['stream', 'game', 'logo', 'profile'];
+
+	for (var s in checker.online.get()) {
+		if (!checker.online.get(s).online)
+			continue;
+
+		// Update image cache every 10 min
+		for (var p in par)
+			checker.online.get(s).data.previews[par[p]].update();
+	}
 };
 
 checker.getFollowingList = function() {
@@ -173,6 +239,7 @@ checker.getFollowingList = function() {
 
 checker.getStatus = function() {
 	function checkForChanges(d) {
+		'use strict'
 		/* Output scheme
 		 * stream: {
 		 *   <If offline then null>
@@ -180,11 +247,15 @@ checker.getStatus = function() {
 		 *     status: String
 		 *     display_name: String
 		 *     name: String
+		 *     profile_banner: String
+		 *     logo: String
 		 *   created_at: String
 		 *   game: String
 		 *   viewers: int
 		 *   is_playlist: boolean
 		 *   delay: int
+		 *   preview
+		 *     large: String
 		 * }
 		*/
 
@@ -227,7 +298,14 @@ checker.getStatus = function() {
 				title: str.title,
 				game: str.game,
 				started: str.started,
-				viewers: str.viewers
+				viewers: str.viewers,
+				previews: {
+					stream: new imageHolder(d.stream.preview.large),
+					game: new imageHolder(Twitch.gamePreview(str.game)),
+					logo: new imageHolder(d.stream.channel.logo),
+					profile: new imageHolder(d.stream.channel.profile_banner),
+					lastUpdate: 0
+				}
 			};
 			this.following.data[i].online = true;
 			// @? notification here
