@@ -62,6 +62,13 @@ var imageHolder = function(url) {
 		_t.src = url;
 	};
 
+	this.setNew = function(uri) {
+		url = uri;
+		base64 = null;
+		lastUpdate = -1;
+		this.update();
+	};
+
 	setTimeout(function() {
 		this.update();
 	}.bind(this), (1000*Math.round(Math.random()*100))+1000);
@@ -95,13 +102,28 @@ var checker = {
 	online: new storage([], {
 		local: true,
 		onadd: function(d) {
-			browser.send.async('wentOnline', d);
+			browser.send.async('followerOnline', d);
 		},
 		onremove: function(d) {
-			browser.send.async('wentOffline', d);
+			browser.send.async('followerOffline', d);
+		},
+		onchange: function(d) {
+			browser.send.async('followerChange', d);
 		}
 	}),
 	following: new storage('following', []),
+	hosting: new storage([], {
+		local: true,
+		onadd: function(d) {
+			browser.send.async('hostingOnline', d);
+		},
+		onremove: function(d) {
+			browser.send.async('hostingOffline', d);
+		},
+		onchange: function(d) {
+			browser.send.async('hostingChange', d);
+		}
+	}),
 	interval: function() {
 		var run = {
 			following: {
@@ -120,6 +142,12 @@ var checker = {
 				lastRun: 0,
 				interval: 10000,
 				call: checker.updatePreviews,
+				bind: checker
+			},
+			hosting: {
+				lastRun: 0,
+				interval: 1000*60*5,
+				call: checker.updateHostingList,
 				bind: checker
 			}
 		};
@@ -350,6 +378,82 @@ checker.getStatus = function() {
 				// @TODO
 			}
 		}
+};
+
+checker.updateHostingList = function() {
+	if (!browser.isOnline) return false;
+
+	if (!settings.user.isSet()) return false;
+
+	twitch.getHosting()
+	.done(function(d) {
+		/*
+			name // Who's hosting
+			target: {
+				id
+				channel: {
+					logo
+					url
+					display_name
+				}
+				meta_game
+				preview
+				title
+				viewers
+			}
+		*/
+
+		if (!d.hosts) {
+			// Flush hosting array
+
+			return false;
+		}
+		
+		for (var h in d.hosts) {
+			var _t = this.hosting.findBy('id', d.hosts[h]);
+
+			if (!_t) {
+				// It's new
+				var hs = new streamer(
+					d.target.id,
+					d.target.channel.display_name,
+					null);
+
+				hs.parentId = d.id;
+				hs.isOnline = true;
+				hs.data = {
+					title: d.target.title,
+					game: d.target.meta_game,
+					started: -1,
+					viewers: -1,
+					previews: {
+						// Cached previews for faster start up
+						stream: new imageHolder(d.target.preview),
+						game: new imageHolder(twitch.gamePreview(d.target.meta_game)),
+						logo: new imageHolder(d.target.channel.logo),
+						profile: null
+					}
+				};
+				this.hosting.push(hs);
+				hs = null;
+			} else {
+				// Update
+				var gameChanged = _t.element.data.game == d.target.meta_game;
+				_t.element = this.hosting.set(_t.i, 'data',
+					{
+						title: d.target.title,
+						game: d.target.meta_game,
+						started: -1,
+						viewers: -1,
+						previews: _t.element.data.previews
+					});
+
+				if (gameChanged)
+					_t.element.data.previews.game.setNew(twitch.gamePreview(d.target.meta_game));
+			}
+		}
+
+	}.bind(this));
 };
 
 setTimeout(function() {

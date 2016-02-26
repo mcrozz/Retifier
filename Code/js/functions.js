@@ -100,14 +100,14 @@ function storage(id, options) {
 			if (typeof options.onchange === 'function')
 				options.onchange(data[id]);
 			
-			return true;
+			return data[id];
 		}	else if (typeof data[id][val] != 'undefined') {
 			data[id][val] = sec;
 
 			if (typeof options.onchange === 'function')
 				options.onchange(data[id][val]);
 
-			return true;
+			return data[id];
 		}
 
 		return false;
