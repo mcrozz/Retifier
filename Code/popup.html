@@ -1,0 +1,240 @@
+<meta charset="utf-8">
+<link rel="stylesheet" href="./css/main.css" type="text/css" />
+<style type="text/css"></style>
+<script src="./js/jquery-2.1.4.dev.js"></script>
+<script src="./js/functions.js"></script>
+<script src="./js/settings.js"></script>
+<script src="./js/browser.js"></script>
+<script src="./js/browserDependies.js"></script>
+<!-- <script src="./js/changelog.js"></script> -->
+<script src="./js/interface.js"></script>
+
+<body>
+	<premade>
+		<streamerCell>
+			<div class="top">
+				<div class="previews">
+					<span class="stream ripple" color="rgb(29, 16, 108)" style="background:url(http://static-cdn.jtvnw.net/previews-ttv/live_user_tirean-320x200.jpg)">
+					</span>
+					<span class="game ripple" color="rgb(29, 16, 108)" style="background:url('http://static-cdn.jtvnw.net/ttv-boxart/XCOM 2-272x380.jpg')">
+					</span>
+				</div>
+				<div class="bar">
+					<div class="zoom">
+						<img src="./img/zoom.png">
+					</div>
+					<div class="time">
+						<a time="1455175048514">5:15:04</a>
+					</div>
+				</div>
+			</div>
+			<div class="data">
+				<div class="title"><a></a></div>
+				<div class="streamer"><a></a></div>
+				<div class="views"><a></a></div>
+				<div class="game"><a></a></div>
+			</div>
+		</streamerCell>
+
+		<leAlert>
+			<header>
+				<p></p>
+			</header>
+
+			<div>
+				<div></div>
+			</div>
+
+			<footer class="footer">
+				<button name="k">Ok</button>
+				<button name="c">Cancel</button>
+			</footer>
+		</leAlert>
+
+		<settingsSize>
+			<span class="cls"></span>
+		 	<span class="plus"></span>
+		 	<span class="minus"></span>
+		 	<span class="ok"></span>
+		</settingsSize>
+
+		<settingsView>
+			<div>
+				<a>Choose style</a>
+			</div>
+			<span class="cls"></span>
+			<span class="Full"></span>
+			<span class="Grid"></span>
+			<span class="Light"></span>
+			<span class="ok"></span>
+		</settingsView>
+
+		<settings>
+			<!-- Header -->
+			<header>
+				<div>
+					<a>Options</a>
+				</div>
+
+				<div id="user">
+					<a>User: </a><a></a>
+					<p class="Logout">logout</p>
+				</div>
+
+				<div class="close">
+					<span>x</span>
+				</div>
+			</header>
+
+			<!-- First row -->
+			<div class="r1">
+				<!-- Check interval -->
+				<div class="check">
+					<a>Check every</a>
+					<input type="text" id="ChgUsrInt">
+					<a>.min</a>
+				</div>
+				<!-- Change size -->
+				<div class="goto">
+					<button type="button" class="ChangeSize">
+						Change size of extension
+					</button>
+				</div>
+				<!-- Get notifications from -->
+				<div class="goto">
+					<button type="button" class="NotificationsOpt">
+						Get notifications from...
+					</button>
+				</div>
+				<!-- Choose style of online list -->
+				<div class="goto">
+					<button type="button" class="OnlineStyle">
+						Choose style of online list
+					</button>
+				</div>
+				<!-- In case of bugs, maybe it will fix it -->
+				<div class="goto">
+					<button type="button" class="Flush">
+						In case of bugs
+					</button>
+				</div>
+				<!-- Show duration -->
+				<div class="toggle">
+					<a>Show Stream Duration</a>
+					<input type="checkbox" class="Check_Box StreamDurationCheck">
+				</div>
+			</div>
+
+			<!-- Second row -->
+			<div class="r2">
+				<!-- Notifications settings -->
+				<div class="toggle">
+					<a>Enable notifications</a>
+					<input type="checkbox" class="Check_Box EnNotify">
+				</div>
+				<div>
+					<a>Receive notification when:</a>
+				</div>
+				<li>
+					<a>Channel starts streaming</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamer">
+				</li>
+				<li>
+					<a>Channel stops streaming</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamer2">
+				</li>
+				<li>
+					<a>Channel changes title</a>
+					<input type="checkbox" class="Check_Box_2 NotifyStreamerChanged">
+				</li>
+				<li>
+					<a>Script notifications</a>
+					<input type="checkbox" class="Check_Box_2 NotifyUpdate">
+				</li>
+				<!-- Play sound with notification -->
+				<div class="toggle">
+					<a>Play sound with notifications</a>
+					<input type="checkbox" class="Check_Box SoundCheck">
+				</div>
+			</div>
+
+			<footer>
+				<button type="button" id="ChgUsrSnd">Save / Close</button>
+			</footer>
+		</settings>
+
+		<aboutApp>
+		<!-- @TODO -->
+		</aboutApp>
+	</premade>
+
+	<div id="overlay">
+		<!-- Tinted background -->
+		<div class="background"></div>
+
+		<!-- Zoomed preview -->
+		<div id="zoomIMG"></div>
+	</div>
+
+	<div id="main">
+		<div id="header">
+			<button class="dash directory"></button>
+			<button class="dash following"></button>
+
+			<div id="info">
+				<p class="pre"></p>
+				<p class="cur"></p>
+			</div>
+
+			<button class="dash refresh"></button>
+	    <button class="dash settings"></button>
+		</div>
+
+		<progress max="100" value="0"></progress>
+
+		<div id="content">
+			<div class="online show">
+				<!-- List of online streamers -->
+				<div class="spacer"></div>
+			</div>
+			<div class="following">
+				<div class="detail" style="display:none">
+					<!-- Detailed view -->
+					<div class="up">
+						<div class="close">
+							<button></button>
+						</div>
+						<!-- Logo and status -->
+						<div class="art">
+							<div></div>
+							<div class="logo">
+								<img>
+							</div>
+						</div>
+						<!-- Information -->
+						<div class="info">
+							<p>Did stream: <a></a></p>
+							<p>Registered: <a></a></p>
+							<p>Followers: <a></a></p>
+							<p>Views: <a></a></p>
+						</div>
+					</div>
+					<div class="bio">
+						<!-- BIO -->
+						<p>Following since<a></a></p>
+						<p>BIO is downloading...</p>
+					</div>
+				</div>
+				<div class="list">
+					<!-- List of streamers -->
+					<div class="spacer"><a></a></div>
+				</div>
+			</div>
+			<div class="host">
+				<!-- List of hosted channels by followed list -->
+			</div>
+		</div>
+
+		<span id="AppVersion"></span>
+	</div>
+</body>
