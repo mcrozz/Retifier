@@ -1,6 +1,23 @@
 browser.badge.set('...');
 
-// Streamer object
+/* Streamer object
+/*  id : String
+/*  name : String
+/*  data : {
+/*    title : String
+/*    game : String
+/*    started : int (timeStamp)
+/*    viewers : int
+/*    previews : {
+/*      stream : String (base64)
+/*      game : String (base64)
+/*      logo : String (base64)
+/*      profile : String (base64)
+/*    online : boolean
+/*    lastUpdate : int (timeStamp)
+/*    followingFrom : int (timeStamp)
+/*    update : function ()
+*/
 var streamer = function(id, name, follows) {
 	if (!(this instanceof arguments.callee))
 		throw new Error('Cannot be used as function!');
@@ -102,13 +119,22 @@ var checker = {
 	online: new storage([], {
 		local: true,
 		onadd: function(d) {
-			browser.send.async('followerOnline', d);
+			var t = d;
+			t.type = 1;
+			view.updateFollowers(t);
+			delete t;
 		},
 		onremove: function(d) {
-			browser.send.async('followerOffline', d);
+			var t = d;
+			t.type = -1;
+			view.updateFollowers(t);
+			delete t;
 		},
 		onchange: function(d) {
-			browser.send.async('followerChange', d);
+			var t = d;
+			t.type = 0;
+			view.updateFollowers(t);
+			delete t;
 		}
 	}),
 	following: new storage('following', []),
@@ -129,7 +155,7 @@ var checker = {
 			following: {
 				lastRun: 0,
 				interval: 300000,
-				call: checker.getFollowing,
+				call: checker.getFollowingList,
 				bind: checker
 			},
 			status: {
@@ -168,7 +194,6 @@ var checker = {
 		};
 
 		var call = function() {
-			'use strict'
 			var t = date();
 			for (var i in run) {
 				if (t - run[i].lastRun >= run[i].interval) {
@@ -181,7 +206,7 @@ var checker = {
 		};
 
 		return this;
-	}(),
+	},
 	lastUpdate: -1
 };
 
@@ -195,7 +220,7 @@ checker.following.customSave = function() {
 checker.updatePreviews = function() {
 	if (!browser.isOnline) return false;
 
-	if (!settings.user.isSet()) return false;
+	if (!settings.isSet('user', 'user')) return false;
 
 	var par = ['stream', 'game', 'logo', 'profile'];
 
@@ -212,7 +237,7 @@ checker.updatePreviews = function() {
 checker.getFollowingList = function() {
 	if (!browser.isOnline) return false;
 
-	if (!settings.user.isSet()) return false;
+	if (!settings.isSet('user', 'user')) return false;
 
 	twitch.getFollowing(settings.user.id)
 	.fail(function(e) {
@@ -349,10 +374,10 @@ checker.getStatus = function() {
 
 	if (!browser.isOnline) return false;
 
-	if (!settings.user.isSet()) return false;
+	if (!settings.isSet('user', 'user')) return false;
 
-	if (settings.user.token !== null && date() - this.lastUpdate >= settings.checkInterval) {
-		twitch.getOnline(settings.user.token)
+	if (settings.isSet('user', 'token') && date() - this.lastUpdate >= settings.get('checkInterval')) {
+		twitch.getOnline(settings.get('user', 'token'))
 		.fail(function(e) {
 			browser.error({message: 'Cannot obtain online list with token', stack: e});
 		})
@@ -361,7 +386,7 @@ checker.getStatus = function() {
 		for (var i in this.following.get()) {
 			var _t = this.following.get(i);
 			
-			if (date() - _t.lastUpdate >= settings.checkInterval) {
+			if (date() - _t.lastUpdate >= settings.get('checkInterval')) {
 				this.following.set(i, 'lastUpdate', date()+20000); // settings.checkInterval +20s timeout
 				
 				twitch.getStatus(_t.id)
@@ -383,7 +408,7 @@ checker.getStatus = function() {
 checker.updateHostingList = function() {
 	if (!browser.isOnline) return false;
 
-	if (!settings.user.isSet()) return false;
+	if (!settings.isSet('user', 'user')) return false;
 
 	twitch.getHosting()
 	.done(function(d) {
@@ -457,5 +482,6 @@ checker.updateHostingList = function() {
 };
 
 setTimeout(function() {
+	checker.interval = checker.interval();
 	checker.interval.start();
 }, 0);
