@@ -13,9 +13,6 @@ browser.notification = new notificationConstructor();
 
 browser.send = new message();
 
-if (typeof browser.badge === 'undefined')
-	throw new Error('browser.badge is undefined!');
-
 browser.isOnline = navigator.onLine;
 
 $(window).on('offline', function() {
