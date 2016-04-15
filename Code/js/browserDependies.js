@@ -1,20 +1,27 @@
 // Example for Chromium engine
 
 // Send message to every view
-messageParser.constructor.prototype.sendMethod = function(data) {
-	for (var view in chrome.extension.getViews()) {
-		if (chrome.extension.getViews()[view].location.pathname === location.pathname)
+browser.send.updateSend(function(data) {
+	var windows = chrome.extension.getViews();
+	var rtn = false;
+	for (var view in windows) {
+		if (windows[view].location.pathname === location.pathname)
 			return;
 
-		window.browser.send.receive(msg);
+		setTimeout(windows[view].browser.send.receive.apply(null, data), 0);
+		rtn = true;
 	}
-};
+	delete windows; // lol'd
+
+	browser.debug(rtn);
+	return rtn;
+});
 
 // Set and get badge text
 browser.badge = {
 	set: function(str) {
-		chrome.browserAction.setBadgeText({ text: String(count) });
-		if (count !== 0) {
+		chrome.browserAction.setBadgeText({ text: String(str) });
+		if (Number(str) !== 0) {
 			chrome.browserAction.setBadgeBackgroundColor({
 				color:'#593a94'});
 			chrome.browserAction.setIcon({
@@ -58,3 +65,5 @@ notificationConstructor.constructor.prototype.sendMethod = function(ntf) {
 			isClickable: true
 		}, function() {});
 }
+
+view.browserGetView(chrome.extension.getViews);
