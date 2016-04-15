@@ -133,7 +133,7 @@ window.view = new function() {
 		
 		function streamerNode(id, d) {
 			if (typeof d === 'undefined') {
-				var obj = function(id) {
+				return new (function(id) {
 					var id = id;
 					var cell = shadowHtml.find('#'+id) || null;
 
@@ -192,9 +192,7 @@ window.view = new function() {
 					};
 
 					return this;
-				}(id);
-
-				return obj;
+				})(id);
 			}
 
 			var cell = new c('div', {id:d.id});
@@ -270,8 +268,69 @@ window.view = new function() {
 		this.updateInf = function(id, d) {};
 		this.unfollow = function(id) {};
 
-		function cell(id, d) {};
+		function cell(id, d) {
+			if (typeof d === 'undefined') {
+				// Return constructor for quick look up and modification
+
+				return new (function(id){
+					var id = id;
+					var cell = shadowHtml.find('#'+id) || null;
+
+					if (typeof cell === 'undefined' || !cell)
+						return browser.error(new Error('Could not find cell with id: '+id));
+					if (typeof cell.nodeType === 'undefined')
+						return browser.error(new Error('Invalid type'));
+
+					var findNode = function(sel) {
+						return cell.querySelector(sel);
+					};
+
+					// @TODO
+				})(id);
+			}
+
+			// Otherwise create new element
+			/*
+				.holder
+					span.avatar
+					div.info
+						a.name
+						a.since
+						a.followers
+					div.buttons
+						span.detailed
+						span.unfollow
+			*/
+
+			var holder = c('div');
+
+			var avatar = c('span');
+			holder.appendChild(avatar);
+
+			var info = c('div');
+
+			var aName = c('a', {className: 'name'});
+			info.appendChild(aName);
+			var aSince = c('a', {className: 'since'});
+			info.appendChild(aSince);
+			var aFollowers = c('a', {className: 'followers'});
+			info.appendChild(aFollowers);
+
+			holder.appendChild(info);
+
+			var buttons = c('div');
+
+			var detailed = c('span', {className: 'detailed'});
+			buttons.appendChild(detailed);
+			var unfollow = c('span', {className: 'unfollow'});
+			buttons.appendChild(unfollow);
+
+			holder.appendChild(buttons);
+
+			return holder;
+		};
 	}();
+
 	this.hosting = function() {
 		var shadowHtml = new shadowHtmlConstructor();
 		var update = function() {
