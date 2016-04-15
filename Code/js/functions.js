@@ -81,10 +81,25 @@ function storage(id, options) {
 
 	if (options.local) { data = id; id = null; }
 	
-	this.get = function(id) {
-		return id? data[id] : data;
+	this.get = function(id, sec) {
+		if (typeof data.length === 'undefined') {
+			if (typeof sec !== 'undefined')
+				return data[id][sec];
+			else
+				return data[id];
+		} else
+			return id? data[id] : data;
 	};
 	this.set = function(id, val, sec) {
+		if (typeof data.length === 'undefined') {
+			if (typeof sec !== 'undefined')
+				data[id][val] = sec;
+			else
+				data[id] = val;
+
+			return data[id];
+		}
+
 		if (isNaN(id))
 			id = this.findBy('id', id);
 
@@ -113,6 +128,11 @@ function storage(id, options) {
 		return false;
 	};
 	this.del = function(id, by) {
+		if (typeof data.length === 'undefined') {
+
+			return true;
+		}
+
 		var f = id;
 		var o = null;
 		if (typeof by !== 'undefined')
@@ -132,6 +152,9 @@ function storage(id, options) {
 		return true;
 	};
 	this.push = function(d) {
+		if (typeof data.length === 'undefined')
+			return browser.error(new Error('Invalid type of storage'));
+
 		data.push(d);
 
 		if (typeof options.onchange === 'function')
@@ -147,7 +170,17 @@ function storage(id, options) {
 	this.findBy = function(par, equ) {
 		return data.findBy(par, equ);
 	};
-	
+	this.isSet = function(par, equ) {
+		if (typeof data.length === 'number') {
+			// @TODO
+		} else {
+			if (typeof equ !== 'undefined')
+				return data[par][equ]!=null;
+
+			return data[par]==null;
+		}
+	};
+
 	if (options.local) return this;
 
 	this.save = function() {
@@ -166,7 +199,7 @@ function storage(id, options) {
 	try {
 		data = JSON.parse(localStorage[id]);
 	} catch(e) {
-		localStorage[id] = fallback;
+		localStorage[id] = options.fallback;
 	}
 
 	return this;
@@ -323,12 +356,18 @@ function date(type, input, arg) {
 //object.
 // Usage:
 // message.async('getAll', function(response){});
+// message.async('getAll', {randomData: true});
+// message.async('getAll', {}, function());
 // message.sync('getAll');
 var message = function() {
 	if (!(this instanceof arguments.callee))
 		throw new Error('Cannot be used as function!');
 	var body = new messageParser();
 	this.async = function(msg, args, callback) {
+		if (typeof args === 'function') {
+			callback = args;
+			args = null;
+		}
 		return body.send(new body.messageConstructor(msg, args, callback));
 	}.bind(this);
 	this.sync = function(msg, args) {
@@ -337,6 +376,12 @@ var message = function() {
 	this.receive = function(data) {
 		return body.receive(data);
 	}.bind(this);
+
+	this.updateSend = function(func) {
+		body.sendMethod = func;
+
+		delete this.updateSend;
+	};
 
 	return this;
 };
@@ -347,7 +392,7 @@ var message = function() {
 //which is platform depended
 function messageParser() {
 	if (!(this instanceof arguments.callee))
-		throw new Error('Cannot be used as function!');
+		throw new Error('Cannot be used as a function!');
 
 	var cmds = {
 		getOnlineList: function() { return checker.online; },
@@ -358,18 +403,7 @@ function messageParser() {
 		setConfig: function(cfg) { return 1; },
 		forceUpdate: function() { return checker.restart(); },
 		getSuggestions: function() { return ''; },
-		change: function(type) { $(window).trigger(type); }
-	};
-
-	// Expand commands if necessary
-	this.bind = function(command, callback) {
-		if (!command || !callback)
-			return browser.error(new Error('Invalid input, cannot bind!'));
-
-		if (typeof cmds[command] === 'undefined')
-			return (cmds[command] = callback);
-		else
-			return false;
+		change: function(type, data) { $(window).trigger(type, data); }
 	};
 
 	function message(msg, args, callback) {
@@ -386,9 +420,8 @@ function messageParser() {
 	var queue = new storage([], {local: true});
 
 	this.send = function(data) {
-		this.queue.push(data);
-		this.sendMethod(data);
-		return true;
+		queue.push(data);
+		return this.sendMethod(data);
 	}.bind(this);
 
 	this.receive = function(data) {
@@ -397,15 +430,17 @@ function messageParser() {
 
 		if (data.message === 'RESPONSE') {
 			var _t = this.find(data.callTo);
-			if (_t === null) return browser.error(new Error('Cannot find callback with such ID'));
+			if (_t === null)
+				return browser.error(new Error('Cannot find callback with such ID'));
 			if (typeof _t.callback === 'function')
 				_t.callback(_t.response);
 			this.del(data.callTo);
+			delete _t;
 			return true;
 		}
 
 		if (typeof cmds[data.message] === 'undefined')
-			browser.error(new Error('Cannot find such command'));
+			return cmds.change(data.message, data.args);
 
 		var response = 'ERROR';
 		try {
