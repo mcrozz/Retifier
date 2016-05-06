@@ -172,12 +172,23 @@ function storage(id, options) {
 	};
 	this.isSet = function(par, equ) {
 		if (typeof data.length === 'number') {
-			// @TODO
-		} else {
-			if (typeof equ !== 'undefined')
-				return data[par][equ]!=null;
+			for (var i in data) {
+				if (typeof equ !== 'undefined') {
+					if (data[i][par] === 'undefined')
+						return false;
+					return typeof data[i][par][equ] !== 'undefined';
+				}
 
-			return data[par]==null;
+				return typeof data[i][par] !== 'undefined';
+			}
+		} else {
+			if (typeof equ !== 'undefined') {
+				if (data[par] === 'undefined')
+						return false;
+				return typeof data[par][equ] !== 'undefined';
+			}
+
+			return typeof data[par] !== 'undefined';
 		}
 	};
 
@@ -194,6 +205,14 @@ function storage(id, options) {
 		if (js === null) return false;
 
 		return (localStorage[this.id] = js);
+	};
+	this.reset = function() {
+		if (typeof options === 'undefined') {
+			browser.error(new Error('Cannot reset storage'));
+			return null;
+		}
+
+		return (data = options);
 	};
 
 	try {
@@ -432,6 +451,13 @@ var notificationConstructor = function() {
 	this.clicked = function(id, button) {
 		this.sendCallback(id, button? 'button':'body');
 	}.bind(this);
+
+	this.type = {
+		wentOnline: 0,
+		changedTitle: 1,
+		incomingHosting: 2,
+		wentOffline: 3
+	};
 
 	return this;
 };
