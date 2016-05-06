@@ -218,7 +218,7 @@ checker.following.customSave = function() {
 };
 
 checker.updatePreviews = function() {
-	if (!browser.isOnline) return false;
+	if (!browser.isOnline()) return false;
 
 	if (!settings.isSet('user', 'user')) return false;
 
@@ -235,7 +235,7 @@ checker.updatePreviews = function() {
 };
 
 checker.getFollowingList = function() {
-	if (!browser.isOnline) return false;
+	if (!browser.isOnline()) return false;
 
 	if (!settings.isSet('user', 'user')) return false;
 
@@ -372,7 +372,7 @@ checker.getStatus = function() {
 		// @? inform popup window
 	}
 
-	if (!browser.isOnline) return false;
+	if (!browser.isOnline()) return false;
 
 	if (!settings.isSet('user', 'user')) return false;
 
@@ -406,7 +406,7 @@ checker.getStatus = function() {
 };
 
 checker.updateHostingList = function() {
-	if (!browser.isOnline) return false;
+	if (!browser.isOnline()) return false;
 
 	if (!settings.isSet('user', 'user')) return false;
 

@@ -11,9 +11,9 @@ browser.debug = function(d) {
 
 browser.notification = new notificationConstructor();
 
-browser.send = new message();
-
-browser.isOnline = navigator.onLine;
+browser.isOnline = function() {
+	return navigator.onLine;
+};
 
 $(window).on('offline', function() {
 	window.browser.isOnline = false;
