@@ -350,112 +350,6 @@ function date(type, input, arg) {
 	return false;
 }
 
-
-// Bridge between scripts, need to be initiated after
-//browserDependies.js and before creation of browser
-//object.
-// Usage:
-// message.async('getAll', function(response){});
-// message.async('getAll', {randomData: true});
-// message.async('getAll', {}, function());
-// message.sync('getAll');
-var message = function() {
-	if (!(this instanceof arguments.callee))
-		throw new Error('Cannot be used as function!');
-	var body = new messageParser();
-	this.async = function(msg, args, callback) {
-		if (typeof args === 'function') {
-			callback = args;
-			args = null;
-		}
-		return body.send(new body.messageConstructor(msg, args, callback));
-	}.bind(this);
-	this.sync = function(msg, args) {
-		// @TODO
-	}.bind(this);
-	this.receive = function(data) {
-		return body.receive(data);
-	}.bind(this);
-
-	this.updateSend = function(func) {
-		body.sendMethod = func;
-
-		delete this.updateSend;
-	};
-
-	return this;
-};
-
-
-// Pair background script and popup window
-// @requires methods: sendMethod, receiveMethod
-//which is platform depended
-function messageParser() {
-	if (!(this instanceof arguments.callee))
-		throw new Error('Cannot be used as a function!');
-
-	var cmds = {
-		getOnlineList: function() { return checker.online; },
-		getAll: function() { return checker.following.get(); },
-		getStreamer: function(str) { return checker.following.find(str); },
-		setStreamer: function(str) { return 1; },
-		getConfig: function() { return ''; },
-		setConfig: function(cfg) { return 1; },
-		forceUpdate: function() { return checker.restart(); },
-		getSuggestions: function() { return ''; },
-		change: function(type, data) { $(window).trigger(type, data); }
-	};
-
-	function message(msg, args, callback) {
-		this.id = randomID();
-		this.message = msg;
-		this.args = args;
-		this.callback = callback?callback:null;
-
-		return this;
-	}
-
-	this.messageConstructor = message;
-
-	var queue = new storage([], {local: true});
-
-	this.send = function(data) {
-		queue.push(data);
-		return this.sendMethod(data);
-	}.bind(this);
-
-	this.receive = function(data) {
-		if (!data)
-			return browser.error(new Error('Empty data'));
-
-		if (data.message === 'RESPONSE') {
-			var _t = this.find(data.callTo);
-			if (_t === null)
-				return browser.error(new Error('Cannot find callback with such ID'));
-			if (typeof _t.callback === 'function')
-				_t.callback(_t.response);
-			this.del(data.callTo);
-			delete _t;
-			return true;
-		}
-
-		if (typeof cmds[data.message] === 'undefined')
-			return cmds.change(data.message, data.args);
-
-		var response = 'ERROR';
-		try {
-			response = cmds[data.message](data.args||null);
-		} catch(e) { browser.error(e); }
-		
-		var rsp = new this.messageConstructor('RESPONSE');
-		rsp.response = response;
-		return this.send(rsp);
-	}.bind(this);
-
-	return this;
-}
-
-
 // Notification facility
 // browser.notification.send(Title, {buttons: [Title: callback], Body, Context}).click(function(event));
 // @depends on sendMethod, closeMethod, clickMethod function
@@ -480,11 +374,9 @@ var notificationConstructor = function() {
 	var queue = new storage([], {local: true});
 
 	var send = function(title, data) {
-		if (!title) throw new Error('Cannot create notification without a title');
+		if (!title)
+			throw new Error('Cannot create notification without a title');
 		var d = {};
-
-		// @TODO check settings for restrictions
-		// data.type!!
 
 		if (typeof data === 'undefined' && typeof title !== 'undefined') {
 			d.body = title;
@@ -498,6 +390,17 @@ var notificationConstructor = function() {
 
 		if (d == {})
 			throw new Error('Something went wrong :(');
+
+		var NotificationType = {
+			online: 0,
+			offline: 3,
+			changed: 1,
+			hosting: 2
+		};
+
+		// Accept users settings 
+		if (!window.settings.notification[d.type])
+			return;
 
 		var ntf = new notification(d);
 		queue.push(ntf);
@@ -516,6 +419,10 @@ var notificationConstructor = function() {
 				type: event,
 				target: _t
 			});
+	};
+
+	this.send = function(title, data) {
+		send(title, data);
 	};
 
 	this.closed = function(id) {

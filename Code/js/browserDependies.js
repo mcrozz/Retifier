@@ -1,22 +1,5 @@
 // Example for Chromium engine
 
-// Send message to every view
-browser.send.updateSend(function(data) {
-	var windows = chrome.extension.getViews();
-	var rtn = false;
-	for (var view in windows) {
-		if (windows[view].location.pathname === location.pathname)
-			return;
-
-		setTimeout(windows[view].browser.send.receive.apply(null, data), 0);
-		rtn = true;
-	}
-	delete windows; // lol'd
-
-	browser.debug(rtn);
-	return rtn;
-});
-
 // Set and get badge text
 browser.badge = {
 	set: function(str) {
