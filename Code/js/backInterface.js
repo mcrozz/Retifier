@@ -47,6 +47,9 @@ window.view = new function() {
 	function updatePopup(dest, node) {
 		if (!bindPopup()) return;
 
+		if (typeof dest === 'undefined' || typeof node !== 'object')
+			return browser.error(new Error('Invalid input @ updatePopup'));
+
 		// @PROD check if it's fast enough!
 		var time = performance.now();
 		popup.$(dest).html(node);
@@ -78,7 +81,9 @@ window.view = new function() {
 	};
 
 	this.online = function() {
-		var shadowHtml = new shadowHtmlConstructor();
+		var shadowHtmlOnline = new shadowHtmlConstructor();
+		var shadowHtmlHosting = new shadowHtmlConstructor();
+
 		var update = function() {
 			updatePopup('#content>.online', shadowHtml.node);
 		};
@@ -86,58 +91,75 @@ window.view = new function() {
 		var typeUpdate = {
 			'-1': function(d) {
 				// Deleting streamer
-				shadowHtml.remove(d.id);
+				if (this.isHosting)
+					shadowHtmlHosting.remove(d.id);
+				else
+					shadowHtmlOnline.remove(d.id);
 			},
 			 '0': function(d) {
 			 	// Updating streamer info
-			 	var strm = new streamerNode(d.id);
-			 	if (d.data.title !== strm.title.get()) {
+			 	var strm = new streamerNode(d.id).bind(this);
+			 	if (d.data.title !== strm.title.get())
 			 		// New notification, title has changed
 			 		strm.title.set(d.data.title);
-			 	}
 
-			 	if (d.data.game !== strm.game.get()) {
+			 	if (d.data.game !== strm.game.get())
 			 		// New notification, game title has changed
 			 		strm.game.set(d.data.game);
-			 	}
 
-			 	if (d.data.viewers !== strm.viewers.get()) {
+			 	if (d.data.viewers !== strm.viewers.get())
 			 		// New notification, viewers has changed
 			 		strm.viewers.set(d.data.viewers);
-			 	}
 
-			 	delete strm;
+			 	/*if (this.isHosting)
+			 		strm.*/
+
+			 	// delete strm;
 			 },
 			 '1': function(d) {
 			 	// Inserting new streamer
-			 	var strm = new streamerNode(d.id, d);
+			 	var strm = new streamerNode(d.id, d).bind(this);
+			 	
 			 	browser.debug(strm);
-			 	shadowHtml.insert(strm);
+			 	
+			 	if (this.isHosting)
+			 		shadowHtmlHosting.insert(strm);
+			 	else
+			 		shadowHtmlOnline.insert(strm);
 			 }
 		};
 		
 		// @input: d as object {
 		//   Streamer object (from background.js)
 		//   +type : { -1,0,1 }
+		//   +hostedBy : String
 		// }
-		this.updateFollowers = function(d) {
+		this.updateFollowers = function(d, fromHosting) {
 			if (typeof d === 'undefined')
 				return browesr.error(new Error('Invalid argument'));
 
 			if (typeof typeUpdate[d.type] == 'function') {
-				typeUpdate[d.type](d);
+				typeUpdate[d.type](d).bind({
+					this: this,
+					isHosting: typeof fromHosting !== 'undefined'});
 				return update();
 			}	else
 				return browser.error(new Error('Invalid type'));
 		};
 		
+		// @TODO: add new filed: 'hosted by'
 		function streamerNode(id, d) {
 			if (typeof d === 'undefined') {
 				return new (function(id) {
 					var id = id;
-					var cell = shadowHtml.find('#'+id) || null;
+					var cell = null;
 
-					if (typeof cell === 'undefined' || !cell)
+					if (this.isHosting)
+						shadowHtmlHosting.find('#'+id) || null;
+					else
+						shadowHtmlOnline.find('#'+id) || null;
+
+					if (typeof cell === 'undefined' || cell == null)
 						return browser.error(new Error('Could not find cell with id: '+id));
 					if (typeof cell.nodeType === 'undefined')
 						return browser.error(new Error('Invalid type'));
@@ -190,6 +212,14 @@ window.view = new function() {
 							return findNode('.previews>.game');
 						}
 					};
+
+					// @TODO
+					if (this.isHosting) {
+						this.hostedBy = {
+							set: function(inner) {},
+							get: function() {}
+						}
+					}
 
 					return this;
 				})(id);
@@ -261,6 +291,7 @@ window.view = new function() {
 
 	this.following = function() {
 		var shadowHtml = new shadowHtmlConstructor();
+
 		var update = function() {
 			updatePopup('#content>.following', shadowHtml.node);
 		};
@@ -332,16 +363,16 @@ window.view = new function() {
 	}();
 
 	this.hosting = function() {
-		var shadowHtml = new shadowHtmlConstructor();
-		var update = function() {
-			updatePopup('#content>.hosting', shadowHtml.node);
-		};
-
-		this.insert = function(id, d) {};
-		this.remove = function(id) {};
-
-		function cell(id, d) {};
+		this.updateInf = function(id, d) {
+			return window.view.following.updateInf(id, d);
+		}
 	}();
+
+	this.settings = function() {
+		var holder = {
+
+		};
+	};
 
 	return this;
 }();
