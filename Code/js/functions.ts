@@ -51,3 +51,140 @@ const generateGuid = ():string => {
         toChar(normalize(j >> 4)) +
         toChar(normalize(k ^ 2 - 14884));
 }
+
+interface IHolderOptions {
+    fallback?: Object[];
+    isLocal?: boolean;
+    beforeAdd?: Function;
+    beforeSave?: Function;
+    onChange?: Function;
+    onRemove?: Function;
+    onAdd?: Function;
+}
+
+class FindByResult {
+    index: string;
+    object: Object;
+    error: boolean;
+
+    constructor(index: string, object?: Object, error?: boolean) {
+        this.index = index;
+        this.object = object;
+        this.error = error || false;
+    }
+}
+
+class Holder {
+    private data: Object[];
+    private id: string;
+    private options: IHolderOptions;
+
+    constructor(id: string, options?: IHolderOptions) {
+        if (options != null && options.isLocal)
+            return;
+
+        try {
+            this.data = localStorage[id];
+        } catch (ex) {
+            if (options != null)
+                localStorage[id] = options.fallback;
+            this.data = [];
+        }
+    }
+
+    getData = (): Object[] => this.data;
+    get = (id: string, item?: string): Object => {
+        if (item != null)
+            return this.data[id][item];
+        return this.data[id];
+    };
+    set = (id: string, value: Object): boolean => {
+        if (this.data[id] === undefined) {
+            let item = this.findBy('id', id);
+            if (item.error)
+                return false;
+            id = String(item.index);
+        }
+
+        this.data[id] = value;
+        return true;
+    };
+    del = (id: string): boolean => {
+        if (this.data[id] === undefined) {
+            let item = this.findBy('id', id);
+            if (item.error)
+                return false;
+            id = String(item.index);
+        }
+
+        let temp = this.data[id];
+        delete this.data[id];
+
+        if (this.options.onRemove != null)
+            this.options.onRemove(temp);
+
+        if (this.options.onChange != null)
+            this.options.onChange(temp);
+
+        return true;
+    };
+    push = (value: Object) => {
+        if (this.options.beforeAdd != null)
+            value = this.options.beforeAdd(value);
+
+        this.data.push(value);
+
+        if (this.options.onAdd != null)
+            this.options.onAdd(value);
+
+        if (this.options.onChange != null)
+            this.options.onChange(value);
+    };
+    length = (): number => {
+        if (this.data.length !== undefined)
+            return this.data.length;
+
+        let length = 0;
+        for (let itm in this.data)
+            if (this.data.hasOwnProperty(itm))
+                length++;
+
+        return length;
+    };
+    findBy = (property: string, should: string): FindByResult => {
+        for (let itm in this.data) {
+            if (!this.data.hasOwnProperty(itm))
+                continue;
+
+            if (this.data[itm][property] === should)
+                return new FindByResult(itm, this.data[itm]);
+        }
+
+        return new FindByResult(null, null, true);
+    };
+    save = (): boolean => {
+        let data = this.data;
+        if (this.options.beforeSave != null)
+            data = this.options.beforeSave(data);
+
+        let stringified = null;
+        try {
+            stringified = JSON.stringify(data);
+        } catch (ex) {
+            //TODO: send ex to browser.error
+        }
+
+        if (stringified == null)
+            return false;
+
+        return (localStorage[this.id] = stringified);
+    };
+    reset = (): boolean => {
+        if (this.options.fallback == null) {
+            //TODO: Can not reset storage, fallback value is not presented
+            return false;
+        }
+
+        return (this.data = this.options.fallback);
+    };
+}
