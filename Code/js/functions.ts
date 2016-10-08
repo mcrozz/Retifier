@@ -1,11 +1,11 @@
 ﻿// Generates random key, e.g.
 //AbCDeFGh-1234-IjKLmNop
-const generateGuid = ():string => {
+const generateGuid = (): string => {
     // 48-90 and 97-122
     const i = Math.floor((Math.random() * 122) + 48);
     const j = Math.floor((Math.random() * 122) + 48);
     const k = Math.floor((Math.random() * 122) + 48);
-    const normalize = (val: number, isSingleChar: boolean = false):number => {
+    const normalize = (val: number, isSingleChar: boolean = false): number => {
         if (val >= 91 && val <= 96) {
             const t = Math.random() * 50 - 50;
             if (t < 0)
@@ -24,7 +24,7 @@ const generateGuid = ():string => {
         } else
             return Math.round(val);
     };
-    const toChar = (code:number):string => {
+    const toChar = (code: number): string => {
         return String.fromCharCode(code);
     }
 
