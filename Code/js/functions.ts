@@ -185,6 +185,7 @@ class Holder {
             return false;
         }
 
-        return (this.data = this.options.fallback);
+        this.data = this.options.fallback;
+        return true;
     };
 }
