@@ -3,11 +3,10 @@
 window.view = new function() {
 	var popup = null; // should be NodeDOM object
 	var bindPopup = null;
-	var getView = null;
 
 	this.browserGetView = function(callback) {
 		if (typeof callback !== 'function')
-			return browser.error(new Error('Invalid input @ browserGetView'));
+			return browser.error('Invalid input @ browserGetView');
 		
 		getView = callback;
 		delete this.browserGetView;
@@ -15,22 +14,14 @@ window.view = new function() {
 
 	var bindPopup = function() {
 		if (!popup) {
-			if (getView === null)
-				return browser.error(new Error('Cannot obtain DOM objects of views'));
-			
-			var windows = getView();
-			for (var view in windows) {
-				if (windows[view].location.pathname === location.pathname)
-					return;
-
-				popup = windows[view];
-				return true; break;
+			popup = browser.getView();
+			if (!popup) {
+				browser.error('Cannot obtain popup window object');
+				return false;
 			}
-			delete windows; // lol'd
-		} else
-			return true;
+		}
 
-		return false;
+		return true;
 	};
 
 	function c(type, data) {
@@ -145,6 +136,10 @@ window.view = new function() {
 				return update();
 			}	else
 				return browser.error(new Error('Invalid type'));
+		};
+
+		this.popup = function() {
+			update();
 		};
 		
 		// @TODO: add new filed: 'hosted by'
@@ -360,18 +355,34 @@ window.view = new function() {
 
 			return holder;
 		};
+
+		this.popup = function() {
+			update();
+		};
 	}();
 
 	this.hosting = function() {
 		this.updateInf = function(id, d) {
 			return window.view.following.updateInf(id, d);
 		}
+
+		this.popup = function() {
+			update();
+		};
 	}();
 
 	this.settings = function() {
 		var holder = {
 
 		};
+	};
+
+	this.update = function() {
+		this.online.popup();
+		this.following.popup();
+		this.hosting.popup();
+
+		return bindPopup();
 	};
 
 	return this;

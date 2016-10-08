@@ -50,3 +50,18 @@ notificationConstructor.constructor.prototype.sendMethod = function(ntf) {
 }
 
 view.browserGetView(chrome.extension.getViews);
+
+browser.getView = function() {
+	var view = null;
+	chrome.extension.getViews(function(views) {
+		for (var i in views) {
+			if (views[i].location.pathname === location.pathname)
+				continue;
+
+			view = views[i];
+			return;
+		}
+	});
+
+	return !view? false:view;
+};

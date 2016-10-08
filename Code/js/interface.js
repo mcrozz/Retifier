@@ -1,6 +1,7 @@
 /*
 * Based on http://codepen.io/hendrysadrak/pen/yNKZWO
 * @PROD: need to be optimized for 60fps
+* @TODO: handle click events
 */
 $(document).on('mouseover', '.ripple', function(e) {
 	var $rippleElement = $('<span class="ripple-effect" />'),
@@ -45,28 +46,16 @@ $(document).on('mouseout', '.ripple', function(e) {
 
 
 $(function(){
-  if (settings.isSet('ui', 'size')) {
-    /*
-    // @TODO
-    4:3
-    (W*H/7)*[4|3]
-    W=(W*H*4)/7
-    7W=4WH
+  if (!settings.data().ui.scale.isSet())
+    settings.data().ui.scale.set(1);
 
-    */
-    var vh = settings.get('ui', 'size')*screen.availHeight;
-    var vw = vh
-
-    $('html').css({
-      width: vh+'px',
-      height: vw+'px'
-    });
-  } else {
-    // 
-  }
+  var vh = settings.data().ui.scale.get()*450;
+  var vw = settings.data().ui.scale.get()*350;
 
   $('html').css({
-    width: '450px',
-    height: '350px'
+    width: vh+'px',
+    height: vw+'px'
   });
+
+  browser.getView().view.update();
 });

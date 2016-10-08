@@ -72,6 +72,8 @@ function randomID() {
 //   onchange(changed object): callback on change
 //   onremove(removed object): callback on remove
 //   onadd(added object): callback on adding
+//   objectSceleton(object): will return modified
+//     object structure
 function storage(id, options) {
 	if (!(this instanceof arguments.callee))
 		throw new Error('Cannot be used as function!');
@@ -81,6 +83,9 @@ function storage(id, options) {
 
 	if (options.local) { data = id; id = null; }
 	
+	this.data = function() {
+		return data;
+	};
 	this.get = function(id, sec) {
 		if (typeof data.length === 'undefined') {
 			if (typeof sec !== 'undefined')
@@ -92,10 +97,11 @@ function storage(id, options) {
 	};
 	this.set = function(id, val, sec) {
 		if (typeof data.length === 'undefined') {
-			if (typeof sec !== 'undefined')
+			if (typeof sec !== 'undefined') {
 				data[id][val] = sec;
-			else
+			} else {
 				data[id] = val;
+			}
 
 			return data[id];
 		}
@@ -155,6 +161,9 @@ function storage(id, options) {
 		if (typeof data.length === 'undefined')
 			return browser.error(new Error('Invalid type of storage'));
 
+		if (typeof options.beforeAdd === 'function')
+			d = options.beforeAdd(d);
+
 		data.push(d);
 
 		if (typeof options.onchange === 'function')
@@ -164,7 +173,13 @@ function storage(id, options) {
 			options.onadd(d);
 	};
 	this.length = function() {
-		return data.length;
+		if (typeof data.length === 'undefined') {
+			var lnt = 0;
+			for (var i in data)
+				lnt++;
+			return lnt;
+		} else
+			return data.length;
 	};
 	// @Dependend on Array.prototype.findBy
 	this.findBy = function(par, equ) {
@@ -195,14 +210,18 @@ function storage(id, options) {
 	if (options.local) return this;
 
 	this.save = function() {
-		var toSave = data;
+		var toSave = null;
+		
 		if (typeof this.customSave == 'function')
-			toSave = this.customSave();
+			toSave = this.customSave().bind(this);
+		else
+			toSave = data;
 
 		var js = null;
 		try { js = JSON.stringify(toSave); }
 		catch(e) { browser.error(e); }
-		if (js === null) return false;
+		if (js === null)
+			return false;
 
 		return (localStorage[this.id] = js);
 	};
@@ -219,6 +238,16 @@ function storage(id, options) {
 		data = JSON.parse(localStorage[id]);
 	} catch(e) {
 		localStorage[id] = options.fallback;
+	}
+
+	if (typeof options.objectSceleton === 'function') {
+		for (var i in data) {
+			if (typeof data[i] === 'object') {
+				for (var j in data[i])
+					data[i][j] = new options.objectSceleton(data[i][j]);
+			} else
+				data[i] = new options.objectSceleton(data[i]);
+		}
 	}
 
 	return this;
