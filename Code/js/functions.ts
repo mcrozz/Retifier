@@ -52,8 +52,8 @@ const generateGuid = (): string => {
         toChar(normalize(k ^ 2 - 14884));
 }
 
-interface IHolderOptions {
-    fallback?: Object[];
+interface IHolderOptions<T> {
+    fallback?: T[];
     isLocal?: boolean;
     beforeAdd?: Function;
     beforeSave?: Function;
@@ -62,24 +62,24 @@ interface IHolderOptions {
     onAdd?: Function;
 }
 
-class FindByResult {
+class FindByResult<T> {
     index: string;
-    object: Object;
+    object: T;
     error: boolean;
 
-    constructor(index: string, object?: Object, error?: boolean) {
+    constructor(index: string, object?: T, error?: boolean) {
         this.index = index;
         this.object = object;
         this.error = error || false;
     }
 }
 
-class Holder {
-    private data: Object[];
+class Holder<T> {
+    private data: T[];
     private id: string;
-    private options: IHolderOptions;
+    private options: IHolderOptions<T>;
 
-    constructor(id: string, options?: IHolderOptions) {
+    constructor(id: string, options?: IHolderOptions<T>) {
         if (options != null && options.isLocal)
             return;
 
@@ -92,13 +92,13 @@ class Holder {
         }
     }
 
-    getData = (): Object[] => this.data;
-    get = (id: string, item?: string): Object => {
+    getData = (): T[] => this.data;
+    get = (id: string, item?: string): T => {
         if (item != null)
             return this.data[id][item];
         return this.data[id];
     };
-    set = (id: string, value: Object): boolean => {
+    set = (id: string, value: T): boolean => {
         if (this.data[id] === undefined) {
             let item = this.findBy('id', id);
             if (item.error)
@@ -128,7 +128,7 @@ class Holder {
 
         return true;
     };
-    push = (value: Object) => {
+    push = (value: T) => {
         if (this.options.beforeAdd != null)
             value = this.options.beforeAdd(value);
 
@@ -151,7 +151,7 @@ class Holder {
 
         return length;
     };
-    findBy = (property: string, should: string): FindByResult => {
+    findBy = (property: string, should: string): FindByResult<T> => {
         for (let itm in this.data) {
             if (!this.data.hasOwnProperty(itm))
                 continue;
