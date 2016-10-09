@@ -21,7 +21,7 @@ class Streamer {
     lastUpdate: Date;
     followingFrom: Date;
 
-    constructor(id: string, name: string, followingFrom: Date) {
+    constructor(id: string, name: string, followingFrom?: Date) {
         this.id = id;
         this.name = name;
         this.followingFrom = followingFrom;
@@ -30,6 +30,15 @@ class Streamer {
     update = (): boolean => {
         this.lastUpdate = new Date();
         return true;
+    }
+}
+
+class HostingTarget extends Streamer {
+    parent: Streamer;
+
+    constructor(id: string, name: string, parent: Streamer) {
+        super(id, name);
+        this.parent = parent;
     }
 }
 
@@ -65,3 +74,105 @@ class Twitch {
 }
 
 const twitch = new Twitch();
+
+abstract class BackgroundAbstract {
+    protected following: Holder<Streamer>;
+    protected hosting: Holder<HostingTarget>;
+
+    constructor() {
+        this.following = new Holder<Streamer>(null,
+            {
+                isLocal: true,
+                onAdd: (item: Streamer) => {
+                    //TODO on view
+                },
+                onRemove: (item: Streamer) => {
+                    //TODO on view
+                },
+                onChange: (item: Streamer) => {
+                    //TODO on view
+                }
+            });
+
+        this.hosting = new Holder<HostingTarget>(null,
+            {
+                isLocal: true,
+                onAdd: (item: HostingTarget) => {
+                    //TODO on view
+                },
+                onRemove: (item: HostingTarget) => {
+                    //TODO on view
+                },
+                onChange: (item: HostingTarget) => {
+                    //TODO on view
+                }
+            });
+    }
+
+    abstract getFollowingList(): void;
+    abstract getStatus(): void;
+    abstract updatePreviews(): void;
+    abstract updateHostingList(): void;
+
+    protected config = {
+        following: {
+            lastRun: 0,
+            interval: 300000,
+            call: this.getFollowingList
+        },
+        status: {
+            lastRun: 0,
+            interval: 2000,
+            call: this.getStatus
+        },
+        cache: {
+            lastRun: 0,
+            interval: 10000,
+            call: this.updatePreviews
+        },
+        hosting: {
+            lastRun: 0,
+            interval: 300000,
+            call: this.updateHostingList
+        }
+    };
+
+    abstract run(): void;
+}
+
+class Background extends BackgroundAbstract {
+    getFollowingList(): void {
+        //TODO after implementation of settings
+    };
+    getStatus(): void {
+        //TODO after implementation of settings
+    };
+    updatePreviews(): void {
+        //TODO after implementation of settings
+    };
+    updateHostingList(): void {
+        //TODO after implementation of settings
+    };
+
+    constructor() {
+        super();
+    }
+
+    run(): void {
+        const now = new Date().getTime();
+
+        for (let item in this.config) {
+            if (!this.config.hasOwnProperty(item))
+                continue;
+
+            if (now - this.config[item].lastRun >= this.config[item].interval) {
+                this.config[item].lastRun = now;
+                setTimeout(this.config[item].call, 0);
+            }
+        }
+
+        setTimeout(this.run, 2000);
+    }
+}
+
+const background = new Background();
