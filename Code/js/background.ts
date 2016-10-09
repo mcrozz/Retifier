@@ -51,13 +51,27 @@ class Twitch {
     getStatus = (user: string): JQueryXHR => {
         user = encodeURIComponent(user);
         const url = this.streams.replace('\$0', user);
-        return $.getJSON(url);
+        return $.ajax(url, {
+            dataType: 'JSON',
+            headers: {
+                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Authorization': 'OAuth '+settings.data.user.token
+            },
+            method: 'GET'
+            });
     }
 
     getFollowing = (user: string): JQueryXHR => {
         user = encodeURIComponent(user);
         const url = this.followed.replace('\$0', user);
-        return $.getJSON(url);
+        return $.ajax(url, {
+            dataType: 'JSON',
+            headers: {
+                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Authorization': 'OAuth ' + settings.data.user.token
+            },
+            method: 'GET'
+        });
     }
 
     getGamePreview = (user: string): JQueryXHR => {
@@ -69,7 +83,14 @@ class Twitch {
     getHosting = (user: string): JQueryXHR => {
         user = encodeURIComponent(user);
         const url = this.hosting.replace('\$0', user);
-        return $.getJSON(url);
+        return $.ajax(url, {
+            dataType: 'JSON',
+            headers: {
+                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Authorization': 'OAuth ' + settings.data.user.token
+            },
+            method: 'GET'
+        });
     }
 }
 
