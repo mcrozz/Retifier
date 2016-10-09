@@ -189,3 +189,135 @@ class Holder<T> {
         return true;
     };
 }
+
+interface IDateRaw {
+    h: number;
+    m: number;
+    s: number;
+    d: number;
+    y: number;
+}
+
+// Available patterns:
+// * {h} - hours
+// * {m} - minutes
+// * {s} - seconds
+// * {d} - days
+// * {m} - months
+// * {y} - years
+// Add question mark if don't want to show value if it's zero
+class DatePlus {
+    private date: Date;
+    private pattern: string[];
+
+    constructor(input: Date, fillPattern?: string[]) {
+        this.date = input;
+        this.pattern = fillPattern;
+    }
+
+    private normalize = (input: number): string =>
+        (input < 10) ? '0' + String(input) : String(input);
+
+    private patternUnit = /\{([\?\w|\w])\}/;
+
+    private _fill(data: IDateRaw): string {
+        let output = '';
+
+        for (let item of this.pattern) {
+            const found: RegExpMatchArray = item.match(this.patternUnit);
+            if (found.length < 2) {
+                output += item;
+                continue;
+            }
+
+            let pattern = found[2];
+            const isOptional = pattern.length === 2;
+            if (isOptional)
+                pattern = pattern[1];
+
+            if (data[pattern] == null)
+                continue; //TODO throw error, invalid pattern
+
+            if (data[pattern] === 0 && isOptional)
+                continue;
+
+            output += item.replace(this.patternUnit, this.normalize(data[pattern]));
+        }
+
+        return output;
+    }
+
+    get smart(): string {
+        let diff = new Date().getTime() - this.date.getTime();
+        let inPast = diff < 0;
+        if (inPast)
+            diff *= -1;
+
+        let prefix;
+        let reminder;
+
+        if (diff / 3600000 < 1) { // Less than a hour
+            reminder = Math.round(diff / 60000);
+            prefix = 'minute';
+        } else if (diff / (86400000) < 1) { // Less than a day
+            reminder = Math.round(diff / 3600000);
+            prefix = 'hour';
+        } else if (diff / 31536000000 < 1) { // Less than a year
+            reminder = Math.round(diff / 86400000);
+            prefix = 'day';
+        } else {
+            reminder = Math.round(diff / 31536000000);
+            prefix = 'year';
+        }
+
+        if (reminder > 1)
+            prefix += 's';
+        if (inPast)
+            prefix += ' ago';
+
+        return String(reminder) + ' ' + prefix;
+    }
+
+    get raw(): IDateRaw {
+        return {
+            h: this.date.getHours(),
+            m: this.date.getMinutes(),
+            s: this.date.getSeconds(),
+            d: this.date.getDate(),
+            y: this.date.getFullYear()
+        };
+    }
+
+    get diffRaw(): IDateRaw {
+        let diff = new Date().getTime() - this.date.getTime();
+        if (diff < 0)
+            diff *= -1;
+
+        let output: IDateRaw;
+
+        // Years
+        output.y = Math.floor(diff / 31536000000);
+        diff -= output.y * 31536000000;
+        // Days
+        output.d = Math.floor(diff / 86400000);
+        diff -= output.d * 86400000;
+        // Hours
+        output.h = Math.floor(diff / 3600000);
+        diff -= output.h * 3600000;
+        // Minutes
+        output.m = Math.floor(diff / 60000);
+        diff -= output.m * 60000;
+        // Seconds
+        output.s = Math.floor(diff / 1000);
+
+        return output;
+    }
+
+    get fill(): string {
+        return this._fill(this.raw);
+    }
+
+    get diffFill(): string {
+        return this._fill(this.diffRaw);
+    }
+}
